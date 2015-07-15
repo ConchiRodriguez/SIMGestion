@@ -2202,14 +2202,15 @@ function valida_nif_cif_nie($cif) {
 	return 0;
 }
 
-function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,$id_cuerpo,$id_article,$id_client,$id_contrato,$id_incidencia) {
+function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,$id_tipo,$id) {
 	global $db,$errorSubirArchivoDuplicado,$errorSubirArchivoTamany;
 	
-	if ($id_cuerpo > 0) {$adress = "facturas/";}
-	if ($id_article > 0) {$adress = "articulos/";}
-	if ($id_client > 0) {$adress = "clientes/";}
-	if ($id_contrato > 0) {$adress = "contratos/";}
-	if ($id_incidencia > 0) {$adress = "incidencias/";}
+	if ($id_tipo == 0) {$adress = "facturas/";}
+	if ($id_tipo == 1) {$adress = "articulos/";}
+	if ($id_tipo == 2) {$adress = "clientes/";}
+	if ($id_tipo == 3) {$adress = "contratos/";}
+	if ($id_tipo == 4) {$adress = "incidencias/";}
+	if ($id_tipo == 5) {$adress = "dispositivos/";}
 
 	$sql = "select * from sgm_files_tipos where id=".$tipo;
 	$result = mysql_query(convert_sql($sql));
@@ -2223,8 +2224,8 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 	} else {
 		if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size<=$lim_tamano)){
 			if (copy ($archivo, "archivos/".$adress.$archivo_name)) {
-				$camposInsert = "id_tipo,name,type,size,id_cuerpo,id_article,id_client,id_contrato,id_incidencia";
-				$datosInsert = array($tipo,$archivo_name,$archivo_type,$archivo_size,$id_cuerpo,$id_article,$id_client,$id_contrato,$id_incidencia);
+				$camposInsert = "id_tipo,name,type,size,id_elemento,tipo_id_elemento";
+				$datosInsert = array($tipo,$archivo_name,$archivo_type,$archivo_size,$id,$id_tipo);
 				insertFunction ("sgm_files",$camposInsert,$datosInsert);
 			}
 		}else{

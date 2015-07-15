@@ -65,10 +65,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 		}
 		if ($ssoption == 3) {
-			$sql = "update sgm_articles set ";
-			$sql = $sql."visible=0";
-			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($soption == 0) {echo "<h4>".$Articulos."</h4>";}
 		if ($soption == 200) { echo "<h4>".$Buscar."</h4>"; }
@@ -751,7 +750,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
 				$tipo = $HTTP_POST_VARS["id_tipo"];
 			}
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,0,$_GET["id"],0,0,0);
+			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,1,$_GET["id"]);
 		}
 		if ($ssoption == 2) {
 			$sqlf = "select * from sgm_files where id=".$_GET["id_archivo"];

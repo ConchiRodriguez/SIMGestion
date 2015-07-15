@@ -1189,11 +1189,16 @@ ALTER TABLE `sgm_files` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `visibl
 ALTER TABLE `sgm_files` ADD `name` varchar(100) NOT NULL default '' AFTER `id_tipo`;
 ALTER TABLE `sgm_files` ADD `type` varchar(20) NOT NULL default '' AFTER `name`;
 ALTER TABLE `sgm_files` ADD `size` int(11) NOT NULL default '0' AFTER `type`;
-ALTER TABLE `sgm_files` ADD `id_cuerpo` int(11) NOT NULL default '0' AFTER `size`;
+ALTER TABLE `sgm_files` ADD `tipo_id_elemento` int(11) NOT NULL default '0' AFTER `size`;
+ALTER TABLE `sgm_files` ADD `id_elemento` int(11) NOT NULL default '0' AFTER `tipo_id_elemento`;
+/*tipo_id_elemento - 0=factura, 1=articulo, 2=cliente, 3=contrato, 4=incidencia, 5=dispositivo;*/
+
+/*
 ALTER TABLE `sgm_files` ADD `id_article` int(11) NOT NULL default '0' AFTER `id_cuerpo`;
 ALTER TABLE `sgm_files` ADD `id_client` int(11) NOT NULL default '0' AFTER `id_article`;
 ALTER TABLE `sgm_files` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id_client`;
 ALTER TABLE `sgm_files` ADD `id_incidencia` int(11) NOT NULL default '0' AFTER `id_contrato`;
+*/
 
 CREATE TABLE `sgm_files_tipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_files_tipos` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
