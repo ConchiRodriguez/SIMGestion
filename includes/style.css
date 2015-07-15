@@ -1,0 +1,51 @@
+TABLE {
+	border : 1px solid Black;
+}
+IMG {
+	border : 0px;
+}
+BODY {
+	text-align : left;
+	background-color : White;
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	color: Black;
+}
+
+.inverse {
+	text-align : left;
+	background-color : ButtonShadow;
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 11px;
+	font-family: Verdana;
+	color: Black;
+}
+
+HR {
+	height : 1px;
+	color: Black;
+}
+
+TD {
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 11px;
+	font-family: Verdana;
+	color: Black;
+	vertical-align : top;
+}
+
+FORM {
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+}
+
+INPUT,TEXTAREA,SELECT {
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 9px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: black;
+	border : 1px solid Black;
+}

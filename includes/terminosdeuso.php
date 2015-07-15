@@ -1,0 +1,22 @@
+<?php
+		echo "<br><center><strong>TERMINOS DE USO</strong></center><br>";
+		echo "<br><strong>GENERALES: </strong>";
+		echo "<br>El registro a está página es gratuito.";
+		echo "<br><br>El hecho de registrarse en esta página implica que se ha leído y se está de acuerdo con toda la normativa de la misma.";
+		echo "<br><br>No está permitida la reproducción total o parcial del contenido de la web salvo que se cuente con permiso expreso escrito de los autores.";
+		echo "<br><br><strong>PROTECCIÓN DE DATOS: </strong>";
+		echo "<br><br>Existen zonas en las que únicamente pueden acceder los usuarios registrados. Como usuario registrado estás en la obligación de rellenar un formulario en el cual los únicos datos obligatorios son un nick o alias y una dirección de correo donde será enviada la clave. El resto de los datos son de carácter voluntario y se entiende que si son entregados se hace de manera libre y sin presiones. Para evitar que su correo sea publicado en la web puede elegir la opción de que no se vea. Multivia no comercializará con los datos proporcionados, pero si el usuario no utiliza la opción de ocultar su correo no se garantiza que alguna organización pueda \"robar\" los mails y usarlos para spam.";
+		echo "<br><br>Más información en : <a href=\"index.php?op=300\">Privacidad</a>";
+		echo "<br><br><strong>CONTENIDO: </strong>";
+		echo "<br><br>Multivia.com no es responsable de los tópicos, la exactitud, fiabilidad ni de la calidad de la información proporcionada. Cualquier reclamación con respecto al daño causado por el uso de cualquier información proporcionada, inclusive cualquier tipo de información que sea incompleta o inexacta, será, por lo tanto, rechazado. Todo lo que se ofrece no está blindado y no existe obligación alguna. Las partes de las páginas o la publicación completa incluyendo todo lo que ofrecen y su información puéde ser extendida, puede ser cambiada en parte o en su totalidad o borrada por Multivia.com sin previo aviso.";
+		echo "<br><br><strong>ENLACES: </strong>";
+		echo "<br><br>Multivia.com no es responsable de ningún contenido de los enlaces a páginas externas o referencias externas existentes en la web. Si algún daño se produce por el uso de información presentada allí, sólo el autor de las páginas respectivas quizás sea responsable, no el que ha enlazado a estas páginas. Además Multivia.com no es responsable de cualquier anuncio o los mensajes publicados por usuarios foros de discusión, Libros de visitas o listas proporcionados en esta página.";
+		echo "<br><br><strong>DESCARGAS: </strong>";
+		echo "<br><br>Si la oportunidad para descargar los archivos existe, entonces el resultado del uso de estos programa/scripts está bajo su propia responsabilidad. Con respecto a los daños posibles en sus sitios web, computadores o al proveedor de su servicio de internet, Multivia.com no tiene ninguna obligación legal. Multivia.com no puede ser tomado como responsable de nada descargado en sitio web que dañe los usuarios, su computador o su sistema.";
+		echo "<br>Las descargas que son propiedad de la web pueden ser descargadas sin problemas, pero en la descarga va incluido un html linkando a esta web, está totalmente prohibido colocar las creaciones multivia.org para descargar en otras webs si no presentan el html tal y como está en el rar, zip o exe original. Además, habitualmente, estas aplicaciones llevan incluido su copyright o un minibanner lindando a este sitio, la eliminación y/o modificación total o parcial de éste está absolutamente prohibido.";
+		echo "<br><br><strong>VISUALIZACIÓN :</strong>";
+		echo "<br><br>Este sitio está diseñado para mostrarse correctamente en una Resolución de pantalla 1024x768, en el modo del Color Verdadero, utilizando por lo menos la Versión del navegador Internet Explorer 6.0 Utilizar una configuración/navegador diferente puede causar una muestra impropia del sitio web.";
+		echo "<br><br><strong>SOBRE ESTOS TERMINOS: </strong>";
+		echo "<br><br>Estas normas puedes ser alteradas (ya sea modificando, eliminando o ampliando) a gusto de la administración. Los cambios en la normativa se hacen sin previo aviso dejando a los usuarios la responsabilidad de visitar los foros de la web donde se publicarán las modificaciones.";
+		echo "<br><br>La administración se reserva el derecho de actuar de oficio ante cualquier infracción aunque el usuario afectado no pase constancia del problema.";
+?>
