@@ -1474,7 +1474,7 @@ ALTER TABLE `sgm_incidencias_notas_desarrollo` ADD `visible_cliente` tinyint(1) 
 ALTER TABLE `sgm_incidencias_notas_desarrollo` ADD `pausada` tinyint(1) NOT NULL default '0' AFTER `visible_cliente` ;
 */
 
-/*
+/
 CREATE TABLE `sgm_inventario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_inventario` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `nombre` ;
@@ -1514,7 +1514,7 @@ ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `dada` longtext NOT NULL def
 ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `id_atribut` int(11) NOT NULL default '0' AFTER `dada` ;
 ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `id_inventario` int(11) NOT NULL default '0' AFTER `id_atribut` ;
 ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_inventario` ;
-*/
+
 
 CREATE TABLE `sgm_lincencias` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_lincencias` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;

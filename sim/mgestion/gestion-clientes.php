@@ -1732,7 +1732,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$archivo_type =  $_FILES['archivo']['type'];
 				$archivo = $_FILES['archivo']['tmp_name'];
 				$tipo = $_POST["id_tipo"];
-				$id_contrato = $_POST["id_contrato"];
 			}
 			if (version_compare(phpversion(), "4.0.1", "<")) {
 				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
@@ -1740,12 +1739,16 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
 				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
 				$tipo = $HTTP_POST_VARS["id_tipo"];
-				$id_contrato = $HTTP_POST_VARS["id_contrato"];
 			}
-			echo subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,0,0,0,$id_contrato,0);
+			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,3,$_GET["id_con"]);
 		}
 		if ($ssoption == 2) {
+			$sqlf = "select * from sgm_files where id=".$_GET["id_archivo"];
+			$resultf = mysql_query(convert_sql($sqlf));
+			$rowf = mysql_fetch_array($resultf);
 			deleteFunction ("sgm_files",$_GET["id_archivo"]);
+			$filepath = "archivos/articulos/".$rowf["name"];
+			unlink($filepath);
 		}
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
@@ -1755,7 +1758,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$sql = "select * from sgm_files_tipos order by nombre";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)) {
-						$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and id_contrato=".$_GET["id_con"];
+						$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=3 and id_elemento=".$_GET["id_con"];
 						$resultele = mysql_query(convert_sql($sqlele));
 						while ($rowele = mysql_fetch_array($resultele)) {
 							echo "<tr>";
@@ -1771,7 +1774,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<h4>".$Formulario_Subir_Archivo." :</h4>";
 					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1008&sop=142&ssop=1&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."\" method=\"post\">";
 					echo "<table>";
-						echo "<input type=\"Hidden\" name=\"id_contrato\" value=\"".$_GET["id_con"]."\">";
 						echo "<tr>";
 							echo "<td><select name=\"id_tipo\" style=\"width:200px\">";
 								$sql = "select * from sgm_files_tipos order by nombre";
@@ -1782,7 +1784,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 						echo "</tr>";
 						echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"29px\"></td></tr>";
-						echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta FILES/\" style=\"width:200px\"></td></tr>";
+						echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/contratos/\" style=\"width:200px\"></td></tr>";
 					echo "</table>";
 					echo "</form>";
 				echo "</td>";
@@ -2054,7 +2056,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
 				$tipo = $HTTP_POST_VARS["id_tipo"];
 			}
-			echo subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,0,0,$_GET["id"],0,0);
+			echo subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,2,$_GET["id"]);
 		}
 		if ($ssoption == 2) {
 			deleteFunction ("sgm_files",$_GET["id_archivo"]);
@@ -2067,7 +2069,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$sql = "select * from sgm_files_tipos order by nombre";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)) {
-						$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and id_client=".$_GET["id"];
+						$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=2 and id_elemento=".$_GET["id"];
 						$resultele = mysql_query(convert_sql($sqlele));
 						while ($rowele = mysql_fetch_array($resultele)) {
 							echo "<tr>";
@@ -2093,7 +2095,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 						echo "</tr>";
 						echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"29px\"></td></tr>";
-						echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta FILES/\" style=\"width:200px\"></td></tr>";
+						echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/clientes/\" style=\"width:200px\"></td></tr>";
 					echo "</table>";
 					echo "</form>";
 				echo "</td>";

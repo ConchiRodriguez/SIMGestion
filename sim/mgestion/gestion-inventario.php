@@ -198,7 +198,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1005&sop=100&id=".$row["id"]."\" style=\"color:white;\">".$Datos." ".$Generales."</a></td>";
 #							echo "<td class=\"ficha\"><a href=\"index.php?op=1005&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Relaciones."</a></td>";
-#							echo "<td class=\"ficha\"><a href=\"index.php?op=1005&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Actuaciones."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1005&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Actuaciones."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1005&sop=130&id=".$row["id"]."\" style=\"color:white;\">".$Archivos."</a></td>";
 						echo "</tr>";
 					echo "</table>";
@@ -434,12 +434,9 @@ if (($option == 1005) AND ($autorizado == true)) {
 			}
 		echo "</table>";
 	}
-
+*/
 	if ($soption == 120){
-		$a = date("Y");
-		$m = date("n");
-		$d = date("j");
-		$fecha = date("Y-m-d", mktime(0,0,0,$m ,$d, $a))." ".date("H:i:s");
+		$fecha = date("Y-m-d H:i:s");
 		if ($ssoption == 1) {
 			if ($_POST["mod"] == 0){
 				$sql = "insert into sgm_inventario_actuacion_disp (id_act,id_disp,id_user,data)";
@@ -464,16 +461,15 @@ if (($option == 1005) AND ($autorizado == true)) {
 			$sql = $sql."WHERE id_disp=".$_POST["id_disp"]." and id_act=".$_POST["id_act"]."";
 			mysql_query(convert_sql($sql));
 		}
-		echo "<strong>".$Actuaciones." : </strong><br><br>";
-		echo "<center>";
-		echo "<table cellpadding=\"0\" cellspacing=\"0\">";
+		echo "<h4>".$Actuaciones." : </h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
-				echo "<td>&nbsp;</td>";
-				echo "<td>".$Nombre."</td>";
-				echo "<td>".$Dispositivo." ".$Relacionado."</td>";
-				echo "<td>".$Fecha."</td>";
-				echo "<td>".$Usuario."</td>";
-				echo "<td></td>";
+				echo "<th></th>";
+				echo "<th>".$Nombre."</th>";
+				echo "<th>".$Dispositivo." ".$Relacionado."</th>";
+				echo "<th>".$Fecha."</th>";
+				echo "<th>".$Usuario."</th>";
+				echo "<th></th>";
 			echo "</tr>";
 		$sql = "select * from sgm_inventario where visible=1 and id=".$_GET["id"]."";
 		$result = mysql_query(convert_sql($sql));
@@ -484,40 +480,27 @@ if (($option == 1005) AND ($autorizado == true)) {
 		$sqli = "select * from sgm_inventario_actuacion where visible=1 and id_disp=".$row["id"]."";
 		$resulti = mysql_query(convert_sql($sqli));
 		while ($rowi = mysql_fetch_array($resulti)) {
-			$sqlr = "select * from sgm_inventario_relacion where visible=1 and ((id_disp1=".$row["id"].") or (id_disp2=".$row["id"]."))";
-			$resultr = mysql_query(convert_sql($sqlr));
-			while ($rowr = mysql_fetch_array($resultr)) {
-				if ($rowr["id_disp1"] == $row["id"]){ $id_disp = $rowr["id_disp2"]; } else { $id_disp = $rowr["id_disp1"]; }
-				$sqlti = "select * from sgm_inventario_tipo where visible=1 and orden < ".$rowtip["orden"]."";
-				$resultti = mysql_query(convert_sql($sqlti));
-				$rowti = mysql_fetch_array($resultti);
-				$sqlt = "select * from sgm_inventario where visible=1 and id=".$id_disp." and id_tipo=".$rowti["id"]."";
-				$resultt = mysql_query(convert_sql($sqlt));
-				$rowt = mysql_fetch_array($resultt);
-				if ($rowt["id"]){
-	 				$sqld = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$rowt["id"]." and id_act=".$rowi["id"]."";
+				if ($row["id"]){
+	 				$sqld = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$row["id"]." and id_act=".$rowi["id"]."";
 					$resultd = mysql_query(convert_sql($sqld));
 					$rowd = mysql_fetch_array($resultd);
 					if ($rowd["total"] == 0) {
 						$color = "red";
 						$rowdu["id_user"] = '';
-						$a = date("Y");
-						$m = date("n");
-						$d = date("j");
-						$fecha = date("Y-m-d", mktime(0,0,0,$m ,$d, $a))." ".date("H:i:s");
+						$fecha = date("Y-m-d H:i:s");
 						$rowdu["data"] = '';
 					} else {
 						$color = "green";
-						$sqldu = "select * from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$rowt["id"]." and id_act=".$rowi["id"]."";
+						$sqldu = "select * from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$row["id"]." and id_act=".$rowi["id"]."";
 						$resultdu = mysql_query(convert_sql($sqldu));
 						$rowdu = mysql_fetch_array($resultdu);
 						$fecha = '';
 					}
-					echo "<form action=\"index.php?op=1005&sop=60&ssop=1&id=".$_GET["id"]."&id_act=".$rowi["id"]."&id_disp=".$rowt["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1005&sop=120&ssop=1&id=".$_GET["id"]."&id_act=".$rowi["id"]."&id_disp=".$row["id"]."\" method=\"post\">";
 					echo "<tr style=\"background-color:".$color."\">";
 						echo "<td></td>";
 						echo "<td style=\"vertical-align:top;width:150px;\">".$rowi["nombre"]."</td>";
-						echo "<td style=\"vertical-align:top;width:150px;\">".$rowt["nombre"]."</td>";
+						echo "<td style=\"vertical-align:top;width:150px;\">".$row["nombre"]."</td>";
 						echo "<td style=\"color:black;text-align:left;\"><input type=\"Text\" name=\"data\" value=\"".$rowdu["data"].$fecha."\" style=\"width:150px\"></td>";
 						$sqluu = "select * from sgm_users where id=".$rowdu["id_user"]."";
 						$resultuu = mysql_query(convert_sql($sqluu));
@@ -533,12 +516,10 @@ if (($option == 1005) AND ($autorizado == true)) {
 					echo "</tr>";
 					echo "</form>";
 				}
-			}
 		}
 		echo "</table>";
-		echo "</center>";
 	}
-*/
+
 	if ($soption == 130) {
 		if ($ssoption == 1) {
 			if (version_compare(phpversion(), "4.0.0", ">")) {
@@ -573,19 +554,19 @@ if (($option == 1005) AND ($autorizado == true)) {
 						echo "<tr style=\"background-color:silver\">";
 							echo "<th style=\"width:100px\">".$Eliminar."</th>";
 							echo "<th style=\"width:100px\">".$Tipo."</th>";
-							echo "<th style=\"width:100px\">".$Nombre."</th>";
+							echo "<th style=\"width:300px\">".$Nombre."</th>";
 							echo "<th style=\"width:100px\">".$Tamano."</th>";
 						echo "</tr>";
 						$sql = "select * from sgm_files_tipos order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
-							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and id_client=".$_GET["id"];
+							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=5 and id_elemento=".$_GET["id"];
 							$resultele = mysql_query(convert_sql($sqlele));
 							while ($rowele = mysql_fetch_array($resultele)) {
 								echo "<tr>";
 									echo "<td><a href=\"index.php?op=1005&sop=131&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>";
 									echo "<td>".$row["nombre"]."</td>";
-									echo "<td><a href=\"".$urloriginal."/files/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong></td>";
+									echo "<td><a href=\"".$urloriginal."/archivos/dispositivos/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong></td>";
 									echo "<td>".round(($rowele["size"]/1000), 1)." Kb</td>";
 								echo "</td>";
 							}
@@ -617,6 +598,116 @@ if (($option == 1005) AND ($autorizado == true)) {
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1005&sop=130&ssop=2&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"],"op=1005&sop=130&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
+	}
+
+	if ($soption == 300) {
+		echo "<h4>".$Actuaciones." ".$Pendientes." :</h4>";
+		echo "<br><br>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Actuacion."</th>";
+				echo "<th>".$Dispositivo."</th>";
+				echo "<th>".$Echo." / ".$Total."</th>";
+				echo "<th>".$Duracion." ".$Echo." / ".$Duracion." ".$Total."</th>";
+			echo "</tr>";
+			$total1 = 0;
+			$total2 = 0;
+			$sql = "select * from sgm_inventario_actuacion where visible=1 order by nombre";
+			$result = mysql_query(convert_sql($sql));
+			while ($row = mysql_fetch_array($result)) {
+				$total = 0;
+				echo "<tr>";
+					echo "<td style=\"width:200px\">".$row["nombre"]."</td>";
+					$sqlt = "select * from sgm_inventario where visible=1 and id=".$row["id_disp"];
+					$resultt = mysql_query(convert_sql($sqlt));
+					$rowt = mysql_fetch_array($resultt);
+					echo "<td style=\"width:200px\">".$rowt["nombre"]."</td>";
+					$sqla = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_act=".$row["id"]."";
+					$resulta = mysql_query(convert_sql($sqla));
+					$rowa = mysql_fetch_array($resulta);
+					$sqlr = "select * from sgm_inventario_relacion where visible=1 and ((id_disp1=".$rowt["id"].") or (id_disp2=".$rowt["id"]."))";
+					$resultr = mysql_query(convert_sql($sqlr));
+					while ($rowr = mysql_fetch_array($resultr)) {
+						if ($rowr["id_disp1"] == $rowt["id"]){ $id_disp = $rowr["id_disp2"]; } else { $id_disp = $rowr["id_disp1"]; }
+						$sqltip = "select * from sgm_inventario_tipo where visible=1 and id=".$rowt["id_tipo"];
+						$resulttip = mysql_query(convert_sql($sqltip));
+						$rowtip  = mysql_fetch_array($resulttip);
+						$sqlti = "select * from sgm_inventario_tipo where visible=1 and orden < ".$rowtip["orden"]."";
+						$resultti = mysql_query(convert_sql($sqlti));
+						$rowti = mysql_fetch_array($resultti);
+						$sqld = "select * from sgm_inventario where visible=1 and id=".$id_disp." and id_tipo=".$rowti["id"]."";
+						$resultd = mysql_query(convert_sql($sqld));
+						$rowd = mysql_fetch_array($resultd);
+						if ($rowd["id"]){ $total = $total+1; }
+					}
+					echo "<td style=\"width:100px;text-align:center;\">".$rowa["total"]."/".$total."</td>";
+					$duracion = $rowa["total"] * $row["duracion"];
+					$duracion_total = $total * $row["duracion"];
+					echo "<td style=\"width:200px;text-align:center;\">".$duracion."/".$duracion_total."</td>";
+					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
+						echo "<a href=\"index.php?op=1005&sop=310&id=".$row["id"]."\" style=\"color:white;\">".$Detalles."</a>";
+					echo "</td>";
+				echo "</tr>";
+				$total1 = $total1+$duracion;
+				$total2 = $total2+$duracion_total;
+			}
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr>";
+				echo "<td style=\"text-align:right;\" colspan=\"3\"><strong>".$Total."</strong></td>";
+				echo "<td style=\"text-align:center;\">".$total1." / ".$total2."</td>";
+			echo "</tr>";
+		echo "</table>";
+	}
+
+	if ($soption == 310) {
+		if ($ssoption == 1) {
+			mysql_query(convert_sql($sql));
+			$camposInsert = "id_act,id_disp,id_user,data";
+			$datosInsert = array($_GET["id_act"],$_GET["id_disp"],$userid,$xfecha);
+			insertFunction ("sgm_inventario_actuacion_disp",$camposInsert,$datosInsert);
+		}
+		$sqla = "select * from sgm_inventario_actuacion where visible=1 and id=".$_GET["id"]."";
+		$resulta = mysql_query(convert_sql($sqla));
+		$rowa = mysql_fetch_array($resulta);
+		echo "<h4>".$Actuacion." : ".$rowa["nombre"]."</h4>";
+		echo boton(array("op=1005&sop=300"),array("&laquo; ".$Volver));
+		echo "<table cellspacing=\"0\ style=\"width:300px;\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Dispositivo."</th>";
+				echo "<th>".$Dispositivo." ".$Relacionado."</th>";
+				echo "<th>".$Estado."</th>";
+			echo "</tr>";
+			$sql = "select * from sgm_inventario where visible=1 and id=".$rowa["id_disp"]."";
+			$result = mysql_query(convert_sql($sql));
+			$row = mysql_fetch_array($result);
+			$sqltip = "select * from sgm_inventario_tipo where visible=1 and id=".$row["id_tipo"]."";
+			$resulttip = mysql_query(convert_sql($sqltip));
+			$rowtip = mysql_fetch_array($resulttip);
+			$sqlr = "select * from sgm_inventario_relacion where visible=1 and ((id_disp1=".$rowa["id_disp"].") or (id_disp2=".$rowa["id_disp"]."))";
+			$resultr = mysql_query(convert_sql($sqlr));
+			while ($rowr = mysql_fetch_array($resultr)) {
+				if ($rowr["id_disp1"] == $row["id"]){ $id_disp = $rowr["id_disp2"]; } else { $id_disp = $rowr["id_disp1"]; }
+				$sqlti = "select * from sgm_inventario_tipo where visible=1 and orden < ".$rowtip["orden"]."";
+				$resultti = mysql_query(convert_sql($sqlti));
+				$rowti = mysql_fetch_array($resultti);
+				$sqlt = "select * from sgm_inventario where visible=1 and id=".$id_disp." and id_tipo=".$rowti["id"]."";
+				$resultt = mysql_query(convert_sql($sqlt));
+				$rowt = mysql_fetch_array($resultt);
+				if ($rowt["id"]){
+	 				$sqld = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$rowt["id"]." and id_act=".$rowa["id"]."";
+					$resultd = mysql_query(convert_sql($sqld));
+					$rowd = mysql_fetch_array($resultd);
+					if ($rowd["total"] == 0) {$color = "red"; $estado = 'Pendiente'; } else { $color = "green"; $estado = 'Echo'; }
+					echo "<form action=\"index.php?op=1005&sop=310&ssop=1&id=".$_GET["id"]."&id_act=".$rowa["id"]."&id_disp=".$rowt["id"]."\" method=\"post\">";
+					echo "<tr style=\"background-color:".$color."\">";
+						echo "<td style=\"width:150px;\"><a href=\"index.php?op=1005&sop=1&id=".$row["id"]."\" style=\"color:white;\">".$row["nombre"]."</a></td>";
+						echo "<td style=\"width:150px;\"><a href=\"index.php?op=1005&sop=1&id=".$rowt["id"]."\" style=\"color:white;\">".$rowt["nombre"]."</a></td>";
+						echo "<td style=\"width:100px\">".$estado."</td>";
+					echo "</tr>";
+					echo "</form>";
+				}
+			}
+		echo "</table>";
 	}
 
 	if ($soption == 500){
@@ -746,69 +837,52 @@ if (($option == 1005) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
-	if (($soption == 520)) {
-		if (($ssoption == 1) AND ($admin == true)) {
-			$sql = "update sgm_inventario_actuacion set ";
-			$sql = $sql."nombre='".comillas($_POST["nombre"])."'";
-			$sql = $sql.", id_disp=".$_POST["id_disp"]."";
-			$sql = $sql.", parada=".$_POST["parada"]."";
-			$sql = $sql.", duracion=".$_POST["duracion"]."";
-			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+	if (($soption == 520) AND ($admin == true)) {
+		if ($ssoption == 1) {
+			$camposInsert = "nombre,id_disp,parada,duracion";
+			$datosInsert = array($_POST["nombre"],$_POST["id_disp"],$_POST["parada"],$_POST["duracion"]);
+			insertFunction ("sgm_inventario_actuacion",$camposInsert,$datosInsert);
 		}
-		if (($ssoption == 2) AND ($admin == true)) {
-			$sql = "insert into sgm_inventario_actuacion (nombre,id_disp,parada,duracion) ";
-			$sql = $sql."values (";
-			$sql = $sql."'".comillas($_POST["nombre"])."'";
-			$sql = $sql.",".$_POST["id_disp"]."";
-			$sql = $sql.",".$_POST["parada"]."";
-			$sql = $sql.",".$_POST["duracion"]."";
-			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+		if ($ssoption == 2) {
+			$camposUpdate = array("nombre","id_disp","parada","duracion");
+			$datosUpdate = array($_POST["nombre"],$_POST["id_disp"],$_POST["parada"],$_POST["duracion"]);
+			updateFunction ("sgm_inventario_actuacion",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-		if (($ssoption == 3) AND ($admin == true)) {
-			$sql = "update sgm_inventario_actuacion set ";
-			$sql = $sql."visible=0";
-			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+		if ($ssoption == 3) {
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sgm_inventario_actuacion",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
+
 		echo "<h4>".$Actuaciones." :</h4>";
-		echo "<br><br>";
-		echo "<table><tr>";
-			echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-				echo "<a href=\"index.php?op=1005&sop=1000\" style=\"color:white;\">&laquo; ".$Volver."</a>";
-			echo "</td>";
-		echo "</tr></table>";
-		echo "<center>";
-		echo "<table cellpadding=\"0\" cellspacing=\"0\">";
-			echo "<form action=\"index.php?op=1005&sop=120&ssop=2\" method=\"post\">";
+		echo boton(array("op=1005&sop=500"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
-				echo "<td><em>".$Eliminar."</em></td>";
-				echo "<td style=\"text-align:center;\">".$Actuacion."</td>";
-				echo "<td style=\"text-align:center;\">".$Dispositivo."</td>";
-				echo "<td style=\"text-align:center;\">".$Parada."</td>";
-				echo "<td style=\"text-align:center;\">".$Duracion."</td>";
-				echo "<td></td>";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Actuacion."</th>";
+				echo "<th>".$Dispositivo."</th>";
+				echo "<th>".$Parada."</th>";
+				echo "<th>".$Duracion."</th>";
+				echo "<th></th>";
 			echo "</tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr>";
+				echo "<form action=\"index.php?op=1005&sop=520&ssop=1\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td>&nbsp;<input type=\"text\" style=\"width:200px\" name=\"nombre\"></td>";
-					echo "<td>&nbsp;<select style=\"width:250px\" name=\"id_disp\">";
-						echo "<option value=\"0\">-</option>";
-						$sqlt = "select * from sgm_inventario where visible=1 order by nombre";
-						$resultt = mysql_query(convert_sql($sqlt));
-						while ($rowt = mysql_fetch_array($resultt)) {
-								echo "<option value=\"".$rowt["id"]."\">".$rowt["nombre"]."</option>";
-						}
-					echo "</select></td>";
-					echo "<td>&nbsp;<select style=\"width:50px\" name=\"parada\">";
-						echo "<option value=\"0\">NO</option>";
-						echo "<option value=\"1\">SI</option>";
-					echo "</select></td>";
-					echo "<td>&nbsp;<input type=\"text\" style=\"width:50px\" name=\"duracion\">";
-				echo "<td>&nbsp;<input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
-				echo "<td></td>";
+				echo "<td><input type=\"text\" style=\"width:200px\" name=\"nombre\"></td>";
+				echo "<td><select style=\"width:250px\" name=\"id_disp\">";
+					echo "<option value=\"0\">-</option>";
+					$sqlt = "select * from sgm_inventario where visible=1 order by nombre";
+					$resultt = mysql_query(convert_sql($sqlt));
+					while ($rowt = mysql_fetch_array($resultt)) {
+							echo "<option value=\"".$rowt["id"]."\">".$rowt["nombre"]."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><select style=\"width:50px\" name=\"parada\">";
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				echo "</select></td>";
+				echo "<td><input type=\"text\" style=\"width:50px\" name=\"duracion\">";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "</form>";
@@ -816,10 +890,10 @@ if (($option == 1005) AND ($autorizado == true)) {
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1005&sop=121&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-					echo "<form action=\"index.php?op=1005&sop=120&ssop=1&id=".$row["id"]."\" method=\"post\">";
-					echo "<td>&nbsp;<input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:200px\" name=\"nombre\"></td>";
-					echo "<td>&nbsp;<select style=\"width:250px\" name=\"id_disp\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1005&sop=521&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+					echo "<form action=\"index.php?op=1005&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:200px\" name=\"nombre\"></td>";
+					echo "<td><select style=\"width:250px\" name=\"id_disp\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlt = "select * from sgm_inventario where visible=1 order by nombre";
 						$resultt = mysql_query(convert_sql($sqlt));
@@ -831,139 +905,28 @@ if (($option == 1005) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td>&nbsp;<select style=\"width:50px\" name=\"parada\">";
+					echo "<td><select style=\"width:50px\" name=\"parada\">";
 						if ($row["parada"] == 0){
-							echo "<option value=\"0\" selected>NO</option>";
-							echo "<option value=\"1\">SI</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+							echo "<option value=\"1\">".$Si."</option>";
 						} else {
-							echo "<option value=\"0\">NO</option>";
-							echo "<option value=\"1\" selected>SI</option>";
+							echo "<option value=\"0\">".$No."</option>";
+							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td>&nbsp;<input type=\"text\" value=\"".$row["duracion"]."\" style=\"width:50px\" name=\"duracion\"></td>";
-					echo "<td>&nbsp;<input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td><input type=\"text\" value=\"".$row["duracion"]."\" style=\"width:50px\" name=\"duracion\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
 		echo "</table>";
-		echo "</center>";
 	}
 
-	if (($soption == 121) AND ($admin == true)) {
+	if (($soption == 521) AND ($admin == true)) {
 		echo "<center>";
-		echo "<br><br>¿Seguro que desea eliminar esta actuación?";
-		echo "<br><br><a href=\"index.php?op=1005&sop=120&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1005&sop=120\">[ NO ]</a>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1005&sop=520&ssop=3&id=".$_GET["id"],"op=1005&sop=520"),array($Si,$No));
 		echo "</center>";
-	}
-
-	if ($soption == 300) {
-		echo "<h4>".$Actuaciones." ".$Pendientes." :</h4>";
-		echo "<br><br>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr style=\"background-color:silver\">";
-				echo "<th>".$Actuacion."</th>";
-				echo "<th>".$Dispositivo."</th>";
-				echo "<th>".$Echo." / ".$Total."</th>";
-				echo "<th>".$Duracion." ".$Echo." / ".$Duracion." ".$Total."</th>";
-			echo "</tr>";
-			$total1 = 0;
-			$total2 = 0;
-			$sql = "select * from sgm_inventario_actuacion where visible=1 order by nombre";
-			$result = mysql_query(convert_sql($sql));
-			while ($row = mysql_fetch_array($result)) {
-				$total = 0;
-				echo "<tr>";
-					echo "<td style=\"width:200px\">".$row["nombre"]."</td>";
-					$sqlt = "select * from sgm_inventario where visible=1 and id=".$row["id_disp"];
-					$resultt = mysql_query(convert_sql($sqlt));
-					$rowt = mysql_fetch_array($resultt);
-					echo "<td style=\"width:200px\">".$rowt["nombre"]."</td>";
-					$sqla = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_act=".$row["id"]."";
-					$resulta = mysql_query(convert_sql($sqla));
-					$rowa = mysql_fetch_array($resulta);
-					$sqlr = "select * from sgm_inventario_relacion where visible=1 and ((id_disp1=".$rowt["id"].") or (id_disp2=".$rowt["id"]."))";
-					$resultr = mysql_query(convert_sql($sqlr));
-					while ($rowr = mysql_fetch_array($resultr)) {
-						if ($rowr["id_disp1"] == $rowt["id"]){ $id_disp = $rowr["id_disp2"]; } else { $id_disp = $rowr["id_disp1"]; }
-						$sqltip = "select * from sgm_inventario_tipo where visible=1 and id=".$rowt["id_tipo"];
-						$resulttip = mysql_query(convert_sql($sqltip));
-						$rowtip  = mysql_fetch_array($resulttip);
-						$sqlti = "select * from sgm_inventario_tipo where visible=1 and orden < ".$rowtip["orden"]."";
-						$resultti = mysql_query(convert_sql($sqlti));
-						$rowti = mysql_fetch_array($resultti);
-						$sqld = "select * from sgm_inventario where visible=1 and id=".$id_disp." and id_tipo=".$rowti["id"]."";
-						$resultd = mysql_query(convert_sql($sqld));
-						$rowd = mysql_fetch_array($resultd);
-						if ($rowd["id"]){ $total = $total+1; }
-					}
-					echo "<td style=\"width:100px;text-align:center;\">".$rowa["total"]."/".$total."</td>";
-					$duracion = $rowa["total"] * $row["duracion"];
-					$duracion_total = $total * $row["duracion"];
-					echo "<td style=\"width:200px;text-align:center;\">".$duracion."/".$duracion_total."</td>";
-					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-						echo "<a href=\"index.php?op=1005&sop=310&id=".$row["id"]."\" style=\"color:white;\">".$Detalles."</a>";
-					echo "</td>";
-				echo "</tr>";
-				$total1 = $total1+$duracion;
-				$total2 = $total2+$duracion_total;
-			}
-			echo "<tr><td>&nbsp;</td></tr>";
-			echo "<tr>";
-				echo "<td style=\"text-align:right;\" colspan=\"3\"><strong>".$Total."</strong></td>";
-				echo "<td style=\"text-align:center;\">".$total1." / ".$total2."</td>";
-			echo "</tr>";
-		echo "</table>";
-	}
-
-	if ($soption == 310) {
-		if ($ssoption == 1) {
-			mysql_query(convert_sql($sql));
-			$camposInsert = "id_act,id_disp,id_user,data";
-			$datosInsert = array($_GET["id_act"],$_GET["id_disp"],$userid,$xfecha);
-			insertFunction ("sgm_inventario_actuacion_disp",$camposInsert,$datosInsert);
-		}
-		$sqla = "select * from sgm_inventario_actuacion where visible=1 and id=".$_GET["id"]."";
-		$resulta = mysql_query(convert_sql($sqla));
-		$rowa = mysql_fetch_array($resulta);
-		echo "<h4>".$Actuacion." : ".$rowa["nombre"]."</h4>";
-		echo boton(array("op=1005&sop=300"),array("&laquo; ".$Volver));
-		echo "<table cellspacing=\"0\ style=\"width:300px;\" class=\"lista\">";
-			echo "<tr style=\"background-color:silver\">";
-				echo "<th>".$Dispositivo."</th>";
-				echo "<th>".$Dispositivo." ".$Relacionado."</th>";
-				echo "<th>".$Estado."</th>";
-			echo "</tr>";
-			$sql = "select * from sgm_inventario where visible=1 and id=".$rowa["id_disp"]."";
-			$result = mysql_query(convert_sql($sql));
-			$row = mysql_fetch_array($result);
-			$sqltip = "select * from sgm_inventario_tipo where visible=1 and id=".$row["id_tipo"]."";
-			$resulttip = mysql_query(convert_sql($sqltip));
-			$rowtip = mysql_fetch_array($resulttip);
-			$sqlr = "select * from sgm_inventario_relacion where visible=1 and ((id_disp1=".$rowa["id_disp"].") or (id_disp2=".$rowa["id_disp"]."))";
-			$resultr = mysql_query(convert_sql($sqlr));
-			while ($rowr = mysql_fetch_array($resultr)) {
-				if ($rowr["id_disp1"] == $row["id"]){ $id_disp = $rowr["id_disp2"]; } else { $id_disp = $rowr["id_disp1"]; }
-				$sqlti = "select * from sgm_inventario_tipo where visible=1 and orden < ".$rowtip["orden"]."";
-				$resultti = mysql_query(convert_sql($sqlti));
-				$rowti = mysql_fetch_array($resultti);
-				$sqlt = "select * from sgm_inventario where visible=1 and id=".$id_disp." and id_tipo=".$rowti["id"]."";
-				$resultt = mysql_query(convert_sql($sqlt));
-				$rowt = mysql_fetch_array($resultt);
-				if ($rowt["id"]){
-	 				$sqld = "select count(*) as total from sgm_inventario_actuacion_disp where visible=1 and id_disp=".$rowt["id"]." and id_act=".$rowa["id"]."";
-					$resultd = mysql_query(convert_sql($sqld));
-					$rowd = mysql_fetch_array($resultd);
-					if ($rowd["total"] == 0) {$color = "red"; $estado = 'Pendiente'; } else { $color = "green"; $estado = 'Echo'; }
-					echo "<form action=\"index.php?op=1005&sop=310&ssop=1&id=".$_GET["id"]."&id_act=".$rowa["id"]."&id_disp=".$rowt["id"]."\" method=\"post\">";
-					echo "<tr style=\"background-color:".$color."\">";
-						echo "<td style=\"width:150px;\"><a href=\"index.php?op=1005&sop=1&id=".$row["id"]."\" style=\"color:white;\">".$row["nombre"]."</a></td>";
-						echo "<td style=\"width:150px;\"><a href=\"index.php?op=1005&sop=1&id=".$rowt["id"]."\" style=\"color:white;\">".$rowt["nombre"]."</a></td>";
-						echo "<td style=\"width:100px\">".$estado."</td>";
-					echo "</tr>";
-					echo "</form>";
-				}
-			}
-		echo "</table>";
 	}
 
 	if ($soption == 999){
@@ -972,7 +935,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 		while ($row = mysql_fetch_array($result)){
 			if ($row["id_cuerpo"] > 0) {$tipo = 0; $id = $row["id_cuerpo"];}
 			if ($row["id_article"] > 0) {$tipo = 1; $id = $row["id_article"];}
-			if ($row["id_client"] > 0) {$tipo =2; $id = $row["id_client"];}
+			if ($row["id_client"] > 0) {$tipo = 2; $id = $row["id_client"];}
 			if ($row["id_contrato"] > 0) {$tipo = 3; $id = $row["id_contrato"];}
 			if ($row["id_incidencia"] > 0) {$tipo = 4; $id = $row["id_incidencia"];}
 			$camposUpdate=array("tipo_id_elemento","id_elemento");

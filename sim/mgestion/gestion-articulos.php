@@ -769,7 +769,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						$sql = "select * from sgm_files_tipos order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
-							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and id_article=".$_GET["id"];
+							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=1 and id_elemento=".$_GET["id"];
 							$resultele = mysql_query(convert_sql($sqlele));
 							while ($rowele = mysql_fetch_array($resultele)) {
 								echo "<tr>";
