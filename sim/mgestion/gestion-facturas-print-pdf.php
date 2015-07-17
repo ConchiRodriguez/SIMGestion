@@ -299,8 +299,11 @@ class PDF extends FPDF
 			$pdf->factura_print($row["id"],$_POST["tipo"]);
 		}
 	}
-	$pdf->Output("factura.pdf");
-	header("Location: ".$urloriginal."/mgestion/factura.pdf");
 
+	$pdf->Output("../pdf/factura.pdf");
+	header("Location: ../pdf/factura.pdf");
+
+	// Cerrar la conexión
+	mysql_close($dbhandle);
 
 ?>

@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 	$idioma = strtolower("es");
 	include ("../../archivos_comunes/factura-print-".$idioma.".php");
 
-	define("FPDF_FONTPATH","../font/");
+	define("FPDF_FONTPATH","../../archivos_comunes/font/");
 	require('fpdf.php');
 
 class PDF extends FPDF
@@ -456,11 +456,10 @@ class PDF extends FPDF
 			$pdf->informe_print($row["id"],$rowcon["id"]);
 		}
 	}
-	$pdf->Output("../informes/informe.pdf");
-	header("Location: ../informes/informe.pdf");
+	$pdf->Output("../pdf/informe.pdf");
+	header("Location: ../pdf/informe.pdf");
 
 	// Cerrar la conexión
 	mysql_close($dbhandle);
-
 
 ?>

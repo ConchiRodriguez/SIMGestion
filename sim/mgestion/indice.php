@@ -1,7 +1,7 @@
 <?php
 #	if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 
-	if ($option == 200) { include ("mgestion/user.php");}
+	if ($option == 200) { include ("mgestion/panel-usuario.php");}
 	if ($option == 800) { include ("mgestion/lenguajes/help-es.php");}
 
 	if ($option == 1001) { include ("mgestion/gestion-contenidos.php");}
@@ -27,8 +27,8 @@
 
 	if ($option == 1020) { include ("mgestion/gestion-rrhh.php");}
 	if ($option == 1021) { include ("mgestion/gestion-tpv.php");}
-	if ($option == 1022) { include ("mgestion/system.php");}
-	if ($option == 1023) { include ("mgestion/gestion-produccion.php");}
+	if ($option == 1022) { include ("mgestion/gestion-sistema.php");}
+	if ($option == 1023) { include ("mgestion/gestion-auxiliares.php");}
 	if ($option == 1024) { include ("mgestion/gestion-contrasenyas.php");}
 	if ($option == 1025) { include ("mgestion/gestion-monitorizacion.php");}
 	if ($option == 1026) { include ("mgestion/gestion-licencias.php");}

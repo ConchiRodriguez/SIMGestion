@@ -494,12 +494,14 @@ if (($option == 1018) AND ($autorizado == true)) {
 
 #detall tickets#
 	if ($soption == 100) {
-		$sqli = "select id,pausada,id_usuario_destino,id_usuario_finalizacion,fecha_registro_cierre,fecha_cierre,notas_conclusion,id_estado from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
-		$rowi = mysql_fetch_array($resulti);
-		$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
-		$resultc = mysql_query(convert_sql($sqlc));
-		$rowc = mysql_fetch_array($resultc);
+		if ($ssoption > 0){
+			$sqli = "select id,pausada,id_usuario_destino,id_usuario_finalizacion,fecha_registro_cierre,fecha_cierre,notas_conclusion,id_estado from sgm_incidencias where id=".$_GET["id"];
+			$resulti = mysql_query(convert_sql($sqli));
+			$rowi = mysql_fetch_array($resulti);
+			$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
+			$resultc = mysql_query(convert_sql($sqlc));
+			$rowc = mysql_fetch_array($resultc);
+		}
 
 		if ($ssoption == 1) {
 		#update incidencia#
@@ -514,6 +516,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],$registro,$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$_POST["id_cliente"]);
 					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
+					$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
+					$resultc = mysql_query(convert_sql($sqlc));
+					$rowc = mysql_fetch_array($resultc);
 					$sla_inc = calculSLA($_GET["id"],0);
 					if ($rowc["temps_resposta"] != 0){$fecha_prevision = fecha_prevision($rowc["id"], $registro);}else{$fecha_prevision = 0;}
 
