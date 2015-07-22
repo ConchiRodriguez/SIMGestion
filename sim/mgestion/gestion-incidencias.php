@@ -344,7 +344,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					$estado_color_letras = "white";
 				}
 
-				$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]."";
+				$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1";
 				$resultd = mysql_query(convert_sql($sqld));
 				$rowd = mysql_fetch_array($resultd);
 				$hora = $rowd["total"]/60;

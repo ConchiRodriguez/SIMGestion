@@ -1478,7 +1478,9 @@ ALTER TABLE `sgm_incidencias_notas_desarrollo` ADD `pausada` tinyint(1) NOT NULL
 CREATE TABLE `sgm_inventario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_inventario` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `nombre` ;
-ALTER TABLE `sgm_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_tipo` ;
+ALTER TABLE `sgm_inventario` ADD `id_client_ubicacio` int(11) NOT NULL default '0' AFTER `id_tipo` ;
+ALTER TABLE `sgm_inventario` ADD `codigo` varchar(50) NOT NULL default '' AFTER `id_client_ubicacio`;
+ALTER TABLE `sgm_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `codigo` ;
 
 CREATE TABLE `sgm_inventario_relacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario_relacion` ADD `id_disp1` int(11) NOT NULL default '0' AFTER `id` ;
@@ -1505,6 +1507,7 @@ CREATE TABLE `sgm_inventario_tipo` ( `id` int(11) NOT NULL auto_increment, PRIMA
 ALTER TABLE `sgm_inventario_tipo` ADD `tipo` varchar(50) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_inventario_tipo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `tipo` ;
 ALTER TABLE `sgm_inventario_tipo` ADD `orden` int(11) NOT NULL default '0' AFTER `visible` ;
+ALTER TABLE `sgm_inventario_tipo` ADD `codigo` int(4) NOT NULL default '0000' AFTER `orden` ;
 
 CREATE TABLE `sgm_inventario_tipo_atributo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario_tipo_atributo` ADD `atributo` varchar(50) NOT NULL default '' AFTER `id`;
@@ -2274,3 +2277,10 @@ ALTER TABLE `sys_naciones` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `
 ALTER TABLE `sys_naciones` ADD `predeterminado` tinyint(1) NOT NULL default '0' AFTER `visible`;
 
 CREATE TABLE `sys_provincias` ( `CodigoProvincia` varchar(5) NOT NULL default '', `CodigoMatricula` varchar(4) default NULL, `Provincia` varchar(20) default NULL, PRIMARY KEY  (`CodigoProvincia`), KEY `CodigoMatricula` (`CodigoMatricula`), KEY `Provincia` (`Provincia`) );
+
+
+CREATE VIEW sim_inventari_etiqueta
+AS SELECT A1.nombre nom,A1.codigo codi, A2.tipo tipo, A3.nombre ubicacio
+FROM sgm_inventario A1, sgm_inventario_tipo A2, sgm_clients A3
+WHERE A1.id_tipo = A2.id and A1.id_client_ubicacio = A3.id
+
