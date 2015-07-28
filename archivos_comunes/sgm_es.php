@@ -554,6 +554,8 @@ $Esquema = "Esquema";
 
 $Inventario = "Inventario";
 
+$Numero_serie = "N&uacute;mero Serie";
+
 $Orden = "Orden";
 
 $Pendientes = "Pendientes";
@@ -565,6 +567,7 @@ $Relacionar = "Relacionar";
 $Relacionado = "Relacionado";
 
 $Tipo = "Tipo";
+$Trabajador = "Trabajador";
 
 #gestion_contratos.php
 $Contratos = "Contratos";

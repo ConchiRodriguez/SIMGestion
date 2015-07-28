@@ -177,6 +177,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\">".$Cliente." ".$Final."</td>";
 					echo "<td style=\"text-align:center;\">".$Descripcion."</td>";
 					echo "<td><em>".$Editar."</em></td>";
+					echo "<td><em>".$Ver."</em></td>";
 				echo "</tr>";
 				$sqlcc = "select * from sgm_contratos where visible=1 ";
 				if ($_POST["id_contrato_tipo2"] > 0) {
@@ -199,13 +200,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=210&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
 						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=210&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
 						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."&edit=0\">".$rowcc["descripcion"]."</a></td>";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a></td>";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=142&id=".$row["id"]."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a></td>";
 					echo "</tr>";
 				}
 			echo "</table>";
@@ -701,7 +703,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<td><input type=\"text\" value=\"".$row["precio_hora"]."\" style=\"text-align:right;width:70px\" name=\"precio_hora\"></td>";
 						echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 						echo "</form>";
-						$sqlind = "select sum(duracion) as total from sgm_incidencias where id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$row["id"].")";
+						$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$row["id"].")";
 						$resultind = mysql_query(convert_sql($sqlind));
 						$rowind = mysql_fetch_array($resultind);
 						$hora = $rowind["total"]/60;

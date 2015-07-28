@@ -719,10 +719,6 @@ function calculPausaIncidencia ($id_incidencia, $id_nota_incidencia,$data_nota_i
 	
 	$pausada = 0;
 
-	$sqli = "select * from sgm_incidencias where id=".$id_incidencia." and visible=1";
-	$resulti = mysql_query($sqli);
-	$rowi = mysql_fetch_array($resulti);
-
 	$sql = "select * from sgm_incidencias where id_incidencia=".$id_incidencia." and visible=1 order by fecha_inicio";
 	$result = mysql_query($sql);
 	while ($row = mysql_fetch_array($result)){

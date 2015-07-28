@@ -26,13 +26,13 @@ if (($option == 1005) AND ($autorizado == true)) {
 
 	if (($soption == 0) or ($soption == 200)) {
 		if ($ssoption == 1) {
-			$camposInsert = "id_tipo,nombre,id_client_ubicacio";
-			$datosInsert = array($_POST["id_tipo"],$_POST["nombre"],$_POST["id_client_ubicacio"]);
+			$camposInsert = "nombre,id_tipo,id_client,codigo,id_empleado,num_serie";
+			$datosInsert = array($_POST["nombre"],$_POST["id_tipo"],$_POST["id_client"],$_POST["codigo"],$_POST["id_empleado"],$_POST["num_serie"]);
 			insertFunction ("sgm_inventario",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("id_tipo","nombre","id_client_ubicacio");
-			$datosUpdate = array($_POST["id_tipo"],$_POST["nombre"],$_POST["id_client_ubicacio"]);
+			$camposUpdate = array("nombre","id_tipo","id_client","codigo","id_empleado","num_serie");
+			$datosUpdate = array($_POST["nombre"],$_POST["id_tipo"],$_POST["id_client"],$_POST["codigo"],$_POST["id_empleado"],$_POST["num_serie"]);
 			updateFunction ("sgm_inventario",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
@@ -46,10 +46,13 @@ if (($option == 1005) AND ($autorizado == true)) {
 			echo "<table cellspacing=\"0\" cellpadding=\"1\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver;\">";
 					echo "<th></th>";
+					echo "<th style=\"width:300px\">".$Codigo."</th>";
 					echo "<th style=\"width:300px\">".$Tipo."</th>";
 					echo "<th style=\"width:300px\">".$Nombre."</th>";
-					echo "<th style=\"width:300px\">".$Ubicacion."</th>";
-					if ($soption == 200) {echo "<th style=\"width:100px\">".$Datos."</th>";}
+					echo "<th style=\"width:300px\">".$Numero_serie."</th>";
+					echo "<th style=\"width:300px\">".$Cliente."</th>";
+					echo "<th style=\"width:300px\">".$Trabajador."</th>";
+#					if ($soption == 200) {echo "<th style=\"width:100px\">".$Datos."</th>";}
 					echo "<th></th>";
 				echo "</tr>";
 			if ($soption == 200) {
@@ -59,6 +62,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				$resultx = mysql_query(convert_sql($sqlx));
 				$rowx = mysql_fetch_array($resultx);
 					echo "<td></td>";
+					echo "<td><input type=\"Text\" name=\"codigo\" value=\"".$_POST["codigo"]."\" style=\"width:100%\"></td>";
 					echo "<td><select style=\"width:100%;\" name=\"id_tipo\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select * from sgm_inventario_tipo where visible=1 order by tipo";
@@ -72,13 +76,27 @@ if (($option == 1005) AND ($autorizado == true)) {
 						}
 					echo "</td>";
 					echo "<td style=\"color:black;text-align:left;\"><input type=\"Text\" name=\"nombre\" value=\"".$_POST["nombre"]."\" style=\"width:100%\"></td>";
+					echo "<td style=\"color:black;text-align:left;\"><input type=\"Text\" name=\"num_serie\" value=\"".$_POST["num_serie"]."\" style=\"width:100%\"></td>";
 					echo "<td>";
-						echo "<select name=\"id_client_ubicacio\" style=\"width:100%;\">";
+						echo "<select name=\"id_client\" style=\"width:100%;\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlc = "select * from sgm_clients where visible=1 order by nombre";
 						$resultc = mysql_query(convert_sql($sqlc));
 						while ($rowc = mysql_fetch_array($resultc)) {
-							if ($_POST["id_client_ubicacio"] == $rowc["id"]){
+							if ($_POST["id_client"] == $rowc["id"]){
+								echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							} else {
+								echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							}
+						}
+					echo "</td>";
+					echo "<td>";
+						echo "<select name=\"id_empleado\" style=\"width:100%;\">";
+						echo "<option value=\"0\">-</option>";
+						$sqlc = "select * from sgm_rrhh_empleado where visible=1 order by nombre";
+						$resultc = mysql_query(convert_sql($sqlc));
+						while ($rowc = mysql_fetch_array($resultc)) {
+							if ($_POST["id_client"] == $rowc["id"]){
 								echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 							} else {
 								echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
@@ -93,6 +111,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1005&sop=0&ssop=1\" method=\"post\">";
 				echo "<tr>";
 					echo "<td></td>";
+					echo "<td></td>";
 					echo "<td>";
 						echo "<select name=\"id_tipo\" style=\"width:100%;\">";
 						echo "<option value=\"0\">-</option>";
@@ -103,10 +122,20 @@ if (($option == 1005) AND ($autorizado == true)) {
 						}
 					echo "</td>";
 					echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:100%;\"></td>";
+					echo "<td><input type=\"Text\" name=\"num_serie\" style=\"width:100%\"></td>";
 					echo "<td>";
-						echo "<select name=\"id_client_ubicacio\" style=\"width:100%;\">";
+						echo "<select name=\"id_client\" style=\"width:100%;\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlc = "select * from sgm_clients where visible=1 order by nombre";
+						$resultc = mysql_query(convert_sql($sqlc));
+						while ($rowc = mysql_fetch_array($resultc)) {
+							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						}
+					echo "</td>";
+					echo "<td>";
+						echo "<select name=\"id_empleado\" style=\"width:100%;\">";
+						echo "<option value=\"0\">-</option>";
+						$sqlc = "select * from sgm_rrhh_empleado where visible=1 order by nombre";
 						$resultc = mysql_query(convert_sql($sqlc));
 						while ($rowc = mysql_fetch_array($resultc)) {
 							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
@@ -117,7 +146,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				echo "</form>";
 			}
 			echo "<tr><td>&nbsp;</td></tr>";
-		if (($soption == 0) or (($soption == 200) and (($_POST["nombre"] != "") or ($_POST["id_tipo"] > 0) or ($_POST["id_client_ubicacio"] > 0) or ($_POST["dada"] != "")))) {
+		if (($soption == 0) or (($soption == 200) and (($_POST["nombre"] != "") or ($_POST["id_tipo"] > 0) or ($_POST["id_client"] > 0) or ($_POST["dada"] != "")))) {
 			$sql = "select * from sgm_inventario where visible=1";
 			if (($soption == 200) and ($ssoption == 0)){
 				if ($_POST["dada"]) {
@@ -128,7 +157,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				}
 				if ($_POST["nombre"]) {$sql = $sql." and nombre like '%".$_POST["nombre"]."%'";}
 				if ($_POST["id_tipo"]) {$sql = $sql." and id_tipo=".$_POST["id_tipo"]."";}
-				if ($_POST["id_client_ubicacio"]) {$sql = $sql." and id_client_ubicacio=".$_POST["id_client_ubicacio"]."";}
+				if ($_POST["id_client"]) {$sql = $sql." and id_client=".$_POST["id_client"]."";}
 			}
 			if (($soption == 200) and ($ssoption == 2)) {
 				if ($_POST["dada2"]) {
@@ -139,15 +168,16 @@ if (($option == 1005) AND ($autorizado == true)) {
 				}
 				if ($_POST["nombre2"]) {$sql = $sql." and nombre like '%".$_POST["nombre"]."%'";}
 				if ($_POST["id_tipo2"]) {$sql = $sql." and id_tipo=".$_POST["id_tipo"]."";}
-				if ($_POST["id_client_ubicacio2"]) {$sql = $sql." and id_client_ubicacio2=".$_POST["id_client_ubicacio2"]."";}
+				if ($_POST["id_client2"]) {$sql = $sql." and id_client2=".$_POST["id_client2"]."";}
 			}
-			$sql = $sql." order by id_client_ubicacio,id_tipo,nombre";
+			$sql = $sql." order by id_client,id_tipo,nombre";
 #			echo $sql;
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)){
 				echo "<tr style=\"border-bottom : 1px solid black;\">";
 					echo "<form action=\"index.php?op=1005&sop=0&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><a href=\"index.php?op=1005&sop=1&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
+					echo "<td>".$row["codigo"]."</td>";
 					echo "<td>";
 						echo "<select name=\"id_tipo\" style=\"width:100%;\">";
 						echo "<option value=\"0\">-</option>";
@@ -162,13 +192,27 @@ if (($option == 1005) AND ($autorizado == true)) {
 						}
 					echo "</td>";
 					echo "<td style=\"vertical-align:top\"><input type=\"Text\" name=\"nombre\" value=\"".$row["nombre"]."\" style=\"width:100%;\"></td>";
+					echo "<td style=\"vertical-align:top\"><input type=\"Text\" name=\"num_serie\" value=\"".$row["num_serie"]."\" style=\"width:100%;\"></td>";
 					echo "<td>";
-						echo "<select name=\"id_client_ubicacio\" style=\"width:100%;\">";
+						echo "<select name=\"id_client\" style=\"width:100%;\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlc = "select * from sgm_clients where visible=1 order by nombre";
 						$resultc = mysql_query(convert_sql($sqlc));
 						while ($rowc = mysql_fetch_array($resultc)) {
-							if ($row["id_client_ubicacio"] == $rowc["id"]){
+							if ($row["id_client"] == $rowc["id"]){
+								echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							} else {
+								echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							}
+						}
+					echo "</td>";
+					echo "<td>";
+						echo "<select name=\"id_empleado\" style=\"width:100%;\">";
+						echo "<option value=\"0\">-</option>";
+						$sqlc = "select * from sgm_rrhh_empleado where visible=1 order by nombre";
+						$resultc = mysql_query(convert_sql($sqlc));
+						while ($rowc = mysql_fetch_array($resultc)) {
+							if ($row["id_empleado"] == $rowc["id"]){
 								echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 							} else {
 								echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
@@ -178,12 +222,9 @@ if (($option == 1005) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"nombre2\" value=\"".$_POST["nombre"]."\">";
 					echo "<input type=\"Hidden\" name=\"id_tipo2\" value=\"".$_POST["id_tipo"]."\">";
 					echo "<input type=\"Hidden\" name=\"dada2\" value=\"".$_POST["dada"]."\">";
-					echo "<input type=\"Hidden\" name=\"id_client_ubicacio2\" value=\"".$_POST["id_client_ubicacio2"]."\">";
+					echo "<input type=\"Hidden\" name=\"id_client2\" value=\"".$_POST["id_client2"]."\">";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td>";
-					echo "<td><a href=\"index.php?op=1005&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
-					echo "</form>";
-					echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-inventario-etiqueta-print.php?id=".$row["id"]."\" target=\"popup\" onsubmit=\"window.open('', 'popup', '')\">";
-						echo "<td style=\"background-color : ".$color.";\"><input type=\"Submit\" value=\"".$Imprimir."\" style=\"width:150px\"></td>";
+#					echo "<td><a href=\"index.php?op=1005&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -790,13 +831,13 @@ if (($option == 1005) AND ($autorizado == true)) {
 
 	if (($soption == 510) and ($admin == true)) {
 		if ($ssoption == 1) {
-			$camposInsert = "orden,tipo,codigo";
-			$datosInsert = array($_POST["orden"],$_POST["tipo"],$_POST["codigo"]);
+			$camposInsert = "tipo";
+			$datosInsert = array($_POST["tipo"]);
 			insertFunction ("sgm_inventario_tipo",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("orden","tipo","codigo");
-			$datosUpdate = array($_POST["orden"],$_POST["tipo"],$_POST["codigo"]);
+			$camposUpdate = array("tipo");
+			$datosUpdate = array($_POST["tipo"]);
 			updateFunction ("sgm_inventario_tipo",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
@@ -812,8 +853,8 @@ if (($option == 1005) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th>".$Eliminar."</td>";
-				echo "<th style=\"width:50px\">".$Orden."</th>";
-				echo "<th style=\"width:50px\">".$Codigo."</th>";
+#				echo "<th style=\"width:50px\">".$Orden."</th>";
+#				echo "<th style=\"width:50px\">".$Codigo."</th>";
 				echo "<th style=\"width:200px\">".$Tipo."</th>";
 				echo "<th></th>";
 				echo "<th></th>";
@@ -821,8 +862,8 @@ if (($option == 1005) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1005&sop=510&ssop=1\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td><input type=\"text\" style=\"width:100%\" name=\"orden\"></td>";
-				echo "<td><input type=\"text\" style=\"width:100%\" name=\"codigo\"></td>";
+#				echo "<td><input type=\"text\" style=\"width:100%\" name=\"orden\"></td>";
+#				echo "<td><input type=\"text\" style=\"width:100%\" name=\"codigo\"></td>";
 				echo "<td><input type=\"text\" style=\"width:100%\" name=\"tipo\"></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
 				echo "<td></td>";
@@ -835,14 +876,14 @@ if (($option == 1005) AND ($autorizado == true)) {
 				echo "<tr>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1005&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1005&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
-					echo "<td><input type=\"text\" value=\"".$row["orden"]."\" style=\"width:100%\" name=\"orden\"></td>";
-					echo "<td><input type=\"text\" value=\"".$row["codigo"]."\" style=\"width:100%\" name=\"codigo\"></td>";
+#					echo "<td><input type=\"text\" value=\"".$row["orden"]."\" style=\"width:100%\" name=\"orden\"></td>";
+#					echo "<td><input type=\"text\" value=\"".$row["codigo"]."\" style=\"width:100%\" name=\"codigo\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["tipo"]."\" style=\"width:100%\" name=\"tipo\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td>";
 					echo "</form>";
-					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-						echo "<a href=\"index.php?op=1005&sop=515&id=".$row["id"]."\" style=\"color:white;\">".$Atributos."</a>";
-					echo "</td>";
+#					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
+#						echo "<a href=\"index.php?op=1005&sop=515&id=".$row["id"]."\" style=\"color:white;\">".$Atributos."</a>";
+#					echo "</td>";
 				echo "</tr>";
 			}
 		echo "</table>";

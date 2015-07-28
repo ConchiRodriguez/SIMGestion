@@ -22,49 +22,6 @@ ALTER TABLE `sgm_agendas_users` ADD `visible` tinyint(1) NOT NULL default '1' AF
 ALTER TABLE `sgm_agendas_users` ADD `escritura` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sgm_agendas_users` ADD `propietario` tinyint(1) NOT NULL default '0' AFTER `escritura` ;
 
--- fuera de uso
-/*
-CREATE TABLE `sgm_analisis_costes` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_analisis_costes` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id` ;
-ALTER TABLE `sgm_analisis_costes` ADD `vigente` tinyint(1) NOT NULL default '0' AFTER `visible` ;
-ALTER TABLE `sgm_analisis_costes` ADD `id_linea` int(11) NOT NULL default '0' AFTER `vigente` ;
-ALTER TABLE `sgm_analisis_costes` ADD `precio_material` decimal(11,3) NOT NULL default '0' AFTER `id_linea` ;
-ALTER TABLE `sgm_analisis_costes` ADD `precio_unitario` decimal(11,3) NOT NULL default '0' AFTER `precio_material` ;
-ALTER TABLE `sgm_analisis_costes` ADD `precio_adicional` decimal(11,3) NOT NULL default '0' AFTER `precio_unitario` ;
-ALTER TABLE `sgm_analisis_costes` ADD `total_pieza` decimal(11,3) NOT NULL default '0' AFTER `precio_adicional` ;
-ALTER TABLE `sgm_analisis_costes` ADD `peso` decimal(11,3) NOT NULL default '0' AFTER `total_pieza` ;
-ALTER TABLE `sgm_analisis_costes` ADD `unidades` decimal(11,3) NOT NULL default '0' AFTER `peso` ;
-ALTER TABLE `sgm_analisis_costes` ADD `tarifa` decimal(11,3) NOT NULL default '0' AFTER `unidades` ;
-ALTER TABLE `sgm_analisis_costes` ADD `coste_transporte` decimal(11,3) NOT NULL default '0' AFTER `tarifa` ;
-ALTER TABLE `sgm_analisis_costes` ADD `coste_economico` decimal(11,3) NOT NULL default '0' AFTER `coste_transporte` ;
-ALTER TABLE `sgm_analisis_costes` ADD `total` decimal(11,3) NOT NULL default '0' AFTER `coste_economico` ;
-ALTER TABLE `sgm_analisis_costes` ADD `total_unidad` decimal(11,3) NOT NULL default '0' AFTER `total` ;
-ALTER TABLE `sgm_analisis_costes` ADD `total_coste_unidad` decimal(11,3) NOT NULL default '0' AFTER `total_unidad` ;
-*/
--- fuera de uso
-/*
-CREATE TABLE `sgm_analisis_costes_calculo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `id_analisis_costes` int(11) NOT NULL default '0' AFTER `id` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `total_material` int(11) NOT NULL default '0' AFTER `id_analisis_costes` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `total_unitario` int(11) NOT NULL default '0' AFTER `total_material` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `total_compartido` int(11) NOT NULL default '0' AFTER `total_unitario` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `id_material` int(11) NOT NULL default '0' AFTER `total_compartido` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `x` int(11) NOT NULL default '0' AFTER `id_material` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `y` int(11) NOT NULL default '0' AFTER `x` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `z` int(11) NOT NULL default '0' AFTER `y` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `diametro` int(11) NOT NULL default '0' AFTER `z` ;
-ALTER TABLE `sgm_analisis_costes_calculo` ADD `kg` int(11) NOT NULL default '0' AFTER `diametro` ;
-
--- fuera de uso
-CREATE TABLE `sgm_analisis_costes_calculo_fase` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `id_analisis_calculo` int(11) NOT NULL default '0' AFTER `id` ;
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `id_fase` int(11) NOT NULL default '0' AFTER `id_analisis_calculo` ;
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `id_recurso` int(11) NOT NULL default '0' AFTER `id_fase` ;
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `tiempo` int(11) NOT NULL default '0' AFTER `id_recurso` ;
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `precio_hora` int(11) NOT NULL default '0' AFTER `tiempo` ;
-ALTER TABLE `sgm_analisis_costes_calculo_fase` ADD `total` int(11) NOT NULL default '0' AFTER `precio_hora` ;
-*/
-
 CREATE TABLE `sgm_articles` ( `id` int(11) NOT NULL auto_increment,  PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_articles` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id` ;
 ALTER TABLE `sgm_articles` ADD `codigo` varchar(6) NOT NULL default '0' AFTER `visible` ;
@@ -1478,9 +1435,11 @@ ALTER TABLE `sgm_incidencias_notas_desarrollo` ADD `pausada` tinyint(1) NOT NULL
 CREATE TABLE `sgm_inventario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_inventario` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `nombre` ;
-ALTER TABLE `sgm_inventario` ADD `id_client_ubicacio` int(11) NOT NULL default '0' AFTER `id_tipo` ;
-ALTER TABLE `sgm_inventario` ADD `codigo` varchar(50) NOT NULL default '' AFTER `id_client_ubicacio`;
-ALTER TABLE `sgm_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `codigo` ;
+ALTER TABLE `sgm_inventario` ADD `id_client` int(11) NOT NULL default '0' AFTER `id_tipo` ;
+ALTER TABLE `sgm_inventario` ADD `codigo` varchar(50) NOT NULL default '' AFTER `id_client`;
+ALTER TABLE `sgm_inventario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `codigo` ;
+ALTER TABLE `sgm_inventario` ADD `num_serie` varchar(50) NOT NULL default '' AFTER `id_empleado` ;
+ALTER TABLE `sgm_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_serie` ;
 
 CREATE TABLE `sgm_inventario_relacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_inventario_relacion` ADD `id_disp1` int(11) NOT NULL default '0' AFTER `id` ;
