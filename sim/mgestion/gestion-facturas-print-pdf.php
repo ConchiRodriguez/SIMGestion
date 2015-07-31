@@ -102,7 +102,7 @@ class PDF extends FPDF
 
 		if ($tipo == 1) {
 			#no sobre#
-			$this->Image('../files/logos/logo1.jpg',10,5,80,18);
+			$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
 	
 			$this->SetXY(10,25);
 			$this->SetFont('Verdana','',8);
@@ -134,7 +134,7 @@ class PDF extends FPDF
 		
 		if ($tipo == 0) {
 			#sobre#
-			$this->Image('../files/logos/logo1.jpg',10,10,80,18);
+			$this->Image('../../archivos_comunes/images/logo1.jpg',10,10,80,18);
 		
 			$this->SetXY(10,35);
 			$this->SetFont('Verdana','',8);

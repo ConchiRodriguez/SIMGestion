@@ -1400,6 +1400,7 @@ ALTER TABLE `sgm_incidencias` ADD `visible` tinyint(1) NOT NULL default '1' AFTE
 ALTER TABLE `sgm_incidencias` ADD `temps_transcorregut` int(15) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sgm_incidencias` ADD `temps_pendent` int(15) NOT NULL default '0' AFTER `temps_transcorregut`;
 ALTER TABLE `sgm_incidencias` ADD `correo` int(15) NOT NULL default '0' AFTER `temps_pendent`;
+ALTER TABLE `sgm_incidencias` ADD `pausada_forzada` tinyint(1) NOT NULL default '0' AFTER `correo` ;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
@@ -2209,23 +2210,6 @@ INSERT INTO `sgm_users_permisos_modulos` VALUES (1003, 2003, 'Documentos', 'Perm
 CREATE TABLE `sgm_users_tipus` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_users_tipus` ADD `tipus` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_users_tipus` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `tipus`;
-
-
-/*
-CREATE TABLE `sgm_users_permisos_news` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_users_permisos_news` ADD `id_user` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_users_permisos_news` ADD `id_news` int(11) NOT NULL default '0' AFTER `id_user`;
-ALTER TABLE `sgm_users_permisos_news` ADD `admin` tinyint(1) NOT NULL default '0' AFTER `id_news`;
-
-CREATE TABLE `sgm_users_validacion_horas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_users_validacion_horas` ADD `id_user` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `codi_pro` varchar(50) NOT NULL default '' AFTER `id_user`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `fecha` date default NULL AFTER `codi_pro`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `minutos` int(11) NOT NULL default '0' AFTER `fecha`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `minutos`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `validado` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
-ALTER TABLE `sgm_users_validacion_horas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `validado`;
-*/
 
 CREATE TABLE `sys_autonomias` ( `CodigoAutonomia` tinyint(4) NOT NULL default '0', `Autonomia` varchar(25) default NULL, PRIMARY KEY  (`CodigoAutonomia`), KEY `Autonomia` (`Autonomia`) );
 
