@@ -2613,7 +2613,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					} else {
 						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
 					}
-					$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and ((fecha_vencimiento>= '".$y."-".$m."-01') and (fecha_vencimiento<'".$yf."-".$mf."-01'))";
+					$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
 #					if ($rowtipos["v_recibos"] == 1) { $sql = $sql." and cobrada=1"; }
 					$result = mysql_query(convert_sql($sql));
 					$row = mysql_fetch_array($result);
