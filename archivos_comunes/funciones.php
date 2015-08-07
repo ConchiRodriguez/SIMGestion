@@ -177,7 +177,7 @@ function afegirModificarContrasenya ($url){
 		$resultcc = mysql_query(convert_sql($sqlcc));
 		$rowcc = mysql_fetch_array($resultcc);
 		echo "<h4>".$Editar." ".$Contrasena." :</h4>";
-		echo boton($url."&id_contrato=".$rowcc["id_contrato"]."&id_aplicacion=".$rowcc["id_aplicacion"],"&laquo; ".$Volver);
+		echo boton(array($url."&id_contrato=".$rowcc["id_contrato"]."&id_aplicacion=".$rowcc["id_aplicacion"]),array("&laquo; ".$Volver));
 		echo "<form action=\"index.php?".$url."&ssop=2&id_con=".$_GET["id_con"]."\" method=\"post\">";
 	} else {
 		echo "<h4>".$Anadir." ".$Contrasena." :</h4>";
@@ -405,7 +405,7 @@ function modificarContrasenya($url_volver){
 
 	echo "<h4>".$Modificar." ".$Contrasena." </h4>";
 	echo "".$Cliente." : ".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."<br>".$Aplicacion." : ".$rowca["aplicacion"]."";
-	echo boton($url_volver."&id_contrato=".$rowc["id_contrato"]."&id_aplicacion=".$rowc["id_aplicacion"],"&laquo; ".$Volver);
+	echo boton(array($url_volver."&id_contrato=".$rowc["id_contrato"]."&id_aplicacion=".$rowc["id_aplicacion"]),array("&laquo; ".$Volver));
 	echo "<table class=\"lista\">";
 		echo "<form action=\"index.php?".$_SERVER["QUERY_STRING"]."&ssop=1\" method=\"post\">";
 		echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"passold\" style=\"width:100px\" required>*</td></tr>";
@@ -586,7 +586,7 @@ function afegirModificarUsuari ($url){
 		$resultuser = mysql_query(convert_sql($sqluser));
 		$rowuser = mysql_fetch_array($resultuser);
 		echo "<h4>".$Datos." ".$Usuario." : ".$rowuser["usuario"]."</h4>";
-		echo boton($url,"&laquo; ".$Volver);
+		echo boton(array($url),array("&laquo; ".$Volver));
 		echo "<form action=\"index.php?".$url."&ssop=3&id_user=".$_GET["id_user"]."\" method=\"post\">";
 	} else {
 		echo "<h4>".$Anadir." ".$Usuarios." :</h4>";
@@ -655,7 +655,7 @@ function modificarPermisosUsuaris ($url){
 	$result = mysql_query(convert_sql($sql));
 	$row = mysql_fetch_array($result);
 	echo "<h4>".$Administrar." ".$Permisos.": ".$row["usuario"]."</h4>";
-	echo boton($url,"&laquo; ".$Volver);
+	echo boton(array($url),array("&laquo; ".$Volver));
 	echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		echo "<tr style=\"background-color:silver;\">";
 			echo "<th></th>";
@@ -749,7 +749,7 @@ function calculPausaIncidencia ($id_incidencia, $id_nota_incidencia,$data_nota_i
 }	
 	
 function resumEconomicContractes($id){
-	global $Enero,$Febrero,$Marzo,$Abril,$Mayo,$Junio,$Julio,$Agosto,$Septiembre,$Octubre,$Noviembre,$Diciembre,$Total;
+	global $Enero,$Febrero,$Marzo,$Abril,$Mayo,$Junio,$Julio,$Agosto,$Septiembre,$Octubre,$Noviembre,$Ano,$Total,$meses;
 		echo "<center><table cellspacing=\"0\" style=\"width:200px\">";
 			echo "<tr>";
 				if ($_GET["y"] == "") {
@@ -767,33 +767,15 @@ function resumEconomicContractes($id){
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&y=".$ypost."\">&gt;".$ypost."</a></td>";
 		echo "</tr></table></center>";
 	if ($id == 0) { 
-		echo "<br><center><table cellspacing=\"0\" style=\"width:1800px\">";
+		echo "<br><center><table cellspacing=\"0\" style=\"width:100%\">";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Enero."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Febrero."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Marzo."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Abril."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Mayo."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Junio."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Julio."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Agosto."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Septiembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Octubre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Noviembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Diciembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				for ($x = 0; $x < 12; $x++) {
+					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				}
+				echo "<td style=\"text-align:right;\"><strong>".$Total." ".$Ano." h.</strong></td>";
+				echo "<td style=\"text-align:right;\"><strong>".$Total." ".$Ano." €</strong></td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
@@ -803,11 +785,16 @@ function resumEconomicContractes($id){
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				unset($total_horas_mes);
 				unset($total_euros_mes);
+				$total_horas_any = 0;
+				$total_euros_any = 0;
 				$sqlc = "select * from sgm_clients where id=".$rowtipos["id_cliente"];
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
-				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\"><strong>";
-					echo "<a href=\"index.php?op=1008&sop=210&id=".$rowc["id"]."\">".$rowc["nombre"]."</a> : </strong><a href=\"index.php?op=1011&sop=100&id=".$rowtipos["id"]."\">".$rowtipos["num_contrato"]."</a>";
+				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\">";
+					echo "<a href=\"index.php?op=1011&sop=100&id=".$rowtipos["id"]."\">".$rowtipos["num_contrato"]."</a>";
+				echo "</td></tr>";
+				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\">";
+					echo "<strong><a href=\"index.php?op=1008&sop=210&id=".$rowc["id"]."\">".$rowc["nombre"]."</a></strong>";
 				echo "</td></tr>";
 				$sqls = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
 				$results = mysql_query(convert_sql($sqls));
@@ -819,19 +806,34 @@ function resumEconomicContractes($id){
 						$inicio_mes = date("U", mktime(0,0,0,$x, 1, $yact));
 						$final_mes = date("U", mktime(23,59,59,$x+1, 1-1,$yact));
 						echo "<td style=\"text-align:right;background-color:".$color."\">";
-							$sqlind = "select sum(duracion) as total from sgm_incidencias where fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
+							$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
 							$resultind = mysql_query(convert_sql($sqlind));
 							$rowind = mysql_fetch_array($resultind);
 							$hora = $rowind["total"]/60;
 							$horas = explode(".",$hora);
 							$minutos = $rowind["total"] % 60;
-							echo "".$horas[0]." h. ".$minutos." m.";
+							echo $horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						$total_euros = $hora * $rows["precio_hora"];
 						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros,2,',','')." €</td>";
 						$total_horas_mes[$x] += $rowind["total"];
 						$total_euros_mes[$x] += $total_euros;
 					}
+						$inicio_mes = date("U", mktime(0,0,0,1, 1, $yact));
+						$final_mes = date("U", mktime(23,59,59,13, 1-1,$yact));
+						echo "<td style=\"text-align:right;background-color:".$color."\">";
+							$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
+							$resultind = mysql_query(convert_sql($sqlind));
+							$rowind = mysql_fetch_array($resultind);
+							$hora = $rowind["total"]/60;
+							$horas = explode(".",$hora);
+							$minutos = $rowind["total"] % 60;
+							echo $horas[0]." h. ".$minutos." m.";
+						echo "</td>";
+						$total_euros = $hora * $rows["precio_hora"];
+						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros,2,',','')." €</td>";
+						$total_horas_any += $rowind["total"];
+						$total_euros_any += $total_euros;
 					echo "</tr>";
 				}
 				echo "<tr>";
@@ -843,6 +845,14 @@ function resumEconomicContractes($id){
 						$minutos2 = $total_horas_mes[$x] % 60;
 						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong>".number_format ($total_euros_mes[$x],2,',','')." €</strong></td>";
 					}
+						echo "<td style=\"text-align:right;\">";
+							$hora = $total_horas_any/60;
+							$horas = explode(".",$hora);
+							$minutos = $rowind["total"] % 60;
+							echo $horas[0]." h. ".$minutos." m.";
+						echo "</td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros_any,2,',','')." €</td>";
+					echo "</tr>";
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
 			}
@@ -851,18 +861,10 @@ function resumEconomicContractes($id){
 		echo "<br><center><table cellspacing=\"0\" style=\"width:1200px\">";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Enero."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Febrero."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Marzo."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Abril."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Mayo."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Junio."</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				for ($x = 0; $x < 6; $x++) {
+					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				}
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
@@ -917,18 +919,10 @@ function resumEconomicContractes($id){
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Julio."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Agosto."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Septiembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Octubre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Noviembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Diciembre."</strong></a></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				for ($x = 6; $x < 12; $x++) {
+					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+				}
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");

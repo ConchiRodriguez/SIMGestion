@@ -3,24 +3,24 @@
 $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
 if ($autorizado == false) {	echo "<center><br><strong>USUARIO NO AUTORIZADO</strong></center><br><br>"; }
-if (($option == 1011) AND ($autorizado == true)) {
+if (($option == 1013) AND ($autorizado == true)) {
 
 	echo "<table class=\"principal\"><tr>";
 		echo "<tr><td>";
 			echo "<center><table><tr>";
-				echo "<td><strong>".$Contratos." :</strong></td>";
+				echo "<td><strong>".$Proyectos." :</strong></td>";
 				if (($soption >= 0) and ($soption < 100)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=0\" class=".$class.">".$Ver." ".$Contratos."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=0\" class=".$class.">".$Ver." ".$Proyectos."</a></td>";
 				if (($soption >= 100) and ($soption < 200)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=100\" class=".$class.">".$Anadir." ".$Contrato."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=100\" class=".$class.">".$Anadir." ".$Proyecto."</a></td>";
 				if ($soption == 200) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=200\" class=".$class.">".$Buscar." ".$Contrato."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=200\" class=".$class.">".$Buscar." ".$Proyecto."</a></td>";
 				if ($soption == 210) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=210\" class=".$class.">".$Indicadores."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=210\" class=".$class.">".$Indicadores."</a></td>";
 				if ($soption == 290) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=290\" class=".$class.">".$Informes."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=290\" class=".$class.">".$Informes."</a></td>";
 				if (($soption >= 300) and ($soption < 600)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1011&sop=300\" class=".$class.">".$Administrar."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=1013&sop=300\" class=".$class.">".$Administrar."</a></td>";
 			echo "</tr></table>";
 		echo "</center></td></tr>";
 	echo "</table><br>";
@@ -108,15 +108,15 @@ if (($option == 1011) AND ($autorizado == true)) {
 		if ($soption != 200){
 			echo "<table><tr>";
 				echo "<td class=\"boton\">";
-					if ($soption == 1) { echo "<a href=\"index.php?op=1011&sop=0\" style=\"color:white;\">".$Activo."</a>";}
-					if ($soption == 0) { echo "<a href=\"index.php?op=1011&sop=1\" style=\"color:white;\">".$Inactivo."</a>";}
+					if ($soption == 1) { echo "<a href=\"index.php?op=1013&sop=0\" style=\"color:white;\">".$Activo."</a>";}
+					if ($soption == 0) { echo "<a href=\"index.php?op=1013&sop=1\" style=\"color:white;\">".$Inactivo."</a>";}
 				echo "</td>";
 			echo "</tr></table>";
 			echo "<br><br>";
 		}
 		echo "<center>";
 		if ($soption == 200){
-			echo "<form action=\"index.php?op=1011&sop=200\" method=\"post\">";
+			echo "<form action=\"index.php?op=1013&sop=200\" method=\"post\">";
 			echo "<table cellspacing=\"0\" style=\"background-color:silver;\">";
 				echo "<tr>";
 					echo "<td>".$Contrato."</td>";
@@ -170,7 +170,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		}
 		if (($soption != 200) or ($_POST["id_contrato_tipo2"] > 0) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0)){
 			echo "<table cellspacing=\"0\" style=\"width:1000px;\">";
-				echo "<form action=\"index.php?op=1011&sop=100&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=100&ssop=1\" method=\"post\">";
 				echo "<tr style=\"background-color:silver\">";
 					echo "<td><em>".$Eliminar."</em></td>";
 					echo "<td style=\"text-align:center;\">".$Cliente."</td>";
@@ -196,7 +196,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$resultcc = mysql_query(convert_sql($sqlcc));
 				while ($rowcc = mysql_fetch_array($resultcc)){
 					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
@@ -205,8 +205,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
 						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."&edit=0\">".$rowcc["descripcion"]."</a></td>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a></td>";
+						echo "<td><a href=\"index.php?op=1013&sop=100&id=".$rowcc["id"]."&edit=0\">".$rowcc["descripcion"]."</a></td>";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=100&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a></td>";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=142&id=".$row["id"]."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a></td>";
 					echo "</tr>";
 				}
@@ -218,8 +218,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 10) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar este contrato?<br><br>";
-		echo "<a href=\"index.php?op=1011&sop=0&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1011&sop=0\">[ NO ]</a>";
+		echo "<a href=\"index.php?op=1013&sop=0&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
+		echo "<a href=\"index.php?op=1013&sop=0\">[ NO ]</a>";
 		echo "</center>";
 	}
 
@@ -399,13 +399,13 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<table cellspacing=\"0\">";
 			if ($_GET["id"] != "") {
-				echo "<form action=\"index.php?op=1011&sop=100&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=100&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				$sqlc = "select * from sgm_contratos where visible=1 and id=".$_GET["id"];
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				$numeroc = $rowc["num_contrato"];
 			} else {
-				echo "<form action=\"index.php?op=1011&sop=0&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=0&ssop=1\" method=\"post\">";
 				$numeroc = 0;
 				$sqln = "select * from sgm_contratos where visible=1 order by num_contrato desc";
 				$resultn = mysql_query(convert_sql($sqln));
@@ -499,17 +499,17 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</form>";
 			if ($_GET["id"] != "") {
 				if ($rowc["activo"] == 1) {
-					echo "<form action=\"index.php?op=1011&sop=100&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1013&sop=100&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td></td><td><input type=\"Submit\" value=\"".$Desactivar."\" style=\"width:100px\"></td>";
 				} else {
-					echo "<form action=\"index.php?op=1011&sop=100&ssop=6&id=".$_GET["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1013&sop=100&ssop=6&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td></td><td><input type=\"Submit\" value=\"".$Activar."\" style=\"width:100px\"></td>";
 				}
 				echo "</form>";
 			}
 			if ($_GET["id"] != "") {
 				if ($rowc["renovado"] == 0) {
-					echo "<form action=\"index.php?op=1011&sop=100&ssop=7&id=".$_GET["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1013&sop=100&ssop=7&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td></td><td><input type=\"Submit\" value=\"renovar".$Renovar."\" style=\"width:100px\"></td>";
 					echo "</form>";
 				} else {
@@ -532,7 +532,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\">".$Importe."</td>";
 					echo "<td></td>";
 				echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=100&ssop=10&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=100&ssop=10&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td></td>";
 					echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowc["id_cliente"]."\">";
 					echo "<input type=\"hidden\" name=\"id_contrato\" value=\"".$_GET["id"]."\">";
@@ -552,8 +552,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 					$resultcu = mysql_query(convert_sql($sqlcu));
 					$rowcu = mysql_fetch_array($resultcu);
 					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=102&id=".$_GET["id"]."&id_fact=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-						echo "<form action=\"index.php?op=1011&sop=100&ssop=11&id=".$_GET["id"]."&id_fact=".$row["id"]."\" method=\"post\">";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=102&id=".$_GET["id"]."&id_fact=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+						echo "<form action=\"index.php?op=1013&sop=100&ssop=11&id=".$_GET["id"]."&id_fact=".$row["id"]."\" method=\"post\">";
 						echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowc["id_cliente"]."\">";
 						echo "<input type=\"hidden\" name=\"id_contrato\" value=\"".$_GET["id"]."\">";
 						echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$row["fecha"]."\"></td>";
@@ -585,7 +585,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td></td>";
 				echo "</tr><tr>";
 					echo "<td></td>";
-					echo "<form action=\"index.php?op=1011&sop=100&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1013&sop=100&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td><input style=\"width:250px\" type=\"Text\" name=\"servicio\"></td>";
 					echo "<td><select style=\"width:70px\" name=\"obligatorio\">";
 						echo "<option value=\"0\">No</option>";
@@ -630,8 +630,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$result = mysql_query(convert_sql($sql));
 				while ($row = mysql_fetch_array($result)) {
 					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=101&id=".$_GET["id"]."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-						echo "<form action=\"index.php?op=1011&sop=100&ssop=3&id=".$_GET["id"]."&id_ser=".$row["id"]."\" method=\"post\">";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=101&id=".$_GET["id"]."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+						echo "<form action=\"index.php?op=1013&sop=100&ssop=3&id=".$_GET["id"]."&id_ser=".$row["id"]."\" method=\"post\">";
 						echo "<td><input type=\"text\" value=\"".$row["servicio"]."\" style=\"width:250px\" name=\"servicio\"></td>";
 						echo "<td><select style=\"width:70px\" name=\"obligatorio\">";
 							if ($row["obligatorio"] == 1){
@@ -709,21 +709,9 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$hora = $rowind["total"]/60;
 						$horas = explode(".",$hora);
 						$minutos = $rowind["total"] % 60;
-						echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
-						$total_euros = $hora * $row["precio_hora"];
-						echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros,2,',','')." €</strong></td>";
+						echo "<td><strong>".$horas[0]." h. ".$minutos." m.</strong></td>";
 					echo "</tr>";
-					$total_horas_contracte += $rowind["total"];
-					$total_euros_contracte += $total_euros;
 				}
-				echo "<tr>";
-					$hora = $total_horas_contracte/60;
-					$horas = explode(".",$hora);
-					$minutos = $rowind["total"] % 60;
-					echo "<td style=\"text-align:right;\" colspan=\"12\"><strong>".$Total."&nbsp;&nbsp;</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros_contracte,2,',','')." €</strong></td>";
-				echo "</tr>";
 			echo "</table></center>";
 			echo "<br><br>";
 			echo "<strong>".$Obligatorio."</strong>: Si para aquellos servicios que van incluidos en el contrato y no son seleccionables por el cliente.<br>";
@@ -740,14 +728,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 101) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar este servicio?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=100&ssop=4&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=100&id=".$_GET["id"]."\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=100&ssop=4&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=100&id=".$_GET["id"]."\">[ NO ]</a>";
 		echo "</center>";
 	}
 
 	if ($soption == 102) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar esta factura?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=100&ssop=12&id=".$_GET["id"]."&id_fact=".$_GET["id_fact"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=100&id=".$_GET["id"]."\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=100&ssop=12&id=".$_GET["id"]."&id_fact=".$_GET["id_fact"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=100&id=".$_GET["id"]."\">[ NO ]</a>";
 		echo "</center>";
 	}
 
@@ -768,7 +756,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<centre><table><tr><td style=\"vertical-align:top;text-align:right;width:900px;\">";
 		echo "<center>";
 		echo "<table>";
-			echo "<form action=\"index.php?op=1011&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+			echo "<form action=\"index.php?op=1013&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 			$sqln = "select * from sgm_contratos where visible=1 and id=".$_GET["id"];
 			$resultn = mysql_query(convert_sql($sqln));
 			$rown = mysql_fetch_array($resultn);
@@ -801,7 +789,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			while ($rowc = mysql_fetch_array($resultc)){
 				echo "<tr>";
 					echo "<td style=\"width:100px;height:13px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-						echo "<a href=\"index.php?op=1011&sop=120&id=".$rowc["id"]."\" style=\"color:white;\">".$rowc["tipo"]."</a>";
+						echo "<a href=\"index.php?op=1013&sop=120&id=".$rowc["id"]."\" style=\"color:white;\">".$rowc["tipo"]."</a>";
 					echo "</td>";
 				echo "</tr>";
 			}
@@ -845,13 +833,13 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td><strong>Administrar : &nbsp;&nbsp;</strong></td>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1011&sop=310\" style=\"color:white;\">".$Contratos."</a>";
+					echo "<a href=\"index.php?op=1013&sop=310\" style=\"color:white;\">".$Contratos."</a>";
 				echo "</td>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1011&sop=500\" style=\"color:white;\">".$Cobertura." ".$SLA."</a>";
+					echo "<a href=\"index.php?op=1013&sop=500\" style=\"color:white;\">".$Cobertura." ".$SLA."</a>";
 				echo "</td>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1011&sop=400\" style=\"color:white;\">".$Tipo." ".$Incidencia."</a>";
+					echo "<a href=\"index.php?op=1013&sop=400\" style=\"color:white;\">".$Tipo." ".$Incidencia."</a>";
 				echo "</td>";
 			echo "</tr>";
 		echo "</table>";
@@ -902,7 +890,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">".$Descripcion."</td>";
 				echo "<td></td>";
 			echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=310&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=310&ssop=1\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"nombre\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
@@ -914,14 +902,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=311&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=310&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=311&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1013&sop=310&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
 					echo "</form>";
 				echo "<td style=\"width:100px;height:13px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1011&sop=320&id_contrato_tipo=".$row["id"]."\" style=\"color:white;\">".$Incidencias."</a>";
+					echo "<a href=\"index.php?op=1013&sop=320&id_contrato_tipo=".$row["id"]."\" style=\"color:white;\">".$Incidencias."</a>";
 				echo "</td>";
 				echo "</tr>";
 			}
@@ -932,7 +920,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 311) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar este tipo de contrato?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=310&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=310\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=310&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=310\">[ NO ]</a>";
 		echo "</center>";
 	}
 
@@ -978,7 +966,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">".$Dias."</td>";
 				echo "<td></td>";
 			echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=320&ssop=1&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=320&ssop=1&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
 					$sql = "select * from sgm_contratos_incidencias_tipo where visible=1 order by tipo";
@@ -998,8 +986,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$resultci = mysql_query(convert_sql($sqlci));
 			while ($rowci = mysql_fetch_array($resultci)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=321&id=".$rowci["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=320&ssop=2&id=".$rowci["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=321&id=".$rowci["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1013&sop=320&ssop=2&id=".$rowci["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\" method=\"post\">";
 					echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
 						$sql = "select * from sgm_contratos_incidencias_tipo where visible=1 order by tipo";
 						$result = mysql_query(convert_sql($sql));
@@ -1025,7 +1013,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 321) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar esta incidencia del contrato?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=320&ssop=3&id=".$_GET["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=320&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=320&ssop=3&id=".$_GET["id"]."&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=320&id_contrato_tipo=".$_GET["id_contrato_tipo"]."\">[ NO ]</a>";
 		echo "</center>";
 	}
 
@@ -1066,7 +1054,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">".$Descripcion."</td>";
 				echo "<td></td>";
 			echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=400&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=400&ssop=1\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"tipo\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
@@ -1078,8 +1066,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=401&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=400&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=401&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1013&sop=400&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["tipo"]."\" style=\"width:150px\" name=\"tipo\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
@@ -1093,7 +1081,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 401) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar este contrato?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=400&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=400\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=400&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=400\">[ NO ]</a>";
 		echo "</center>";
 	}
 
@@ -1131,7 +1119,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">".$Descripcion."</td>";
 				echo "<td></td>";
 			echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=500&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1013&sop=500&ssop=1\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"nombre\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
@@ -1143,8 +1131,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=501&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=500&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1013&sop=501&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1013&sop=500&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
@@ -1158,7 +1146,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 501) {
 		echo "<center>";
 		echo "<br><br>¿Seguro que desea eliminar este contrato?";
-		echo "<br><br><a href=\"index.php?op=1011&sop=500&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1011&sop=500\">[ NO ]</a>";
+		echo "<br><br><a href=\"index.php?op=1013&sop=500&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1013&sop=500\">[ NO ]</a>";
 		echo "</center>";
 	}
 
