@@ -1,10 +1,8 @@
 <?php
 
-if ($option == 200) {
-
-if ($user == false) {
-	echo "Usuario no autorizado. Compruebe su usuario y/o password de nuevo";
-	} else {
+if (($option == 200) and ($user == false)) {
+	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>";
+} else {
 
 	$sqluser = "select * from sgm_users WHERE id=".$userid;
 	$resultuser = mysql_query(convert_sql($sqluser));
@@ -15,55 +13,59 @@ if ($user == false) {
 	$rowuserclient = mysql_fetch_array($resultuserclient);
 	$nclientes = $rowuserclient["total"];
 
-	echo "<table class=principal><tr><td>";
-		echo "<strong>PANEL DE USUARIO</strong>";
-		echo "<center><table cellspacing=\"1\"><tr>";
-			echo "<td class=menu>";
-				echo "<a href=\"index.php?op=200&sop=10&id=".$rowuser["id"]."\" style=\"color:white;\">Datos Usuario</a>";
-			echo "</td>";
-			echo "<td class=menu>";
-				echo "<a href=\"index.php?op=200&sop=70&id=".$rowuser["id"]."\" style=\"color:white;\">Cambio de contraseña</a>";
-			echo "</td>";
-			$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-			$resultp = mysql_query(convert_sql($sqlp));
-			$rowp = mysql_fetch_array($resultp);
-			if ($rowp["total"] == 1) {
-				$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-				$resultpe = mysql_query(convert_sql($sqlpe));
-				$rowpe = mysql_fetch_array($resultpe);
-				$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
-				$resultp = mysql_query(convert_sql($sqlp));
-				while ($rowp = mysql_fetch_array($resultp)){
-					if ($rowp["id_user"] == $rowuser["id"]){
-								echo "<td class=menu>";
-									echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
-								echo "</td>";
+	echo "<table  class=\"principal\"><tr>";
+		echo "<td style=\"width:15%;vertical-align : middle;text-align:left;\">";
+			echo "<h4>".$Panel_usuario."</h4>";
+		echo "</td><td style=\"width:85%;vertical-align : top;text-align:left;\">";
+			echo "<table>";
+				echo "<tr>";
+		#			echo "<td class=menu>";
+		#				echo "<a href=\"index.php?op=200&sop=10&id=".$rowuser["id"]."\" style=\"color:white;\">Datos Usuario</a>";
+		#			echo "</td>";
+					echo "<td class=menu>";
+						echo "<a href=\"index.php?op=200&sop=70&id=".$rowuser["id"]."\" style=\"color:white;\">Cambio de contraseña</a>";
+					echo "</td>";
+					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
+					$resultp = mysql_query(convert_sql($sqlp));
+					$rowp = mysql_fetch_array($resultp);
+					if ($rowp["total"] == 1) {
+						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
+						$resultpe = mysql_query(convert_sql($sqlpe));
+						$rowpe = mysql_fetch_array($resultpe);
+						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
+						$resultp = mysql_query(convert_sql($sqlp));
+						while ($rowp = mysql_fetch_array($resultp)){
+							if ($rowp["id_user"] == $rowuser["id"]){
+										echo "<td class=menu>";
+											echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
+										echo "</td>";
+							}
+						}
 					}
-				}
-			}
-			$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-			$resultp = mysql_query(convert_sql($sqlp));
-			$rowp = mysql_fetch_array($resultp);
-			if ($rowp["total"] == 1) {
-				$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-				$resultpe = mysql_query(convert_sql($sqlpe));
-				$rowpe = mysql_fetch_array($resultpe);
-				$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1006";
-				$resultp = mysql_query(convert_sql($sqlp));
-				while ($rowp = mysql_fetch_array($resultp)){
-					if ($rowp["id_user"] == $rowuser["id"]){
+					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
+					$resultp = mysql_query(convert_sql($sqlp));
+					$rowp = mysql_fetch_array($resultp);
+					if ($rowp["total"] == 1) {
+						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
+						$resultpe = mysql_query(convert_sql($sqlpe));
+						$rowpe = mysql_fetch_array($resultpe);
+						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1006";
+						$resultp = mysql_query(convert_sql($sqlp));
+						while ($rowp = mysql_fetch_array($resultp)){
+							if ($rowp["id_user"] == $rowuser["id"]){
 								echo "<td class=menu>";
 									echo "<a href=\"index.php?op=200&sop=40&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
 								echo "</td>";
+							}
+						}
 					}
-				}
-			}
-		echo "</tr></table></center>";
-echo "</td></tr>";
-echo "<tr><td>&nbsp;</td></tr>";
-	echo "<tr><td><center><table cellspacing=\"0\">";
+				echo "</tr>";
+			echo "</table>";
+		echo "</td></tr>";
+		echo "<tr><td>&nbsp;</td></tr>";
+		echo "<tr><td></td><td><table cellpadding=\"1\" cellspacing=\"0\">";
 			echo "<tr style=\"background-color:silver\">";
-				echo "<td style=\"width:100px\">".$Total."</td>";
+				echo "<td style=\"width:100px;text-align:left;\">".$Total."</td>";
 				$temps = 0;
 				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where id_incidencia<>0 and id_usuario_registro=".$userid."";
 				$resulti = mysql_query(convert_sql($sqli));
@@ -80,12 +82,12 @@ echo "<tr><td>&nbsp;</td></tr>";
 					if ($fest == 0) {$x++;}
 				}
 				$total_total = $x*8;
-				echo "<td style=\"width:300px;text-align:center;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos." / ".$total_total." ".$Horas." ".$Laborables."</td>";
+				echo "<td style=\"width:300px;text-align:left;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos." / ".$total_total." ".$Horas." ".$Laborables."</td>";
 			echo "</tr>";
-		echo "</table></center></td></tr>";
-echo "<tr><td>&nbsp;</td></tr>";
-echo "</table><br>";
-echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;width:100%\" cellpadding=\"2\" cellspacing=\"2\" class=\"gris\"><tr><td>";
+		echo "</table></td></tr>";
+		echo "<tr><td>&nbsp;</td></tr>";
+	echo "</table><br>";
+	echo "<table class=\"principal\"><tr><td>";
 
 	if ($soption == 0) {
 	}
@@ -942,7 +944,7 @@ echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid gr
 
 echo "</td></tr></table><br>";
 }
-}
+
 
 
 

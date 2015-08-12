@@ -103,7 +103,7 @@ function factura_print_e($id)
 		$resultx = mysql_query(convert_sql($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 
-		$sqlsys = "select SiglaNacion from sys_naciones where CodigoNacion=".$rowx["id_pais"];
+		$sqlsys = "select siglas from sgm_paises where id=".$rowx["id_pais"];
 		$resultsys = mysql_query(convert_sql($sqlsys));
 		$rowsys = mysql_fetch_array($resultsys);
 
@@ -198,7 +198,7 @@ function factura_print_e($id)
 		$content .= "						<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
 		$content .= "						<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
 		$content .= "						<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
-		$content .= "						<CountryCode>".$rowsys["SiglaNacion"]."</CountryCode>\n";
+		$content .= "						<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "					</AddressInSpain>\n";
 		$content .= "					<ContactDetails>\n";
 		$content .= "						<Telephone>".$rowcabezera["telefono"]."</Telephone>\n";
@@ -235,7 +235,7 @@ function factura_print_e($id)
 		$content .= "					<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
 		$content .= "					<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
 		$content .= "					<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
-		$content .= "					<CountryCode>".$rowsys["SiglaNacion"]."</CountryCode>\n";
+		$content .= "					<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "				</AddressInSpain>\n";
 		$content .= "				<ContactDetails>\n";
 		$content .= "					<Telephone>".$rowcabezera["telefono"]."</Telephone>\n";

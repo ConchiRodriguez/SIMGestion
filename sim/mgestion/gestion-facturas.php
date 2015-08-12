@@ -1339,16 +1339,16 @@ if (($option == 1003) AND ($autorizado == true)) {
 												echo "<tr><td>".$Codigo." ".$Postal."</td><td><input type=\"Text\" name=\"cp\" style=\"width:250px\" value=\"".$row["cp"]."\"></td></tr>";
 												echo "<tr><td>".$Provincia."</td><td><input type=\"Text\" name=\"provincia\" style=\"width:250px\" value=\"".$row["provincia"]."\"></td></tr>";
 												echo "<tr><td>".$Pais."</td><td><select name=\"id_pais\" style=\"width:250px\">";
-												$sqlp = "select * from sys_naciones where visible=1 order by Nacion";
+												$sqlp = "select * from sgm_paises where visible=1 order by pais";
 												$resultp = mysql_query(convert_sql($sqlp));
 												while ($rowp = mysql_fetch_array($resultp)){
-													if ($row["id_pais"] == $rowp["CodigoNacion"]){
-														echo "<option value=\"".$rowp["CodigoNacion"]."\" selected>".$rowp["Nacion"]."</option>";
+													if ($row["id_pais"] == $rowp["id"]){
+														echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["pais"]."</option>";
 													} else {
 														if ($rowp["predeterminado"] == 1){
-															echo "<option value=\"".$rowp["CodigoNacion"]."\" selected>".$rowp["Nacion"]."</option>";
+															echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["pais"]."</option>";
 														} else {
-															echo "<option value=\"".$rowp["CodigoNacion"]."\">".$rowp["Nacion"]."</option>";
+															echo "<option value=\"".$rowp["id"]."\">".$rowp["pais"]."</option>";
 														}
 													}
 												}

@@ -204,7 +204,7 @@ echo "<table class=\"maestra\">";
 
 			echo "<center><table cellpadding=\"0\" cellspacing=\"1\"><tr>";
 				if ($option == 200) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_de_Usuario."</a></td>";
+				echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_usuario."</a></td>";
 				$sqlu = "select * from sgm_users where id=".$userid;
 				$resultu = mysql_query(convert_sql($sqlu));
 				$rowu = mysql_fetch_array($resultu);

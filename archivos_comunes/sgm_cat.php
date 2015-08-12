@@ -1,67 +1,585 @@
 <?php
 
-#index.php
-$Panel_de_Usuario = "Panell d'Usuario";
-$Salir = "Sortir";
-$Es = "Es";
-$Cat = "Cat";
-$Trabajado = "Treballat";
-$Laborables = "Laborables";
-$Bienvenido = "Benvingut";
-$meses = array("Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Decembre");
+$abreviatura = "abreviatura";
+$Abreviatura = "Abreviatura";
+$Abrir = "Obrir";
+$Acceso = "Acc&eacute;s";
+$Activar = "Activar";
+$Activo = "Actiu";
+$Activos = "Actius";
+$Actuacion = "Actuaci&oacute;";
+$Actuaciones = "Actuacions";
+$Actual = "Actual";
+$actualizado = "actualitzat";
+$Actualizar = "Actualitzar";
+$Adjuntar = "Adjuntar";
+$Adjuntos = "Adjunts";
+$Admin = "Admin.";
+$Administracion = "Administraci&oacute;";
+$Administrador = "Administrador";
+$Administrar = "Administrar";
+$a_efecto = "a efecte";
+$AGENDA = "AGENDA";
+$Agenda = "Agenda";
+$Agendas = "Agendes";
+$agendas = "agendes";
+$Agrupacion = "Agrupaci&oacute;";
+$Ajuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
+$Alerta = "Alerta";
+$Alertas = "Alertes";
+$Alias = "Alies";
+$Almacen = "Magatzem";
+$Almacenes = "Magatzems";
+$Alto = "Alt";
+$Anadir = "Afegir";
+$Anadir_Contacto = "Afegir Contacte";
+$AnadiryEliminarIncompatibles = "Afegir i Eliminar Incompatibles";
+$Ancho = "Ample";
+$Ano = "Any";
+$Anotacion = "Anotaci&oacute;";
+$Anterior = "Anterior";
+$antiguo = "antic";
+$Antiguo = "Antic";
+$Anual = "Anual";
+$Apellido = "Cognom";
+$Aplicacion = "Aplicaci&oacute;";
+$Aplicaciones = "Aplicacions";
+$Archivo = "Archiu";
+$Archivos = "Archius";
+$Archivos_subidos = "Archius pujats";
+$Area = "&Agrave;rea";
+$Articulos = "Articles";
+$Articulo = "Art&iacute;cle";
+$articulo = "art&iacute;cle";
+$Asociadas = "Associades";
+$Asunto = "Assumpte ";
+$Atencion = "Atenci&oacute;";
+$Atributo = "Atribut";
+$Atributos = "Atributs";
+$Auditoria = "Auditoria";
+$Auxiliares = "Auxiliars";
+$Aviso = "Av&iacute;s";
+$Ayuda = "Ajuda";
 
-#gestion_comercial.php
+$Bancaria = "Bancaria";
+$Barras = "Barres";
+$Base = "Base";
+$Base_imponible = "Base Imponible";
+$Bases = "Bases";
+$Bases_Datos = "Bases de Dades";
+$Bienvenido = "Benvingut";
+$Billetes = "Billets";
+$Boton = "Bot&oacute;";
+$Buscar = "Cercar";
+$Buscar_Contacto = "Cercar Contacte";
+$Busquedas = "Cerques";
+
+$Caducadas = "Caducades";
+$Caja = "Caixa";
+$Cajas = "Caixes";
+$Calculadora = "Calculadora";
+$Calculo = "C&agrave;lcul";
+$Calendario = "Calendari";
+$Calle = "Carrer";
+$Calles = "Carrers";
+$Cambiada = "Canviada";
+$Cambiar = "Canviar";
+$Cambio = "Canvi";
+$Campos = "Camps";
+$Campos_obligatorios = "Camps obligatoris";
+$Cancelar = "Cancelar";
+$Caracteres = "Car&agrave;cters";
+$Caracteristica = "Caracter&iacute;stica";
+$Caracteristicas = "Caracter&iacute;stiques";
+$Cargo = "Carrec";
+$carpeta = "carpeta";
+$Carta = "Carta";
+$Cat = "Cat";
+$Catalogar = "Catalogar";
+$Central = "Central";
+$Certificacion = "Certificaci&oacute;";
+$Certificaciones = "Certificacions";
+$Cerrada = "Tancada";
+$Cerrar = "Tancar";
+$Clase = "Classe";
+$Clasificar = "Classificar";
+$CLIENTE = "CLIENT";
+$Cliente = "Client";
+$Clientes =  "Clients";
+$Cliente_fidelizado = "Client fidelitzat";
+$Cliente_vip = "Client vip";
+$Cobertura = "Cobertura";
+$Cobrada = "Cobrada";
+$Cobrado = "Cobrat";
+$Codificado = "Codificat";
+$Codigo = "Codi";
+$Color = "Color";
+$Coincidencias = "Coincid&egrave;ncies";
 $Comercial = "Comercial";
+$Completa = "Completa";
+$Completo = "Complet";
+$Conclusion = "Conclusi&oacute;";
+$Concepto = "Concepte";
+$Con_delegaciones_asociadas = "Amb delegacions asociades.";
+$Conexion = "Conexi&oacute;";
+$Configuracion = "Configuraci&oacute;";
+$Configurar = "Configurar";
+$Confirmada = "Confirmada";
+$Contacto = "Contacte";
+$CONTACTOS = "CONTACTES";
+$Contactos = "Contactes";
 $Contenidos = "Continguts";
 $Contenido = "Contingut";
 $Contenido_Estendido = "Contingut Estes";
-$Text_Contenidos = "Text dels Continguts";
-$Oferta_Comercial = "Oferta Comercial";
-$Valores = "Valors";
-$Datos_Generales = "Dades Generals";
-$Datos_Adicionales = "Dades Adicionals"; 
-
-#area_clientes
-$Auditoria = "Auditoria";
-$Alerta = "Alerta";
-$Area = "&Agrave;rea";
-$Atencion = "Atenci&oacute;";
-$Anotacion = "Anotaci&oacute;";
-$Anterior = "Anterior";
-$Caracteres = "Car&agrave;cters";
-$Cuenta_Bancaria = "Compte Bancari";
+$Contrasena = "Contrasenya";
+$Contrasenas = "Contrasenyas";
+$Contrato = "Contracte";
+$Contratos = "Contractes";
+$Controles_de_calidad = "Controls de qualitat";
+$Convertir = "Convertir";
 $Correcto = "Correcte";
+$Correo = "Correo";
+$Corriente = "Corrent";
+$Costes = "Costos";
+$Costes_Adicionales = "Costos Adicionals";
+$CP = "CP";
+$Creacion = "Creaci&oacute;";
+$Crear = "Crear";
+$Cuenta_Bancaria = "Compte Bancari";
+$Cuenta_Contable = "Compta Contable";
+$Cuentas = "Comptes";
+$Cuenta = "Compte";
+
+$Dato = "Dada";
+$Datos = "Dades";
+$Datos_Adicionales = "Dades Adicionals"; 
+$Datos_Administrativos = "Dades Administratives";
 $Datos_Bancarios = "Dades Bancaries";
 $Datos_Comerciales = "Dades Comercials";
+$Datos_Contacto = "Dades Contacte";
+$Datos_Fiscales = "Dades Fiscals";
+$Datos_fiscales_incompletos = "NIF/CIF/NIE incorrectes.";
+$Datos_Generales = "Dades Generals";
+$Datos_Tecnicos = "Dades T&eacute;cniques";
+$Definiciones = "Definicions";
+$Definicion = "Definici&oacute;";
+$Delegacion = "Delegaci&oacute;";
+$Departamento = "Departament";
+$Departamentos = "Departaments";
+$Dependencia = "Depend&egrave;ncia";
+$Dependencias = "Dependencies";
+$Desactivar = "Desactivar";
+$Desarrollo = "Desenvolupament";
+$Descatalogados = "Descatalogats";
+$Descatalogar = "Descatalogar";
+$Descripcion = "Descripci&oacute;";
+$Descuento = "Desconte";
+$Desde= "Desde";
+$desde = "desde";
+$Desde_archivo = "Des de archiu";
+$Desmarcar = "Desmarcar";
+$Desplegar = "Desplegar";
+$Despre = "Despre.";
+$Destino = "Desti";
+$Detalles = "Detalls";
+$Dia = "Dia";
+$diaa = "dia";
+$Dias = "Dies";
+$Direcciones = "Adreces";
+$Direccion = "Adre&ccedila";
+$Direcciones_Envio = "Adreces d'Enviament";
+$disponible = "disponible";
+$Dispositivo = "Dispositiu";
+$Dispositivos = "Dispositius";
+$Divisa = "Divisa";
+$Divisas = "Divises";
+$Documentos = "Documents";
 $DOMICILIADA = "DOMICILIADA";
-$Espacio = "Espai";
-$Error = "Error";
-$FACTURADO = "FACTURAt";
-$Fuera = "Fora";
-$Guardias = "Guardies";
-$Lunes = "Dilluns";
-$Memoria = "Mem&ograve;ria";
-$PAGADA = "PAGADA";
-$PENDIENTE = "PENDENT";
-$Plataforma = "Plataforma";
-$Periodo = "Periode";
-$Parametros = "Parametres";
-$Reports = "Reports";
-$Respuesta = "Resposta";
-$Solucionado = "Solucionat";
-$Seguridad = "Seguretat";
-$Tecnico = "T&eacute;cnic";
-$Uso = "Us";
-$Ultimo = "&Uacute;ltim";
-$Ultimos = "&Uacute;ltims";
-$Viernes = "Divendres";
+$Duplicar = "Duplicar";
+$Duplicado = "Duplicat";
+$Duracion = "Duraci&oacute;";
 
-#gestion_facturas.php
+$Es = "Es";
+$Efectivo = "Efectiu";
+$Electronico = "Electr&oacute;nic";
+$Echo = "Fet";
+$Edicion = "Edici&oacute;";
+$Editable = "Editable";
+$Editar = "Editar";
+$Ejecutar = "Executar";
+$Eliminar = "Eliminar";
+$Email = "E-mail";
+$Empresa = "Empresa";
+$en_orden_alfabetico = " en ordre alfab&eacute;tic :";
+$Entidad = "Entitat";
+$Entrada = "Entrada";
+$Entrega = "Entrega";
+$envio = "enviament";
+$Enviar = "Enviar";
+$Envio = "Enviament";
+$Error = "Error";
+$Escandallo = "Escandall";
+$escandallo = "escandall";
+$Escritura = "Escriptura";
+$Espacio = "Espai";
+$Esquema = "Esquema";
+$Estados = "Estats";
+$Estanterias = "Prestatges";
+$Estanteria = "Prestatge";
+$Estado = "Estat";
+$Estado_de_la_Certificacion = "Estat de la Certificaci&oacute;";
+$Estado_del_Servicio = "Estat del Servei";
+$Estado_de_Cuentas = "Estat de Comptes";
+$Etiqueta = "Etiqueta";
+$Explotar = "Explotar";
+$Exportar = "Exportar";
+$Externo = "Extern";
+$Extranet = "Extranet";
+$Extranjero = "Estranger";
+
+$Factura = "Factura";
 $Facturacion = "Facturaci&oacute;";
+$FACTURADO = "FACTURAT";
+$Familia = "Familia";
+$Familias = "Families";
+$Fabricante = "Fabricant";
+$Fax = "Fax";
+$Fecha = "Data";
+$Festividad = "Festivitat";
+$FICHA = "FICHA";
+$Ficha = "Fitxa";
+$Ficha_de_Contacto = "Fitxa de Contacte";
+$Filtrado = "Filtrado";
+$Filtrado_por = "Filtrat per";
+$Filtrar = "Filtrar";
+$Firma = "Signatura";
+$Firmante = "Firmant";
+$Fin = "Fi";
+$Final = "Final";
+$finalizable = "finalizable : Conte tasques no finalizades";
+$Finalizacion = "Finalizaci&oacute;";
+$Finalizada = "finalitzada";
+$Finalizar = "Finalitzar";
+$Fiscal = "Fiscal";
+$Fisica = "F&iacute;sica";
+$Formulario = "Formulari";
+$Forma = "Forma";
+$Formato = "Format";
+$Formulario_Subir_Archivo = "Formulari Pujar Archiu";
+$Forzado = "For&ccedil;at";
+$Fuentes = "Fonts";
+$Fuera = "Fora";
+
+$Gastos = "Despeses";
+$General = "General";
+$Generales = "Generals";
+$Gestion = "Gesti&oacute;";
+$Gestion_Certificaciones = "Gesti&oacute; de Certificacions";
+$Gestion_Comercial = "Gesti&oacute; Comercial";
+$Grafico = "Gr&agrave;fic";
+$Grupo = "Grup";
+$Grupos = "Grups";
+$Guardar = "Guardar";
+$Guardar_Busqueda = "Guardar Cerca";
+$Guardias = "Guardies";
+
+$hasta = "fins";
+$Hasta= "Fins";
+$Herramienta = "Eina";
+$Historial = "Historial";
+$HISTORICO = "HIST&Oacute;RIC";
+$Historico = "Hist&oacute;ric";
+$Hoja = "Fulla";
+$Hojas = "Fulles";
+$Hora_Inicio = "Hora Inici";
+$Hora_Fin = "Hora Fi";
+$Horarios = "Horaris";
+$Horas = "Hores";
+
+$Identificarse = "Identificar-se";
+$Idioma = "Idioma";
+$Idiomas = "Idiomes";
+$Imagen = "Imatge";
+$Imagenes = "Imatges";
+$Importar = "Importar";
+$Importe = "Import";
+$Impresion = "Impresi&oacute;";
+$Impresos = "Impresos";
+$IMPRIMIR = "IMPRIMIR";
+$Imprimir = "Imprimir";
+$Imprimir_Lista = "Imprimir Llista";
+$Inactivo = "Inactiu";
+$Incidencia = "Incid&egrave;ncia";
+$Incidencias = "Incid&egrave;ncies";
+$incluido = "incl&oacute;s";
+$Incompatibles = "Incompatibles";
+$Incremento = "Increment";
+$Indicador = "Indicador";
+$Indicadores = "Indicadors";
+$info = "info";
+$Informacion = "Informaci&oacute;";
+$Informes = "Informes";
+$Ingresos = "Ingresos";
+$Inicial = "Inicial";
+$Inicio = "Inici";
+$Insertar = "Insertar";
+$Introduccion = "Introducci&oacute;";
+$Inventario = "Inventari";
+$Invitadas = "Invitades";
+
+$Jornada = "Jornada";
+$Juridica = "Jur&iacute;dica";
+
+$Laborables = "Laborables";
+$Laboral = "Laboral";
+$Lectura = "Lectura";
+$Letra = "Lletra";
+$Limite = "Limit";
+$Licencia = "Llic&egrave;ncia";
+$Licencias = "Llic&egrave;ncies";
+$Linea = "Linia";
+$Lista = "Llista";
+$Listado = "Llistat";
+$Listar = "Llistar : ";
+$Localizacion = "Localizaci&oacute;";
+$Logistica = "Log&iacute;stica";
+$Logo = "Logo";
+$Logos = "Logos";
+
+$Mantenimientos = "Mantenimients";
+$Mantenimiento = "Manteniment";
+$manual = "manual";
+$Marca = "Marca";
+$Marcas = "Marques";
+$Marcar = "Marcar";
+$Maximo = "M&agrave;xim";
+$Memoria = "Mem&ograve;ria";
+$Mes = "Mes";
+$Minimo = "M&iacute;nim";
+$Minutos = "Minuts";
+$Modificadores = "Modificadors";
+$Modificar = "Modificar";
+$Modulo = "M&oacute;dul";
+$Monedas = "Monedes";
+$Mostrar = "Mostrar";
+$Motivo = "Motiu";
+$Movil = "M&oacute;vil";
+
+$Nacimiento = "Naixement";
+$Nacion = "Naci&oacute;";
+$NBD = "NBD";
+$NIF = "NIF";
+$No = "No";
+$Nombre = "Nom";
+$Nombre_cliente = "Nom client";
+$Nota = "Nota";
+$Notas = "Notes";
+$NoVer = "No Veure";
+$Nueva = "Nova";
+$Nuevo = "Nou";
+$nuevo = "nou";
+$Numero = "Nombre";
+$Numero_serie = "N&uacute;mero Serie";
+
+$Obligatorio = "Obligatori";
+$Obligatorios = "Obligatoris";
+$Observacions = "Observacions";
+$Oferta_Comercial = "Oferta Comercial";
+$Oficina_contable = "Oficina Contable";
+$Opciones = "Opcions";
+$Orden = "Ordre";
+$Organo_gestor = "Organ Gestor";
+$Origen = "Origen";
+$Original = "Original";
+$OT = "OT";
+$Otras = "Altres";
+
+$PAGADA = "PAGADA";
+$Pago = "Pagament";
+$Pais = "Pa&iacute;s";
+$Paises = "Paisos";
+$Panel_usuario = "Panell d'Usuari";
+$Papel = "Paper";
+$Para = "Per";
+$Parada = "Parada";
+$Parametros = "Parametres";
+$Parcial = "Parcial";
+$Pasillo = "Pasad&iacute;s";
+$Pausadas = "Pausades";
+$Pausar = "Pausar";
+$PENDIENTE = "PENDENT";
+$Pendientes = "Pendients";
+$Periodo = "Periode";
+$Periodos = "Periodes";
+$Permiso = "Perm&iacute;s";
+$Permisos = "Permisos";
+$Personal = "Personal";
+$PERSONALES = "PERSONALS";
+$Personales = "Personals";
+$Personalizada = "Personalitzada";
+$Plantilla = "Plantilla";
+$Plantillas = "Plantilles";
+$Plataforma = "Plataforma";
+$Poblacion = "Poblaci&oacute;";
+$Por = "Per";
+$por = "per";
+$Porcentage = "Porcentatge";
+$Por_clientes = "Per clients";
+$por_codigo = "per codi";
+$por_defecto = "per defecte";
+$por_empresa = " per empresa";
+$por_nombre = " per nom";
+$Posibles = "Posibles";
+$Postal = "Postal";
+$Posicion = "Posici&oacute;";
+$Precio = "Preu";
+$Precios = "Preus";
+$Predet = "Predet.";
+$Predeterminar = "Predeterminar";
+$Prevision = "Previsi&oacute;";
+$Primera = "Primera";
+$Principal = "Principal";
+$Privada = "Privada";
+$Propietario = "Propietari";
+$Proveedor = "Prove&iuml;dor";
+$Proveedores = "Prove&iuml;dors";
+$provisional = "provisional";
+$Provincia = "Prov&iacute;ncia";
+$Proximas = "Pr&oacute;ximes";
+$Proyecto = "Projecte";
+$Proyectos = "Projectes";
+$Puerto = "Port";
+$PVP = "PVP";
+$PVD = "PVD";
+
+$Recibos = "Rebuts";
+$Red = "Xarxa";
+$Referencias = "Referencies";
+$Registrada = "Registrada";
+$Registrar_Documento = "Registrar Document";
+$Registro = "Registre";
+$Relacion = "Relaci&oacute;";
+$Relacionar = "Relacionar";
+$Relacionado = "Relacionat";
+$Relaciones = "Relacions";
+$Remitente = "Remitent";
+$Remoto = "Remot";
+$Repetir = "Repetir";
+$Reports = "Reports";
+$Responsable_cliente = "Responsable Client";
+$Responsable_tecnico = "Responsable T&egrave;cnic";
+$Residente = "Resident";
+$Respuesta = "Resposta";
+$Resultado = "Resultat";
+$Resultado_de_la_busqueda = "Resultat de la Cerca: ";
 $Resumenes = "Resums";
 $Resumen = "Resum";
+
+$Salir = "Sortir";
+$Seccion = "Secci&oacute;";
+$Secciones = "Seccions";
+$Secretario = "Secretari/a";
+$Sector = "Sector";
+$Sectores = "Sectors";
+$Seguridad = "Seguretat";
+$seleccionado = "seleccionat";
+$Seleccionar = "Seleccionar";
+$Semana = "Setmana";
+$Servidor = "Servidor";
+$Servidores = "Servidors";
+$Servicio = "Servei";
+$Servicios = "Serveis";
+$Si = "Si";
+$Siglas = "Sigles";
+$Simbolo = "S&iacutembol";
+$Simple = "Simple";
+$SIN = "SENSE";
+$Sin = "Sense";
+$SinAsunto = "Sense Asumpte";
+$Sin_clasificar = "Sense Classificar";
+$SinCliente = "Sense Client";
+$Sincronizaciones = "Sincronitzacions";
+$Sincronizar = "Sincronitzar";
+$Sin_dependencias = "Sense Depend&egrave;ncia";
+$Situacion = "Situaci&oacute;";
+$SLA = "SLA";
+$Sobre = "Sobre";
+$Solo = "Solament";
+$Solo_predeterminado = "Solament predeterminat";
+$Solucionado = "Solucionat";
+$Stock = "Stock";
+$Subfamilia = "Subfamilia";
+$Subfamilias = "Subfamilies";
+$Subir = "Pujar";
+$Subtipos = "Subtipus";
+
+$Tabla = "Taula";
+$Tarifas = "Tarifes";
+$Tamano = "Tamany";
+$Tarea = "Tasca";
+$Tareas = "Tasques";
+$Tecnico = "T&eacute;cnic";
+$Telefonica = "Telef&oacute;nica";
+$Telefono = "Tel&eacute;fon";
+$Text_Contenidos = "Text dels Continguts";
+$Texto = "Texte";
+$Ticket = "Ticket";
+$Tiempo = "Temps";
+$Tipo = "Tipus";
+$Tipos = "Tipus";
+$Titulo = "T&iacute;tol";
+$Todas = "Totes";
+$Todo = "Tot";
+$Todos = "Tots";
+$Total = "Total";
 $Totales = "Totals";
-$Anual = "Anual";
+$Trabajado = "Treballat";
+$Trabajador = "Treballador";
+$Trabajadores = "Treballadors";
+$Trabajo = "Treball";
+$Traduccion = "Traducci&oacute;";
+$Traspasar = "Traspasar";
+$Traspaso = "Trasp&agrave;s";
+$Trato = "Tracte";
+$Tratos = "Tractes";
+$Trimestre = "Trimestre";
+
+$Ubicacion = "Ubicaci&oacute;";
+$Ubicaciones = "Ubicacions";
+$Ultima = "&Uacute;ltima";
+$Ultimo = "&Uacute;ltim";
+$Ultimos = "&Uacute;ltims";
+$Unidad = "Unitat";
+$Unidades = "Unitats";
+$Unidad_tramitadora = "Unitat Tramitadora";
+$Uso = "Us";
+$Usuario = "Usuari";
+$Usuarios = "Usuaris";
+
+$Validado = "Validat";
+$Valor = "Valor";
+$Valoracion = "Valoraci&oacute;";
+$Valores = "Valors";
+$Vencimiento = "Venciment";
+$Ver = "Veure";
+$Ver_Horas = "Veure Hores";
+$Ver_Todos = "Veure Tots";
+$Ver_Todos_Personales = "Veure Tots Personals";
+$Vigente = "Vigent";
+$Visible = "Visible";
+$Visualizar = "Visualitzar";
+$Volver = "Tornar";
+
+$Web = "Web";
+
+$ygriega = "y";
+
+$Zona = "Zona";
+
+$meses = array("Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Decembre");
+$dias = array("Dilluns","Dimarts","Dimecres","Dijous","Divendres","Disabte","Diumenge");
+$Lunes = "Dilluns";
+$Viernes = "Divendres";
 $Enero = "Gener";
 $Febrero = "Febrer";
 $Marzo = "Mar&ccedil;";
@@ -74,589 +592,6 @@ $Septiembre = "Setembre";
 $Octubre = "Octubre";
 $Noviembre = "Novembre";
 $Diciembre = "Decembre";
-$Periodos = "Periodes";
-$Desplegar = "Desplegar";
-$Todo = "Tot";
-$Vencimiento = "Venciment";
-$Linea = "Linia";
-$Documentos = "Documents";
-$Modificadores = "Modificadors";
-$Entrega = "Entrega";
-$Divisa = "Divisa";
-$Divisas = "Divises";
-$Convertir = "Convertir";
-$Subtipos = "Subtipus";
-$Cajas = "Caixes";
-$Fuentes = "Fonts";
-$Cambiada = "Canviada";
-$Barras = "Barres";
-$Base_imponible = "Base Imponible";
-$Trimestre = "Trimestre";
-$Recibos = "Rebuts";
-$Entidad = "Entitat";
-$Bancaria = "Bancaria";
-$Caja = "Caixa";
-$Idiomas = "Idiomes";
-$Parcial = "Parcial";
-$Traspaso = "Trasp&agrave;s";
-$Forma = "Forma";
-$Pago = "Pagament";
-$Billetes = "Billets";
-$Monedas = "Monedes";
-$Efectivo = "Efectiu";
-$Situacion = "Situaci&oacute;";
-$Ingresos = "Ingresos";
-$Gastos = "Despeses";
-$Cerrar = "Tancar";
-$Simbolo = "S&iacutembol";
-$Cobrado = "Cobrat";
-
-#gestion_contrasenyas.php
-$Aplicacion = "Aplicaci&oacute;";
-$Aplicaciones = "Aplicacions";
-$Contrasenas = "Contrasenyas";
-$Campos = "Camps";
-$Obligatorios = "Obligatoris";
-$Ver = "Veure";
-
-#gestion_monitorizacion.php
-$Tiempo = "Temps";
-$Cobertura = "Cobertura";
-$Filtrar = "Filtrar";
-$Final = "Final";
-$Finalizar = "Finalitzar";
-$Minutos = "Minuts";
-$SLA = "SLA";
-$NBD = "NBD";
-$Horas = "Hores";
-$Desactivar = "Desactivar";
-$Activar = "Activar";
-$Alertas = "Alertes";
-$Base = "Base";
-$Bases = "Bases";
-$Servidores = "Servidors";
-$Concepto = "Concepte";
-$Proyecto = "Projecte";
-$Proyectos = "Projectes";
-$Obligatorio = "Obligatori";
-$Extranet = "Extranet";
-$Destino = "Desti";
-$Visible = "Visible";
-$Pausar = "Pausar";
-$Ano = "Any";
-
-#gestion_clientes.php
-$Administracion = "Administraci&oacute;";
-$Administrar = "Administrar";
-$Agrupacion = "Agrupaci&oacute;";
-$Anadir = "Afegir";
-$Anadir_Contacto = "Afegir Contacte";
-$Apellido = "Cognom";
-$Archivos = "Archius";
-$Alias = "Alies";
-$Ajuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
-
-$Boton = "Bot&oacute;";
-$Buscar = "Cercar";
-$Buscar_Contacto = "Cercar Contacte";
-$Busquedas = "Cerques";
-
-$Calle = "Carrer";
-$Calles = "Carrers";
-$Caracteristicas = "Caracter&iacute;stiques";
-$Cargo = "Carrec";
-$Central = "Central";
-$Certificacion = "Certificaci&oacute;";
-$Certificaciones = "Certificacions";
-$Cerrada = "Tancada";
-$Cliente = "Client";
-$Clientes =  "Clients";
-$Cliente_fidelizado = "Client fidelitzat";
-$Cliente_vip = "Client vip";
-$Cobrada = "Cobrada";
-$Color = "Color";
-$Confirmada = "Confirmada";
-$Contacto = "Contacte";
-$CONTACTOS = "CONTACTES";
-$Contactos = "Contactes";
-$Controles_de_calidad = "Controls de qualitat";
-$Con_delegaciones_asociadas = "Amb delegacions asociades.";
-$Completa = "Completa";
-$Completo = "Complet";
-$CP = "CP";
-$Cuentas = "Contes";
-$Campos_obligatorios = "Camps obligatoris";
-
-$Datos_fiscales_incompletos = "NIF/CIF/NIE incorrectes.";
-$Datos_Adicionales = "Dades Adicionals";
-$Datos_Administrativos = "Dades Administratives";
-$Datos_Contacto = "Dades Contacte";
-$Datos_Fiscales = "Dades Fiscals";
-$Datos_Tecnicos = "Dades T&eacute;cniques";
-$Definiciones = "Definicions";
-$Definicion = "Definici&oacute;";
-$Delegacion = "Delegaci&oacute;";
-$Departamento = "Departament";
-$Dependencias = "Dependencies";
-$Desde= "Desde";
-$Despre = "Despre.";
-$Direcciones = "Direccions";
-$Direccion = "Direcci&oacute;";
-
-$Editar = "Editar";
-$Eliminar = "Eliminar";
-$Email = "E-mail";
-$Empresa = "Empresa";
-$en_orden_alfabetico = " en ordre alfab&eacute;tic :";
-$envio = "enviament";
-$Estado = "Estat";
-$Estado_de_la_Certificacion = "Estat de la Certificaci&oacute;";
-$Estado_del_Servicio = "Estat del Servei";
-$Extranjero = "Estranger";
-
-$Fax = "Fax";
-$Fecha = "Data";
-$Ficha_de_Contacto = "Fitxa de Contacte";
-$Filtrado_por = "Filtrat per";
-$Fiscal = "Fiscal";
-$Formulario = "Formulari";
-$Fisica = "F&iacute;sica";
-
-$Gestion_Certificaciones = "Gesti&oacute; de Certificacions";
-$Gestion_Comercial = "Gesti&oacute; Comercial";
-$Grupo = "Grup";
-$Grupos = "Grups";
-$Guardar = "Guardar";
-$Guardar_Busqueda = "Guardar Cerca";
-
-$Hasta= "Fins";
-$Historico = "Hist&oacute;ric";
-
-$Idioma = "Idioma";
-$Inactivo = "Inactiu";
-$Incidencias = "Incidencies";
-$Incompatibles = "Incompatibles";
-$Indicador = "Indicador";
-$Indicadores = "Indicadors";
-$Informacion = "Informaci&oacute;";
-$Informes = "Informes";
-$Inicial = "Inicial";
-$Importe = "Import";
-$Imprimir = "Imprimir";
-$Imprimir_Lista = "Imprimir Llista";
-
-$Juridica = "Jur&iacute;dica";
-
-$Letra = "Lletra";
-$Listar = "Llistar : ";
-$Listado = "Llistat";
-
-$Modificar = "Modificar";
-$Movil = "M&oacute;vil";
-
-$NIF = "NIF";
-$Nombre = "Nom";
-$Nombre_cliente = "Nom client";
-$Notas = "Notes";
-$Numero = "Nombre";
-$Nueva = "Nova";
-
-$Observacions = "Observacions";
-$Opciones = "Opcions";
-$Otras = "Altres";
-$Oficina_contable = "Oficina Contable";
-$Organo_gestor = "Organ Gestor";
-
-$Pais = "Pa&iacute;s";
-$PERSONALES = "PERSONALS";
-$Personales = "Personals";
-$Personalizada = "Personalitzada";
-$Poblacion = "Poblaci&oacute;";
-$por_empresa = " per empresa";
-$por_nombre = " per nom";
-$Predet = "Predet.";
-$Predeterminar = "Predeterminar";
-$Principal = "Principal";
-$Proveedor = "Prove&iuml;dor";
-$Proveedores = "Prove&iuml;dors";
-$Provincia = "Prov&iacute;ncia";
-
-$Resultado_de_la_busqueda = "Resultat de la Cerca: ";
-$Residente = "Resident";
-
-$Secretario = "Secretari/a";
-$Sector = "Sector";
-$Sectores = "Sectors";
-$Servicio = "Servei";
-$Solo_predeterminado = "Solament predeterminat";
-$Simple = "Simple";
-
-$Telefono = "Tel&eacute;fon";
-$Tipo = "Tipus";
-$Todos = "Tots";
-$Trato = "Tracte";
-$Tipos = "Tipus";
-$Tratos = "Tractes";
-$Trabajadores = "Treballadors";
-$Total = "Total";
-
-$Ubicacion = "Ubicaci&oacute;";
-$Ubicaciones = "Ubicacions";
-$Usuario = "Usuari";
-$Unidad_tramitadora = "Unitat Tramitadora";
-
-$Valor = "Valor";
-$Valoracion = "Valoraci&oacute;";
-$Ver = "Veure";
-$Ver_Todos = "Veure Tots";
-$Ver_Todos_Personales = "Veure Tots Personals";
-$Volver = "Tornar";
-
-$Web = "Web";
-
-$ygriega = "y";
-
-$Zona = "Zona";
-
-#gestion_incidencias.php
-$Acceso = "Acc&eacute;s";
-$Actual = "Actual";
-$AGENDA = "AGENDA";
-$Agenda = "Agenda";
-$Agendas = "Agendes";
-$agendas = "agendes";
-$Anterior = "Anterior";
-$Asociadas = "Associades";
-$Asunto = "Assumpte ";
-$Aviso = "Av&iacute;s";
-$Abrir = "Obrir";
-
-$Caducadas = "Caducades";
-$Calendario = "Calendari";
-$Cambio = "Canvi";
-$Codigo = "Codi";
-$Conclusion = "Conclusi&oacute;";
-
-$Departamentos = "Departaments";
-$Dependencia = "Depend&egrave;ncia";
-$Desarrollo = "Desenvolupament";
-$Descripcion = "Descripci&oacute;";
-$diaa = "dia";
-$Duracion = "Duraci&oacute;";
-
-$Edicion = "Edici&oacute;";
-$Estados = "Estats";
-$Escritura = "Escriptura";
-$Exportar = "Exportar";
-
-$Ficha = "Fitxa";
-$Filtrado = "Filtrado";
-$Finalizacion = "Finalizaci&oacute;";
-$finalizable = "finalizable : Conte tasques no finalizades";
-$Finalizada = "finalitzada";
-
-$General = "General";
-$Grafico = "Gr&agrave;fic";
-
-$Historial = "Historial";
-$HISTORICO = "HIST&Oacute;RIC";
-
-$Incidencia = "Incid&egrave;ncia";
-$Incidencias = "Incid&egrave;ncies";
-$Invitadas = "Invitades";
-$Importar = "Importar";
-
-$Jornada = "Jornada";
-
-$Lectura = "Lectura";
-$Limite = "Limit";
-$Lista = "Llista";
-
-$Mes = "Mes";
-$Motivo = "Motiu";
-
-$Nota = "Nota";
-$NoVer = "No Veure";
-
-$Origen = "Origen";
-
-$por = "per";
-$Permiso = "Perm&iacute;s";
-$Plantilla = "Plantilla";
-$Plantillas = "Plantilles";
-$Prevision = "Previsi&oacute;";
-$Privada = "Privada";
-$Propietario = "Propietari";
-$Proximas = "Pr&oacute;ximes";
-$Pausadas = "Pausades";
-
-$Registro = "Registre";
-$Registrada = "Registrada";
-
-$seleccionado = "seleccionat";
-$Seleccionar = "Seleccionar";
-$Semana = "Setmana";
-$Servicios = "Serveis";
-$Sincronizaciones = "Sincronitzacions";
-$Sincronizar = "Sincronitzar";
-$SIN = "SENSE";
-$Sin = "Sense";
-
-$Tarea = "Tasca";
-$Tareas = "Tasques";
-$Telefonica = "Telef&oacute;nica";
-$Titulo = "T&iacute;tol";
-
-#gestion auxiliares
-$Actualizar = "Actualitzar";
-$Ancho = "Ample";
-$Alto = "Alt";
-$Auxiliares = "Auxiliars";
-$Archivo = "Archiu";
-$Archivos_subidos = "Archius pujats";
-
-$CLIENTE = "CLIENT";
-$Clase = "Classe";
-
-$Datos = "Dades";
-$Descuento = "Desconte";
-$Dia = "Dia";
-
-$Explotar = "Explotar";
-$Ejecutar = "Executar";
-
-$FICHA = "FICHA";
-$Factura = "Factura";
-$Formato = "Format";
-
-$Hoja = "Fulla";
-$Hojas = "Fulles";
-$Hora_Inicio = "Hora Inici";
-$Hora_Fin = "Hora Fi";
-
-$Imagen = "Imatge";
-$Introduccion = "Introducci&oacute;";
-$IMPRIMIR = "IMPRIMIR";
-$Incremento = "Increment";
-$Insertar = "Insertar";
-$Impresos = "Impresos";
-
-$Logo = "Logo";
-$Logos = "Logos";
-
-$Mantenimientos = "Mantenimients";
-$Mantenimiento = "Manteniment";
-$manual = "manual";
-
-$Nacion = "Naci&oacute;";
-
-$OT = "OT";
-
-$Papel = "Paper";
-$Porcentage = "Porcentatge";
-$Posicion = "Posici&oacute;";
-$Primera = "Primera";
-
-$Resultado = "Resultat";
-$Registrar_Documento = "Registrar Document";
-
-$Siglas = "Sigles";
-$Sobre = "Sobre";
-
-$Tarifas = "Tarifes";
-$Tamano = "Tamany";
-$Tabla = "Taula";
-$Ticket = "Ticket";
-$Trabajo = "Treball";
-$Traspasar = "Traspasar";
-
-$Ultima = "&Uacute;ltima";
-
-$Ver_Horas = "Veure Hores";
-
-#gestion_usuarios.php
-$Usuarios = "Usuaris";
-$Crear = "Crear";
-$Solo = "Solament";
-$Activos = "Actius";
-$Gestion = "Gesti&oacute;";
-$Remoto = "Remot";
-$Validado = "Validat";
-$Activo = "Actiu";
-$Conexion = "Conexi&oacute;";
-$Permisos = "Permisos";
-$Admin = "Admin.";
-$Modulo = "M&oacute;dul";
-$Cambiar = "Canviar";
-$Mostrar = "Mostrar";
-$Nacimiento = "Naixement";
-$Contrasena = "Contrasenya";
-$Repetir = "Repetir";
-$Creacion = "Creaci&oacute;";
-$Cuenta = "Conte";
-$Red = "Xarxa";
-$Vigente = "Vigent";
-$Almacen = "Magatzem";
-$Almacenes = "Magatzems";
-$Administrador = "Administrador";
-
-#gestion_mailing.php
-$Envio = "Enviament";
-$Ayuda = "Ajuda";
-$Carta = "Carta";
-$Configuracion = "Configuraci&oacute;";
-$Firma = "Signatura";
-$Texto = "Texte";
-$Adjuntar = "Adjuntar";
-$Adjuntos = "Adjunts";
-$Servidor = "Servidor";
-$Correo = "Correo";
-$Electronico = "Electr&oacute;nic";
-$Nuevo = "Nou";
-$Puerto = "Port";
-$Remitente = "Remitent";
-$Personal = "Personal";
-$Marcar = "Marcar";
-$Desmarcar = "Desmarcar";
-$Enviar = "Enviar";
-$Etiqueta = "Etiqueta";
-$Para = "Per";
-$Por = "Per";
-
-#gestion_inventario.php
-$Actuacion = "Actuaci&oacute;";
-$Actuaciones = "Actuacions";
-$Atributo = "Atribut";
-$Atributos = "Atributs";
-
-$Dato = "Dada";
-$Detalles = "Detalls";
-$Dispositivo = "Dispositiu";
-$Dispositivos = "Dispositius";
-
-$Echo = "Fet";
-$Esquema = "Esquema";
-
-$Inventario = "Inventari";
-
-$Orden = "Ordre";
-
-$Pendientes = "Pendients";
-$Parada = "Parada";
-
-$Relacion = "Relaci&oacute;";
-$Relaciones = "Relacions";
-$Relacionar = "Relacionar";
-$Relacionado = "Relacionat";
-
-$Tipo = "Tipus";
-
-#gestion_contratos.php
-$Contratos = "Contractes";
-$Contrato = "Contracte";
-$desde = "desde";
-$hasta = "fins";
-$Inicio = "Inici";
-$Fin = "Fi";
-$Firmante = "Firmant";
-$a_efecto = "a efecte";
-$Corriente = "Corrent";
-$Dias = "Dies";
-$Responsable_cliente = "Responsable Client";
-$Responsable_tecnico = "Responsable T&egrave;cnic";
-
-#gestion_articulos.php
-$Articulos = "Articles";
-$Articulo = "Art&iacute;cle";
-$articulo = "art&iacute;cle";
-$antiguo = "antic";
-$Antiguo = "Antic";
-$abreviatura = "abreviatura";
-$Abreviatura = "Abreviatura";
-$actualizado = "actualitzat";
-
-$Calculo = "C&agrave;lcul";
-$Costes = "Costos";
-$Coincidencias = "Coincid&egrave;ncies";
-$Clasificar = "Classificar";
-$Codificado = "Codificat";
-$Caracteristica = "Caracter&iacute;stica";
-$carpeta = "carpeta";
-$Configurar = "Configurar";
-$Catalogar = "Catalogar";
-
-$Descatalogados = "Descatalogats";
-$Descatalogar = "Descatalogar";
-$Desde_archivo = "Des de archiu";
-$disponible = "disponible";
-$Duplicar = "Duplicar";
-
-$Escandallo = "Escandall";
-$escandallo = "escandall";
-$Externo = "Extern";
-$Estanterias = "Prestatges";
-$Estanteria = "Prestatge";
-$Entrada = "Entrada";
-
-$Familia = "Familia";
-$Familias = "Families";
-$Fabricante = "Fabricant";
-$Forzado = "For&ccedil;at";
-
-$Generales = "Generals";
-
-$Herramienta = "Eina";
-
-$Imagenes = "Imatges";
-$Impresion = "Impresi&oacute;";
-$info = "info";
-$incluido = "incl&oacute;s";
-
-$Logistica = "Log&iacute;stica";
-$Localizacion = "Localizaci&oacute;";
-
-$Marca = "Marca";
-$Marcas = "Marques";
-$Minimo = "M&iacute;nim";
-$Maximo = "M&agrave;xim";
-$Multivia_com = "Multivia.com";
-
-$nuevo = "nou";
-
-$Pasillo = "Pasad&iacute;s";
-$Precios = "Preus";
-$Precio = "Preu";
-$proveedor = "proveidor";
-$PVP = "PVP";
-$Posibles = "Posibles";
-$por_codigo = "per codi";
-$por_defecto = "per defecte";
-$provisional = "provisional";
-$Postal = "Postal";
-
-$Referencias = "Referencies";
-
-$Stock = "Stock";
-$Subfamilia = "Subfamilia";
-$Subfamilias = "Subfamilies";
-$Subir = "Pujar";
-$Seccion = "Secci&oacute;";
-$Secciones = "Seccions";
-
-$Traduccion = "Traducci&oacute;";
-$Todas = "Totes";
-
-$Unidad = "Unitat";
-$Unidades = "Unitats";
-
-$Visualizar = "Visualitzar";
-
-
-#gestion_licencias.php
-$Lincencias = "Llic&egrave;ncies";
-$Lincencia = "Llic&egrave;ncia";
-
-
 
 #errores
 $UsuarioNoAutorizado = "USUARI NO AUTORITZAT";
@@ -668,17 +603,45 @@ $NombreIncorrecto = "<br>Valor en el camp nom d'usuario incorrecte.";
 $MailYaReg = "<br>Direcci&oacute; e-mail ja registrada.";
 $MailIncorrecto = "<br>Valor en el camp e-mail incorrecte.";
 $PassIncorrecto = "<br>Valor en els camps passwords incorrecte.";
-$Completa = "Completa correctament tots els camps obligatoris.";
+$CompletaCorrect = "Completa correctament tots els camps obligatoris.";
 $InvalidarUsuario = "<br><br>¿Segur que desitja invalidar aquest usuari?";
 $ErrorPass = "<br><br>Error a l'introduir les contrasenyes<br><br>";
 $NotasDes = "No es pot introduir una incidencia sense text";
 $cambiarDatos = "Si desitja canviar les dades de l'empresa, posis en contacte amb ";
+
+$definicionesIncompatibles = "La definici&oacute; de client es incompatible amb les ja existents per aquest client. ¿Que desitja fer?";
+
+$ValorDefectoCaracteristicaArt = "Si existeix un valor per defecte s'ignorar&agrave; la taula d'opcions d'aquesta caracter&iacute;stica.";
+$ErrorEscandallo = "No es posible incluir un article en s&iacute; mateix.";
+$ErrorAnadirArticulo = "No es posible afegir l'article. El codi o el nom de l'article ja existeixen.";
+$duplicarArticulo = "Es duplicar&agrave; l'article i totes les dades relacionades amb aquest (magatzematge, stock, preus, etc.).";
+$eliminarArticulo = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessible.";
+$descatalogarArticulo = "L'article estar&agrave; descatalogat, per&ograve ser&agrave; accessible tant a ell com a les dades relacionades.";
+$catalogarArticulo = "L'article tornar&agrave; al cat&agrave;leg habitual d'articles amb totes les seves funcions i dades relacionades.";
+
+$errorSubirArchivoDuplicado = "No es pot afegir l'archiu per que ja existeix un amb el mateix nom.";
+$errorSubirArchivoTamany = "No es pot transferir l'archiu.<br>No pot excedir el tamany indicat";
+$errorSubirArchivo = "No es pot transferir l'archiu.";
+
 $CambioPassCorrecto = "La contrasenya s'ha modificat correctament";
+
+$ErrorRelacion = "El valor introduit no es num&egrave;ric o no pertany a un ID d'una incid&egrave;ncia existent";
+$ErrorSinTextoDuracion = "No se pot introduir una incid&egrave;ncia sense text i/o duraci&oacute;";
+$ErrorSinServicioCliente = "No se pot introduir una incid&egrave;ncia sense servei SIM o client";
+$ErrorSinAsunto = "No se pot introduir una incid&egrave;ncia sense asumpte";
+$ErrorFinalizacion = "No se pot finalitzar una incid&egrave;ncia sense notes de conclusi&oacute; o sense servei";
+$ErrorBusqueda = "Per cercar per dates, es necessari mes i any.";
+
 $Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta.";
+$ContrasenyaAppErrorEliminar = "No se pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
 
 $Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
 $Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
 
 $pregunta_eliminar = "¿Desitja eliminar l'element seleccionat?";
+$mesaje_modificar = "S'ha modificat correctament";
+
+$ayuda_iso_idioma = "L'idioma ha de cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
+$ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
 
 ?>
