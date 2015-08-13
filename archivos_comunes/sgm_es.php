@@ -240,6 +240,7 @@ $Extranjero = "Extranjero";
 
 $Fabricante = "Fabricante";
 $Factura = "Factura";
+$Facturas = "Facturas";
 $Facturacion = "Facturaci&oacute;n";
 $FACTURADO = "FACTURADO";
 $Familia = "Familia";
@@ -644,4 +645,8 @@ $mesaje_modificar = "Se ha modificado correctamente";
 
 $ayuda_iso_idioma = "El idioma tiene que cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
+
+$ContratoErrorEliminar = "No se puede eliminar este contrato, ya que existen incidencias asociadas.";
+$ContratoTipoErrorEliminar = "No se puede eliminar este tipo de contrato, ya que existen contratos asociados.";
+
 ?>

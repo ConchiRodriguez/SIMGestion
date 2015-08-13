@@ -848,7 +848,7 @@ function resumEconomicContractes($id){
 						echo "<td style=\"text-align:right;\">";
 							$hora = $total_horas_any/60;
 							$horas = explode(".",$hora);
-							$minutos = $rowind["total"] % 60;
+							$minutos = $total_horas_any % 60;
 							echo $horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros_any,2,',','')." €</td>";

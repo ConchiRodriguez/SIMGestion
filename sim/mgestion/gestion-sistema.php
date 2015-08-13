@@ -17,10 +17,10 @@ if (($option == 1022) AND ($autorizado == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=1\" class=".$class.">PHP INFO</a></td>";
 				if ($soption == 2) {$class = "menu";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=2\" class=".$class.">".$Actualizar." ".$Base." ".$Datos."</a></td>";
-				if ($soption == 3) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=3\" class=".$class.">".$Mantenimiento." ".$Base." ".$Datos."</a></td>";
-				if ($soption == 4) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=4\" class=".$class.">".$Traspasar." ".$Datos."</a></td>";
+#				if ($soption == 3) {$class = "menu_select";} else {$class = "menu";}
+#				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=3\" class=".$class.">".$Mantenimiento." ".$Base." ".$Datos."</a></td>";
+#				if ($soption == 4) {$class = "menu_select";} else {$class = "menu";}
+#				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=4\" class=".$class.">".$Traspasar." ".$Datos."</a></td>";
 				if ($soption == 5) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1022&sop=5\" class=".$class.">CentOS</a></td>";
 				echo "</tr>";
@@ -100,11 +100,11 @@ if (($option == 1022) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 5) {
-		echo "<strong>Shell</strong><br><br>";
-		echo "<center><table cellspacing=\"0\">";
+		echo "<h4>Shell : </h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color: Silver;\">";
-				echo "<td><em>".$Orden."</em></td>";
-				echo "<td></td>";
+				echo "<th>".$Orden."</th>";
+				echo "<th></th>";
 			echo "</tr>";
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1022&sop=5\" method=\"post\">";
@@ -119,7 +119,7 @@ if (($option == 1022) AND ($autorizado == true)) {
 			$salida = shell_exec($_POST["comando"]);
 				echo "<td><pre>$salida</pre></td>";
 			echo "</tr>";
-		echo "</table></center>";
+		echo "</table>";
 	}
 
 echo "</td></tr></table><br>";

@@ -237,12 +237,13 @@ $Externo = "Extern";
 $Extranet = "Extranet";
 $Extranjero = "Estranger";
 
+$Fabricante = "Fabricant";
 $Factura = "Factura";
+$Facturas = "Factures";
 $Facturacion = "Facturaci&oacute;";
 $FACTURADO = "FACTURAT";
 $Familia = "Familia";
 $Familias = "Families";
-$Fabricante = "Fabricant";
 $Fax = "Fax";
 $Fecha = "Data";
 $Festividad = "Festivitat";
@@ -626,14 +627,14 @@ $errorSubirArchivo = "No es pot transferir l'archiu.";
 $CambioPassCorrecto = "La contrasenya s'ha modificat correctament";
 
 $ErrorRelacion = "El valor introduit no es num&egrave;ric o no pertany a un ID d'una incid&egrave;ncia existent";
-$ErrorSinTextoDuracion = "No se pot introduir una incid&egrave;ncia sense text i/o duraci&oacute;";
-$ErrorSinServicioCliente = "No se pot introduir una incid&egrave;ncia sense servei SIM o client";
-$ErrorSinAsunto = "No se pot introduir una incid&egrave;ncia sense asumpte";
-$ErrorFinalizacion = "No se pot finalitzar una incid&egrave;ncia sense notes de conclusi&oacute; o sense servei";
+$ErrorSinTextoDuracion = "No es pot introduir una incid&egrave;ncia sense text i/o duraci&oacute;";
+$ErrorSinServicioCliente = "No es pot introduir una incid&egrave;ncia sense servei SIM o client";
+$ErrorSinAsunto = "No es pot introduir una incid&egrave;ncia sense asumpte";
+$ErrorFinalizacion = "No es pot finalitzar una incid&egrave;ncia sense notes de conclusi&oacute; o sense servei";
 $ErrorBusqueda = "Per cercar per dates, es necessari mes i any.";
 
 $Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta.";
-$ContrasenyaAppErrorEliminar = "No se pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
+$ContrasenyaAppErrorEliminar = "No es pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
 
 $Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
 $Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
@@ -643,5 +644,8 @@ $mesaje_modificar = "S'ha modificat correctament";
 
 $ayuda_iso_idioma = "L'idioma ha de cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
+
+$ContratoErrorEliminar = "No es pot eliminar aquest contracte, per que existeixen incidencies associades.";
+$ContratoTipoErrorEliminar = "No es pot eliminar aquest tipus de contracte, per que existeixen contractes associats.";
 
 ?>

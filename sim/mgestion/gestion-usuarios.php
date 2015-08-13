@@ -84,7 +84,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 			echo "<tr style=\"background-color:silver;\">";
 				echo "<th>".$Eliminar."</th>";
 				echo "<th>".$Clientes."</th>";
-				echo "<th>Admin</th>";
+				echo "<th>".$Admin."</th>";
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1002&sop=3&ssop=1&id_user=".$rowuser["id"]."\" method=\"post\">";
@@ -98,8 +98,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<td><select name=\"admin\" style=\"width:40px\">";
-					echo "<option value=\"0\" selected>NO</option>";
-					echo "<option value=\"1\">SI</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
 				echo "<td><input value=\"".$Anadir."\" type=\"Submit\" style=\"width:100px;\"></td>";
 			echo "</tr>";
@@ -118,12 +118,12 @@ if (($option == 1002) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1002&sop=3&ssop=2&id_user=".$_GET["id_user"]."&id_linea=".$row["id"]."\" method=\"post\">";
 					echo "<td><select name=\"admin\" style=\"width:40px\">";
 						if ($row["admin"] == 1) {
-							echo "<option value=\"1\" selected>SI</option>";
-							echo "<option value=\"0\">NO</option>";
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
 						}
 						if ($row["admin"] == 0) {
-							echo "<option value=\"1\">SI</option>";
-							echo "<option value=\"0\" selected>NO</option>";
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
 						}
 					echo "</select></td>";
 					echo "<input type=\"Hidden\" name=\"id_client\" value=\"".$rowc["id"]."\">";
@@ -195,7 +195,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 	if (($soption == 511) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1002&sop=510&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1002&sop=510\">[ NO ]</a>";
+		echo boton(array("op=1002&sop=510&ssop=3&id=".$_GET["id"],"op=1002&sop=510"),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -242,8 +242,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<td><select name=\"admin\" style=\"width:40px\">";
-					echo "<option value=\"0\" selected>NO</option>";
-					echo "<option value=\"1\">SI</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
 				echo "<td><input value=\"".$Anadir."\" type=\"Submit\" style=\"width:100px;\"></td>";
 			echo "</tr>";
@@ -261,12 +261,12 @@ if (($option == 1002) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1002&sop=512&ssop=2&id=".$_GET["id"]."&id_linea=".$row["id"]."\" method=\"post\">";
 					echo "<td><select name=\"admin\" style=\"width:40px\">";
 						if ($row["admin"] == 1) {
-							echo "<option value=\"1\" selected>SI</option>";
-							echo "<option value=\"0\">NO</option>";
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
 						}
 						if ($row["admin"] == 0) {
-							echo "<option value=\"1\">SI</option>";
-							echo "<option value=\"0\" selected>NO</option>";
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
 						}
 					echo "</select></td>";
 					echo "<td><input value=\"".$Modificar."\" type=\"Submit\" style=\"width:100px;\"></td>";

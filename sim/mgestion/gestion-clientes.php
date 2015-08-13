@@ -1167,7 +1167,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 101) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1008&sop=100&ssop=7&id=".$_GET["id"]."&id_class=".$_GET["id_class"]."\">[ SI ]</a><a href=\"index.php?op=1008&sop=100&id=".$_GET["id"]."\">[ NO ]</a>";
+		echo boton(array("op=1008&sop=100&ssop=7&id=".$_GET["id"]."&id_class=".$_GET["id_class"],"op=1008&sop=100&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -1430,7 +1430,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 111) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1008&sop=110&ssop=6&id=".$_GET["id"]."&id_tarifa=".$_GET["id_tarifa"]."\">[ SI ]</a><a href=\"index.php?op=1008&sop=110&ssop=6&id=".$_GET["id"]."\">[ NO ]</a>";
+		echo boton(array("op=1008&sop=110&ssop=6&id=".$_GET["id"]."&id_tarifa=".$_GET["id_tarifa"],"op=1008&sop=110&ssop=6&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -1514,8 +1514,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 121) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1008&sop=120&ssop=3&id=".$_GET["id"]."&id_contacto=".$_GET["id_contacto"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1008&sop=120&id=".$_GET["id"]."\">[ NO ]</a>";
+		echo boton(array("op=1008&sop=120&ssop=3&id=".$_GET["id"]."&id_contacto=".$_GET["id_contacto"],"op=1008&sop=120&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -2963,7 +2962,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 571) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1008&sop=570&ssop=3&id_proveedor=".$_GET["id_proveedor"]."\">[ SI ]</a><a href=\"index.php?op=1008&sop=570&id_proveedor=".$_GET["id_proveedor"]."\">[ NO ]</a>";
 		echo boton(array("op=1008&sop=570&ssop=3&id_proveedor=".$_GET["id_proveedor"],"op=1008&sop=570&id_proveedor=".$_GET["id_proveedor"]),array($Si,$No));
 		echo "</center>";
 	}

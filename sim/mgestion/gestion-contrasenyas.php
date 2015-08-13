@@ -78,8 +78,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 		$rowc = mysql_fetch_array($resultc);
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1024&sop=0&ssop=3&id_con=".$_GET["id_con"]."&id_contrato=".$rowc["id_contrato"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1024&sop=0&id_contrato=".$rowc["id_contrato"]."\">[ NO ]</a>";
+		echo boton(array("op=1024&sop=0&ssop=3&id_con=".$_GET["id_con"]."&id_contrato=".$rowc["id_contrato"],"op=1024&sop=0&id_contrato=".$rowc["id_contrato"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -163,6 +162,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo "<br><br><a href=\"index.php?op=1024&sop=510&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1024&sop=510\">[ NO ]</a>";
+		echo boton(array("op=1024&sop=510&ssop=3&id=".$_GET["id"],"op=1024&sop=510"),array($Si,$No));
 		echo "</center>";
 	}
 
