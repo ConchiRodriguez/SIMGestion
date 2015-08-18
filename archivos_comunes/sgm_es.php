@@ -44,6 +44,7 @@ $Anual = "Anual";
 $Apellido = "Apellido";
 $Aplicacion = "Aplicaci&oacute;n";
 $Aplicaciones = "Aplicaciones";
+$Aprobar = "Aprobar";
 $Area = "Area";
 $Archivo = "Archivo";
 $Archivos = "Archivos";
@@ -276,7 +277,7 @@ $Gastos = "Gastos";
 $General = "General";
 $Generales = "Generales";
 $Gestion = "Gesti&oacute;n";
-$Gestion_Certificaciones = "Gestión de Certificaciones";
+$Gestion_Certificaciones = "Gesti&oacute;n de Certificaciones";
 $Gestion_Comercial = "Gesti&oacute;n Comercial";
 $Grafico = "Gr&aacute;fico";
 $Grupo = "Grupo";
@@ -374,6 +375,7 @@ $NIF = "NIF";
 $No = "No";
 $Nombre = "Nombre";
 $Nombre_cliente = "Nombre cliente";
+$No_sobre = "No Sobre";
 $Nota = "Nota";
 $Notas = "Notas";
 $NoVer = "No Ver";
@@ -422,6 +424,7 @@ $Personalizada = "Personalizada";
 $Plantilla = "Plantilla";
 $Plantillas = "Plantillas";
 $Plataforma = "Plataforma";
+$Plegar = "Plegar";
 $Poblacion = "Poblaci&oacute;n";
 $por = "por";
 $Porcentage = "Porcentage";
@@ -512,7 +515,9 @@ $Stock = "Stock";
 $Subir = "Subir";
 $Subfamilia = "Subfamilia";
 $Subfamilias = "Subfamilias";
+$Subtipo = "Subtipo";
 $Subtipos = "Subtipos";
+$Subtotal = "Subtotal";
 
 $Tabla = "Tabla";
 $Tamano = "Tama&ntilde;o";
@@ -566,6 +571,8 @@ $Ver = "Ver";
 $Ver_Horas = "Ver Horas";
 $Ver_Todos = "Ver Todos";
 $Ver_Todos_Personales = "Ver Todos Personales";
+$Ver_Por_Tipo = "Ver Por Tipo";
+$Ver_Por_Usuario = "Ver Por Usuario";
 $Vigente = "Vigente";
 $Visible = "Visible";
 $Visualizar = "Visualizar";
@@ -648,5 +655,26 @@ $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-
 
 $ContratoErrorEliminar = "No se puede eliminar este contrato, ya que existen incidencias asociadas.";
 $ContratoTipoErrorEliminar = "No se puede eliminar este tipo de contrato, ya que existen contratos asociados.";
+
+$ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los difrentes tipos en el listado superior.
+<br><strong>Plantilla</strong> - Hace referencia a si este tipo debe de poder facturarse de forma continua.
+<br><strong>D&iacute;as</strong> - La periocidad en d&iacute;as en que debe regenerarse una nueva plantilla.
+<br><strong>TPV</strong> - Terminal Punto de Venta. No pide cliente, las impresiones son en formato tiquet.
+<br><strong>Caja</strong> - (Inlcuir en caja) Los resultados de este grupo se mostraran en los cierres de caja.
+<br><strong>V.Prev</strong> - (Visualizar previsi&oacute;n) Visualiza en el listado la fecha de previsi&oacute;n (usado para pedidos de clientes/proveedores).
+<br><strong>D&iacute;as</strong> - D&iacute;as que suma de forma autom&aacute;tica a la previsi&oacute;n. Fecha de previsi&oacute;n = Fecha actual + D&iacute;as.
+<br><strong>V.Ven</strong> - (Visualizar Vencimiento) Visualiza en el listado el vencimiento de la factura. Fecha de vencimiento = Fecha actual + D&iacute;as de la ficha cliente.
+<br><strong>V.Ref</strong> - (Visualizar Referencia del Cliente) Visualiza en el listado n&uacute;mero de referencia del cliente y nombre del solicitante.
+<br><strong>V.Sub</strong> - (Visualizar Subtipos) Visualiza el subtipo (en caso de que existan).
+<br><strong>V.Pes</strong> - (Visualizar Peso) Visualiza el peso y n&uacute;mero de bultos, la impresi&oacute;n se realiza sin l&iacute;neas ni totales.
+<br><strong>V.Rec</strong> - (Visualizar Recibos) Permite la gesti&oacute;n de recibos para el control del cobro.
+<br><strong>OT</strong> - Orden de trabajo. Se utilizar&aacute; en gesti&oacute;n de pedidos.
+<br><strong>Presu</strong> - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.
+<br><strong>D&iacute;as</strong> - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.
+<br><strong>Aprobar</strong> - Dar aprovaci&oacute;n a un presupuesto.
+";
+
+$ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
+$ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 
 ?>

@@ -124,7 +124,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 						$sqlcl1 = "select * from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
 						$resultcl1 = mysql_query(convert_sql($sqlcl1));
 						while ($rowcl1 = mysql_fetch_array($resultcl1)){
-							if (($_POST["id_cliente"] == $rowcl1["id"]) or ($_GET["id_cli"] == $rowcl1["id"])){
+							if ($_POST["id_cliente"] == $rowcl1["id"]){
+								echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]."</option>";
+							} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == $rowcl1["id"])){
 								echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]."</option>";
 							} else {
 								echo "<option value=\"".$rowcl1["id"]."\">- ".$rowcl1["nombre"]."</option>";
@@ -134,16 +136,19 @@ if (($option == 1018) AND ($autorizado == true)) {
 						$resultcl = mysql_query(convert_sql($sqlcl));
 						while ($rowcl = mysql_fetch_array($resultcl)){
 							if ($_POST["id_cliente"] == $rowcl["id"]){
-								echo "<option value=\"".$rowcl["id"]."\" selected>".$rowcl["nombre"]."</option>";
+								echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]."</option>";
+							} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == $rowcl["id"])){
+								echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]."</option>";
 							} else {
-								echo "<option value=\"".$rowcl["id"]."\">".$rowcl["nombre"]."</option>";
+								echo "<option value=\"".$rowcl["id"]."\"> ".$rowcl["nombre"]."</option>";
 							}
 						}
 					echo "</select></td>";
 #				echo "</tr><tr>";
 					echo "<td colspan=\"3\"><select name=\"id_servicio\" id=\"id_servicio\" style=\"width:500px;\">";
 						echo "<option value=\"0\">-</option>";
-							$sqlc = "select id_cliente_final,id from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";
+							if ($_POST["id_cliente"] != "") {$sqlc = "select id_cliente_final,id from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";}
+							elseif ($_GET["id_cli"] != "") {$sqlc = "select id_cliente_final,id from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_GET["id_cli"]."";}
 							$resultc = mysql_query(convert_sql($sqlc));
 							$rowc = mysql_fetch_array($resultc);
 							$sqlclie = "select nombre from sgm_clients where visible=1 and id=".$rowc["id_cliente_final"]." order by nombre";
@@ -852,9 +857,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$sqlcl1 = "select id,nombre from sgm_clients where visible=1 and id<>".$rowcli["id"]." and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
 								$resultcl1 = mysql_query(convert_sql($sqlcl1));
 								while ($rowcl1 = mysql_fetch_array($resultcl1)){
-									if (($_POST["id_cliente"] == $rowcl1["id"]) or ($_GET["id_cli"] == $rowcl1["id"])){
+									if ($_POST["id_cliente"] == $rowcl1["id"]){
 										echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]."</option>";
-									} elseif (($_POST["id_cliente"] == "") and ($row["id_cliente"] == $rowcl1["id"])){
+									} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == $rowcl1["id"])){
+										echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]."</option>";
+									} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == "") and ($row["id_cliente"] == $rowcl1["id"])){
 										echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]."</option>";
 									} else {
 										echo "<option value=\"".$rowcl1["id"]."\">- ".$rowcl1["nombre"]."</option>";
@@ -864,11 +871,13 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$resultcl = mysql_query(convert_sql($sqlcl));
 								while ($rowcl = mysql_fetch_array($resultcl)){
 									if ($_POST["id_cliente"] == $rowcl["id"]){
-										echo "<option value=\"".$rowcl["id"]."\" selected>".$rowcl["nombre"]."</option>";
-									} elseif (($_POST["id_cliente"] == "") and ($row["id_cliente"] == $rowcl["id"])){
-										echo "<option value=\"".$rowcl["id"]."\" selected>".$rowcl["nombre"]."</option>";
+										echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]."</option>";
+									} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == $rowcl["id"])){
+										echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]."</option>";
+									} elseif (($_POST["id_cliente"] == "") and ($_GET["id_cli"] == "") and ($row["id_cliente"] == $rowcl["id"])){
+										echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]."</option>";
 									} else {
-										echo "<option value=\"".$rowcl["id"]."\">".$rowcl["nombre"]."</option>";
+										echo "<option value=\"".$rowcl["id"]."\"> ".$rowcl["nombre"]."</option>";
 									}
 								}
 							echo "</select></td>";
@@ -881,6 +890,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 										$sqlc = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";
 									} elseif ($row["id_cliente"] != ""){
 										$sqlc = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row["id_cliente"]."";
+									} elseif ($_GET["id_cli"] != ""){
+										$sqlc = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_GET["id_cli"]."";
 									}
 									$resultc = mysql_query(convert_sql($sqlc));
 									while ($rowc = mysql_fetch_array($resultc)){
@@ -1194,7 +1205,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 									if ($horas[0]<10) { $horas_x = "0".$horas[0]; } else { $horas_x = $horas[0]; }
 									if ($minutos<10) { $minutos_x = "0".$minutos; } else { $minutos_x = $minutos; }
 									echo "<td style=\"width:100px;\"><a href=\"index.php?op=1018&sop=200&filtra=1&d=".$i."&m=".$me."&a=".$_POST["any"]."&u=".$_POST["id_usuario"]."\">".$horas_x." Hr. ".$minutos_x." min.</a></td>";
-								$total_mes += $rowis["duracion_total"];
+									$total_mes += $rowis["duracion_total"];
 	#							$total_sem += $rowis["duracion_total"];
 	#							if (date("w", ($data2)) == 6){
 	#								echo "<tr><td><strong>".$Total." ".$Horas."</strong></td>";

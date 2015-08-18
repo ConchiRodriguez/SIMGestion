@@ -704,9 +704,8 @@ ALTER TABLE `sgm_factura_tipos` ADD `v_rfq` tinyint(1) NOT NULL default '0' AFTE
 
 CREATE TABLE `sgm_factura_tipos_idiomas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_factura_tipos_idiomas` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_factura_tipos_idiomas` ADD `cat`  varchar(100) NOT NULL default '' AFTER `id_tipo`;
-ALTER TABLE `sgm_factura_tipos_idiomas` ADD `uk`  varchar(100) NOT NULL default '' AFTER `cat`;
-ALTER TABLE `sgm_factura_tipos_idiomas` ADD `fr`  varchar(100) NOT NULL default '' AFTER `uk`;
+ALTER TABLE `sgm_factura_tipos_idiomas` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `id_tipo`;
+ALTER TABLE `sgm_factura_tipos_idiomas` ADD `tipo`  varchar(100) NOT NULL default '' AFTER `id_idioma`;
 
 CREATE TABLE `sgm_factura_tipos_permisos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_factura_tipos_permisos` ADD `id_user` int(11) NOT NULL default '0' AFTER `id`;

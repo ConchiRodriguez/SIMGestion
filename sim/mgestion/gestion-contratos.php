@@ -20,7 +20,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=210\" class=".$class.">".$Indicadores."</a></td>";
 					if ($soption == 290) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=290\" class=".$class.">".$Informes."</a></td>";
-					if (($soption >= 300) and ($soption < 600)) {$class = "menu_select";} else {$class = "menu";}
+					if (($soption >= 500) and ($soption < 600)) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=500\" class=".$class.">".$Administrar."</a></td>";
 				echo "</tr>";
 			echo "</table>";
@@ -715,7 +715,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			echo boton(array("op=1002&sop=510","op=1002&sop=520"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA));
+			echo boton(array("op=1011&sop=510","op=1011&sop=520"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA));
 		}
 		if ($admin == false) {
 			echo $UseNoAutorizado;
@@ -747,7 +747,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		}
 
 		echo "<h4>".$Tipos." ".$Contratos."</h4>";
-		echo boton(array("op=1002&sop=500"),array("&laquo; ".$Volver));
+		echo boton(array("op=1011&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th>".$Eliminar."</th>";
@@ -803,7 +803,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		}
 
 		echo "<h4>".$Cobertura." ".$SLA."</h4>";
-		echo boton(array("op=1002&sop=500"),array("&laquo; ".$Volver));
+		echo boton(array("op=1011&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th>".$Eliminar."</th>";
@@ -842,6 +842,6 @@ if (($option == 1011) AND ($autorizado == true)) {
 	}
 
 	echo "</td></tr></table><br>";
-	}
+}
 ?>
 

@@ -66,13 +66,12 @@ if (($option == 200) and ($user == false)) {
 		echo "<tr><td></td><td><table cellpadding=\"1\" cellspacing=\"0\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<td style=\"width:100px;text-align:left;\">".$Total."</td>";
-				$temps = 0;
-				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where id_incidencia<>0 and id_usuario_registro=".$userid."";
+				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where visible=1 and id_incidencia<>0 and id_usuario_registro=".$userid."";
 				$resulti = mysql_query(convert_sql($sqli));
 				$rowi = mysql_fetch_array($resulti);
 				$hora = $rowi["duracion_total"]/60;
 				$horas = explode(".",$hora);
-				$minutos = $temps % 60;
+				$minutos = $rowi["duracion_total"] % 60;
 
 				$fecha1 = strtotime('2013-05-01');
 				$fecha2 = time();

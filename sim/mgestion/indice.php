@@ -32,6 +32,7 @@
 	if ($option == 1024) { include ("mgestion/gestion-contrasenyas.php");}
 	if ($option == 1025) { include ("mgestion/gestion-monitorizacion.php");}
 	if ($option == 1026) { include ("mgestion/gestion-licencias.php");}
+	if ($option == 1027) { include ("mgestion/gestion-facturacion.php");}
 
 	if ($option == 1030) { include ("mgestion/gestion-club.php");}
 

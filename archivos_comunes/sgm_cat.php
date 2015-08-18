@@ -44,6 +44,7 @@ $Anual = "Anual";
 $Apellido = "Cognom";
 $Aplicacion = "Aplicaci&oacute;";
 $Aplicaciones = "Aplicacions";
+$Aprovar = "Aprovar";
 $Archivo = "Archiu";
 $Archivos = "Archius";
 $Archivos_subidos = "Archius pujats";
@@ -245,7 +246,7 @@ $FACTURADO = "FACTURAT";
 $Familia = "Familia";
 $Familias = "Families";
 $Fax = "Fax";
-$Fecha = "Data";
+$Data = "Data";
 $Festividad = "Festivitat";
 $FICHA = "FICHA";
 $Ficha = "Fitxa";
@@ -373,6 +374,7 @@ $NIF = "NIF";
 $No = "No";
 $Nombre = "Nom";
 $Nombre_cliente = "Nom client";
+$No_sobre = "No Sobre";
 $Nota = "Nota";
 $Notas = "Notes";
 $NoVer = "No Veure";
@@ -421,6 +423,7 @@ $Personalizada = "Personalitzada";
 $Plantilla = "Plantilla";
 $Plantillas = "Plantilles";
 $Plataforma = "Plataforma";
+$Plegar = "Plegar";
 $Poblacion = "Poblaci&oacute;";
 $Por = "Per";
 $por = "per";
@@ -513,6 +516,7 @@ $Subfamilia = "Subfamilia";
 $Subfamilias = "Subfamilies";
 $Subir = "Pujar";
 $Subtipos = "Subtipus";
+$Subtotal = "Subtotal";
 
 $Tabla = "Taula";
 $Tarifas = "Tarifes";
@@ -566,9 +570,11 @@ $Ver = "Veure";
 $Ver_Horas = "Veure Hores";
 $Ver_Todos = "Veure Tots";
 $Ver_Todos_Personales = "Veure Tots Personals";
+$Ver_Por_Tipo = "Veure Per Tipo";
+$Ver_Por_Usuario = "Veure Per Usuario";
 $Vigente = "Vigent";
 $Visible = "Visible";
-$Visualizar = "Visualitzar";
+$Visualitzar = "Visualitzar";
 $Volver = "Tornar";
 
 $Web = "Web";
@@ -647,5 +653,28 @@ $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-
 
 $ContratoErrorEliminar = "No es pot eliminar aquest contracte, per que existeixen incidencies associades.";
 $ContratoTipoErrorEliminar = "No es pot eliminar aquest tipus de contracte, per que existeixen contractes associats.";
+
+$ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els diferents tipus en el llistat superior.
+<br><strong>Plantilla</strong> - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.
+<br><strong>Dies</strong> - La periocitat en dies en que s'ha de regenerar una nova plantilla.
+<br><strong>TPV</strong> - Terminal Punt de Venda. No Demana client, les impresions son en format tiquet.
+<br><strong>Caja</strong> - (Incluir en caixa) Els resultats de aquest grup es mostraran en els tancament de caixa.
+<br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
+<br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
+<br><strong>Dies</strong> - Dies que suma de forma autom&agrave;tica a la previsi&oacute;n. Data de previsi&oacute; = Data actual + D&iacute;as.
+<br><strong>V.Ven</strong> - (Visualitzar Vencimient) Visualitza en el llistat el vencimient de la factura. Data de vencimient = Data actual + Dies de la fitxa client.
+<br><strong>V.Ref</strong> - (Visualitzar Referencia del Cliente) Visualitza en el llistat n&uacute;mero de referencia del cliente y nombre de solicitante.
+<br><strong>V.Sub</strong> - (Visualitzar Subtipus) Visualitza el subtipus (en cas de que existeixin).
+<br><strong>V.Pes</strong> - (Visualitzar Peso) Visualitza el pes i n&uacute;mero de fardells, la impresi&oacute; es realitza sense linias ni totals.
+<br><strong>V.Rec</strong> - (Visualitzar Recibos) Permet la gesti&oacute; de rebuts pel control del cobrament.
+<br><strong>OT</strong> - Ordre de treball. S'utilitzar&agrave; en gesti&oacute; de comandes.
+<br><strong>Presu</strong> - Format de pressupuest. Vencimient i c&agrave;lcul de costos.
+<br><strong>Dies</strong> - Dies que suma a la caducidad del pressupuesto. Data de caducidad = Data actual + Dies.
+<br><strong>Aprovar</strong> - Donar aprovaci&oacute; a un pressupuesto.
+<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualitza n&uacute;mero RFQ.
+";
+
+$ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
+$ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 
 ?>
