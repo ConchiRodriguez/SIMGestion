@@ -33,6 +33,10 @@ input.formclient{
 	width:400px;
 }
 
+input[type="submit"]{
+	width:100px;
+}
+
 td.ficha{
 	width: 120px;
 	text-align: center;

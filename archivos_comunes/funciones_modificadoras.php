@@ -40,7 +40,7 @@ function deleteFunction ($tabla,$id){
 #function insertCabezera($numero,$tipo,$subtipo,$version,$numero_rfq,$numero_cliente,$fecha,$fecha_prevision,$id_cliente,$id_contrato,$id_licencia,$id_dades_origen_factura_iban){
 function insertCabezera($datosInsert){
 	global $userid;
-	print_r($datosInsert);
+#	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
 		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=7 order by numero desc";
 		$resultxx = mysql_query(convert_sql($sqlxx));
@@ -50,8 +50,9 @@ function insertCabezera($datosInsert){
 	} else {
 		$numero = $datosInsert['numero'];
 		$tipo = $datosInsert['tipo'];
+		$version = $datosInsert['version'];
 	}
-	$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and tipo=".$tipo;
+	$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and version=".$version." and tipo=".$tipo;
 	$resultcc = mysql_query(convert_sql($sqlcc));
 	$rowcc = mysql_fetch_array($resultcc);
 	if ($rowcc["total"] == 0){
@@ -78,6 +79,7 @@ function insertCabezera($datosInsert){
 			$epoblacion = $row["poblacion"];
 			$ecp = $row["cp"];
 			$eprovincia = $row["provincia"];
+			$eid_pais = $row["id_pais"];
 		}
 		if ($row["id_direccion_envio"] <> 0) {
 			$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
@@ -87,6 +89,7 @@ function insertCabezera($datosInsert){
 			$epoblacion = $row3["poblacion"];
 			$ecp = $row3["cp"];
 			$eprovincia = $row3["provincia"];
+			$eid_pais = $row3["id_pais"];
 		}
 		$sql2 = "select * from sgm_dades_origen_factura";
 		$result2 = mysql_query(convert_sql($sql2));
@@ -106,9 +109,9 @@ function insertCabezera($datosInsert){
 			$id_dades_origen_factura_iban = $datosInsert['id_dades_origen_factura_iban'];
 		}
 
-		$camposInsert = "numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,cuenta,id_contrato,id_licencia,id_dades_origen_factura_iban";
-		$datosInsert = array($numero,21,$datosInsert["version"],$datosInsert["numero_rfq"],$datosInsert["numero_cliente"],$datosInsert["fecha"],$fecha_prevision,$fecha_entrega,$fecha_vencimiento,$tipo,$datosInsert['subtipo'],$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["id_pais"],$row["mail"],$row["telefono"],$edireccion,$epoblacion,$ecp,$eprovincia,$row2["nombre"],$row2["nif"],$row2["direccion"],$row2["poblacion"],$row2["cp"],$row2["provincia"],$row2["mail"],$row2["telefono"],$datosInsert['id_cliente'],$userid,$rowd["id"],$rowd["canvi"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"],$row["cuentacontable"],$datosInsert['id_contrato'],$datosInsert['id_licencia'],$id_dades_origen_factura_iban);
-		insertFunction ("sgm_cabezera",$camposInsert,$datosInsert);
+		$camposInsert = "numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,eid_pais,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,cuenta,id_contrato,id_licencia,id_dades_origen_factura_iban,notas,total_forzado,recibos,confirmada,confirmada_cliente";
+		$datosInsert2 = array($numero,21,$version,$datosInsert["numero_rfq"],$datosInsert["numero_cliente"],$datosInsert["fecha"],$fecha_prevision,$fecha_entrega,$fecha_vencimiento,$tipo,$datosInsert['subtipo'],$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["id_pais"],$row["mail"],$row["telefono"],$edireccion,$epoblacion,$ecp,$eprovincia,$eid_pais,$row2["nombre"],$row2["nif"],$row2["direccion"],$row2["poblacion"],$row2["cp"],$row2["provincia"],$row2["mail"],$row2["telefono"],$datosInsert['id_cliente'],$userid,$rowd["id"],$rowd["canvi"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"],$row["cuentacontable"],$datosInsert['id_contrato'],$datosInsert['id_licencia'],$id_dades_origen_factura_iban,$datosInsert['notas'],$datosInsert['total_forzado'],$datosInsert['recibos'],$datosInsert['confirmada'],$datosInsert['confirmada_cliente']);
+		insertFunction ("sgm_cabezera",$camposInsert,$datosInsert2);
 	}
 }
 
