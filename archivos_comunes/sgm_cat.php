@@ -81,6 +81,7 @@ $Cajas = "Caixes";
 $Calculadora = "Calculadora";
 $Calculo = "C&agrave;lcul";
 $Calendario = "Calendari";
+$Calendario_Economico = "Calendari Econ&ograve;mic";
 $Calle = "Carrer";
 $Calles = "Carrers";
 $Cambiada = "Canviada";
@@ -138,6 +139,7 @@ $Contrato = "Contracte";
 $Contratos = "Contractes";
 $Controles_de_calidad = "Controls de qualitat";
 $Convertir = "Convertir";
+$ConvertirAArticulo = "Convertir a Article";
 $Correcto = "Correcte";
 $Correo = "Correo";
 $Corriente = "Corrent";
@@ -459,6 +461,7 @@ $Puerto = "Port";
 $PVP = "PVP";
 $PVD = "PVD";
 
+$Recalcular = "Recalcular";
 $Recibos = "Rebuts";
 $Red = "Xarxa";
 $Referencias = "Referencies";
@@ -684,5 +687,10 @@ $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els di
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
 $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 $ayudaFacturaCerrar = "Es tancar&agrave; la factura i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";
+
+$ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
+$ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";
+
+$pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
 
 ?>

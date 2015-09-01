@@ -79,6 +79,7 @@ $Caducadas = "Caducadas";
 $Calculadora = "Calculadora";
 $Calculo = "C&aacute;lculo";
 $Calendario = "Calendario";
+$Calendario_Economico = "Calendario Econ&oacute;mico";
 $Calle = "Calle";
 $Calles = "Calles";
 $Caja = "Caja";
@@ -139,6 +140,7 @@ $Contrasenas = "Contrase&ntilde;as";
 $Contrato = "Contrato";
 $Contratos = "Contratos";
 $Convertir = "Convertir";
+$ConvertirAArticulo = "Convertir a Art&iacute;culo";
 $Correcto = "Correcto";
 $Correo = "Correo";
 $Corriente = "Corriente";
@@ -460,6 +462,7 @@ $Puerto = "Puerto";
 $PVP = "PVP";
 $PVD = "PVD";
 
+$Recalcular = "Recalcular";
 $Recibos = "Recibos";
 $Red = "Red";
 $Referencias = "Referencias";
@@ -685,5 +688,10 @@ $ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los dif
 $ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
 $ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 $ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
+
+$ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
+$ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";
+
+$pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta acci&oacute;n puede durar varios minutos, ya que se har&aacute; un rec&aacute;lculo total desde el 1 de Enero de 2012.";
 
 ?>

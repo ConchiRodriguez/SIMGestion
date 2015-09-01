@@ -1897,8 +1897,6 @@ function agenda_mes($dia_select,$year,$mes,$usuario) {
 	return $mesok; 
 }
 
-
-
 function valida_nif_cif_nie($cif) {
 	//returns: 1 = NIF ok, 2 = CIF ok, 3 = NIE ok, -1 = NIF bad, -2 = CIF bad,-3 = NIE bad, 0 = ??? bad
 	$cif=strtoupper($cif);
