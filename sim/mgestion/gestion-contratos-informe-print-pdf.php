@@ -106,7 +106,7 @@ class PDF extends FPDF
 	}
 
 	function informe_print($id_cliente, $id_contrato){
-		global $meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerradas,$pendientes,$pausadas,$fuera_sla,$pocentaje_sla,$tiempo,$total_contrato,$asunto,$estado;
+		global $cobertura,$meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerradas,$pendientes,$pausadas,$fuera_sla,$pocentaje_sla,$tiempo,$total_contrato,$asunto,$estado;
 		//Creación del objeto de la clase heredada
 
 		$sqlcli = "select * from sgm_clients where id=".$id_cliente;
@@ -159,7 +159,7 @@ class PDF extends FPDF
 		$mes_act = $mes_ini;
 
 		while (($mes_act>=$mes_ini) and ($mes_act<=$mes_fin)){
-			if ($_POST["horas"] == 1){ $ample = 40; } else { $ample = 55; }
+			if ($_POST["horas"] == 1){ $ample = 40; } else { $ample = 60; }
 			$any_inicio = date("Y",$mes_act);
 			$mes_inicio = date("n",$mes_act);
 			$dia_inicio = date("d",$mes_act);
@@ -169,13 +169,14 @@ class PDF extends FPDF
 			$this->Cell(180,5,$meses[$mes_inicio-1]." ".$any_inicio,0,1);
 			$this->SetFont('Verdana','',6);
 			$this->Cell($ample,5,"",'LTBR',0,0);
-			$this->Cell(20,5,"".$abiertas."",'LTBR',0);
-			$this->Cell(20,5,"".$cerradas."",'TBR',0);
-			$this->Cell(20,5,"".$pendientes."",'TBR',0);
-			$this->Cell(20,5,"".$pausadas."",'TBR',0);
-			$this->Cell(20,5,"".$fuera_sla."",'TBR',0);
+			$this->Cell(20,5,"".$cobertura."",'LTBR',0);
+			$this->Cell(17,5,"".$abiertas."",'LTBR',0);
+			$this->Cell(17,5,"".$cerradas."",'TBR',0);
+			$this->Cell(17,5,"".$pendientes."",'TBR',0);
+			$this->Cell(17,5,"".$pausadas."",'TBR',0);
+			$this->Cell(17,5,"".$fuera_sla."",'TBR',0);
 			if ($_POST["horas"] == 1){
-				$this->Cell(25,5,"".$pocentaje_sla."",'TBR',0);
+				$this->Cell(20,5,"".$pocentaje_sla."",'TBR',0);
 				$this->Cell(15,5,"".$tiempo."",'TBR',1);
 			} else {
 				$this->Cell(25,5,"".$pocentaje_sla."",'TBR',1);
@@ -246,6 +247,10 @@ class PDF extends FPDF
 					}
 				}
 
+				$sqlcsc = "select * from sgm_contratos_sla_cobertura where visible=1 and id=".$rowcs["id_cobertura"];
+				$resultcsc = mysql_query(convert_sql($sqlcsc));
+				$rowcsc = mysql_fetch_array($resultcsc);
+
 				$this->SetFont('Verdana','',7);
 				$text = comillasInver($rowcs["servicio"]);
 				$num_lines = $this->NbLines($ample,$text);
@@ -257,13 +262,16 @@ class PDF extends FPDF
 				$y=$this->GetY();
 				$this->SetXY($x+$ample,$y-$height);
 				$this->SetFont('Verdana','',6);
-				$this->Cell(20,$height,$rowi1["abiertas"],'LTBR',0);
-				$this->Cell(20,$height,$rowi2["cerradas"],'LTBR',0);
-				$this->Cell(20,$height,$rowi3["pendientes"],'LTBR',0);
-				$this->Cell(20,$height,$rowi4["pausadas"],'LTBR',0);
-				$this->Cell(20,$height,$fora_sla,'LTBR',0);
+				if ($rowcs["nbd"] == 1) {$nbd = "nbd ";}
+				$cober = $rowcsc["nombre"]." ".$nbd.$rowcs["sla"]."%";
+				$this->Cell(20,$height,$cober,'LTBR',0);
+				$this->Cell(17,$height,$rowi1["abiertas"],'LTBR',0);
+				$this->Cell(17,$height,$rowi2["cerradas"],'LTBR',0);
+				$this->Cell(17,$height,$rowi3["pendientes"],'LTBR',0);
+				$this->Cell(17,$height,$rowi4["pausadas"],'LTBR',0);
+				$this->Cell(17,$height,$fora_sla,'LTBR',0);
 				if ($_POST["horas"] == 1){
-					$this->Cell(25,$height,$porcentageSLA,'LTBR',0);
+					$this->Cell(20,$height,$porcentageSLA,'LTBR',0);
 					$this->Cell(15,$height,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
 				} else {
 					$this->Cell(25,$height,$porcentageSLA,'LTBR',1);
@@ -273,14 +281,15 @@ class PDF extends FPDF
 			$this->SetFont('Verdana','',7);
 			$this->Cell($ample,5,$total,'LTBR',0);
 			$this->SetFont('Verdana','',6);
-			$this->Cell(20,5,$open,'LTBR',0);
-			$this->Cell(20,5,$close,'LTBR',0);
-			$this->Cell(20,5,$pendin,'LTBR',0);
-			$this->Cell(20,5,$stoped,'LTBR',0);
-			$this->Cell(20,5,$outSLA,'LTBR',0);
+			$this->Cell(20,5,'','LTBR',0);
+			$this->Cell(17,5,$open,'LTBR',0);
+			$this->Cell(17,5,$close,'LTBR',0);
+			$this->Cell(17,5,$pendin,'LTBR',0);
+			$this->Cell(17,5,$stoped,'LTBR',0);
+			$this->Cell(17,5,$outSLA,'LTBR',0);
 			$porcentageSLA_total = number_format(((100*($open-$outSLA))/$open),2, ',', '.');
 			if ($_POST["horas"] == 1){
-				$this->Cell(25,5,$porcentageSLA_total,'LTBR',0);
+				$this->Cell(20,5,$porcentageSLA_total,'LTBR',0);
 				$hora = $time/60;
 				$horas = explode(".",$hora);
 				$minuto = ($hora - $horas[0])*60;
@@ -323,13 +332,14 @@ class PDF extends FPDF
 		$this->Cell(180,5,"".$total_contrato."",0,1);
 		$this->SetFont('Verdana','',6);
 		$this->Cell($ample,5,"",'LTBR',0,0);
-		$this->Cell(20,5,"".$abiertas."",'LTBR',0);
-		$this->Cell(20,5,"".$cerradas."",'LTBR',0);
-		$this->Cell(20,5,"".$pendientes."",'LTBR',0);
-		$this->Cell(20,5,"".$pausadas."",'LTBR',0);
-		$this->Cell(20,5,"".$fuera_sla."",'LTBR',0);
+		$this->Cell(20,5,"".$cobertura."",'LTBR',0);
+		$this->Cell(17,5,"".$abiertas."",'LTBR',0);
+		$this->Cell(17,5,"".$cerradas."",'LTBR',0);
+		$this->Cell(17,5,"".$pendientes."",'LTBR',0);
+		$this->Cell(17,5,"".$pausadas."",'LTBR',0);
+		$this->Cell(17,5,"".$fuera_sla."",'LTBR',0);
 		if ($_POST["horas"] == 1){
-			$this->Cell(25,5,"".$pocentaje_sla."",'TBR',0);
+			$this->Cell(20,5,"".$pocentaje_sla."",'TBR',0);
 			$this->Cell(15,5,"".$tiempo."",'TBR',1);
 		} else {
 			$this->Cell(25,5,"".$pocentaje_sla."",'TBR',1);
@@ -393,6 +403,10 @@ class PDF extends FPDF
 				}
 			}
 
+			$sqlcsc = "select * from sgm_contratos_sla_cobertura where visible=1 and id=".$rowcs["id_cobertura"];
+			$resultcsc = mysql_query(convert_sql($sqlcsc));
+			$rowcsc = mysql_fetch_array($resultcsc);
+
 			$this->SetFont('Verdana','',7);
 			$text = comillasInver($rowcs["servicio"]);
 			$num_lines = $this->NbLines($ample,$text);
@@ -404,13 +418,16 @@ class PDF extends FPDF
 			$y=$this->GetY();
 			$this->SetXY($x+$ample,$y-$height);
 			$this->SetFont('Verdana','',6);
-			$this->Cell(20,$height,$rowi1["abiertas"],'LTBR',0);
-			$this->Cell(20,$height,$rowi2["cerradas"],'LTBR',0);
-			$this->Cell(20,$height,$rowi3["pendientes"],'LTBR',0);
-			$this->Cell(20,$height,$rowi4["pausadas"],'LTBR',0);
-			$this->Cell(20,$height,$fora_sla,'LTBR',0);
+			if ($rowcs["nbd"] == 1) {$nbd = "nbd ";}
+			$cober = $rowcsc["nombre"]." ".$nbd.$rowcs["sla"]."%";
+			$this->Cell(20,$height,$cober,'LTBR',0);
+			$this->Cell(17,$height,$rowi1["abiertas"],'LTBR',0);
+			$this->Cell(17,$height,$rowi2["cerradas"],'LTBR',0);
+			$this->Cell(17,$height,$rowi3["pendientes"],'LTBR',0);
+			$this->Cell(17,$height,$rowi4["pausadas"],'LTBR',0);
+			$this->Cell(17,$height,$fora_sla,'LTBR',0);
 			if ($_POST["horas"] == 1){
-				$this->Cell(25,$height,$porcentageSLA,'LTBR',0);
+				$this->Cell(20,$height,$porcentageSLA,'LTBR',0);
 				$this->Cell(15,$height,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
 			} else {
 				$this->Cell(25,$height,$porcentageSLA,'LTBR',1);
@@ -419,19 +436,22 @@ class PDF extends FPDF
 		$this->SetFont('Verdana','',7);
 		$this->Cell($ample,5,$total,'LTBR',0);
 		$this->SetFont('Verdana','',6);
-		$this->Cell(20,5,$open,'LTBR',0);
-		$this->Cell(20,5,$close,'LTBR',0);
-		$this->Cell(20,5,$pendin,'LTBR',0);
-		$this->Cell(20,5,$stoped,'LTBR',0);
-		$this->Cell(20,5,$outSLA,'LTBR',0);
+		$this->Cell(20,5,'','LTBR',0);
+		$this->Cell(17,5,$open,'LTBR',0);
+		$this->Cell(17,5,$close,'LTBR',0);
+		$this->Cell(17,5,$pendin,'LTBR',0);
+		$this->Cell(17,5,$stoped,'LTBR',0);
+		$this->Cell(17,5,$outSLA,'LTBR',0);
 		$porcentageSLA_total = number_format(((100*($open-$outSLA))/$open),2, ',', '.');
-		$this->Cell(25,5,$porcentageSLA_total,'LTBR',0);
 		if ($_POST["horas"] == 1){
+			$this->Cell(20,5,$porcentageSLA_total,'LTBR',0);
 			$hora = $time/60;
 			$horas = explode(".",$hora);
 			$minuto = ($hora - $horas[0])*60;
 			$minutos = explode(".",$minuto);
 			$this->Cell(15,5,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
+		} else {
+			$this->Cell(25,5,$porcentageSLA_total,'LTBR',0);
 		}
 	}
 }

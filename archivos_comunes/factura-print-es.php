@@ -54,4 +54,6 @@ $estado = "Estado";
 $incidencias_pendientes = "Incidencias Pendientes";
 $abierta = "Abierta";
 $pausada = "Pausada";
+$cobertura = "Cobertura";
+
 ?>
