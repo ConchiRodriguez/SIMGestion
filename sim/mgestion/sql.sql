@@ -151,7 +151,7 @@ ALTER TABLE `sgm_cabezera` ADD `subtotal` decimal(11,3) NOT NULL default '0.000'
 ALTER TABLE `sgm_cabezera` ADD `descuento` decimal(11,3) NOT NULL default '0.000' AFTER `subtotal`;
 ALTER TABLE `sgm_cabezera` ADD `descuento_absoluto` decimal(11,3) NOT NULL default '0.000' AFTER `descuento`;
 ALTER TABLE `sgm_cabezera` ADD `subtotaldescuento` decimal(11,3) NOT NULL default '0.000' AFTER `descuento_absoluto`;
-ALTER TABLE `sgm_cabezera` ADD `iva` decimal(11,3) NOT NULL default '16.000' AFTER `subtotaldescuento`;
+ALTER TABLE `sgm_cabezera` ADD `iva` decimal(11,3) NOT NULL default '21.000' AFTER `subtotaldescuento`;
 ALTER TABLE `sgm_cabezera` ADD `total` decimal(11,3) NOT NULL default '0.000' AFTER `iva`;
 ALTER TABLE `sgm_cabezera` ADD `total_forzado` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `total` ;
 ALTER TABLE `sgm_cabezera` ADD `id_cliente` int(5) NOT NULL default '0' AFTER `total_forzado`;
@@ -169,7 +169,7 @@ ALTER TABLE `sgm_cabezera` ADD `nombre_contacto` varchar(20) default NULL AFTER 
 ALTER TABLE `sgm_cabezera` ADD `confirmada` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `nombre_contacto` ;
 ALTER TABLE `sgm_cabezera` ADD `confirmada_cliente` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `confirmada` ;
 ALTER TABLE `sgm_cabezera` ADD `id_divisa` int(11) NOT NULL default '0' AFTER `confirmada_cliente`;
-ALTER TABLE `sgm_cabezera` ADD `div_canvi` decimal(11,3) NOT NULL default '0.000' AFTER `id_divisa`;
+ALTER TABLE `sgm_cabezera` ADD `div_canvi` int(11) NOT NULL default '0' AFTER `id_divisa`;
 ALTER TABLE `sgm_cabezera` ADD `imp_exp` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `div_canvi` ;
 ALTER TABLE `sgm_cabezera` ADD `trz` int(11) NOT NULL default '0' AFTER `imp_exp`;
 ALTER TABLE `sgm_cabezera` ADD `cnombre` varchar(55) NOT NULL default '' AFTER `trz`;
@@ -594,6 +594,7 @@ ALTER TABLE `sgm_dades_origen_factura` ADD `logo1` varchar(50) NOT NULL default 
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo2` varchar(50) NOT NULL default '' AFTER `logo1`;
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo_ticket` varchar(50) NOT NULL default '' AFTER `logo2`;
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo_papel` varchar(50) NOT NULL default '' AFTER `logo_ticket`;
+ALTER TABLE `sgm_dades_origen_factura` ADD `iva` decimal(11,3) NOT NULL default '0.000' AFTER `logo_papel`;
 
 CREATE TABLE `sgm_dades_origen_factura_iban` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_dades_origen_factura_iban` ADD `id_dades_origen_factura` int(11) NOT NULL default '0' AFTER `id`;

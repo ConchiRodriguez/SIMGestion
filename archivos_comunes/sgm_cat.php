@@ -86,6 +86,7 @@ $Calle = "Carrer";
 $Calles = "Carrers";
 $Cambiada = "Canviada";
 $Cambiar = "Canviar";
+$Cambio_Importe_a = "Canvi Import a";
 $Cambio = "Canvi";
 $Campos = "Camps";
 $Campos_obligatorios = "Camps obligatoris";

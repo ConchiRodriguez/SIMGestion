@@ -86,6 +86,7 @@ $Caja = "Caja";
 $Cajas = "Cajas";
 $Cambiada = "Cambiada";
 $Cambiar = "Cambiar";
+$Cambio_Importe_a = "Cambio Importe a";
 $Cambio = "Cambio";
 $Cambios_fecha = "Cambio de fecha";
 $Campos = "Campos";
