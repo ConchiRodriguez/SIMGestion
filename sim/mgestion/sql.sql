@@ -316,6 +316,7 @@ ALTER TABLE `sgm_clients` ADD `tipo_residencia` int(11) NOT NULL default '0' AFT
 ALTER TABLE `sgm_clients` ADD `dir3_oficina_contable` varchar(15) NOT NULL default '' AFTER `tipo_persona`;
 ALTER TABLE `sgm_clients` ADD `dir3_organo_gestor` varchar(15) NOT NULL default '' AFTER `dir3_oficina_contable`;
 ALTER TABLE `sgm_clients` ADD `dir3_unidad_tramitadora` varchar(15) NOT NULL default '' AFTER `dir3_organo_gestor`;
+ALTER TABLE `sgm_clients` ADD `dia_mes_vencimiento` int(11) NOT NULL default '0' AFTER `dias_vencimiento`;
 
 CREATE TABLE `sgm_clients_bases_dades` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_bases_dades` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;

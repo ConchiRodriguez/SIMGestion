@@ -462,6 +462,7 @@ $PVP = "PVP";
 $PVD = "PVD";
 
 $Recalcular = "Recalcular";
+$Recibo = "Rebut";
 $Recibos = "Rebuts";
 $Red = "Xarxa";
 $Referencias = "Referencies";

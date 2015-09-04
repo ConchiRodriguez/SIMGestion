@@ -1179,8 +1179,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 			updateFunction ("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("dias_vencimiento","dias","cuentacontable");
-			$datosUpdate = array($_POST["dias_vencimiento"],$_POST["dias"],$_POST["cuentacontable"]);
+			$camposUpdate = array("dias_vencimiento","dias","dia_mes_vencimiento","cuentacontable");
+			$datosUpdate = array($_POST["dias_vencimiento"],$_POST["dias"],$_POST["dia_mes_vencimiento"],$_POST["cuentacontable"]);
 			updateFunction ("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
 			$i = 1;
 			$sqlz = "select * from sgm_clients_dias_facturacion where id_cliente=".$_GET["id"]." order by dia";
@@ -1267,51 +1267,43 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td>".$Dia." ".$Facturacion."</td>";
 							echo "<td>";
 								$i = 1;
-								echo "<select name=\"dia_facturacion".$i."\">";
-									echo "<option value=\"0\">-</option>";
-									for ($x = 1; $x < 32; $x++) { echo "<option value=\"".$x."\">".$x."</option>";	}
-								echo "</select>";
 								$sqlz = "select * from sgm_clients_dias_facturacion where id_cliente=".$row["id"]." order by dia";
 								$resultz = mysql_query(convert_sql($sqlz));
-								while ($rowz = mysql_fetch_array($resultz)) {
-									$i++;
-									echo "&nbsp;<select name=\"dia_facturacion".$i."\">";
-										echo "<option value=\"0\">-</option>";
-										for ($x = 1; $x < 32; $x++) { 
-											if ($rowz["dia"] == $x) { echo "<option value=\"".$x."\" selected>".$x."</option>";
-											} else { echo "<option value=\"".$x."\">".$x."</option>";
-											}
+								$rowz = mysql_fetch_array($resultz);
+								echo "<select name=\"dia_facturacion".$i."\">";
+									echo "<option value=\"0\">-</option>";
+									for ($x = 1; $x < 32; $x++) {
+										if ($rowz["dia"] == $x) {
+											echo "<option value=\"".$x."\" selected>".$x."</option>";
+										} else {
+											echo "<option value=\"".$x."\">".$x."</option>";
 										}
-									echo "</select>";
-								}
+									}
+								echo "</select>";
 							echo "</td>";
 						echo "</tr>";
 						echo "<tr>";
 							echo "<td>".$Dia." ".$Recibo."</td>";
 							echo "<td>";
 								$i = 1;
-								echo "<select name=\"dia_recibo".$i."\">";
-									echo "<option value=\"0\">-</option>";
-									for ($x = 1; $x < 32; $x++) { echo "<option value=\"".$x."\">".$x."</option>";	}
-								echo "</select>";
 								$sqlz = "select * from sgm_clients_dias_recibos where id_cliente=".$row["id"]." order by dia";
 								$resultz = mysql_query(convert_sql($sqlz));
-								while ($rowz = mysql_fetch_array($resultz)) {
-									$i++;
-									echo "&nbsp;<select name=\"dia_recibo".$i."\">";
-										echo "<option value=\"0\">-</option>";
-										for ($x = 1; $x < 32; $x++) { 
-											if ($rowz["dia"] == $x) { echo "<option value=\"".$x."\" selected>".$x."</option>";
-											} else { echo "<option value=\"".$x."\">".$x."</option>";
-											}
+								$rowz = mysql_fetch_array($resultz);
+								echo "<select name=\"dia_recibo".$i."\">";
+									echo "<option value=\"0\">-</option>";
+									for ($x = 1; $x < 32; $x++) {
+										if ($rowz["dia"] == $x) {
+											echo "<option value=\"".$x."\" selected>".$x."</option>";
+										} else {
+											echo "<option value=\"".$x."\">".$x."</option>";
 										}
-									echo "</select>";
-								}
+									}
+								echo "</select>";
 							echo "</td>";
 						echo "</tr>";
 						echo "<tr>";
 							echo "<td>".$Vencimiento."</td>";
-							echo "<td><input type=\"Text\" name=\"dias_vencimiento\" style=\"width:100px\" value=\"".$row["dias_vencimiento"]."\">&nbsp;";
+							echo "<td><input type=\"Text\" name=\"dias_vencimiento\" style=\"width:50px\" value=\"".$row["dias_vencimiento"]."\">";
 								echo "<select name=\"dias\">";
 									if ($row["dias"] == 1) {
 										echo "<option value=\"1\" selected>Días</option>";
@@ -1320,6 +1312,16 @@ if (($option == 1008) AND ($autorizado == true)) {
 									if ($row["dias"] == 0) {
 										echo "<option value=\"1\">Días</option>";
 										echo "<option value=\"0\" selected>Meses</option>";
+									}
+								echo "</select>";
+								echo "Dia de mes: <select name=\"dia_mes_vencimiento\">";
+									echo "<option value=\"0\">-</option>";
+									for ($x = 1; $x < 32; $x++) {
+										if ($row["dia_mes_vencimiento"] == $x) {
+											echo "<option value=\"".$x."\" selected>".$x."</option>";
+										} else {
+											echo "<option value=\"".$x."\">".$x."</option>";
+										}
 									}
 								echo "</select>";
 							echo "</td>";

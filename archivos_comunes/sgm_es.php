@@ -463,6 +463,7 @@ $PVP = "PVP";
 $PVD = "PVD";
 
 $Recalcular = "Recalcular";
+$Recibo = "Recibo";
 $Recibos = "Recibos";
 $Red = "Red";
 $Referencias = "Referencias";
