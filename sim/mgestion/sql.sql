@@ -611,9 +611,16 @@ ALTER TABLE `sgm_divisas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `c
 ALTER TABLE `sgm_divisas` ADD `predefinido` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sgm_divisas` ADD `simbolo` varchar(1) AFTER `predefinido`;
 
+CREATE TABLE `sgm_divisas_canvis` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_divisas_canvis` ADD `id_divisa_origen` int(11) NOT NULL AFTER `id`;
+ALTER TABLE `sgm_divisas_canvis` ADD `id_divisa_destino` int(11) NOT NULL AFTER `id_divisa_origen`;
+ALTER TABLE `sgm_divisas_canvis` ADD `canvi` decimal(11,3) NOT NULL default '0.000' AFTER `id_divisa_destino`;
+ALTER TABLE `sgm_divisas_canvis` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `canvi`;
+
 CREATE TABLE `sgm_divisas_mod_canvi` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_divisa` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_divisa`;
+ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_divisa_origen` int(11) NOT NULL AFTER `id`;
+ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_divisa_destino` int(11) NOT NULL AFTER `id_divisa_origen`;
+ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_divisa_destino`;
 ALTER TABLE `sgm_divisas_mod_canvi` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id_usuario`;
 ALTER TABLE `sgm_divisas_mod_canvi` ADD `canvi` decimal(11,3) NOT NULL default '0.000' AFTER `fecha`;
 
