@@ -55,5 +55,6 @@ $incidencias_pendientes = "Incidencias Pendientes";
 $abierta = "Abierta";
 $pausada = "Pausada";
 $cobertura = "Cobertura";
+$forma_de_pago = "Forma de pago";
 
 ?>

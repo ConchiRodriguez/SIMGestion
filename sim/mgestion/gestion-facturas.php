@@ -859,7 +859,6 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "<tr style=\"background-color:silver;\">";
 				echo "<td>".$Usuario."</td>";
 				echo "<td>".$Fecha."</td>";
-				echo "<td>".$Hora."</td>";
 			echo "</tr>";
 			$sql = "select * from sgm_factura_modificacio where id_factura=".$_GET["id"]." order by data";
 			$result = mysql_query(convert_sql($sql));
@@ -869,8 +868,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$rowu = mysql_fetch_array($resultu);
 				echo "<tr>";
 					echo "<td>".$rowu["usuario"]."</td>";
-					echo "<td>".$row["data"]."</td>";
-					echo "<td>".$row["hora"]."</td>";
+					echo "<td>".date("Y-m-d H:i:s",$row["fecha"])."</td>";
 				echo "</tr>";
 			}
 		echo "</table></center><br>";

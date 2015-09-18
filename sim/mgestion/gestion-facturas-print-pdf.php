@@ -6,12 +6,6 @@
 #	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
-	$user = false;
-if ($soption == 666) {
-	setcookie("username", "", time()+86400*$cookiestime, "/", $domain);
-	setcookie("password", "", time()+86400*$cookiestime, "/", $domain);
-	header("Location: ".$urloriginal);
-}
 
 	$idioma = strtolower($_POST["idioma"]);
 	include ("../../archivos_comunes/factura-print-".$idioma.".php");
@@ -165,10 +159,13 @@ class PDF extends FPDF
 		if ($idioma == "es"){
 			$fac_tipo = $rowx["tipo"];
 		} else {
-			$sqli = "select * from sgm_factura_tipos_idiomas where id_tipo=".$rowx["id"];
+			$sqlid = "select * from sgm_idiomas where idioma='".$idioma."'";
+			$resultid = mysql_query(convert_sql($sqlid));
+			$rowid = mysql_fetch_array($resultid);
+			$sqli = "select * from sgm_factura_tipos_idiomas where id_tipo=".$rowx["id"]." and id_idioma=".$rowid["id"];
 			$resulti = mysql_query(convert_sql($sqli));
 			$rowi = mysql_fetch_array($resulti);
-			$fac_tipo = $rowi["".$idioma.""];
+			$fac_tipo = $rowi["tipo"];
 		}
 
 		$this->SetFont('Verdana','B',18);

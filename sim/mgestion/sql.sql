@@ -614,7 +614,7 @@ ALTER TABLE `sgm_divisas` ADD `simbolo` varchar(1) AFTER `predefinido`;
 CREATE TABLE `sgm_divisas_canvis` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_divisas_canvis` ADD `id_divisa_origen` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_divisas_canvis` ADD `id_divisa_destino` int(11) NOT NULL AFTER `id_divisa_origen`;
-ALTER TABLE `sgm_divisas_canvis` ADD `canvi` decimal(11,3) NOT NULL default '0.000' AFTER `id_divisa_destino`;
+ALTER TABLE `sgm_divisas_canvis` ADD `canvi` decimal(11,4) NOT NULL default '0.0000' AFTER `id_divisa_destino`;
 ALTER TABLE `sgm_divisas_canvis` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `canvi`;
 
 CREATE TABLE `sgm_divisas_mod_canvi` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
@@ -622,7 +622,7 @@ ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_divisa_origen` int(11) NOT NULL AFTE
 ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_divisa_destino` int(11) NOT NULL AFTER `id_divisa_origen`;
 ALTER TABLE `sgm_divisas_mod_canvi` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_divisa_destino`;
 ALTER TABLE `sgm_divisas_mod_canvi` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id_usuario`;
-ALTER TABLE `sgm_divisas_mod_canvi` ADD `canvi` decimal(11,3) NOT NULL default '0.000' AFTER `fecha`;
+ALTER TABLE `sgm_divisas_mod_canvi` ADD `canvi` decimal(11,4) NOT NULL default '0.0000' AFTER `fecha`;
 
 CREATE TABLE `sgm_files` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_files` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id`;
@@ -671,6 +671,11 @@ ALTER TABLE `sgm_factura_canvi_data_prevision_cuerpo` ADD `fecha_ant` date NOT N
 ALTER TABLE `sgm_factura_canvi_data_prevision_cuerpo` ADD `data` date NOT NULL default '0000-00-00' AFTER `fecha_ant`;
 ALTER TABLE `sgm_factura_canvi_data_prevision_cuerpo` ADD `id_cuerpo` int(11) NOT NULL default '0' AFTER `data`;
 
+CREATE TABLE `sgm_factura_modificacio` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_factura_modificacio` ADD `id_factura` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_factura_modificacio` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_factura`;
+ALTER TABLE `sgm_factura_modificacio` ADD `fecha` int(25) NOT NULL default '0' AFTER `id_usuario`;
+
 CREATE TABLE `sgm_factura_subtipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_factura_subtipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id`;
 ALTER TABLE `sgm_factura_subtipos` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `visible`;
@@ -684,7 +689,7 @@ ALTER TABLE `sgm_factura_tipos` ADD `descripcion` varchar(250) NOT NULL default 
 ALTER TABLE `sgm_factura_tipos` ADD `dias` int(11) NOT NULL default '0' AFTER `descripcion`;
 ALTER TABLE `sgm_factura_tipos` ADD `facturable` tinyint(1) NOT NULL default '0' AFTER `dias`;
 ALTER TABLE `sgm_factura_tipos` ADD `tpv` tinyint(1) NOT NULL DEFAULT '0' AFTER `facturable` ;
--- en el momento de selccion destino, muestra un grupo o otro
+-- en el momento de seleccion destino, muestra un grupo o otro
 ALTER TABLE `sgm_factura_tipos` ADD `filtro` tinyint(1) NOT NULL default '1' AFTER `tpv`;
 ALTER TABLE `sgm_factura_tipos` ADD `cliente` tinyint(1) NOT NULL default '0' AFTER `filtro`;
 ALTER TABLE `sgm_factura_tipos` ADD `proveedor` tinyint(1) NOT NULL default '0' AFTER `cliente`;

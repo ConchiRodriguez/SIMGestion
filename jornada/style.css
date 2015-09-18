@@ -1,0 +1,350 @@
+body{
+	background-color: #E6E6E6;
+	font: 12px Verdana;
+	margin: auto;
+	text-align: center;
+	height: 100%;
+}
+
+html {
+	height: 100%;
+}
+
+table.principal{
+	background-color: White;
+	text-align: center;
+	margin-left: auto; 
+	margin-right: auto;	
+	border-spacing: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	max-width: 1200px;
+}
+
+tr.principal_cabezera{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:10%;
+}
+
+td.principal_cabezera{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+}
+
+table.cabezera{
+	background-color: White;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+tr.cabezera{
+	background-color: White;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+td.cabezera_logo{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:35%;
+	height:100%;
+}
+
+td.cabezera_menu{
+	background-color: White;
+	text-align: right;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:65%;
+	height:100%;
+}
+
+table.cabezera_menu{
+	background-color: White;
+	text-align: center;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 2px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+td.menu{
+	background-color: #CCCCCC;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:20%;
+	height:40px;
+}
+
+td.menu_select{
+	background-color: #33339F;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:20%;
+	height:40px;	
+}
+
+a.menu{
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+a.menu:hover{
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a.menu_select{
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+a.menu_select:hover{
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+
+p, li{
+	text-align: justify;
+	color: black;
+	text-decoration: none;
+}
+
+
+tr.principal_banner{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:15%;
+}
+
+tr.principal_cuerpo{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+tr.principal_footer{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+table.cuerpo{
+	background-color: White;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:80%;
+}
+
+td.cuerpo{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:15px;
+	width:100%;
+}
+
+table.footer{
+	background-color: Silver;
+	text-align: left;
+	vertical-align:top;
+	width:100%;
+	height:100%;
+}
+
+td.footer{
+	vertical-align:top;
+	text-align: left;
+}
+
+td.footer2{
+	width:12%;
+	vertical-align:top;
+	text-align: center;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+a{
+	color: black;
+	text-decoration: none;
+}
+
+a:hover{
+	color: blue;
+	text-decoration: underline;
+}
+
+a.footer{
+	text-decoration: none;
+	font-size: 11px;
+	color: black;
+}
+
+a.footer:hover{
+	color: blue;
+	text-decoration: underline;
+}
+
+a.image{
+	text-decoration: none;
+	border: none;
+}
+
+img{
+	border: none;
+}
+
+td.contact{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:35%;
+}
+
+td.contact2{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:65%;
+}
+
+td.form{
+	background-color: white;
+	text-align: right;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:10px;
+	width:20%;
+}
+
+td.form2{
+	background-color: white;
+	vertical-align:middle;
+	text-align: left;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:10px;
+	width:80%;
+}
+
+td.form3{
+	background-color: white;
+	text-align: justify;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+}
+
+input.form{
+	width:80%;
+	height:35px;
+}
+
+td.msg{
+	text-align: center;
+	vertical-align:middle;
+	font-style: red;
+}
+
+table.social{
+	background-color: White;
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+td.social{
+	background-color: white;
+	text-align: center;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+	width: 50%;
+	border-spacing: 0px;
+}
+
+td.rsocial{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:20%;
+}
+
+td.rsocial2{
+	background-color: white;
+	text-align: justify;
+	vertical-align: top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding: 0px;
+	width: 80%;
+}
+
+div.social{
+	height: 370px;
+	overflow: auto;
+	text-align: justify;
+}

@@ -80,7 +80,7 @@ if ($user == true) {
 
 if ($autorizado == true) {
 	echo factura_print_e($_GET["id"]);
-	echo "<a href=\"".$urloriginal."/mgestion/efactura.xml\" target=\"_blank\">facturae</a>";
+	echo "<a href=\"".$urloriginal."/mgestion/efactura.xml\">facturae</a>";
 #	header("Location: ".$urloriginal."/mgestion/efactura.xml");
 } else {
 	echo "<strong>USUARIO NO AUTORIZADO</strong>";
