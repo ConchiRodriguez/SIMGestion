@@ -1,5 +1,73 @@
 <?php
 
+function calcular_fecha_vencimiento($id_client,$fecha_factura) 
+{ 
+	global $db;
+	$sqlc = "select * from sgm_clients where id=".$id_client;
+	$resultc = mysql_query(convert_sql($sqlc));
+	$rowc = mysql_fetch_array($resultc);
+
+	$a = date("Y", strtotime($fecha_factura));
+	$m = date("m", strtotime($fecha_factura));
+	$d = date("d", strtotime($fecha_factura));
+	$fecha_factura = date("U", strtotime($fecha_factura));
+	if ($rowc["dia_mes_vencimiento"] != 0) {
+		$d = $rowc["dia_mes_vencimiento"];
+		$fecha_ven = $fecha_factura + ($rowc["dias_vencimiento"]*24*60*60);
+		$a = date("Y",$fecha_ven);
+		$m = date("m",$fecha_ven);
+		$dia = date("d",$fecha_ven);
+		if ($dia > $d){ $m = $m+1;}
+	}
+	if ($rowc["dias"] == 1) { $fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$m ,$d, $a));}
+	if ($rowc["dias"] == 0) { $fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$m+$rowc["dias_vencimiento"] ,$d, $a));}
+
+	return $fecha_vencimiento;
+}
+
+function refactura($idfactura) {
+	global $db;
+	#CALCULO DEL TOTAL DE LAS LINEAS
+	$sql = "select count(*) as total from sgm_cuerpo where idfactura=".$idfactura;
+	$result = mysql_query(convert_sql($sql));
+	$row = mysql_fetch_array($result);
+	if ($row["total"] == 0) { $subtotal = 0; } else {
+		$sql = "select sum(total) as subtotal from sgm_cuerpo where suma=0 and idfactura=".$idfactura;
+		$result = mysql_query(convert_sql($sql));
+		$row = mysql_fetch_array($result);
+		if ($row["subtotal"]) { $subtotal = $row["subtotal"]; } else { $subtotal = 0; }
+	}
+	# SELECT DE LA CABEZERA
+	$sql = "select * from sgm_cabezera where id=".$idfactura;
+	$result = mysql_query(convert_sql($sql));
+	$row = mysql_fetch_array($result);
+	if ($row["total_forzado"] == 0) {
+		$sql = "update sgm_cabezera set ";
+		$sql = $sql."subtotal=".$subtotal;
+		if ($row["descuento_absoluto"] == 0) { $x = $subtotal - (($subtotal / 100) * $row["descuento"]) ; }
+		if ($row["descuento"] == 0) { $x = $subtotal - $row["descuento_absoluto"] ;	}
+		$sql = $sql.",subtotaldescuento=".$x;
+		$xx = (($x / 100) * $row["iva"]) + $x;
+		$sql = $sql.",total=".$xx;
+		$sql = $sql." WHERE id=".$idfactura;
+		mysql_query(convert_sql($sql));
+#		echo $sql;
+	}
+	if ($row["total_forzado"] == 1) {
+		$sql = "update sgm_cabezera set ";
+		$sql = $sql."subtotal=".$subtotal;
+		$x = $row["total"]/(1+($row["iva"]/100));
+		$sql = $sql.",subtotaldescuento=".$x;
+		$xx = 100-($x/($subtotal/100));
+		$sql = $sql.",descuento=".$xx;
+		$sql = $sql.",descuento_absoluto=".($subtotal-$x);
+		$sql = $sql.",total=".$row["total"];
+		$sql = $sql." WHERE id=".$idfactura;
+		mysql_query(convert_sql($sql));
+#		echo $sql;
+	}
+}
+
 function quitarAcentos($string){
 	return strtr($string,'‡·‚„‰ÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˘˙˚¸˝ˇ¿¡¬√ƒ«»… ÀÃÕŒœ—“”‘’÷Ÿ⁄€‹›™∫','aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUYao');
 }

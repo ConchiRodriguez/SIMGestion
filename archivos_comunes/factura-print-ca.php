@@ -55,5 +55,9 @@ $abierta = "Oberta";
 $pausada = "Pausada";
 $cobertura = "Cobertura";
 $forma_de_pago = "Forma de pagament";
+$acreedor = "Acreedor";
+$deudor = "Deudor";
+$recibo = "Rebut";
+$listado_articulos = "Llistat d'Articles";
 
 ?>

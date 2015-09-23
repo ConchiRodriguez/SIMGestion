@@ -35,6 +35,7 @@ function updateFunction ($tabla,$id,$camposUpdate,$datosUpdate){
 function deleteFunction ($tabla,$id){
 	$sql = "delete from ".$tabla." WHERE id=".$id;
 	mysql_query(convert_sql($sql));
+	echo $sql;
 }
 
 #function insertCabezera($numero,$tipo,$subtipo,$version,$numero_rfq,$numero_cliente,$fecha,$fecha_prevision,$id_cliente,$id_contrato,$id_licencia,$id_dades_origen_factura_iban){
@@ -42,11 +43,15 @@ function insertCabezera($datosInsert){
 	global $userid;
 #	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
-		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=7 order by numero desc";
+		$sqltipo = "select * from sgm_factura_tipos where v_recibos=1";
+		$resulttipo = mysql_query(convert_sql($sqltipo));
+		$rowtipo = mysql_fetch_array($resulttipo);
+		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
 		$resultxx = mysql_query(convert_sql($sqlxx));
 		$rowxx = mysql_fetch_array($resultxx);
 		$numero = $rowxx["numero"] + 1;
-		$tipo = 7;
+		$tipo = $rowtipo["id"];
+		$version = 0;
 	} else {
 		$numero = $datosInsert['numero'];
 		$tipo = $datosInsert['tipo'];
@@ -70,7 +75,7 @@ function insertCabezera($datosInsert){
 			$fecha_entrega = $datosInsert['fecha'];
 		}
 		if ($rowtipos["v_fecha_vencimiento"] == 1) {
-			$fecha_vencimiento = calcular_fecha_vencimiento($datosInsert['id_cliente'],cambiarFormatoFechaYMD($datosInsert['fecha']));
+			$fecha_vencimiento = calcular_fecha_vencimiento($datosInsert['id_cliente'],$datosInsert['fecha']);
 		} else {
 			$fecha_vencimiento = $datosInsert['fecha'];
 		}
@@ -131,11 +136,10 @@ function deleteCuerpo($id,$idfactura){
 			$num++;
 		}
 	}
-	$data = date("Y-m-d");
-	$hora = date("H:i:s");
-	$camposInsert = "id_factura, id_usuario, data, hora";
-	$datosInsert = array($_GET["id"],$userid,$data,$hora);
-	insertFunction ("sgm_clients_servidors_param",$camposInsert,$datosInsert);
+	$data = date("U");
+	$camposInsert = "id_factura, id_usuario, fecha";
+	$datosInsert = array($_GET["id"],$userid,$data);
+	insertFunction ("sgm_factura_modificacio",$camposInsert,$datosInsert);
 }
 
 

@@ -263,6 +263,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$sqlc = "select * from sgm_contratos where num_contrato='".$numeroc."'";
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
+				
 				$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"];
 				$resultcs = mysql_query(convert_sql($sqlcs));
 				while ($rowcs = mysql_fetch_array($resultcs)) {
@@ -270,6 +271,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"]);
 					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 				}
+
 				$sqlca = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
 				$resultca = mysql_query(convert_sql($sqlca));
 				while ($rowca = mysql_fetch_array($resultca)) {
@@ -285,15 +287,17 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
 						$datosInsert = array($rowcab["id"],$rowcu["nombre"],$rowcu["total"],1,$rowcu["fecha_prevision"],$rowcu["fecha_prevision"],$rowcu["total"]);
 						insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
-						refactura($idfactura);
+						refactura($rowcab["id"]);
 					}
 				}
-				$sqlc = "select * from sgm_contratos where num_contrato='".$numeroc."' order by id desc";
-				$resultc = mysql_query(convert_sql($sqlc));
-				$rowc = mysql_fetch_array($resultc);
-				$camposUpdate = array("id_contrato");
-				$datosUpdate = array($rowc["id"]);
-				updateFunction ("sgm_contrasenyes",$_GET["id"],$camposUpdate,$datosUpdate);
+
+				$sqlco = "select * from sgm_contrasenyes where visible=1 and id_contrato=".$_GET["id"];
+				$resultco = mysql_query(convert_sql($sqlco));
+				while ($rowco = mysql_fetch_array($resultco)) {
+					$camposUpdate = array("id_contrato");
+					$datosUpdate = array($rowc["id"]);
+					updateFunction ("sgm_contrasenyes",$rowco["id"],$camposUpdate,$datosUpdate);
+				}
 			}
 		}
 		if ($ssoption == 10) {
@@ -306,7 +310,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
 			$datosInsert = array($row["id"],$_POST["concepto"],$_POST["importe"],1,$_POST["fecha_prevision"],$_POST["fecha_prevision"],$_POST["importe"]);
 			insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
-			refactura($idfactura);
+			refactura($row["id"]);
 #			insertCuerpo($row["id"],1,0,$_POST["concepto"],0,$_POST["importe"],1,$_POST["fecha_prevision"],0,0,$_POST["fecha_prevision"]);
 		}
 		if ($ssoption == 11) {
@@ -343,7 +347,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 #			updateCuerpo($row["id"],$_GET["id_fact"],$row["linea"],$row["codigo"],$_POST["concepto"],$row["pvd"],$_POST["importe"],1,$_POST["fecha_prevision"],$row["id_article"],$row["stock"],$_POST["fecha_prevision"],$row["descuento"],$row["descuento_absoluto"]);
 		}
 		if ($ssoption == 12) {
-			deleteCabezera($_GET["id_fact"]);
+			deleteFunction("sgm_cabezera",$_GET["id_fact"]);
 			$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);

@@ -3,8 +3,7 @@ error_reporting(~E_ALL);
 if ($servidor == "iss"){
 	date_default_timezone_set('Europe/Paris');
 }
-	include ("../config.php");
-	include ("../auxiliar/functions.php");
+	include ("../../archivos_comunes/config.php");	include ("../../archivos_comunes/functions.php");
 #	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");

@@ -273,15 +273,15 @@ class PDF extends FPDF
 		$this->MultiCell(180,3,$notas.":\n".$text_notes,'LRTB',1);
 		$this->Cell(180,3,' ',0,1);
 		$this->SetFont('Verdana','',6);
-		$this->MultiCell(180,3,$texto_pdatos,0,1);
+		$this->MultiCell(180,3,$texto_pdatos,0,'J');
 
 	}
 }
 
 	$pdf=new PDF();
-	$pdf->AddFont('Verdana','','../font/verdana.php');
-	$pdf->AddFont('Verdana-Bold','B','../font/verdanab.php');
-	$pdf->AddFont('Verdana','B','../font/verdanab.php');
+	$pdf->AddFont('Verdana','','../../archivos_comunes/font/verdana.php');
+	$pdf->AddFont('Verdana-Bold','B','../../archivos_comunes/font/verdanab.php');
+	$pdf->AddFont('Verdana','B','../../archivos_comunes/font/verdanab.php');
 	$pdf->AliasNbPages();
 
 
