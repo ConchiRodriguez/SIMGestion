@@ -3,8 +3,8 @@ BODY {
 	background-color : White;
 	padding : 0px 0px 0px 0px;
 	margin : 0px 0px 0px 0px;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	color: Black;
 }
 
@@ -14,12 +14,12 @@ table.lista {
 }
 
 th{
-	font-size: 10px;
+	font-size: 13px;
 	text-align : left;
 }
 
 caption {
-	font-size: 10px;
+	font-size: 13px;
 	text-align : left;
 	font-weight: bold;
 }
@@ -52,53 +52,53 @@ td.ficha{
 	background-color : #AAAAAA;
 	padding : 0px 0px 0px 0px;
 	margin : 0px 0px 0px 0px;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	color: #32599E;
 }
 
 A:LINK, A:VISITED {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color: #32599E;
 	text-decoration : none;
 }
 
 A:HOVER {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color: #32599E;
 	text-decoration : none;
 }
 
 .targrey{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color: #32599E;
 	text-decoration:underline;
 }
 
 .tahomagrey{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color: #32599E;
 }
 
 TD{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color:#000000;
 }
 
 .tahomadlack{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color:#000000;
 }
 
 .tahomadlackbl{
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+	font-size: 13px;
 	color:#000000;
 	font-weight:900;
 }
@@ -116,26 +116,16 @@ UL,LI {
 INPUT,TEXTAREA,SELECT {
 	padding : 0px 0px 0px 0px;
 	margin : 0px 0px 0px 0px;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	color: black;
 	border : 1px solid Black;
 }
 
-.px400 { width : 400px; }
-.px300 { width : 300px; }
-.px250 { width : 250px; }
-.px200 { width : 200px; }
-.px150 { width : 150px; }
-.px120 { width : 120px; }
-.px100 { width : 100px; }
-.px80 { width : 80px; }
-.px50 { width : 50px; }
-
 .titulo {
 	font-weight: bold;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	width:0;
 	filter:dropshadow(color=Silver,offx=1, offy=1, positive=1), glow(color=Silver, strength=1);
 	color: #32599E;
@@ -143,8 +133,8 @@ INPUT,TEXTAREA,SELECT {
 
 .titulo-blanco {
 	font-weight: bold;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	width:0;
 	filter:dropshadow(color=Black,offx=1, offy=1, positive=1), glow(color=Black, strength=1);
 	color: White;
@@ -152,22 +142,22 @@ INPUT,TEXTAREA,SELECT {
 
 A:LINK.admin, A:VISITED.admin {
 	text-decoration : none;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	color: White;
 }
 
 A:HOVER.admin {
 	color: Silver;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	text-decoration : none;
 }
 
 .gris {
 	color: #32599E;
-	font-size: 10px;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 }
 
 .bigcheck {
@@ -194,6 +184,15 @@ table.maestra{
 	width: 99%;
 	padding: 2px;
 	margin: 2px;
+}
+
+td.maestra{
+	width:100%;
+	height:20px;
+	text-align:center;
+	vertical-align:middle;
+	background-color:#4B53AF;
+	border:1px solid black;
 }
 
 td.menu{

@@ -484,10 +484,10 @@ ALTER TABLE `sgm_contratos` ADD `id_responsable` int(11) NOT NULL default '0' AF
 ALTER TABLE `sgm_contratos` ADD `id_tecnico` int(11) NOT NULL default '0' AFTER `id_responsable`;
 ALTER TABLE `sgm_contratos` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `id_tecnico`;
 
-CREATE TABLE `sgm_contratos_cobertura` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_contratos_cobertura` ADD `nombre` varchar(55) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_contratos_cobertura` ADD `descripcion` longtext AFTER `nombre`;
-ALTER TABLE `sgm_contratos_cobertura` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
+CREATE TABLE `sgm_contratos_sla_cobertura` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_contratos_sla_cobertura` ADD `nombre` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sgm_contratos_sla_cobertura` ADD `descripcion` longtext AFTER `nombre`;
+ALTER TABLE `sgm_contratos_sla_cobertura` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 
 CREATE TABLE `sgm_contratos_tipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_tipos` ADD `nombre` varchar(255) NOT NULL default '' AFTER `id`;
@@ -574,10 +574,6 @@ ALTER TABLE `sgm_cuerpo` ADD `vigente` tinyint(1) NOT NULL default '0' AFTER `id
 ALTER TABLE `sgm_cuerpo` ADD `suma` tinyint(1) NOT NULL default '0' AFTER `vigente`;
 ALTER TABLE `sgm_cuerpo` ADD `aprovat` tinyint(1) NOT NULL default '0' AFTER `suma`;
 ALTER TABLE `sgm_cuerpo` ADD `fecha_prevision_propia` date NOT NULL default '0000-00-00' AFTER `aprovat`;
-
-ALTER TABLE `sgm_cuerpo` ADD `fecha_prevision2` int(15) NOT NULL default '0' AFTER `id_estado`;
-ALTER TABLE `sgm_cuerpo` ADD `fecha_entrega2` int(15) NOT NULL default '0' AFTER `fecha_prevision2`;
-ALTER TABLE `sgm_cuerpo` ADD `fecha_prevision_propia2` int(15) NOT NULL default '0' AFTER `fecha_entrega2`;
 
 CREATE TABLE `sgm_dades_origen_factura` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_dades_origen_factura` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id`;

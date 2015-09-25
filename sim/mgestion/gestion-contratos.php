@@ -31,7 +31,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if (($soption == 0) or ($soption == 1) or ($soption == 200)) {
 		if ($ssoption == 1) {
-			$sqlcc = "select * from sgm_contratos where visible=1 and id_contrato_tipo=".$_POST["id_contrato_tipo"]." and id_cliente=".$_POST["id_cliente"]." and id_cliente_final=".$_POST["id_cliente_final"]." and num_contrato=".$_POST["num_contrato"]." and fecha_ini='".$_POST["fecha_ini"]."' and fecha_fin='".$_POST["fecha_fin"]."' and descripcion='".$_POST["descripcion"]."'";
+			$sqlcc = "select id from sgm_contratos where visible=1 and id_contrato_tipo=".$_POST["id_contrato_tipo"]." and id_cliente=".$_POST["id_cliente"]." and id_cliente_final=".$_POST["id_cliente_final"]." and num_contrato=".$_POST["num_contrato"]." and fecha_ini='".$_POST["fecha_ini"]."' and fecha_fin='".$_POST["fecha_fin"]."' and descripcion='".$_POST["descripcion"]."'";
 			$resultcc = mysql_query(convert_sql($sqlcc));
 			$rowcc = mysql_fetch_array($resultcc);
 			if (!$rowcc){
@@ -39,7 +39,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$datosInsert = array($_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["num_contrato"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"]);
 				insertFunction ("sgm_contratos",$camposInsert,$datosInsert);
 
-				$sqlc = "select * from sgm_contratos where num_contrato='".$_POST["num_contrato"]."' and visible=1";
+				$sqlc = "select id from sgm_contratos where num_contrato='".$_POST["num_contrato"]."' and visible=1";
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 and id<0";
@@ -53,7 +53,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 3) {
 			$borrar = 0;
-			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"];
+			$sql = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"];
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)){
 				$sqli = "select count(*) as total from sgm_incidencias where visible=1 and id_servicio=".$row["id"];
@@ -68,13 +68,13 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$datosUpdate = array("0");
 				updateFunction ("sgm_contratos",$_GET["id"],$camposUpdate,$datosUpdate);
 
-				$sqlf = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
+				$sqlf = "select id from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
 				$resultf = mysql_query(convert_sql($sqlf));
 				while ($rowf = mysql_fetch_array($resultf)){
 					$camposUpdate = array("visible");
 					$datosUpdate = array("0");
 					updateFunction ("sgm_cabezera",$rowf["id"],$camposUpdate,$datosUpdate);
-					$sql = "select * from sgm_cuerpo where idfactura=".$rowf["id"]."";
+					$sql = "select id from sgm_cuerpo where idfactura=".$rowf["id"]."";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)){
 						deleteCuerpo($row["id"],$rowf["id"]);
@@ -110,7 +110,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<tr>";
 					echo "<td><select style=\"width:250px\" name=\"id_contrato_tipo2\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_contratos_tipos where visible=1 order by nombre";
+						$sql = "select id,nombre from sgm_contratos_tipos where visible=1 order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
 							if ($_POST["id_contrato_tipo2"] == $row["id"]){
@@ -122,7 +122,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><select style=\"width:250px\" name=\"id_cliente2\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_clients where visible=1 order by nombre";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
 							if ($_POST["id_cliente2"] == $row["id"]){
@@ -134,7 +134,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><select style=\"width:250px\" name=\"id_cliente_final2\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_clients where visible=1 order by nombre";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
 							if ($_POST["id_cliente_final2"] == $row["id"]){
@@ -161,7 +161,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<th>".$Editar."</th>";
 					echo "<th>".$Ver."</th>";
 				echo "</tr>";
-				$sqlcc = "select * from sgm_contratos where visible=1 ";
+				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 ";
 				if ($_POST["id_contrato_tipo2"] > 0) {
 					$sqlcc = $sqlcc." and id_contrato_tipo=".$_POST["id_contrato_tipo2"]."";
 				}
@@ -179,11 +179,11 @@ if (($option == 1011) AND ($autorizado == true)) {
 				while ($rowcc = mysql_fetch_array($resultcc)){
 					echo "<tr>";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
+						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
 						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
+						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysql_query(convert_sql($sql));
 						$row = mysql_fetch_array($result);
 						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
@@ -210,7 +210,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			updateFunction ("sgm_contratos",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 2) {
-			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." and servicio='".comillas($_POST["servicio"])."'";
+			$sql = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." and servicio='".comillas($_POST["servicio"])."'";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			if (!$row){
@@ -240,7 +240,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			updateFunction ("sgm_contratos",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 7) {
-			$sqln = "select * from sgm_contratos where visible=1 order by num_contrato desc";
+			$sqln = "select num_contrato from sgm_contratos where visible=1 order by num_contrato desc";
 			$resultn = mysql_query(convert_sql($sqln));
 			$rown = mysql_fetch_array($resultn);
 			$numeroc = ($rown["num_contrato"]+ 1);
@@ -260,7 +260,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$datosUpdate = array("1");
 				updateFunction ("sgm_contratos",$_GET["id"],$camposUpdate,$datosUpdate);
 
-				$sqlc = "select * from sgm_contratos where num_contrato='".$numeroc."'";
+				$sqlc = "select id from sgm_contratos where num_contrato='".$numeroc."'";
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				
@@ -272,12 +272,12 @@ if (($option == 1011) AND ($autorizado == true)) {
 					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 				}
 
-				$sqlca = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
+				$sqlca = "select id,fecha,fecha_prevision,id_cliente from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
 				$resultca = mysql_query(convert_sql($sqlca));
 				while ($rowca = mysql_fetch_array($resultca)) {
 					$datosInsert = array('fecha' => $rowca["fecha"], 'fecha_prevision' => $rowca["fecha_prevision"], 'id_cliente' => $rowca["id_cliente"], 'id_contrato' => $rowc["id"]);
 					insertCabezera($datosInsert);
-					$sqlcab = "select * from sgm_cabezera where visible=1 and id_contrato=".$rowc["id"]." order by id desc";
+					$sqlcab = "select id from sgm_cabezera where visible=1 and id_contrato=".$rowc["id"]." order by id desc";
 					$resultcab = mysql_query(convert_sql($sqlcab));
 					$rowcab = mysql_fetch_array($resultcab);
 					$sqlcu = "select * from sgm_cuerpo where idfactura=".$rowca["id"];
@@ -285,13 +285,13 @@ if (($option == 1011) AND ($autorizado == true)) {
 					while ($rowcu = mysql_fetch_array($resultcu)) {
 #						insertCuerpo($rowcab["id"],1,0,$rowcu["nombre"],0,$rowcu["total"],1,$rowcu["fecha_prevision"],0,0,$rowcu["fecha_prevision_propia"]);
 						$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
-						$datosInsert = array($rowcab["id"],$rowcu["nombre"],$rowcu["total"],1,$rowcu["fecha_prevision"],$rowcu["fecha_prevision"],$rowcu["total"]);
+						$datosInsert = array($rowcab["id"],$rowcu["nombre"],$rowcu["pvp"],1,$rowcu["fecha_prevision"],$rowcu["fecha_prevision"],$rowcu["total"]);
 						insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 						refactura($rowcab["id"]);
 					}
 				}
 
-				$sqlco = "select * from sgm_contrasenyes where visible=1 and id_contrato=".$_GET["id"];
+				$sqlco = "select id from sgm_contrasenyes where visible=1 and id_contrato=".$_GET["id"];
 				$resultco = mysql_query(convert_sql($sqlco));
 				while ($rowco = mysql_fetch_array($resultco)) {
 					$camposUpdate = array("id_contrato");
@@ -304,7 +304,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$datosInsert = array('fecha' => $_POST["fecha"], 'fecha_prevision' => $_POST["fecha_prevision"], 'id_cliente' => $_POST["id_cliente"], 'id_contrato' => $_POST["id_contrato"]);
 			insertCabezera($datosInsert);
 #			insertCabezera(0,7,0,0,0,0,$_POST["fecha"],$_POST["fecha_prevision"],$_POST["id_cliente"],$_POST["id_contrato"],0);
-			$sql = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." order by id desc";
+			$sql = "select id from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." order by id desc";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
@@ -314,7 +314,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 #			insertCuerpo($row["id"],1,0,$_POST["concepto"],0,$_POST["importe"],1,$_POST["fecha_prevision"],0,0,$_POST["fecha_prevision"]);
 		}
 		if ($ssoption == 11) {
-			$sql = "select * from sgm_cabezera where visible=1 and id=".$_GET["id_fact"];
+			$sql = "select fecha_prevision from sgm_cabezera where visible=1 and id=".$_GET["id_fact"];
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["fecha_prevision"] != $_POST["fecha_prevision"]){
@@ -332,7 +332,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			insertFunction ("sgm_factura_modificacio",$camposInsert,$datosInsert);
 #			updateCabezera($_GET["id_fact"],0,0,0,0,0,0,$_POST["fecha"],$_POST["fecha_prevision"],0,0,$_POST["id_cliente"],$_POST["id_contrato"],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
-			$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
+			$sql = "select id,fecha_prevision from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			$camposUpdate = array("nombre","pvp","fecha_prevision","fecha_prevision_propia","total");
@@ -345,10 +345,11 @@ if (($option == 1011) AND ($autorizado == true)) {
 				insertFunction ("sgm_factura_canvi_data_prevision_cuerpo",$camposInsert,$datosInsert);
 			}
 #			updateCuerpo($row["id"],$_GET["id_fact"],$row["linea"],$row["codigo"],$_POST["concepto"],$row["pvd"],$_POST["importe"],1,$_POST["fecha_prevision"],$row["id_article"],$row["stock"],$_POST["fecha_prevision"],$row["descuento"],$row["descuento_absoluto"]);
+			refactura($_GET["id_fact"]);
 		}
 		if ($ssoption == 12) {
 			deleteFunction("sgm_cabezera",$_GET["id_fact"]);
-			$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
+			$sql = "select id from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			deleteCuerpo($row["id"],$_GET["id_fact"]);
@@ -365,7 +366,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			} else {
 				echo "<form action=\"index.php?op=1011&sop=0&ssop=1\" method=\"post\">";
 				$numeroc = 0;
-				$sqln = "select * from sgm_contratos where visible=1 order by num_contrato desc";
+				$sqln = "select num_contrato from sgm_contratos where visible=1 order by num_contrato desc";
 				$resultn = mysql_query(convert_sql($sqln));
 				$rown = mysql_fetch_array($resultn);
 				$numeroc = ($rown["num_contrato"]+ 1);
@@ -386,7 +387,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Cliente.": </td>";
 				echo "<td><select style=\"width:500px\" name=\"id_cliente\">";
-					$sqla = "select * from sgm_clients where visible=1 order by nombre";
+					$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resulta = mysql_query(convert_sql($sqla));
 					while ($rowa = mysql_fetch_array($resulta)) {
 						if ($rowa["id"] == $rowc["id_cliente"]){
@@ -399,7 +400,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Cliente." ".$Final.": </td>";
 				echo "<td><select style=\"width:500px\" name=\"id_cliente_final\">";
-					$sqlb = "select * from sgm_clients where visible=1 order by nombre";
+					$sqlb = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultb = mysql_query(convert_sql($sqlb));
 					while ($rowb = mysql_fetch_array($resultb)) {
 						if ($rowb["id"] == $rowc["id_cliente_final"]){
@@ -423,7 +424,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Fin.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_fin\" value=\"".$date2."\"></td></tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Responsable_cliente.": </td>";
 				echo "<td><select name=\"id_responsable\" style=\"width:150px\">";
-				$sqlua = "select * from sgm_users where validado=1 and activo=1 and sgm=1";
+				$sqlua = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
 				$resultua = mysql_query(convert_sql($sqlua));
 				while ($rowua = mysql_fetch_array($resultua)) {
 						if ($rowua["id"] == $rowc["id_responsable"]){
@@ -436,7 +437,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Responsable_tecnico.": </td>";
 				echo "<td><select name=\"id_tecnico\" style=\"width:150px\">";
-				$sqluu = "select * from sgm_users where validado=1 and activo=1 and sgm=1";
+				$sqluu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
 				$resultuu = mysql_query(convert_sql($sqluu));
 				while ($rowuu = mysql_fetch_array($resultuu)) {
 						if ($rowuu["id"] == $rowc["id_tecnico"]){
@@ -501,10 +502,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "</form>";
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
-				$sql = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]."";
+				$sql = "select id,fecha,fecha_prevision from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]."";
 				$result = mysql_query(convert_sql($sql));
 				while ($row = mysql_fetch_array($result)) {
-					$sqlcu = "select * from sgm_cuerpo where idfactura=".$row["id"]."";
+					$sqlcu = "select nombre,pvp from sgm_cuerpo where idfactura=".$row["id"]."";
 					$resultcu = mysql_query(convert_sql($sqlcu));
 					$rowcu = mysql_fetch_array($resultcu);
 					echo "<tr>";
@@ -559,7 +560,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "</td>";
 					echo "<td><select style=\"width:70px\" name=\"id_cobertura\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_contratos_sla_cobertura where visible=1 order by nombre";
+						$sql = "select id,nombre from sgm_contratos_sla_cobertura where visible=1 order by nombre";
 						$result = mysql_query(convert_sql($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["nombre"]."</option>";
@@ -625,7 +626,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "</td>";
 						echo "<td><select style=\"width:70px\" name=\"id_cobertura\">";
 							echo "<option value=\"0\">-</option>";
-							$sqls = "select * from sgm_contratos_sla_cobertura where visible=1 order by nombre";
+							$sqls = "select id,nombre from sgm_contratos_sla_cobertura where visible=1 order by nombre";
 							$results = mysql_query(convert_sql($sqls));
 							while ($rows = mysql_fetch_array($results)) {
 								if ($rows["id"] == $row["id_cobertura"]){

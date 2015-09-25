@@ -106,16 +106,6 @@ if ($_COOKIE["musername"] == "") {
 
 lopd($userid,$username,$option,$soption);
 
-if ($_POST["exec_sql_0"] != "") { mysql_query(convert_sql($_POST["exec_sql_0"])); }
-if ($_POST["exec_sql_1"] != "") { mysql_query(convert_sql($_POST["exec_sql_1"])); }
-if ($_POST["exec_sql_2"] != "") { mysql_query(convert_sql($_POST["exec_sql_2"])); }
-if ($_POST["exec_sql_3"] != "") { mysql_query(convert_sql($_POST["exec_sql_3"])); }
-if ($_POST["exec_sql_4"] != "") { mysql_query(convert_sql($_POST["exec_sql_4"])); }
-if ($_POST["exec_sql_5"] != "") { mysql_query(convert_sql($_POST["exec_sql_5"])); }
-if ($_POST["exec_sql_6"] != "") { mysql_query(convert_sql($_POST["exec_sql_6"])); }
-if ($_POST["exec_sql_7"] != "") { mysql_query(convert_sql($_POST["exec_sql_7"])); }
-if ($_POST["exec_sql_8"] != "") { mysql_query(convert_sql($_POST["exec_sql_8"])); }
-if ($_POST["exec_sql_9"] != "") { mysql_query(convert_sql($_POST["exec_sql_9"])); }
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -170,7 +160,7 @@ if (($option == 800) or ($option == 900) or ($option == 600)) {
 
 echo "<table class=\"maestra\">";
 	echo "<tr>";
-		echo "<td background=\"images/bajo.jpg\" height=\"20px\">";
+		echo "<td class=\"maestra\">";
 			echo "<table style=\"width:100%;\"><tr>";
 				echo "<td style=\"color:white;width:90%;\">";
 					if ($user == true) {
@@ -265,7 +255,7 @@ echo "<table class=\"maestra\">";
 	echo "</tr>";
 	if ($veure_peu != 0){
 	echo "<tr>";
-		echo "<td background=\"images/11.jpg\" height=\"20px\">";
+		echo "<td class=\"maestra\">";
 			echo "<font style=\"color : white; padding-left : 5px;\">&copy;2015 Solucions-im.com</font>";
 		echo "</td>";
 	echo "</tr>";

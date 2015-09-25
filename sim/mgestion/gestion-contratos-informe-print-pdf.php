@@ -22,7 +22,7 @@ class PDF extends FPDF
 		$rowele = mysql_fetch_array($resultele);
 
 		$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
-		$this->SetFont('Verdana','',8);
+		$this->SetFont('Calibri','',8);
 		$this->SetXY(100,5);
 		$this->Cell(90,3,"".$rowele["nombre"],0,1);
 		$this->SetXY(100,8);
@@ -46,7 +46,7 @@ class PDF extends FPDF
 		// Posición: a 1,5 cm del final
 		$this->SetY(-15);
 		// Arial italic 8
-		$this->SetFont('Verdana','',6);
+		$this->SetFont('Calibri','',6);
 		// Número de página
 		$this->MultiCell(180,3,$texto_pdatos,0,1);
 	}
@@ -119,10 +119,10 @@ class PDF extends FPDF
 #		echo $sqlcon."<br>";
 		$rowcon = mysql_fetch_array($resultcon);
 
-		$this->SetFont('Verdana','B',10);
+		$this->SetFont('Calibri','B',10);
 		$this->Cell(90,5,"Cliente",0,0);
 		$this->Cell(90,5,"Contrato",0,1);
-		$this->SetFont('Verdana','',8);
+		$this->SetFont('Calibri','',8);
 		$this->Cell(90,3,$nombre." : ".comillasInver($rowcli["nombre"]),0,0);
 		$this->Cell(90,3,$numero." : ".$rowcon["num_contrato"],0,1);
 
@@ -165,9 +165,9 @@ class PDF extends FPDF
 			$dia_inicio = date("d",$mes_act);
 			$mes_seg = date("U",mktime(0,0,0,$mes_inicio+1,1,$any_inicio));
 
-			$this->SetFont('Verdana','B',8);
+			$this->SetFont('Calibri','B',8);
 			$this->Cell(180,5,$meses[$mes_inicio-1]." ".$any_inicio,0,1);
-			$this->SetFont('Verdana','',6);
+			$this->SetFont('Calibri','',6);
 			$this->Cell($ample,5,"",'LTBR',0,0);
 			$this->Cell(20,5,"".$cobertura."",'LTBR',0);
 			$this->Cell(17,5,"".$abiertas."",'LTBR',0);
@@ -251,7 +251,7 @@ class PDF extends FPDF
 				$resultcsc = mysql_query(convert_sql($sqlcsc));
 				$rowcsc = mysql_fetch_array($resultcsc);
 
-				$this->SetFont('Verdana','',7);
+				$this->SetFont('Calibri','',7);
 				$text = comillasInver($rowcs["servicio"]);
 				$num_lines = $this->NbLines($ample,$text);
 				$height = (5*$num_lines);
@@ -261,7 +261,7 @@ class PDF extends FPDF
 				$x=$this->GetX();
 				$y=$this->GetY();
 				$this->SetXY($x+$ample,$y-$height);
-				$this->SetFont('Verdana','',6);
+				$this->SetFont('Calibri','',6);
 				if ($rowcs["nbd"] == 1) {$nbd = "nbd ";}
 				$cober = $rowcsc["nombre"]." ".$nbd.$rowcs["sla"]."%";
 				$this->Cell(20,$height,$cober,'LTBR',0);
@@ -278,9 +278,9 @@ class PDF extends FPDF
 				}
 
 			}
-			$this->SetFont('Verdana','',7);
+			$this->SetFont('Calibri','',7);
 			$this->Cell($ample,5,$total,'LTBR',0);
-			$this->SetFont('Verdana','',6);
+			$this->SetFont('Calibri','',6);
 			$this->Cell(20,5,'','LTBR',0);
 			$this->Cell(17,5,$open,'LTBR',0);
 			$this->Cell(17,5,$close,'LTBR',0);
@@ -304,9 +304,9 @@ class PDF extends FPDF
 			$mes_act = $mes_seg;
 		}
 
-		$this->SetFont('Verdana','B',8);
+		$this->SetFont('Calibri','B',8);
 		$this->Cell(180,5,"".$incidencias_pendientes."",0,1);
-		$this->SetFont('Verdana','',6);
+		$this->SetFont('Calibri','',6);
 		$this->Cell(15,4,"Id.",'B',0);
 		$this->Cell(125,4,$asunto,'B',0);
 		$this->Cell(25,4,$estado,'B',0);
@@ -328,9 +328,9 @@ class PDF extends FPDF
 		}
 
 		$this->ln(5);
-		$this->SetFont('Verdana','B',8);
+		$this->SetFont('Calibri','B',8);
 		$this->Cell(180,5,"".$total_contrato."",0,1);
-		$this->SetFont('Verdana','',6);
+		$this->SetFont('Calibri','',6);
 		$this->Cell($ample,5,"",'LTBR',0,0);
 		$this->Cell(20,5,"".$cobertura."",'LTBR',0);
 		$this->Cell(17,5,"".$abiertas."",'LTBR',0);
@@ -407,7 +407,7 @@ class PDF extends FPDF
 			$resultcsc = mysql_query(convert_sql($sqlcsc));
 			$rowcsc = mysql_fetch_array($resultcsc);
 
-			$this->SetFont('Verdana','',7);
+			$this->SetFont('Calibri','',7);
 			$text = comillasInver($rowcs["servicio"]);
 			$num_lines = $this->NbLines($ample,$text);
 			$height = (5*$num_lines);
@@ -417,7 +417,7 @@ class PDF extends FPDF
 			$x=$this->GetX();
 			$y=$this->GetY();
 			$this->SetXY($x+$ample,$y-$height);
-			$this->SetFont('Verdana','',6);
+			$this->SetFont('Calibri','',6);
 			if ($rowcs["nbd"] == 1) {$nbd = "nbd ";}
 			$cober = $rowcsc["nombre"]." ".$nbd.$rowcs["sla"]."%";
 			$this->Cell(20,$height,$cober,'LTBR',0);
@@ -433,9 +433,9 @@ class PDF extends FPDF
 				$this->Cell(25,$height,$porcentageSLA,'LTBR',1);
 			}
 		}
-		$this->SetFont('Verdana','',7);
+		$this->SetFont('Calibri','',7);
 		$this->Cell($ample,5,$total,'LTBR',0);
-		$this->SetFont('Verdana','',6);
+		$this->SetFont('Calibri','',6);
 		$this->Cell(20,5,'','LTBR',0);
 		$this->Cell(17,5,$open,'LTBR',0);
 		$this->Cell(17,5,$close,'LTBR',0);
@@ -457,9 +457,9 @@ class PDF extends FPDF
 }
 
 	$pdf=new PDF();
-	$pdf->AddFont('Verdana','','verdana.php');
-	$pdf->AddFont('Verdana-Bold','B','verdanab.php');
-	$pdf->AddFont('Verdana','B','verdanab.php');
+	$pdf->AddFont('Calibri','','Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','Calibrib.php');
+	$pdf->AddFont('Calibri','B','Calibrib.php');
 	$sql = "select * from sgm_clients where visible=1";
 	if ($_POST["id_cliente"] > 0){ $sql .= " and id=".$_POST["id_cliente"]."";} else {$sql .= " and id in (select id_cliente from sgm_contratos where visible=1)";}
 	$sql .= " order by nombre";
@@ -468,7 +468,6 @@ class PDF extends FPDF
 	while ($row = mysql_fetch_array($result)){
 		if ($_POST["id_contrato"] == 0) {$sqlcon = "select * from sgm_contratos where visible=1 and id_cliente=".$row["id"];}
 		else {$sqlcon = "select * from sgm_contratos where visible=1 and id=".$_POST["id_contrato"];}
-#	echo $sqlcon;
 		$resultcon = mysql_query(convert_sql($sqlcon));
 		while ($rowcon = mysql_fetch_array($resultcon)){
 			$pdf->AliasNbPages();

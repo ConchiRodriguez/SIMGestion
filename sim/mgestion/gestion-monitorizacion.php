@@ -23,7 +23,7 @@ if (($option == 1025) AND ($autorizado == true)) {
 #Administració de taules auxiliars del módul#
 	if ($soption == 0) {
 		echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:1200px;\">";
-			$sqlcl= "select * from sgm_clients where visible=1 and id IN (select id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente in (select id_client from sgm_clients_servidors where visible=1)) order by nombre";
+			$sqlcl= "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id IN (select id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente in (select id_client from sgm_clients_servidors where visible=1)) order by nombre";
 			$resultcl = mysql_query($sqlcl,$dbhandle);
 			while ($rowcl = mysql_fetch_array($resultcl)){
 				echo "<tr><td colspan=\"5\"  style=\"background-color:silver;\"><strong>".$rowcl["nombre"].$rowcl["cognom1"].$rowcl["cognom2"]."</strong></td></tr>";
@@ -37,9 +37,6 @@ if (($option == 1025) AND ($autorizado == true)) {
 	if ($soption == 10) {
 		echo detalleServidoresMonitorizados ($_GET["id_cli"],$_GET["id_serv"]);
 	}
-
-
-
 
 	if ($soption == 500) {
 		if ($admin == true) {

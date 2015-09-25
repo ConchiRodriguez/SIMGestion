@@ -124,6 +124,8 @@ class PDF extends FPDF
 			$this->Cell(90,5,$provincia.": ".$rowcabezera["provincia"],1,0);
 			$this->Cell(90,5,'',1,1);
 			$limit_lines = 34;
+#			$this->SetFont('codi_barres','',8);
+#			$this->Cell(90,5,$rowcabezera["numero"]." / ".$rowcabezera["version"],1,0);
 		}
 		
 		if ($tipo == 0) {
@@ -150,9 +152,13 @@ class PDF extends FPDF
 			$this->MultiCell(95,5,str_replace("&#39;", "'", $rowcabezera["nombre"])."\n".str_replace("&#39;", "'", $rowcabezera["direccion"])."\n".str_replace("&#39;", "'", $rowcabezera["poblacion"])." (".$rowcabezera["cp"].") ".$rowcabezera["provincia"],0,'L');
 			$this->SetY(71);
 			$limit_lines = 34;
+#			$this->SetFont('codi_barres','',8);
+#			$this->Cell(90,5,$rowcabezera["numero"]." / ".$rowcabezera["version"],1,0);
 		}
 		
 	
+
+
 		$sqlx = "select * from sgm_factura_tipos where id=".$rowcabezera["tipo"];
 		$resultx = mysql_query(convert_sql($sqlx));
 		$rowx = mysql_fetch_array($resultx);
@@ -279,6 +285,7 @@ class PDF extends FPDF
 }
 
 	$pdf=new PDF();
+#	$pdf->AddFont('codi_barres','','../../archivos_comunes/font/codi_barres.php');
 	$pdf->AddFont('Verdana','','../../archivos_comunes/font/verdana.php');
 	$pdf->AddFont('Verdana-Bold','B','../../archivos_comunes/font/verdanab.php');
 	$pdf->AddFont('Verdana','B','../../archivos_comunes/font/verdanab.php');

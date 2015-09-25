@@ -111,8 +111,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			insertFunction ("sgm_calendario",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
-			$sql = "delete from sgm_calendario WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			deleteFunction ("sgm_calendario",$_GET["id"]);
 		}
 		if ($ssoption == 4) {
 			$hora_ini = $_POST["hora_inicio"]*3600;
@@ -123,11 +122,10 @@ if (($option == 1023) AND ($autorizado == true)) {
 			updateFunction("sgm_calendario_horario",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 5) {
-			$sql = "delete from sgm_calendario WHERE id=".$_GET["id_h"];
-			mysql_query(convert_sql($sql));
+			deleteFunction ("sgm_calendario",$_GET["id_h"]);
 		}
 
-		echo "<center><table cellpadding=\"10px\">";
+		echo "<table cellpadding=\"10px\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"vertical-align:top;\">";
 					echo "<h4>".$Calendario." ".$$Laboral."</h4>";
@@ -199,8 +197,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 	if ($soption == 111) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1023&sop=110&ssop=2&id=".$_GET["id"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1023&sop=110\">[ NO ]</a>";
+		echo boton(array("op=1023&sop=110&ssop=2&id=".$_GET["id"],"op=1023&sop=110"),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -288,11 +285,6 @@ if (($option == 1023) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 131) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1023&sop=130&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
-		echo "&nbsp;<a href=\"index.php?op=1023&sop=130\">[ NO ]</a>";
-		echo "</center>";
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1023&sop=130&ssop=3&id=".$_GET["id"],"op=1023&sop=130"),array($Si,$No));
@@ -388,155 +380,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
-	if ($soption == 600) {
-		echo "<strong>".$Logos." :</strong><br><br>";
-		if ($ssoption == 1) {
-			if(sizeof($_FILES)==0){
-				echo "No se puede subir el archivo";
-			}
-			$archivo = $_FILES["logo"]["tmp_name"];
-			$tamanio=array();
-			$tamanio = $_FILES["logo"]["size"];
-			$tipo = $_FILES["logo"]["type"];
-			$nombre_archivo = $_FILES["logo"]["name"];
-			extract($_REQUEST);
-			if ( $archivo != "none" ){
-				$fp = fopen($archivo, "rb");
-				$contenido = fread($fp, $tamanio);
-				$contenido = addslashes($contenido);
-				fclose($fp);
-
-				$sql = "select count(*) as total from sgm_logos where clase=".$_GET["clase"];
-				$result = mysql_query(convert_sql($sql));
-				$row = mysql_fetch_array($result);
-				if ($row["total"] <= 0){
-					$sql = "insert into sgm_logos (clase, nombre_archivo, contenido, tamany, tipo )";
-					$sql = $sql."values (";
-					$sql = $sql.$_GET["clase"];
-					$sql = $sql.",'".$nombre_archivo."'";
-					$sql = $sql.",'".$contenido."'";
-					$sql = $sql.",".$tamanio."";
-					$sql = $sql.",'".$tipo."'";
-					$sql = $sql.")";
-					mysql_query($sql);
-				} else {
-					$sql = "update sgm_logos set ";
-					$sql = $sql."nombre_archivo='".$nombre_archivo."'";
-					$sql = $sql.",contenido='".$contenido."'";
-					$sql = $sql.",tamany=".$tamanio."";
-					$sql = $sql.",tipo='".$tipo."'";
-					$sql = $sql." WHERE clase=".$_GET["clase"]."";
-					mysql_query(convert_sql($sql));
-				}
-			}
-		}
-		if ($ssoption == 3) {
-			$sql = "delete from sgm_logos where clase=".$_GET["clase"];
-			mysql_query(convert_sql($sql));
-		}
-		echo "<center><table cellpadding=\"0\" cellspacing=\"0\" style=\"width:800px\">";
-			echo "<tr style=\"background-color:silver;\">";
-				echo "<td style=\"width:200px;vertical-align:top;\">";
-					echo "<table>";
-						$sql = "select * from sgm_logos where clase=1";
-						$result = mysql_query(convert_sql($sql));
-						$row = mysql_fetch_array($result);
-						echo "<tr><td><strong>".$Logo." ".$Factura." ".$Formato." no ".$Sobre." :</strong><br>dimensión recomendada 500x130 píxels.</td></tr>";
-						echo "<tr>";
-							echo "<td><a href=\"".$urloriginal."/mgestion/imagen.php?clase=1&tipo=3\" target=\"_blank\">".$row["nombre_archivo"]."</a></td>";
-							echo "<td style=\"text-align:right;\">".$row["tamany"]." Kb</td>";
-							echo "<td><a href=\"index.php?op=1023&sop=601&clase=1\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1023&sop=600&ssop=1&clase=1\" method=\"post\">";
-					echo "<center>";
-						echo "<input type=\"file\" name=\"logo\" size=\"29px\">";
-						echo "<br><br><input type=\"submit\" value=\"".$Insertar."\" style=\"width:200px\">";
-					echo "</center>";
-					echo "</form>";
-				echo "</td>";
-			echo "</tr>";
-			echo "<tr style=\"background-color:white;\">";
-				echo "<td style=\"width:200px;vertical-align:top;\">";
-					echo "<table>";
-						$sql = "select * from sgm_logos where clase=2";
-						$result = mysql_query(convert_sql($sql));
-						$row = mysql_fetch_array($result);
-						echo "<tr><td><strong>".$Logo." ".$Factura." ".$Formato." ".$Sobre." :</strong><br>dimensión recomendada 200x130 píxels.</td></tr>";
-						echo "<tr>";
-							echo "<td><a href=\"".$urloriginal."/mgestion/imagen.php?clase=2&tipo=3\" target=\"_blank\">".$row["nombre_archivo"]."</a></td>";
-							echo "<td style=\"text-align:right;\">".$row["tamany"]." Kb</td>";
-							echo "<td><a href=\"index.php?op=1023&sop=601&clase=2\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1023&sop=600&ssop=1&clase=2\" method=\"post\">";
-					echo "<center>";
-						echo "<input type=\"file\" name=\"logo\" size=\"29px\">";
-						echo "<br><br><input type=\"submit\" value=\"".$Insertar."\" style=\"width:200px\">";
-					echo "</center>";
-					echo "</form>";
-				echo "</td>";
-			echo "</tr>";
-			echo "<tr style=\"background-color:silver;\">";
-				echo "<td style=\"width:200px;vertical-align:top;\">";
-					echo "<table>";
-						$sql = "select * from sgm_logos where clase=3";
-						$result = mysql_query(convert_sql($sql));
-						$row = mysql_fetch_array($result);
-						echo "<tr><td><strong>".$Logo." ".$Factura." ".$Formato." ".$Ticket." :</strong><br>dimensión recomendada 50x50 píxels.</td></tr>";
-						echo "<tr>";
-							echo "<td><a href=\"".$urloriginal."/mgestion/imagen.php?clase=3&tipo=3\" target=\"_blank\">".$row["nombre_archivo"]."</a></td>";
-							echo "<td style=\"text-align:right;\">".$row["tamany"]." Kb</td>";
-							echo "<td><a href=\"index.php?op=1023&sop=601&clase=3\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1023&sop=600&ssop=1&clase=3\" method=\"post\">";
-					echo "<center>";
-						echo "<input type=\"file\" name=\"logo\" size=\"29px\">";
-						echo "<br><br><input type=\"submit\" value=\"".$Insertar."\" style=\"width:200px\">";
-					echo "</center>";
-					echo "</form>";
-				echo "</td>";
-			echo "</tr>";
-			echo "<tr style=\"background-color:white;\">";
-				echo "<td style=\"width:200px;vertical-align:top;\">";
-					echo "<table>";
-						$sql = "select * from sgm_logos where clase=4";
-						$result = mysql_query(convert_sql($sql));
-						$row = mysql_fetch_array($result);
-						echo "<tr><td><strong>".$Logo." ".$Impresos." :</strong><br>dimensión recomendada 500x130 píxels.</td></tr>";
-						echo "<tr>";
-							echo "<td><a href=\"".$urloriginal."/mgestion/imagen.php?clase=4&tipo=3\" target=\"_blank\">".$row["nombre_archivo"]."</a></td>";
-							echo "<td style=\"text-align:right;\">".$row["tamany"]." Kb</td>";
-							echo "<td><a href=\"index.php?op=1023&sop=601&clase=4\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1023&sop=600&ssop=1&clase=4\" method=\"post\">";
-					echo "<center>";
-						echo "<input type=\"file\" name=\"logo\" size=\"29px\">";
-						echo "<br><br><input type=\"submit\" value=\"".$Insertar."\" style=\"width:200px\">";
-					echo "</center>";
-					echo "</form>";
-				echo "</td>";
-			echo "</tr>";
-		echo "</table></center>";
-	}
-
-	if ($soption == 601) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1023&sop=600&ssop=3&clase=".$_GET["clase"]."\">[ SI ]</a>";
-		echo "&nbsp;<a href=\"index.php?op=1023&sop=600\">[ NO ]</a>";
-		echo "</center>";
-	}
-
 	echo "</td></tr></table><br>";
 }
-
-
 
 ?>

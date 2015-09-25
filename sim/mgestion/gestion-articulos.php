@@ -80,7 +80,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td></td>";
 					echo "<td></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:100px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			} elseif ($soption == 0) {
@@ -103,10 +103,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td></td>";
 					echo "<td></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"  style=\"width:100px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 				echo "</tr>";
-				echo "<tr><td>&nbsp;</td></tr>";
 				$subgrupo = -1;
 			}
 				echo "<tr><td>&nbsp;</td></tr>";
@@ -137,12 +136,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 				$sqlst = "select pvd,pvp,id_divisa_pvd,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$row["id"]."";
 				$resultst = mysql_query(convert_sql($sqlst));
 				$rowst = mysql_fetch_array($resultst);
-				if ($subgrupo < 0) {echo "<tr><th colspan=\"2\"></th><th>".$Sin_clasificar."</th></tr>"; $subgrupo = 0;}
-				if ($rowsg["id"] != $subgrupo) {echo "<tr><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th></tr>";}
+				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"3\"></th></tr>"; $subgrupo = 0;}
+				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"3\"></th></tr>";}
 				$subgrupo = $rowsg["id"];
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1004&sop=1&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1004&sop=100&id=".$row["id"]."\" method=\"post\">";
 #						$ultima_fecha = date("d/m/Y",strtotime($row["fecha"]));
 #						echo "<td>".$ultima_fecha."</td>";
 					echo "<td>".$row["codigo"]."</td>";
@@ -162,8 +160,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					$resultd = mysql_query(convert_sql($sqld));
 					$rowd = mysql_fetch_array($resultd);
 					echo "<td>".$rowst["pvp"]." ".$rowd["abrev"]."</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
-					echo "</form>";
+					echo "<td><a href=\"index.php?op=1004&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
 				echo "</tr>";
 			}
 		}
@@ -324,7 +321,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 									echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>";
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+							echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 						echo "</tr>";
 						echo "</form>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -343,7 +340,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 										else { echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>"; }
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
+								echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 							echo "</tr>";
 							echo "</form>";
 						}
@@ -910,7 +907,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><input type=\"text\" name=\"unidades\" style=\"width:70px\" value=\"0\"></td>";
 				echo "<td><input type=\"text\" name=\"pvd\" style=\"width:50px\" value=\"0\"></td>";
 				echo "<td><input type=\"text\" name=\"pvp\" style=\"width:50px\" value=\"0\"></td>";
-				echo "<td><input type=\"submit\" style=\"width:90px\" value=\"".$Anadir."\"></td>";
+				echo "<td><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -924,7 +921,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				if ($rows["vigente"] == 1) { $color = "#FF4500"; }
 				echo "<tr style=\"background-color : ".$color."\">";
 					echo "<form action=\"index.php?op=1004&sop=130&ssop=2&id=".$_GET["id"]."&id_stock=".$rows["id"]."\" method=\"post\" name=\"formulario".$rows["id"]."\">";
-					echo "<td><input type=\"submit\" style=\"width:90px\" value=\"Vigente\"></td>";
+					echo "<td><input type=\"submit\" value=\"Vigente\"></td>";
 					echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$rows["codigo"]."\">";
 					echo "</form>";
 					echo "<form action=\"index.php?op=1004&sop=130&ssop=3&id=".$_GET["id"]."&id_stock=".$rows["id"]."\" method=\"post\" name=\"formulario".$rows["id"]."\">";
@@ -933,7 +930,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><input type=\"text\" name=\"pvd\" style=\"width:50px\" value=\"".$rows["pvd"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"pvp\" style=\"width:50px\" value=\"".$rows["pvp"]."\"></td>";
 					if ($rows["idfactura"] == 0){
-						echo "<td><input type=\"submit\" style=\"width:90px\" value=\"".$Modificar."\"></td>";
+						echo "<td><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					}
 					echo "</form>";
 				echo "</tr>";
@@ -992,7 +989,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</select></td>";
 				echo "<td><input name=\"stock_min\" type=\"Text\" value=\"0\" style=\"width:75px; text-align:right\"></td>";
 				echo "<td><input name=\"stock_max\" type=\"Text\" value=\"0\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:75px; text-align:center\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "<td></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -1017,7 +1014,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</select></td>";
 				echo "<td><input name=\"stock_min\" type=\"Text\" value=\"".$row["stock_min"]."\" style=\"width:75px; text-align:right\"></td>";
 				echo "<td><input name=\"stock_max\" type=\"Text\" value=\"".$row["stock_max"]."\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:75px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				echo "</tr>";
 			}
@@ -1081,7 +1078,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					}
 				}
 				echo "</select></td>";
-				echo "<td><input type=\"submit\" style=\"width:100px\" value=\"".$Anadir."\"></td>";
+				echo "<td><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1247,15 +1244,15 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=150&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td><select name=\"recalc\" style=\"width:50px\">";
 					if ($row["recalc_escandall"] == 0){
-						echo "<option value=\"0\" selected>".$NO."</option>";
-						echo "<option value=\"1\">".$SI."</option>";
+						echo "<option value=\"0\" selected>".$No."</option>";
+						echo "<option value=\"1\">".$Si."</option>";
 					}
 					if ($row["recalc_escandall"] == 1){
-						echo "<option value=\"0\">".$NO."</option>";
-						echo "<option value=\"1\" selected>".$SI."</option>";
+						echo "<option value=\"0\">".$No."</option>";
+						echo "<option value=\"1\" selected>".$Si."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:75px; text-align:center\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1280,7 +1277,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><input name=\"codigo\" type=\"Text\" style=\"width:70px\"></td>";
 				echo "<td><input name=\"unitats\" type=\"Text\" style=\"width:70px\"></td>";
 				echo "<td colspan=\"5\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:75px; text-align:center\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1306,7 +1303,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><input name=\"pvp_forzat\" type=\"Text\" value=\"".$rowe["pvp_forzat"]."\" style=\"width:70px;text-align:right;\"></td>";
 					$_total=$rowe["unitats"]*$rowe["pvp_forzat"];
 					echo "<td style=\"text-align:right;width:70px;\">".number_format($_total, 3, '.', ',')."</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					$total=$total+$_total;
 				echo "</tr>";
@@ -1348,7 +1345,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 									}
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Imprimir."\" style=\"width:100px\"></td>";
+							echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -1547,7 +1544,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1619,7 +1616,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row["unidad"]."\"></td>";
 			echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row["unidad_abr"]."\"></td>";
 			echo "<td><input type=\"text\" name=\"valor\" value=\"".$row["valor"]."\"></td>";
-			echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:75px\"></td>";
+			echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
@@ -1645,7 +1642,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row["unidad"]."\"></td>";
 				echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row["unidad_abr"]."\"></td>";
 				echo "<td><input type=\"text\" name=\"valor\" value=\"".$row["valor"]."\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:75px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				if ($row["valor"] == "") {
 					$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row["id"]." and visible=1";
@@ -1686,7 +1683,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row1["unidad"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row1["unidad_abr"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"valor\" value=\"".$row1["valor"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:75px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					if ($row1["valor"] == "") {
 						$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row1["id"]." and visible=1";
@@ -1747,7 +1744,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=522&ssop=1&id_caracteristica=".$_GET["id_caracteristica"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"valor\" style=\"width:150px\"></td>";
-				echo "<td>&nbsp;<input type=\"submit\" value=\"".$Anadir."\" style=\"width:75px\"></td>";
+				echo "<td>&nbsp;<input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1758,7 +1755,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1004&sop=522&ssop=2&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\" method=\"post\">";
 					echo "<td><a href=\"index.php?op=1004&sop=523&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<td><input type=\"Text\" name=\"valor\" value=\"".$row1["valor"]."\" style=\"width:150px\"></td>";
-					echo "<td>&nbsp;<input type=\"submit\" value=\"".$Cambiar."\" style=\"width:75px\"></td>";
+					echo "<td>&nbsp;<input type=\"submit\" value=\"".$Cambiar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -1843,9 +1840,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<tr><td>".$Telefono."</td><td><input type=\"Text\" name=\"telefono\" class=\"px150\" value=\"".$row["telefono"]."\"></td></tr>";
 					echo "<tr><td>".$Notas."</td><td><textarea name=\"notas\" class=\"px300\" rows=\"6\">".$row["notas"]."</textarea></td></tr>";
 					if ($_GET["id"] == 0) {
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:150px\"></td></tr>";
+						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Anadir."\"></td></tr>";
 					} else {
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td></tr>";
+						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 					}
 					echo "</form>";
 				echo "</table>";
@@ -1927,7 +1924,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 				echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
-				echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+				echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td></td>";
@@ -1942,7 +1939,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1004&sop=532&ssop=2&id=".$_GET["id"]."&id_pasillo=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$row["orden"]."\"></td>";
 					echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$row["nombre"]."\"></td>";
-					echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
+					echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					echo "<td></td>";
 					echo "<td></td>";
@@ -1963,7 +1960,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td></td>";
 					echo "<td style=\"text-align:right;\" colspan=\"2\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 					echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "<td></td>";
 					echo "<td></td>";
 					echo "</form>";
@@ -1979,7 +1976,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<form action=\"index.php?op=1004&sop=532&ssop=20&id=".$_GET["id"]."&id_estanteria=".$rowpe["id"]."\" method=\"post\">";
 						echo "<td style=\"text-align:right;width:40px\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$rowpe["orden"]."\"></td>";
 						echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$rowpe["nombre"]."\"></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
+						echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 						echo "</form>";
 						echo "<td></td>";
 						echo "<td></td>";
@@ -2003,7 +2000,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<td style=\"text-align:right;\" colspan=\"2\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 						echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
 						echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:100px\" value=\"0\"></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+						echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 						echo "</form>";
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
@@ -2020,7 +2017,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 							echo "<td style=\"text-align:right;width:40px\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$rowpes["orden"]."\"></td>";
 							echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$rowpes["nombre"]."\"></td>";
 							echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:100px\" value=\"".$rowpes["porcentage"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
+							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					}

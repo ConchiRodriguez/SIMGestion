@@ -54,7 +54,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			$datosUpdate = array($_GET["id_inc_rel"],$rowinc["notas_registro"],$pausada);
 			updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
-			$sqlinc2 = "select * from sgm_incidencias where id_incidencia=".$_GET["id"];
+			$sqlinc2 = "select id from sgm_incidencias where id_incidencia=".$_GET["id"];
 			$resultinc2 = mysql_query(convert_sql($sqlinc2));
 			while($rowinc2 = mysql_fetch_array($resultinc2)){
 				$camposUpdate = array("id_incidencia");
@@ -121,7 +121,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "</tr><tr>";
 					echo "<td colspan=\"4\"><select name=\"id_cliente\" id=\"id_cliente\" style=\"width:500px\" onchange=\"desplegableCombinado2()\">";
 						echo "<option value=\"0\">-</option>";
-						$sqlcl1 = "select * from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+						$sqlcl1 = "select id,nombre from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
 						$resultcl1 = mysql_query(convert_sql($sqlcl1));
 						while ($rowcl1 = mysql_fetch_array($resultcl1)){
 							if ($_POST["id_cliente"] == $rowcl1["id"]){
@@ -132,7 +132,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 								echo "<option value=\"".$rowcl1["id"]."\">- ".$rowcl1["nombre"]."</option>";
 							}
 						}
-						$sqlcl = "select * from sgm_clients where visible=1 and id not in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+						$sqlcl = "select id,nombre from sgm_clients where visible=1 and id not in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
 						$resultcl = mysql_query(convert_sql($sqlcl));
 						while ($rowcl = mysql_fetch_array($resultcl)){
 							if ($_POST["id_cliente"] == $rowcl["id"]){
@@ -916,7 +916,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($row["asunto"] != ""){$asunto = $row["asunto"];} else {$asunto = $_POST["asunto"];}
 						if ($row["notas_registro"] != ""){$notas_registro = $row["notas_registro"];} else {$notas_registro = $_POST["notas_registro"];}
 						if ($row["duracion"] != ""){$duracion = $row["duracion"];} else {$duracion = $_POST["duracion"];}
-						echo "<tr><td colspan=\"9\"><input type=\"text\" name=\"asunto\" style=\"width:100%;\" value=\"".$asunto."\"></td></tr>";
+						echo "<tr><td colspan=\"9\"><input type=\"text\" name=\"asunto\" style=\"width:100%;\" value=\"".$asunto."\" required></td></tr>";
 						echo "<tr><th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Registro." :</th></tr>";
 						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".$notas_registro."</textarea></td></tr>";
 						echo "<tr>";
@@ -953,7 +953,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				if ($rowid["idioma"] != ""){echo "<img src=\"mgestion/pics/flags/".$rowid["idioma"].".png\" style=\"border:0px;width:100%;\"\">";}
 				if ($row["correo"] == 1){
 					echo "<br>".$Documentos." ".$Adjuntos." :";
-					$sqlfiles = "select * from sgm_files where visible=1 and id_incidencia=".$row["id"];
+					$sqlfiles = "select name from sgm_files where visible=1 and id_incidencia=".$row["id"];
 					$resultfiles = mysql_query(convert_sql($sqlfiles));
 					while ($rowfiles = mysql_fetch_array($resultfiles)){
 						echo "<br><a href=\"".$urlmgestion."/files/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a>";
@@ -1026,7 +1026,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($rowc["id_usuario_registro"] == $userid){
 							echo "<td><select name=\"id_usuario_registro\" style=\"width:150px\">";
 							echo "<option value=\"0\">-</option>";
-								$sqlu = "select * from sgm_users where validado=1 and activo=1";
+								$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1";
 								$resultu = mysql_query(convert_sql($sqlu));
 								while ($rowu = mysql_fetch_array($resultu)) {
 										if ($rowu["id"] == $rowc["id_usuario_registro"]){
@@ -1037,7 +1037,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 								}
 							echo "</select></td>";
 						} else {
-							$sqlu = "select * from sgm_users where validado=1 and activo=1 and id=".$rowc["id_usuario_registro"];
+							$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id=".$rowc["id_usuario_registro"];
 							$resultu = mysql_query(convert_sql($sqlu));
 							$rowu = mysql_fetch_array($resultu);
 							echo "<td style=\"width:150px\">".$rowu["usuario"]."</td>";
@@ -1111,7 +1111,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Fecha." ".$Finalizacion." :</th>";
 						if ($row["fecha_cierre"] > 0){ $fecha_c = date("Y-m-d H:i:s", $row["fecha_cierre"]); } else { $fecha_c = date("Y-m-d H:i:s", time()); }
 						echo "<td><input type=\"text\" name=\"fecha_cierre\" style=\"width:150px\" value=\"".$fecha_c."\"></td></tr>";
-						$sqlu = "select * from sgm_users where id=".$row["id_usuario_finalizacion"];
+						$sqlu = "select usuario from sgm_users where id=".$row["id_usuario_finalizacion"];
 						$resultu = mysql_query(convert_sql($sqlu));
 						$rowu = mysql_fetch_array($resultu);
 						if ($row["fecha_cierre"]){
@@ -1153,7 +1153,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td><select name=\"id_usuario\" style=\"width:200px;\">";
 					if ($_POST["id_usuario"] == 0) {$id_usuari = $userid;} else {$id_usuari = $_POST["id_usuario"];}
-					$sqlu = "select * from sgm_users where validado=1 and activo=1 and sgm=1";
+					$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
 					$resultu = mysql_query(convert_sql($sqlu));
 					while ($rowu = mysql_fetch_array($resultu)) {
 							if ($rowu["id"] == $id_usuari){

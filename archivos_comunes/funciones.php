@@ -230,12 +230,12 @@ function afegirModificarContrasenya ($url){
 			echo "<td><input type=\"text\" value=\"".$rowcc["usuario"]."\" style=\"width:200px\" name=\"usuario\" required></td>";
 		echo "</tr>";
 		if ($_GET["id_con"] > 0){
-			echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"passold\" style=\"width:100px\"></td></tr>";
-			echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass1\" style=\"width:100px\"></td></tr>";
-			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:100px\"></td></tr>";
+			echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"passold\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass1\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:200px\"></td></tr>";
 		} else {
 			echo "<tr><th>".$Contrasena."</th><td><input type=\"text\" style=\"width:200px\" name=\"pass1\"></td></tr>";
-			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:100px\"></td></tr>";
+			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:200px\"></td></tr>";
 		}
 		echo "<tr>";
 			echo "<th>".$Descripcion."</th>";
@@ -422,7 +422,7 @@ function modificarContrasenya($url_volver){
 }
 
 function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
-	global $db,$Usuario,$Gestion,$Validado,$Activo,$Ultima,$Conexion,$Modificar,$ssoption,$Permisos,$Clientes,$UsuarioYaReg,$NombreIncorrecto,$MailYaReg,$MailIncorrecto,$PassIncorrecto,$CompletaCorrect;
+	global $db,$Usuario,$Gestion,$Validado,$Activo,$Ultima,$Conexion,$Modificar,$ssoption,$Permisos,$Clientes,$UsuarioYaReg,$NombreIncorrecto,$MailYaReg,$MailIncorrecto,$PassIncorrecto,$CompletaCorrect,$Si,$No;
 	if ($ssoption == 1) {
 		$camposUpdate = array("sgm","activo","validado");
 		$datosUpdate = array($_POST["sgm"],$_POST["activo"],$_POST["validado"]);
@@ -525,33 +525,33 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 			echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$row["id"]."\">";
 			echo "<td style=\"text-align:left;\"><select name=\"sgm\" style=\"width:40px\">";
 				if ($row["sgm"] == 1) {
-					echo "<option value=\"1\" selected>SI</option>";
-					echo "<option value=\"0\">NO</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
 				}
 				if ($row["sgm"] == 0) {
-					echo "<option value=\"1\">SI</option>";
-					echo "<option value=\"0\" selected>NO</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select>";
 			echo "</td>";
 			echo "<td style=\"text-align:center;\"><select name=\"validado\" style=\"width:40px\">";
 				if ($row["validado"] == 1) {
-					echo "<option value=\"1\" selected>SI</option>";
-					echo "<option value=\"0\">NO</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
 				}
 				if ($row["validado"] == 0) {
-					echo "<option value=\"1\">SI</option>";
-					echo "<option value=\"0\" selected>NO</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select></td>";
 			echo "<td style=\"text-align:center;\"><select name=\"activo\" style=\"width:40px\">";
 				if ($row["activo"] == 1) {
-					echo "<option value=\"1\" selected>SI</option>";
-					echo "<option value=\"0\">NO</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
 				}
 				if ($row["activo"] == 0) {
-					echo "<option value=\"1\">SI</option>";
-					echo "<option value=\"0\" selected>NO</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select></td>";
 			echo "<td style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
@@ -625,45 +625,48 @@ function afegirModificarUsuari ($url){
 	echo "<br>* Campos obligatorios.";
 }
 
-function modificarPermisosUsuaris ($url){
-	global $db,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption;
+function modificarPermisosUsuaris ($url_volver,$url){
+	global $db,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption,$Si,$No;
 	if ($ssoption == 1) {
-		if ($_POST["permiso"] == 0) {
-			$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo"];
-			$resultt = mysql_query(convert_sql($sqlt));
-			$rowt = mysql_fetch_array($resultt);
-			deleteFunction ("sgm_users_permisos",$rowt["id"]);
-		}
-		if ($_POST["permiso"] == 1) {
-			$sql = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo"];
-			$result = mysql_query(convert_sql($sql));
-			$row = mysql_fetch_array($result);
-			if (!$row){
-				$camposInsert = "id_user,id_modulo";
-				$datosInsert = array($_GET["id_user"],$_POST["id_modulo"]);
-				insertFunction ("sgm_users_permisos",$camposInsert,$datosInsert);
+		$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
+		$result = mysql_query(convert_sql($sql));
+		while ($row = mysql_fetch_array($result)) {
+			if ($_POST["permiso".$row["id"]] == 0) {
+				$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
+				$resultt = mysql_query(convert_sql($sqlt));
+				$rowt = mysql_fetch_array($resultt);
+				deleteFunction ("sgm_users_permisos",$rowt["id"]);
 			}
+			if ($_POST["permiso".$row["id"]] == 1) {
+				$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
+				$resultt = mysql_query(convert_sql($sqlt));
+				$rowt = mysql_fetch_array($resultt);
+				if (!$rowt){
+					$camposInsert = "id_user,id_modulo";
+					$datosInsert = array($_GET["id_user"],$_POST["id_modulo".$row["id"]]);
+					insertFunction ("sgm_users_permisos",$camposInsert,$datosInsert);
+				}
+			}
+			$camposUpdate = array("admin");
+			$datosUpdate = array($_POST["admin".$row["id"]]);
+			updateFunction ("sgm_users_permisos",$_POST["id_linea".$row["id"]],$camposUpdate,$datosUpdate);
 		}
-	}
-	if ($ssoption == 2) {
-		$camposUpdate = array("admin");
-		$datosUpdate = array($_POST["admin"]);
-		updateFunction ("sgm_users_permisos",$_GET["id_linea"],$camposUpdate,$datosUpdate);
 	}
 
 	$sql = "select * from sgm_users where id=".$_GET["id_user"];
 	$result = mysql_query(convert_sql($sql));
 	$row = mysql_fetch_array($result);
 	echo "<h4>".$Administrar." ".$Permisos.": ".$row["usuario"]."</h4>";
-	echo boton(array($url),array("&laquo; ".$Volver));
+	echo boton(array($url_volver),array("&laquo; ".$Volver));
 	echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		echo "<tr style=\"background-color:silver;\">";
-			echo "<th></th>";
-			echo "<th>".$Acceso."</th>";
-			echo "<th></th>";
-			echo "<th>Admin</th>";
 			echo "<th>".$Modulo."</th>";
+			echo "<th>".$Acceso."</th>";
+			echo "<th>Admin</th>";
+			echo "<th></th>";
 		echo "</tr>";
+	echo "<form action=\"index.php?".$url."&id_user=".$_GET["id_user"]."&ssop=1\" method=\"post\">";
+		echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
 	$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
 	$result = mysql_query(convert_sql($sql));
 	while ($row = mysql_fetch_array($result)) {
@@ -671,46 +674,36 @@ function modificarPermisosUsuaris ($url){
 		$resultt = mysql_query(convert_sql($sqlt));
 		$rowt = mysql_fetch_array($resultt);
 		echo "<tr>";
-			echo "<form action=\"index.php?".$_SERVER["QUERY_STRING"]."&ssop=1\" method=\"post\">";
-			echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$_GET["id_user"]."\">";
-			echo "<input type=\"Hidden\" name=\"id_modulo\" value=\"".$row["id_modulo"]."\">";
-			echo "<td><select name=\"permiso\" style=\"width:40px\">";
+			echo "<td style=\"width:150px\"><strong>".$row["nombre"]."</strong></td>";
+			echo "<input type=\"Hidden\" name=\"id_modulo".$row["id"]."\" value=\"".$row["id_modulo"]."\">";
+			echo "<td style=\"width:60px\"><select name=\"permiso".$row["id"]."\" style=\"width:40px\">";
 				if ($rowt["total"] == 1) {
-					echo "<option value=\"1\" selected>SI</option>";
-					echo "<option value=\"0\">NO</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
 				}
 				if ($rowt["total"] == 0) {
-					echo "<option value=\"1\">SI</option>";
-					echo "<option value=\"0\" selected>NO</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select></td>";
-			echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-			echo "</form>";
-			if ($rowt["total"] == 1) {
-				$sqlad = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
-				$resultad = mysql_query(convert_sql($sqlad));
-				$rowad = mysql_fetch_array($resultad);
-				echo "<form action=\"index.php?".$_SERVER["QUERY_STRING"]."&ssop=2&id_user=".$_GET["id_user"]."&id_linea=".$rowad["id"]."\" method=\"post\">";
-				echo "<td><select name=\"admin\" style=\"width:40px\">";
-					if ($rowad["admin"] == 1) {
-						echo "<option value=\"1\" selected>SI</option>";
-						echo "<option value=\"0\">NO</option>";
-					}
-					if ($rowad["admin"] == 0) {
-						echo "<option value=\"1\">SI</option>";
-						echo "<option value=\"0\" selected>NO</option>";
-					}
-				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-				echo "</form>";
-			}
-			if ($rowt["total"] == 0) {
-				echo "<td></td><td></td>";
-			}
-			echo "<td><strong>".$row["nombre"]."</strong></td>";
-			echo "<td><em>(".$row["descripcion"].")</em></td>";
+			$sqlad = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
+			$resultad = mysql_query(convert_sql($sqlad));
+			$rowad = mysql_fetch_array($resultad);
+			echo "<input type=\"Hidden\" name=\"id_linea".$row["id"]."\" value=\"".$rowad["id"]."\">";
+			echo "<td style=\"width:60px\"><select name=\"admin".$row["id"]."\" style=\"width:40px\">";
+				if ($rowad["admin"] == 1) {
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
+				}
+				if ($rowad["admin"] == 0) {
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
+				}
+			echo "</select></td>";
 		echo "</tr>";
 	}
+		echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
+	echo "</form>";
 	echo "</table>";
 }
 
@@ -2020,7 +2013,7 @@ function decrypt($string, $key) {
 }
 
 function informesContratos(){
-	global $db,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta;
+	global $db,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No;
 	echo "<strong>".$Informes."</strong>";
 	echo "<br><br>";
 	echo "<center><table cellspacing=\"0\">";
@@ -2154,11 +2147,11 @@ function informesContratos(){
 			echo "</select></td>";
 			echo "<td><select name=\"horas\" style=\"width:50px\">";
 				if ($_POST["horas"] == 0){
-					echo "<option value=\"0\" selected>NO</option>";
-					echo "<option value=\"1\">SI</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
 				} else {
-					echo "<option value=\"0\">NO</option>";
-					echo "<option value=\"1\" selected>SI</option>";
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
 				}
 			echo "</select></td>";
 			echo "<td><input type=\"Submit\" value=\"".$Imprimir."\" style=\"width:100px\"></td>";
