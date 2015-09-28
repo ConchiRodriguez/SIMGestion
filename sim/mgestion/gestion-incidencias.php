@@ -1293,7 +1293,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1018&sop=510&ssop=1\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td><input type=\"Text\" name=\"estado\" style=\"width:150px\"></td>";
+				echo "<td><input type=\"Text\" name=\"estado\" style=\"width:150px\" required></td>";
 				echo "<td>";
 					echo "<select style=\"width:50px\" name=\"editable\">";
 							echo "<option value=\"1\" selected>".$Si."</option>";

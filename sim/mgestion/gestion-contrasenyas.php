@@ -126,7 +126,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 			}
 		}
 
-		echo "<h4>".$Contrasenas." : </h4>";
+		echo "<h4>".$Aplicaciones." : </h4>";
 		echo boton(array("op=1024&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
@@ -137,7 +137,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 			echo "</tr><tr>";
 				echo "<form action=\"index.php?op=1024&sop=510&ssop=1\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td><input type=\"text\" style=\"width:150px\" name=\"aplicacion\"></td>";
+				echo "<td><input type=\"text\" style=\"width:150px\" name=\"aplicacion\" required></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
 				echo "</form>";

@@ -36,10 +36,10 @@ function afegirModificarBasesDades ($url,$url_del){
 		if ($_GET["id"] == 0) {
 			echo "<td>";
 				echo "<select style=\"width:500px\" name=\"id_client\">";
-					$sql = "select * from sgm_clients where visible=1 order by nombre";
+					$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)) {
-						echo "<option value=\"".$row["id"]."\">".$row["nombre"]."</option>";
+						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 					}
 				echo "</select>";
 			echo "</td>";
@@ -69,23 +69,23 @@ function afegirModificarBasesDades ($url,$url_del){
 			if ($_GET["id"] == 0) {
 				echo "<td>";
 					echo "<select style=\"width:500px\" name=\"id_client\">";
-					$sqlc = "select * from sgm_clients where visible=1 order by nombre";
+					$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultc = mysql_query(convert_sql($sqlc));
 					while ($rowc = mysql_fetch_array($resultc)) {
 						if ($rowc["id"] == $row["id_client"]){
-							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]."</option>";
+							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						} else {
-							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]."</option>";
+							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						}
 					}
 					echo "</select>";
 				echo "</td>";
 			}
-				echo "<td><input name=\"base\" type=\"Text\" value=\"".$row["base"]."\"></td>";
-				echo "<td><input name=\"ip\" type=\"Text\" value=\"".$row["ip"]."\"></td>";
-				echo "<td><input name=\"usuario\" type=\"Text\" value=\"".$row["usuario"]."\"></td>";
+				echo "<td><input name=\"base\" type=\"Text\" value=\"".$row["base"]."\" required></td>";
+				echo "<td><input name=\"ip\" type=\"Text\" value=\"".$row["ip"]."\" required></td>";
+				echo "<td><input name=\"usuario\" type=\"Text\" value=\"".$row["usuario"]."\" required></td>";
 				$cadena = decrypt($row["pass"],$simclau);
-				echo "<td><input name=\"pass\" type=\"Text\" value=\"".$cadena."\"></td>";
+				echo "<td><input name=\"pass\" type=\"Text\" value=\"".$cadena."\" required></td>";
 				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\" style=\"width:250px\"></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
 				echo "</form>";
@@ -124,10 +124,10 @@ function afegirModificarServidors ($url,$url_del){
 		if ($_GET["id"] == 0) {
 			echo "<td>";
 				echo "<select style=\"width:500px\" name=\"id_client\">";
-					$sql = "select * from sgm_clients where visible=1 order by nombre";
+					$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)) {
-						echo "<option value=\"".$row["id"]."\">".$row["nombre"]."</option>";
+						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 					}
 				echo "</select>";
 			echo "</td>";
@@ -149,20 +149,20 @@ function afegirModificarServidors ($url,$url_del){
 			if ($_GET["id"] == 0) {
 				echo "<td>";
 					echo "<select style=\"width:500px\" name=\"id_client\">";
-					$sqlc = "select * from sgm_clients where visible=1 order by nombre";
+					$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultc = mysql_query(convert_sql($sqlc));
 					while ($rowc = mysql_fetch_array($resultc)) {
 						if ($rowc["id"] == $row["id_client"]){
-							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]."</option>";
+							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						} else {
-							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]."</option>";
+							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						}
 					}
 					echo "</select>";
 				echo "</td>";
 			}
-				echo "<td><input name=\"servidor\" type=\"Text\" value=\"".$row["servidor"]."\" style=\"width:60px\"></td>";
-				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\" style=\"width:300px\"></td>";
+				echo "<td><input name=\"servidor\" type=\"Text\" value=\"".$row["servidor"]."\" style=\"width:60px\" ".$row["cognom1"]." ".$row["cognom2"]."></td>";
+				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\" style=\"width:300px\" ".$row["cognom1"]." ".$row["cognom2"]."></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -189,12 +189,12 @@ function afegirModificarContrasenya ($url){
 			echo "<th>".$Contrato."</th>";
 			echo "<td><select style=\"width:700px\" name=\"id_contrato\">";
 				echo "<option value=\"0\">-</option>";
-				$sqlc = "select * from sgm_clients where visible=1";
+				$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1";
 				if ($_GET["id"] > 0){ $sqlc .= " and id=".$_GET["id"];}
 				$sqlc .= " order by nombre";
 				$resultc = mysql_query(convert_sql($sqlc));
 				while ($rowc = mysql_fetch_array($resultc)) {
-					$sql = "select * from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
+					$sql = "select id,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)){
 						if ($rowcc["id_contrato"] == $row["id"]){
@@ -210,7 +210,7 @@ function afegirModificarContrasenya ($url){
 			echo "<th>".$Aplicacion."</th>";
 			echo "<td><select style=\"width:200px\" name=\"id_aplicacion\">";
 				echo "<option value=\"0\">-</option>";
-				$sqlam = "select * from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
+				$sqlam = "select id,aplicacion from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
 				$resultam = mysql_query(convert_sql($sqlam));
 				while ($rowam = mysql_fetch_array($resultam)) {
 					if ($rowcc["id_aplicacion"] == $rowam["id"]){
@@ -262,7 +262,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 				$datosInsert = array($_POST["id_contrato"],$_POST["id_aplicacion"],$_POST["acceso"],$_POST["usuario"],$cadena,$_POST["descripcion"]);
 				insertFunction ("sgm_contrasenyes",$camposInsert,$datosInsert);
 
-				$sqlcc = "select * from sgm_contrasenyes where id_contrato=".$_POST["id_contrato"]." and id_aplicacion=".$_POST["id_aplicacion"]." and acceso='".$_POST["acceso"]."' order by id desc";
+				$sqlcc = "select id from sgm_contrasenyes where id_contrato=".$_POST["id_contrato"]." and id_aplicacion=".$_POST["id_aplicacion"]." and acceso='".$_POST["acceso"]."' order by id desc";
 				$resultcc = mysql_query(convert_sql($sqlcc));
 				$rowcc = mysql_fetch_array($resultcc);
 				$camposInsert = "id_contrasenya,id_usuario,fecha,accion";
@@ -273,7 +273,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 		if ($ssoption == 2) {
 			if ($_POST["passold"] != "") {
 				$clau = encrypt($_POST["passold"],$simclau);
-				$sqlx = "select * from sgm_contrasenyes WHERE id=".$_GET["id_con"]." and pass='".$clau."'";
+				$sqlx = "select id from sgm_contrasenyes WHERE id=".$_GET["id_con"]." and pass='".$clau."'";
 				$resultx = mysql_query(convert_sql($sqlx));
 				$rowx = mysql_fetch_array($resultx);
 				if ($rowx){
@@ -324,14 +324,14 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 			$url_enlace = "";
 			echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?".$link_del."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-				$sql = "select * from sgm_contratos where visible=1 and id=".$rowcc["id_contrato"];
+				$sql = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and id=".$rowcc["id_contrato"];
 				$result = mysql_query(convert_sql($sql));
 				$row = mysql_fetch_array($result);
-				$sqlc = "select * from sgm_clients where id=".$row["id_cliente_final"];
+				$sqlc = "select nombre,cognom1,cognom2 from sgm_clients where id=".$row["id_cliente_final"];
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				echo "<td nowrap><a href=\"index.php?op=1011&sop=100&id=".$row["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</a></td>";
-				$sqlam = "select * from sgm_contrasenyes_apliciones where visible=1 and id=".$rowcc["id_aplicacion"];
+				$sqlam = "select aplicacion from sgm_contrasenyes_apliciones where visible=1 and id=".$rowcc["id_aplicacion"];
 				$resultam = mysql_query(convert_sql($sqlam));
 				$rowam = mysql_fetch_array($resultam);
 				echo "<td>".$rowam["aplicacion"]."</td>";
@@ -350,13 +350,13 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 function mostrarContrasenya(){
 	global $db,$Contrasena,$Cliente,$Aplicacion,$Ver,$userid,$simclau;
 		?><script>setTimeout ("redireccionar()", 10000);</script><?php
-		$sqlc = "select * from sgm_contrasenyes where id=".$_GET["id_con"];
+		$sqlc = "select id_contrato,id_aplicacion,pass from sgm_contrasenyes where id=".$_GET["id_con"];
 		$resultc = mysql_query(convert_sql($sqlc));
 		$rowc = mysql_fetch_array($resultc);
-		$sqlcl = "select * from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
+		$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
 		$resultcl = mysql_query(convert_sql($sqlcl));
 		$rowcl = mysql_fetch_array($resultcl);
-		$sqlca = "select * from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
+		$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
 		$resultca = mysql_query(convert_sql($sqlca));
 		$rowca = mysql_fetch_array($resultca);
 
@@ -393,13 +393,13 @@ function modificarContrasenya($url_volver){
 			insertFunction ("sgm_contrasenyes_lopd",$camposInsert,$datosInsert);
 		}
 	}
-	$sqlc = "select * from sgm_contrasenyes where id=".$_GET["id_con"];
+	$sqlc = "select id_contrato,id_aplicacion from sgm_contrasenyes where id=".$_GET["id_con"];
 	$resultc = mysql_query(convert_sql($sqlc));
 	$rowc = mysql_fetch_array($resultc);
-	$sqlcl = "select * from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
+	$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
 	$resultcl = mysql_query(convert_sql($sqlcl));
 	$rowcl = mysql_fetch_array($resultcl);
-	$sqlca = "select * from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
+	$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
 	$resultca = mysql_query(convert_sql($sqlca));
 	$rowca = mysql_fetch_array($resultca);
 
@@ -446,10 +446,10 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 		if ($registro == 1 ) {
 			$datosInsert = array($_POST["user"],$contrasena,$_POST["mail"],date("Y-m-d"),$_POST["id_tipus"]);
 			insertFunction ("sgm_users","usuario,pass,mail,datejoin,id_tipus",$datosInsert);
-			$sqlu = "select * from sgm_users where usuario='".$_POST["user"]."'";
+			$sqlu = "select id from sgm_users where usuario='".$_POST["user"]."'";
 			$resultu = mysql_query(convert_sql($sqlu));
 			$rowu = mysql_fetch_array($resultu);
-			$sql = "select * from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
+			$sql = "select id_modulo,admin from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
 			$result = mysql_query(convert_sql($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$datosInsert = array($rowu["id"],$row["id_modulo"],$row["admin"]);
@@ -463,7 +463,7 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 		}
 	}
 	if ($ssoption == 3) {
-		$sqlx = "select * from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$_GET["id_user"];
+		$sqlx = "select id_tipus from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$_GET["id_user"];
 		$resultx = mysql_query(convert_sql($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 		if (!$rowx){
@@ -481,12 +481,12 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 			}
 			updateFunction ("sgm_users",$_GET["id_user"],$camposUpdate,$datosUpdate);
 			if ($rowx["id_tipus"] != $_POST["id_tipus"]){
-				$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"];
+				$sqlt = "select id from sgm_users_permisos where id_user=".$_GET["id_user"];
 				$resultt = mysql_query(convert_sql($sqlt));
 				while ($rowt = mysql_fetch_array($resultt)){
 					deleteFunction ("sgm_users_permisos",$rowt["id"]);
 				}
-				$sql = "select * from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
+				$sql = "select id_modulo,admin from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
 				$result = mysql_query(convert_sql($sql));
 				while ($row = mysql_fetch_array($result)) {
 					$datosInsert = array($_GET["id_user"],$row["id_modulo"],$row["admin"]);
@@ -582,7 +582,7 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 function afegirModificarUsuari ($url){
 	global $db,$Datos,$Usuario,$Anadir,$Usuarios,$Direccion,$Email,$Contrasena,$Repetir,$Tipo,$Modificar,$Volver;
 	if ($_GET["id_user"] > 0){
-		$sqluser = "select * from sgm_users WHERE id=".$_GET["id_user"];
+		$sqluser = "select usuario,mail,id_tipus from sgm_users WHERE id=".$_GET["id_user"];
 		$resultuser = mysql_query(convert_sql($sqluser));
 		$rowuser = mysql_fetch_array($resultuser);
 		echo "<h4>".$Datos." ".$Usuario." : ".$rowuser["usuario"]."</h4>";
@@ -601,7 +601,7 @@ function afegirModificarUsuari ($url){
 	echo "<tr><th>*".$Tipo." ".$Usuario."</th>";
 		echo "<th><select name=\"id_tipus\" style=\"width:200px;\">";
 			echo "<option value=\"0\">-</option>";
-			$sqlc = "select * from sgm_users_tipus where visible=1 order by tipus";
+			$sqlc = "select id,tipus from sgm_users_tipus where visible=1 order by tipus";
 			$resultc = mysql_query(convert_sql($sqlc));
 			while ($rowc = mysql_fetch_array($resultc)) {
 				if ($rowc["id"] == $rowuser["id_tipus"]){
@@ -628,7 +628,7 @@ function afegirModificarUsuari ($url){
 function modificarPermisosUsuaris ($url_volver,$url){
 	global $db,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption,$Si,$No;
 	if ($ssoption == 1) {
-		$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
+		$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre";
 		$result = mysql_query(convert_sql($sql));
 		while ($row = mysql_fetch_array($result)) {
 			if ($_POST["permiso".$row["id"]] == 0) {
@@ -653,7 +653,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 		}
 	}
 
-	$sql = "select * from sgm_users where id=".$_GET["id_user"];
+	$sql = "select usuario from sgm_users where id=".$_GET["id_user"];
 	$result = mysql_query(convert_sql($sql));
 	$row = mysql_fetch_array($result);
 	echo "<h4>".$Administrar." ".$Permisos.": ".$row["usuario"]."</h4>";
@@ -686,7 +686,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select></td>";
-			$sqlad = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
+			$sqlad = "select id,admin from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
 			$resultad = mysql_query(convert_sql($sqlad));
 			$rowad = mysql_fetch_array($resultad);
 			echo "<input type=\"Hidden\" name=\"id_linea".$row["id"]."\" value=\"".$rowad["id"]."\">";
@@ -712,11 +712,11 @@ function calculPausaIncidencia ($id_incidencia, $id_nota_incidencia,$data_nota_i
 	
 	$pausada = 0;
 
-	$sql = "select * from sgm_incidencias where id_incidencia=".$id_incidencia." and visible=1 order by fecha_inicio";
+	$sql = "select id_usuario_registro,pausada,id from sgm_incidencias where id_incidencia=".$id_incidencia." and visible=1 order by fecha_inicio";
 	$result = mysql_query($sql);
 	while ($row = mysql_fetch_array($result)){
 		if ($row["id_usuario_registro"] > 0) {
-			$sqlu = "select * from sgm_users where id=".$row["id_usuario_registro"]." and validado=1 and activo=1 and sgm=1";
+			$sqlu = "select id from sgm_users where id=".$row["id_usuario_registro"]." and validado=1 and activo=1 and sgm=1";
 			$resultu = mysql_query($sqlu);
 			$rowu = mysql_fetch_array($resultu);
 			if (($rowu) and ($row["pausada"] == 1)){
@@ -772,7 +772,7 @@ function resumEconomicContractes($id){
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
-			$sqltipos = "select * from sgm_contratos where activo=1 and renovado=0 and visible=1";
+			$sqltipos = "select id,id_cliente,num_contrato from sgm_contratos where activo=1 and renovado=0 and visible=1";
 			$sqltipos .= " order by id_cliente";
 			$resulttipos = mysql_query(convert_sql($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
@@ -780,7 +780,7 @@ function resumEconomicContractes($id){
 				unset($total_euros_mes);
 				$total_horas_any = 0;
 				$total_euros_any = 0;
-				$sqlc = "select * from sgm_clients where id=".$rowtipos["id_cliente"];
+				$sqlc = "select id,nombre from sgm_clients where id=".$rowtipos["id_cliente"];
 				$resultc = mysql_query(convert_sql($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\">";
@@ -789,7 +789,7 @@ function resumEconomicContractes($id){
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\">";
 					echo "<strong><a href=\"index.php?op=1008&sop=210&id=".$rowc["id"]."\">".$rowc["nombre"]."</a></strong>";
 				echo "</td></tr>";
-				$sqls = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
+				$sqls = "select id,servicio,precio_hora from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
 				$results = mysql_query(convert_sql($sqls));
 				while ($rows = mysql_fetch_array($results)){
 					echo "<tr>";
@@ -861,15 +861,12 @@ function resumEconomicContractes($id){
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
-			$sqltipos = "select * from sgm_contratos where activo=1 and renovado=0 and visible=1 and id=".$id;
+			$sqltipos = "select id,id_cliente from sgm_contratos where activo=1 and renovado=0 and visible=1 and id=".$id;
 			$sqltipos .= " order by id_cliente";
 			$resulttipos = mysql_query(convert_sql($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				unset($total_horas_mes);
 				unset($total_euros_mes);
-				$sqlc = "select * from sgm_clients where id=".$rowtipos["id_cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
-				$rowc = mysql_fetch_array($resultc);
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\"><strong>";
 				echo "</td></tr>";
 				$sqls = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
