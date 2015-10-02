@@ -1,4 +1,6 @@
 <?php
+#32599E antiguo color
+
 error_reporting(~E_ALL);
 date_default_timezone_set('Europe/Madrid');
 
@@ -179,7 +181,7 @@ echo "<table class=\"maestra\">";
 		echo "</td>";
 	echo "</tr>";
 	echo "<tr>";
-		echo "<td colspan=\"3\" style\"border-left : 0px solid Silver; border-right : 0px solid Silver; padding-left:1px; padding-right:1px; padding-top:1px;text-align:justify;vertical-align:top;\">";
+		echo "<td colspan=\"3\" class=\"maestra2\">";
 
 		if ($sgm == 1) {
 
@@ -192,7 +194,7 @@ echo "<table class=\"maestra\">";
 				$id_grupo = $_GET["id_grupo"];
 			}
 
-			echo "<center><table cellpadding=\"0\" cellspacing=\"1\"><tr>";
+			echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
 				if ($option == 200) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_usuario."</a></td>";
 				$sqlu = "select * from sgm_users where id=".$userid;
@@ -206,28 +208,23 @@ echo "<table class=\"maestra\">";
 							echo "<td class=".$class."><a href=\"index.php?id_grupo=".$rowm["id"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
 						}
 					}
-			echo "</tr></table></center>";
+			echo "</tr></table>";
 
 ##			if ($option == 0) {
-				echo "<center><table cellpadding=\"0\" cellspacing=\"1\"><tr>";
+				echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
 					$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$id_grupo." order by nombre";
 					$resultm = mysql_query(convert_sql($sqlm));
 					while ($rowm = mysql_fetch_array($resultm)) {
 							if ($rowm["id_modulo"] == $option) {$class = "menu_select";} else {$class = "menu";}
 						echo "<td class=".$class."><a href=\"index.php?op=".$rowm["id_modulo"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
 					}
-				echo "</tr></table></center>";
+				echo "</tr></table>";
 			}
 ##		}
-
-?>
-
-
-		</td>
-	</tr>
-	<tr>
-		<td style="border-left : 0px solid Silver; border-right : 0px solid Silver; padding-left:1px; padding-right:1px; padding-top:1px;text-align:justify;height:100%;vertical-align:top;">
-		<?php
+		echo "</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td  class=\"maestra2\">";
 			$veure_peu = 1;
 					include ("mgestion/indice.php");
 #					if ($option == 0) { include ("includes/inicio.php");}
@@ -255,9 +252,7 @@ echo "<table class=\"maestra\">";
 	echo "</tr>";
 	if ($veure_peu != 0){
 	echo "<tr>";
-		echo "<td class=\"maestra\">";
-			echo "<font style=\"color : white; padding-left : 5px;\">&copy;2015 Solucions-im.com</font>";
-		echo "</td>";
+		echo "<td class=\"maestra\" style=\"color:white;\">&copy;2015 Solucions-im.com</td>";
 	echo "</tr>";
 	}
 echo "</table>";

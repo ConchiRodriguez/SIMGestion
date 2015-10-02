@@ -203,7 +203,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 					if ($_POST["trasp"] == 1) {
 						$camposInsert = "id_origen,linea,id_cuerpo,idfactura,id_estado,fecha_prevision,fecha_entrega,facturado,id_facturado,codigo,nombre,pvd,pvp,unidades,descuento,descuento_absoluto,subtotaldescuento,total,notes,bloqueado,id_article,stock,prioridad,controlcalidad,id_tarifa,tarifa";
-						$datosInsert = array($row["id"],$row["linea"],$row["id_cuerpo"],$rowfac["id"],$row["id_estado"],$row["fecha_prevision"],$row["fecha_entrega"],$row["facturado"],$row["id_facturado"],$row["codigo"],$row["nombre"],$row["pvd"],$row["pvp"],$_POST["unitats_".$row["id"]],$row["descuento"],$row["descuento_absoluto"],$row["subtotaldescuento"],$row["total"],$row["notes"],$row["bloqueado"],$row["id_article"],$row["stock"],$row["prioridad"],$row["controlcalidad"],$row["id_tarifa"],$row["tarifa"]);
+						$datosInsert = array($row["id"],$row["linea"],$row["id_cuerpo"],$rowfac["id"],$row["id_estado"],$row["fecha_prevision"],$row["fecha_entrega"],$row["facturado"],$row["id_facturado"],$row["codigo"],$row["nombre"],$row["pvd"],$row["pvp"],$row["unidades"],$row["descuento"],$row["descuento_absoluto"],$row["subtotaldescuento"],$row["total"],$row["notes"],$row["bloqueado"],$row["id_article"],$row["stock"],$row["prioridad"],$row["controlcalidad"],$row["id_tarifa"],$row["tarifa"]);
 						insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 					}
 				}
@@ -235,12 +235,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 					echo "<th style=\"min-width:80px;\">".$Numero."</th>";
 					if ($rowtipos["presu"] == 1) { echo "<th>Ver.</th>"; $tds++;}
-					echo "<th style=\"min-width:80px;\">".$Fecha."</th>";
-					if ($rowtipos["v_fecha_prevision"] == 1) { echo "<th style=\"min-width:80px;\">".$Prevision."</th>"; $tds++;}
-					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<th style=\"min-width:80px;\">".$Vencimiento."</th>"; $tds++;}
+					echo "<th style=\"min-width:70px;\">".$Fecha."</th>";
+					if ($rowtipos["v_fecha_prevision"] == 1) { echo "<th style=\"min-width:70px;\">".$Prevision."</th>"; $tds++;}
+					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<th style=\"min-width:70px;\">".$Vencimiento."</th>"; $tds++;}
 					if ($rowtipos["v_numero_cliente"] == 1) { echo "<th style=\"min-width:80px;\">Ref. Ped. ".$Cliente."</th>"; $tds++;}
 					if ($rowtipos["v_rfq"] == 1) { echo "<th style=\"min-width:80px;\">".$Numero." RFQ</th>"; $tds++;}
-					if ($rowtipos["tpv"] == 0) { echo "<th style=\"min-width:400px;\">".$Cliente."</th>"; $tds++;}
+					if ($rowtipos["tpv"] == 0) { echo "<th class=\"factur\">".$Cliente."</th>"; $tds++;}
 					if ($rowtipos["v_subtipos"] == 1) { echo "<th style=\"min-width:100px;\">".$Subtipo."</th>"; $tds++;}
 					echo "<th style=\"text-align:right;\">".$Subtotal."</th>";
 					echo "<th style=\"text-align:right;\">".$Total."</th>";
@@ -286,7 +286,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<input type=\"hidden\" name=\"version\" value=\"0\">";
 					}
 					$date1 = date("Y-m-d");
-					echo "<td><input type=\"Text\" name=\"fecha\" style=\"width:80px\" value=\"".cambiarFormatoFechaDMY($date1)."\"></td>";
+					echo "<td><input type=\"Text\" name=\"fecha\" style=\"width:70px\" value=\"".cambiarFormatoFechaDMY($date1)."\"></td>";
 				### CALCULO DE LA FECHA DE PREVISION DE ENTREGA
 					$suma = $rowtipos["v_fecha_prevision_dias"];
 					$a = date("Y", strtotime($date1)); 
@@ -294,9 +294,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$d = date("j", strtotime($date1)); 
 					$fecha_prevision = date("Y-m-d", mktime(0,0,0,$m ,$d+$suma, $a));
 					if ($rowtipos["v_fecha_prevision"] == 1) { 
-						echo "<td><input type=\"Text\" name=\"fecha_prevision\" style=\"width:80px\" value=\"".cambiarFormatoFechaDMY($fecha_prevision)."\"></td>";
+						echo "<td><input type=\"Text\" name=\"fecha_prevision\" style=\"width:70px\" value=\"".cambiarFormatoFechaDMY($fecha_prevision)."\"></td>";
 					} else {
-						echo "<input type=\"hidden\" name=\"fecha_prevision\" style=\"width:80px\" value=\"0\">";
+						echo "<input type=\"hidden\" name=\"fecha_prevision\" style=\"width:70px\" value=\"0\">";
 					}
 					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<td></td>"; }
 					if ($rowtipos["v_numero_cliente"] == 1) { 
@@ -307,7 +307,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					} else { "<input type=\"hidden\" name=\"numero_rfq\">"; }
 					if ($rowtipos["tpv"] == 0) { 
 						echo "<td>";
-							echo "<select style=\"width:350px\" name=\"id_cliente\">";
+							echo "<select name=\"id_cliente\" style=\"width:100%\">";
 							echo "<option value=\"0\">-</option>";
 							$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 ";
 							$sql = $sql."order by nombre";
@@ -518,7 +518,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<th>".$Idioma."</th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
-				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturas-print-pdf.php?id=".$_GET["id"]."\" target=\"_blank\">";
+				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-print-pdf.php?id=".$_GET["id"]."\" target=\"_blank\">";
 				echo "<td><select name=\"tipo\" style=\"width:70px\">";
 					echo "<option value=\"0\">".$Sobre."</option>";
 					echo "<option value=\"1\">".$No_sobre."</option>";
@@ -537,7 +537,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 				echo "</form>";
 			echo "</tr><tr>";
-				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturas-print-e.php?id=".$_GET["id"]."\" target=\"_blank\">";
+				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-print-e.php?id=".$_GET["id"]."\" target=\"_blank\">";
 				echo "<td>Facturae</td>";
 				echo "<td><select name=\"idioma\" style=\"width:90px\">";
 					$sqli = "select idioma,descripcion,predefinido from sgm_idiomas where visible=1";
@@ -755,7 +755,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "</select></td>";
 								echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
-								echo "<td><form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturas-recibos-print-pdf.php?id=".$rowr["id"]."\" target=\"_blank\">";
+								echo "<td><form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-recibos-print-pdf.php?id=".$rowr["id"]."\" target=\"_blank\">";
 								echo "<input type=\"Submit\" value=\"".$Imprimir."\"></form>";
 								echo "</td>";
 #								$sqlx = "select * from sgm_clients where id=".$rowf["id_cliente"];
@@ -1683,7 +1683,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<th>".$Idioma."</th>";
 			echo "</tr>";
 			echo "<tr>";
-			echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturas-print-pdf.php?\" target=\"_blank\">";
+			echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-print-pdf.php?\" target=\"_blank\">";
 				echo "<td>";
 					echo "<select name=\"id_tipo\" style=\"width:200px\">";
 					$sqlx = "select id,tipo from sgm_factura_tipos where visible=1 order by tipo";
@@ -2230,7 +2230,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<tr><th>".$Codigo." ".$Postal."</th><td><input type=\"Text\" name=\"cp\" style=\"width:300px\" value=\"".$row["cp"]."\"></td></tr>";
 						echo "<tr><th>".$Provincia."</th><td><input type=\"Text\" name=\"provincia\" style=\"width:300px\" value=\"".$row["provincia"]."\"></td></tr>";
 						echo "<tr><th>".$Email."</th><td><input type=\"Text\" name=\"mail\" style=\"width:300px\" value=\"".$row["mail"]."\"></td></tr>";
-						echo "<tr><th>".$Telefono."</th><td><input type=\"Text\" name=\"telefono\" style=\"width:300px\" value=\"".$row["telefono"]."\"></td></tr>";
+						echo "<tr><th>".$Telefono."</th><td><input type=\"tel\" pattern=\"".$reg_exp_telf."\" name=\"telefono\" style=\"width:300px\" value=\"".$row["telefono"]."\" placeholder=\"000000000\"></td></tr>";
 						echo "<tr><th>I.V.A.</th><td><input type=\"Text\" name=\"iva\" style=\"width:300px\" value=\"".$row["iva"]."\"></td></tr>";
 						echo "<tr><th></th><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:300px\"></td></tr>";
 					echo "</form>";
@@ -2427,96 +2427,90 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<th></th>";
-				echo "<th>".$Orden."</th>";
-				echo "<th>".$Tipo."</th>";
-				echo "<th>".$Descripcion."</th>";
-				echo "<th>".$Plantilla."</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th></th>";
-				echo "<th>TPV</th>";
-				echo "<th>".$Caja."</th>";
-				echo "<th></th>";
-				echo "<th>V.Prev</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th></th>";
-				echo "<th>V.Venc</th>";
-				echo "<th>V.Ref</th>";
-				echo "<th>V.Sub</th>";
-				echo "<th>V.Pes</th>";
-				echo "<th>V.Rec</th>";
-				echo "<th>OT</th>";
-				echo "<th>Presu</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th>".$Stock."</th>";
-				echo "<th>".$Aprobar."</th>";
-				echo "<th>V.RFQ</th>";
+				echo "<th style=\"width:35px\">".$Orden."</th>";
+				echo "<th style=\"width:150px\">".$Tipo."</th>";
+				echo "<th style=\"width:200px\">".$Descripcion."</th>";
+				echo "<th style=\"width:50px\">".$Plantilla."</th>";
+				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:50px\">TPV</th>";
+				echo "<th style=\"width:50px\">".$Caja."</th>";
+				echo "<th style=\"width:50px\">V.Prev</th>";
+				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:50px\">V.Venc</th>";
+				echo "<th style=\"width:50px\">V.Ref</th>";
+				echo "<th style=\"width:50px\">V.Sub</th>";
+				echo "<th style=\"width:50px\">V.Pes</th>";
+				echo "<th style=\"width:50px\">V.Rec</th>";
+				echo "<th style=\"width:50px\">OT</th>";
+				echo "<th style=\"width:50px\">Presu</th>";
+				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:35px\">".$Stock."</th>";
+				echo "<th style=\"width:50px\">".$Aprobar."</th>";
+				echo "<th style=\"width:50px\">V.RFQ</th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1003&sop=530&ssop=1\" method=\"post\">";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td><input type=\"Text\" name=\"orden\" style=\"width:20px\" value=\"0\"></td>";
-				echo "<td><input type=\"Text\" name=\"tipo\" style=\"width:150px\"></td>";
-				echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:200px\"></td>";
-				echo "<td><select name=\"facturable\" style=\"width:50px\">";
+				echo "<td><input type=\"number\" min=\"0\" name=\"orden\" value=\"0\"></td>";
+				echo "<td><input type=\"Text\" name=\"tipo\"></td>";
+				echo "<td><input type=\"Text\" name=\"descripcion\"></td>";
+				echo "<td><select name=\"facturable\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"Text\" name=\"dias\" style=\"width:30px\" value=\"0\"></td>";
-				echo "<td>&nbsp;</td>";
-				echo "<td><select name=\"tpv\" style=\"width:50px\">";
+				echo "<td><input type=\"number\" min=\"0\" name=\"dias\" value=\"0\"></td>";
+				echo "<td><select name=\"tpv\">";
 					echo "<option value=\"0\"selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"caja\" style=\"width:50px\">";
+				echo "<td><select name=\"caja\">";
 					echo "<option value=\"0\"selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td></td>";
-				echo "<td><select name=\"v_fecha_prevision\" style=\"width:50px\">";
+				echo "<td><select name=\"v_fecha_prevision\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"Text\" name=\"v_fecha_prevision_dias\" style=\"width:30px\" value=\"0\"></td>";
-				echo "<td>&nbsp;</td>";
-				echo "<td><select name=\"v_fecha_vencimiento\" style=\"width:50px\">";
+				echo "<td><input type=\"number\" min=\"0\" name=\"v_fecha_prevision_dias\" value=\"0\"></td>";
+				echo "<td><select name=\"v_fecha_vencimiento\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_numero_cliente\" style=\"width:50px\">";
+				echo "<td><select name=\"v_numero_cliente\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_subtipos\" style=\"width:50px\">";
+				echo "<td><select name=\"v_subtipos\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_pesobultos\" style=\"width:50px\">";
+				echo "<td><select name=\"v_pesobultos\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_recibos\" style=\"width:50px\">";
+				echo "<td><select name=\"v_recibos\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"tipo_ot\" style=\"width:50px\">";
+				echo "<td><select name=\"tipo_ot\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"presu\" style=\"width:50px\">";
+				echo "<td><select name=\"presu\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"Text\" name=\"presu_dias\" style=\"width:30px\" value=\"0\"></td>";
-				echo "<td><select name=\"stock\" style=\"width:50px\">";
+				echo "<td><input type=\"number\" min=\"0\" name=\"presu_dias\" value=\"0\"></td>";
+				echo "<td><select name=\"stock\">";
 					echo "<option value=\"0\" selected>=</option>";
 					echo "<option value=\"-1\">-</option>";
 					echo "<option value=\"1\">+</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"aprovado\" style=\"width:50px\">";
+				echo "<td><select name=\"aprovado\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_rfq\" style=\"width:50px\">";
+				echo "<td><select name=\"v_rfq\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
@@ -2530,10 +2524,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1003&sop=530&ssop=2&id=".$rowtipos["id"]."\" method=\"post\">";
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=501&id=".$rowtipos["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<td><input type=\"Text\" name=\"orden\" value=\"".$rowtipos["orden"]."\" style=\"width:20px\"></td>";
-					echo "<td><input type=\"Text\" name=\"tipo\" value=\"".$rowtipos["tipo"]."\" style=\"width:150px\"></td>";
-					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$rowtipos["descripcion"]."\" style=\"width:200px\"></td>";
-					echo "<td><select name=\"facturable\" style=\"width:50px\">";
+					echo "<td><input type=\"Text\" name=\"orden\" value=\"".$rowtipos["orden"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"tipo\" value=\"".$rowtipos["tipo"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$rowtipos["descripcion"]."\"></td>";
+					echo "<td><select name=\"facturable\">";
 						if ($rowtipos["facturable"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2543,9 +2537,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"dias\" value=\"".$rowtipos["dias"]."\" style=\"width:30px\"></td>";
-					echo "<td>&nbsp;</td>";
-					echo "<td><select name=\"tpv\" style=\"width:50px\">";
+					echo "<td><input type=\"Text\" name=\"dias\" value=\"".$rowtipos["dias"]."\"></td>";
+					echo "<td><select name=\"tpv\">";
 						if ($rowtipos["tpv"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2555,7 +2548,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"caja\" style=\"width:50px\">";
+					echo "<td><select name=\"caja\">";
 						if ($rowtipos["caja"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2565,8 +2558,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td>&nbsp;</td>";
-					echo "<td><select name=\"v_fecha_prevision\" style=\"width:50px\">";
+					echo "<td><select name=\"v_fecha_prevision\">";
 						if ($rowtipos["v_fecha_prevision"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2576,9 +2568,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\" style=\"width:30px\"></td>";
-					echo "<td>&nbsp;</td>";
-					echo "<td><select name=\"v_fecha_vencimiento\" style=\"width:50px\">";
+					echo "<td><input type=\"Text\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\"></td>";
+					echo "<td><select name=\"v_fecha_vencimiento\">";
 						if ($rowtipos["v_fecha_vencimiento"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2588,7 +2579,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_numero_cliente\" style=\"width:50px\">";
+					echo "<td><select name=\"v_numero_cliente\">";
 						if ($rowtipos["v_numero_cliente"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2598,7 +2589,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_subtipos\" style=\"width:50px\">";
+					echo "<td><select name=\"v_subtipos\">";
 						if ($rowtipos["v_subtipos"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2608,7 +2599,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_pesobultos\" style=\"width:50px\">";
+					echo "<td><select name=\"v_pesobultos\">";
 						if ($rowtipos["v_pesobultos"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2618,7 +2609,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_recibos\" style=\"width:50px\">";
+					echo "<td><select name=\"v_recibos\">";
 						if ($rowtipos["v_recibos"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2628,7 +2619,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"tipo_ot\" style=\"width:50px\">";
+					echo "<td><select name=\"tipo_ot\">";
 						if ($rowtipos["tipo_ot"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2638,7 +2629,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"presu\" style=\"width:50px\">";
+					echo "<td><select name=\"presu\">";
 						if ($rowtipos["presu"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2648,8 +2639,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\" style=\"width:30px\"></td>";
-					echo "<td><select name=\"stock\" style=\"width:50px\">";
+					echo "<td><input type=\"Text\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\"></td>";
+					echo "<td><select name=\"stock\">";
 						if ($rowtipos["stock"] == 0) {
 							echo "<option value=\"0\" selected>=</option>";
 							echo "<option value=\"-1\">-</option>";
@@ -2666,7 +2657,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>+</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"aprovado\" style=\"width:50px\">";
+					echo "<td><select name=\"aprovado\">";
 						if ($rowtipos["aprovado"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -2676,7 +2667,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_rfq\" style=\"width:50px\">";
+					echo "<td><select name=\"v_rfq\">";
 						if ($rowtipos["v_rfq"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
@@ -3201,7 +3192,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 
 function ver_listado($row){
-	global $totalPagat,$totalSenseIVA,$totalSensePagar,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones;
+	global $rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones;
 	
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
 	$resulttipos = mysql_query(convert_sql($sqltipos));
@@ -3433,13 +3424,13 @@ function ver_listado($row){
 				$sqldi = "select id,abrev from sgm_divisas where id=".$row["id_divisa"];
 				$resultdi = mysql_query(convert_sql($sqldi));
 				$rowdi = mysql_fetch_array($resultdi);
-				echo "<td style=\"text-align:right;\">".number_format($row["subtotal"],2,",",".")." ".$rowdi["abrev"]."</td>";
-				echo "<td style=\"text-align:right;\">".number_format($row["total"],2,",",".")." ".$rowdi["abrev"]."</td>";
+				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["subtotal"],2,",",".")." ".$rowdi["abrev"]."</td>";
+				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["total"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				if ($rowtipos["v_recibos"] == 1)  {
 					$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
 					$resultr = mysql_query(convert_sql($sqlr));
 					$rowr = mysql_fetch_array($resultr);
-					echo "<td style=\"text-align:right;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
+					echo "<td style=\"text-align:right;min-width:100px;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
 				}
 				if ($rowdiv["id"] == $rowdi["id"]){
 					$totalSenseIVA += $row["subtotal"];
@@ -3456,7 +3447,7 @@ function ver_listado($row){
 				if ($rowtipos["tpv"] == 0) {
 					echo "<form method=\"post\" action=\"index.php?op=1003&sop=20&id=".$row["id"]."&id_tipo=".$_GET["id"]."\">";
 				} else {
-					echo "<form method=\"post\" action=\"".$urlmgestion."/sim/mgestion/gestion-facturas-tiquet-print-pdf.php?id=".$row["id"]."\" target=\"_blank\">";
+					echo "<form method=\"post\" action=\"".$urlmgestion."/sim/mgestion/gestion-facturacion-tiquet-print-pdf.php?id=".$row["id"]."\" target=\"_blank\">";
 				}
 						echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 					echo "</form>";
@@ -3584,5 +3575,44 @@ function ver_listado($row){
 		}
 	}
 }
+
+if (($soption == 100000) AND ($admin == true)) {
+	$sql = "select * from sgm_files";
+	$result = mysql_query(convert_sql($sql));
+	while ($row = mysql_fetch_array($result)) {
+		if ($row["id_cuerpo"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_cuerpo"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($row["id_article"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_article"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($row["id_client"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_client"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($row["id_contrato"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_contrato"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($row["id_incidencia"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_incidencia"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($row["id_cabezera"] != 0){
+				$camposUpdate = array("id_elemento");
+				$datosUpdate = array($row["id_cabezera"]);
+				updateFunction ("sgm_files",$row["id"],$camposUpdate,$datosUpdate);
+		}
+	}
+}
+
+
 
 ?>

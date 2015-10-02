@@ -340,7 +340,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 
 				if ($rowcc["id"] != $id_client_inc){
 					if ($rowcc["id"] == 0){$nom_cli = $SinCliente;} else {$nom_cli = $rowcc["nombre"];}
-					echo "<tr style=\"background-color:#D8D8D8;\"><td></td><td></td><td></td><td></td><td></td><td><a href=\"index.php?op=1008&sop=260&id=".$rowcc["id"]."\"><b>".$nom_cli."</b><a></td><td></td><td></td><td colspan=\"2\"></td>";
+					echo "<tr style=\"background-color:#D8D8D8;\"><td colspan=\"5\"></td><td><a href=\"index.php?op=1008&sop=260&id=".$rowcc["id"]."\"><b>".$nom_cli."</b><a></td><td colspan=\"4\"></td></tr>";
 					$id_client_inc = $rowcc["id"];
 				}
 
@@ -390,7 +390,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "<tr style=\"background-color:".$estado_color.";\">";
 				echo "<td style=\"text-align:center;vertical-align:top;\"><a href=\"index.php?op=1018&sop=2&id=".$rowi["id"].$adres."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"><a></td>";
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rowi["id"]."</td>";
-					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$sla."</td>";
+					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\" nowrap>".$sla."</td>";
 				$sqlind = "select id_usuario_registro from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1 order by fecha_inicio desc";
 				$resultind = mysql_query(convert_sql($sqlind));
 				$rowind = mysql_fetch_array($resultind);
@@ -402,7 +402,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				} else {
 					$novetats = '';
 				}
-					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:150px;\">".$fecha_prev."</td>";
+					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:150px;\" nowrap>".$fecha_prev."</td>";
 					if (($rowi["id_estado"] <> -2) and ($soption == 200) and ($rowi["pausada"] != 1)){$estado_color = "#33CC33";}
 					if ($rowi["asunto"] != ""){$asun = $rowi["asunto"];} else {$asun = $SinAsunto;}
 					echo "<td style=\"vertical-align:top;background-color:".$estado_color.";\"><a href=\"index.php?op=1018&sop=100&id=".$rowi["id"].$adres."\" style=\"color:".$estado_color_letras.";\">".$novetats." ".$asun."<a></td>";
@@ -422,10 +422,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 				} else {
 					$duration = $horas[0]."h. ".$minutos."m.";
 				}
-				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$duration."</td>";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\" nowrap>".$duration."</td>";
 				if ($soption == 0){
-					echo "<form action=\"index.php?op=1018&sop=3&id=".$rowi["id"]."\" method=\"post\">";
-					echo "<td><input type=\"Text\" name=\"id_inc_rel\" style=\"width:80px\"></td>";
+					echo "<form action=\"index.php?op=1018&sop=3&id=".$rowi["id"]."&id_cli=".$_GET["id_cli"]."\" method=\"post\">";
+					echo "<td><input type=\"number\" name=\"id_inc_rel\" style=\"width:80px\" min=\"1\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Relacion."\" style=\"width:80px\"></td>";
 					echo "</form>";
 				}
@@ -922,7 +922,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr>";
 							if ($id_inc == ""){
 								echo "<th style=\"text-align:left;vertical-align:top;\">".$Duracion." (Min) :</th>";
-								echo "<td><input type=\"text\" name=\"duracion\" style=\"width:50px\" value=\"".$duracion."\"></td>";
+								echo "<td><input type=\"number\" min=\"1\" name=\"duracion\" style=\"width:50px\" value=\"".$duracion."\"></td>";
 								echo "<th style=\"text-align:right;vertical-align:top;\">".$Visible." ".$Cliente." :</th>";
 								echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
 									echo "<option value=\"0\">".$No."</option>";
@@ -969,7 +969,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr><td>&nbsp;</td></tr>";
 						$hoy = date("Y-m-d H:i:s", time ());
 						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Fecha." ".$Registro." :</th><td><input type=\"text\" name=\"fecha_inicio\" style=\"width:150px\" value=\"".$hoy."\"></td></tr>";
-						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Duracion." (".$Minutos.") :</th><td><input type=\"text\" name=\"duracion\" style=\"width:50px\"></td></tr>";
+						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Duracion." (".$Minutos.") :</th><td><input type=\"number\" min=\"1\" name=\"duracion\" style=\"width:50px\"></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Visible." ".$Cliente." :</th>";
 							echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
 								echo "<option value=\"0\">".$No."</option>";
@@ -1014,7 +1014,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if ($rowc["id_usuario_registro"] == $userid){$color_td = "white";} else {$color_td = "silver";}
 					echo "<td style=\"text-align:left;vertical-align:top;width:25%;\">";
 					echo "<table cellspacing=\"0\" cellspacing=\"0\" style=\"width:100%;\">";
-						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">ID. ".$Incidencia." :</th><td><input type=\"text\" name=\"id_incidencia\" style=\"width:150px\" value=\"".$rowc["id_incidencia"]."\"></td></tr>";
+						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">ID. ".$Incidencia." :</th><td><input type=\"number\" min=\"1\" name=\"id_incidencia\" style=\"width:150px\" value=\"".$rowc["id_incidencia"]."\"></td></tr>";
 						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">".$Fecha." :</th>";
 						if ($rowc["id_usuario_registro"] == $userid){
 							echo "<td><input type=\"text\" name=\"fecha_inicio\" style=\"width:150px\" value=\"".$fecha."\"></td></tr>";
@@ -1046,7 +1046,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "</tr>";
 					if ($rowc["id_usuario_registro"] == $userid){
 						if ($rowc["duracion"] <= 0) { $color_fondo = 'red'; } else { $color_fondo = 'white'; }
-						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Duracion." :</th><td><input type=\"text\" name=\"duracion\" style=\"width:150px;background-color:".$color_fondo."\" value=\"".$rowc["duracion"]."\"></td></tr>";
+						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Duracion." :</th><td><input type=\"number\" min=\"1\" name=\"duracion\" style=\"width:150px;background-color:".$color_fondo."\" value=\"".$rowc["duracion"]."\"></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;width:150px\">".$Visible." ".$Cliente." :</th>";
 							echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
 							if ($rowc["visible_cliente"] == 0){

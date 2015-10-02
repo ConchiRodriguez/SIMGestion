@@ -230,12 +230,12 @@ function afegirModificarContrasenya ($url){
 			echo "<td><input type=\"text\" value=\"".$rowcc["usuario"]."\" style=\"width:200px\" name=\"usuario\" required></td>";
 		echo "</tr>";
 		if ($_GET["id_con"] > 0){
-			echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"passold\" style=\"width:200px\"></td></tr>";
-			echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass1\" style=\"width:200px\"></td></tr>";
-			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"passold\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass1\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass2\" style=\"width:200px\"></td></tr>";
 		} else {
-			echo "<tr><th>".$Contrasena."</th><td><input type=\"text\" style=\"width:200px\" name=\"pass1\"></td></tr>";
-			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:200px\"></td></tr>";
+			echo "<tr><th>".$Contrasena."</th><td><input type=\"password\" style=\"width:200px\" name=\"pass1\"></td></tr>";
+			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass2\" style=\"width:200px\"></td></tr>";
 		}
 		echo "<tr>";
 			echo "<th>".$Descripcion."</th>";
@@ -337,7 +337,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 				echo "<td>".$rowam["aplicacion"]."</td>";
 				echo "<td>".$rowcc["acceso"]."</td>";
 				echo "<td><a href=\"index.php?".$link_edit."&id_con=".$rowcc["id"]."\">".$rowcc["usuario"]."</a></td>";
-				echo "<td style=\"text-align:center;\">";
+				echo "<td style=\"text-align:left;\">";
 				echo "<a href=\"index.php?".$link_veure_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a>&nbsp;&nbsp;";
 				echo "<a href=\"index.php?".$link_edit_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a>";
 				echo "</td>";
@@ -408,9 +408,9 @@ function modificarContrasenya($url_volver){
 	echo boton(array($url_volver."&id_contrato=".$rowc["id_contrato"]."&id_aplicacion=".$rowc["id_aplicacion"]),array("&laquo; ".$Volver));
 	echo "<table class=\"lista\">";
 		echo "<form action=\"index.php?".$_SERVER["QUERY_STRING"]."&ssop=1\" method=\"post\">";
-		echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"passold\" style=\"width:100px\" required>*</td></tr>";
-		echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass1\" style=\"width:100px\" required>*</td></tr>";
-		echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"text\" name=\"pass2\" style=\"width:100px\" required>*</td></tr>";
+		echo "<tr><th>".$Contrasena." ".$Anterior."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"passold\" style=\"width:100px\" required>*</td></tr>";
+		echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass1\" style=\"width:100px\" required>*</td></tr>";
+		echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass2\" style=\"width:100px\" required>*</td></tr>";
 		echo "<tr>";
 			echo "<td></td><td>";
 				echo "<input type=\"submit\" value=\"".$Modificar."\" style=\"width:100px\">";
@@ -647,9 +647,12 @@ function modificarPermisosUsuaris ($url_volver,$url){
 					insertFunction ("sgm_users_permisos",$camposInsert,$datosInsert);
 				}
 			}
+			$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
+			$resultt = mysql_query(convert_sql($sqlt));
+			$rowt = mysql_fetch_array($resultt);
 			$camposUpdate = array("admin");
 			$datosUpdate = array($_POST["admin".$row["id"]]);
-			updateFunction ("sgm_users_permisos",$_POST["id_linea".$row["id"]],$camposUpdate,$datosUpdate);
+			updateFunction ("sgm_users_permisos",$rowt["id"],$camposUpdate,$datosUpdate);
 		}
 	}
 
@@ -689,7 +692,6 @@ function modificarPermisosUsuaris ($url_volver,$url){
 			$sqlad = "select id,admin from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
 			$resultad = mysql_query(convert_sql($sqlad));
 			$rowad = mysql_fetch_array($resultad);
-			echo "<input type=\"Hidden\" name=\"id_linea".$row["id"]."\" value=\"".$rowad["id"]."\">";
 			echo "<td style=\"width:60px\"><select name=\"admin".$row["id"]."\" style=\"width:40px\">";
 				if ($rowad["admin"] == 1) {
 					echo "<option value=\"1\" selected>".$Si."</option>";
@@ -2042,11 +2044,11 @@ function informesContratos(){
 			echo "<input type=\"Hidden\" value=\"".$_GET["id"]."\" name=\"id_cliente\">";
 		}
 			echo "<td><select name=\"id_contrato\" id=\"id_contrato\" style=\"width:300px\" onchange=\"desplegableCombinado5()\">";
-			if ($_GET["id"] <= 0) {
-				echo "<option value=\"0\">Todos</option>";
-			
-			}
-				$sqlc = "select id,descripcion from sgm_contratos where visible=1 and id_cliente=".$_POST["id_cliente"].$_GET["id"];
+				if ($_GET["id"] <= 0) {
+					echo "<option value=\"0\">Todos</option>";
+				}
+				if ($_GET["id"] > 0) { $id_cli = $_GET["id"]; } else {$id_cli = $_POST["id_cliente"]; }
+				$sqlc = "select id,descripcion from sgm_contratos where visible=1 and id_cliente=".$id_cli;
 				$resultc = mysql_query(convert_sql($sqlc));
 				while ($rowc = mysql_fetch_array($resultc)) {
 					if ($_POST["id_contrato"] == $rowc["id"]){

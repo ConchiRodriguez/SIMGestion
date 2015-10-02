@@ -10,32 +10,32 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "<center><table><tr>";
 				echo "<td style=\"height:20px;width:150px;\";><strong>RRHH 2.0 :</strong></td>";
 				if ($soption == 5) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=5\" class=\"gris\" style=\"color: ".$lcolor."\">Buscar Empleado</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=5\" style=\"color: ".$lcolor."\">Buscar Empleado</a></td>";
 				if ($soption == 121) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=121\" class=\"gris\" style=\"color: ".$lcolor."\">Ver Todos</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=121\" style=\"color: ".$lcolor."\">Ver Todos</a></td>";
 				if ($soption == 150) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=150&id=0\" class=\"gris\" style=\"color: ".$lcolor."\">Añadir Empleado</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=150&id=0\" style=\"color: ".$lcolor."\">Añadir Empleado</a></td>";
 				if ($_GET["grup"] == 1) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=1\" class=\"gris\" style=\"color: ".$lcolor."\">Empresa</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=1\" style=\"color: ".$lcolor."\">Empresa</a></td>";
 				if ($_GET["grup"] == 2) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=2\" class=\"gris\" style=\"color: ".$lcolor."\">Bolsa / Ofertas</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=2\" style=\"color: ".$lcolor."\">Bolsa / Ofertas</a></td>";
 				if ($soption == 120) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				if ($admin == true) { echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=120\" class=\"gris\" style=\"color: ".$lcolor."\">Administrar</a></td>"; }
+				if ($admin == true) { echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=120\" style=\"color: ".$lcolor."\">Administrar</a></td>"; }
 			echo "</tr></table></center>";
 			echo "<center><table><tr>";
 			if ($_GET["grup"] == 1){
 				if (($soption == 30) or ($soption == 31)) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=30&grup=1\" class=\"gris\" style=\"color: ".$lcolor."\">Organigrama</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=30&grup=1\" style=\"color: ".$lcolor."\">Organigrama</a></td>";
 				if ($soption == 90) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=90&grup=1\" class=\"gris\" style=\"color: ".$lcolor."\">Plantilla Actual</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=90&grup=1\" style=\"color: ".$lcolor."\">Plantilla Actual</a></td>";
 				if ($soption == 110) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=110&grup=1\" class=\"gris\" style=\"color: ".$lcolor."\">Horarios</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=110&grup=1\" style=\"color: ".$lcolor."\">Horarios</a></td>";
 			}
 			if ($_GET["grup"] == 2){
 				if ($soption == 10) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=10&grup=2\" class=\"gris\" style=\"color: ".$lcolor."\">Bolsa de Trabajadores</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=10&grup=2\" style=\"color: ".$lcolor."\">Bolsa de Trabajadores</a></td>";
 				if (($soption == 1) or ($soption == 2)) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=1&grup=2\" class=\"gris\" style=\"color: ".$lcolor."\">Ofertas de Trabajo</a></td>";
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=1&grup=2\" style=\"color: ".$lcolor."\">Ofertas de Trabajo</a></td>";
 			}
 			echo "</tr></table></center>";
 	echo "</table><br>";

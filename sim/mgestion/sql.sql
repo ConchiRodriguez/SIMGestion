@@ -506,7 +506,7 @@ ALTER TABLE `sgm_contratos_servicio` ADD `obligatorio` tinyint(1) NOT NULL defau
 ALTER TABLE `sgm_contratos_servicio` ADD `incidencias` tinyint(1) NOT NULL default '1' AFTER `obligatorio`;
 ALTER TABLE `sgm_contratos_servicio` ADD `sla` int(11) NOT NULL default '0' AFTER `incidencias`;
 ALTER TABLE `sgm_contratos_servicio` ADD `duracion` int(11) NOT NULL default '0' AFTER `sla`;
-ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` int(11) NOT NULL default '0' AFTER `duracion`;
+ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` decimal(11,3) NOT NULL default '0.000' AFTER `duracion`;
 INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment  Plataforma',0,0,0,1,0,0,0,0,0,0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-3,0,'Monitoritzaci&oacute; Plataforma',1,0,0,1,1,0,0,0,0,0);

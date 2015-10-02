@@ -1,6 +1,6 @@
 body{
 	background-color: #E6E6E6;
-	font: 12px Verdana;
+	font: 14px Calibri;
 	margin: auto;
 	text-align: center;
 	height: 100%;
@@ -8,6 +8,15 @@ body{
 
 html {
 	height: 100%;
+}
+
+caption{
+	text-align: left;
+}
+
+h2{
+	padding: 0px;
+	margin: 0px;
 }
 
 table.principal{
@@ -243,7 +252,7 @@ td.contact{
 	margin: 0px;
 	border-spacing: 0px;
 	padding:0px;
-	width:35%;
+	width:30%;
 }
 
 td.contact2{
@@ -252,7 +261,7 @@ td.contact2{
 	margin: 0px;
 	border-spacing: 0px;
 	padding:0px;
-	width:65%;
+	width:70%;
 }
 
 td.form{
@@ -336,4 +345,51 @@ div.social{
 	height: 370px;
 	overflow: auto;
 	text-align: justify;
+}
+
+table.prog{
+	background-color: White;
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0px;
+	padding: 0px;
+	width: 50%;
+}
+
+caption.prog{
+	text-align: left;
+    font-weight: bold;
+	padding:5px;
+	margin: 0px;
+}
+
+td.prog{
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:5px;
+	width: 10%;
+    font-weight: bold;
+}
+
+td.prog2{
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:5px;
+	width: 90%;
+    font-weight: bold;
+	color: #4B53AF;
+}
+
+td.prog3{
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:7px;
+	width: 90%;
+    font-style: italic;
 }

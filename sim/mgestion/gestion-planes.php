@@ -9,9 +9,9 @@ if (($option == 1025) AND ($autorizado == true)) {
 			echo "<center><table><tr>";
 				echo "<td style=\"height:20px;width:120px;\";><strong>".$Plan." :</strong></td>";
 				if (($soption >= 0) and ($soption < 100)) { $color = "white"; $colorl = "blue"; } else { $color = "#4B53AF"; $colorl = "white"; }
-				echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color:".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1025&sop=0\" class=\"gris\" style=\"color:".$colorl."\">".$Planes."</a></td>";
+				echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color:".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1025&sop=0\" style=\"color:".$colorl."\">".$Planes."</a></td>";
 				if (($soption >= 500) and ($soption < 600)) { $color = "white"; $colorl = "blue"; } else { $color = "#4B53AF"; $colorl = "white"; }
-				echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color:".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1025&sop=500\" class=\"gris\" style=\"color:".$colorl."\">".$Administrar."</a></td>";
+				echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color:".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1025&sop=500\" style=\"color:".$colorl."\">".$Administrar."</a></td>";
 				echo "</tr></table>";
 			echo "</center></td></tr>";
 		echo "</table><br>";

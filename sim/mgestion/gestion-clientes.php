@@ -103,7 +103,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$sqlt = "select * from sgm_clients_classificacio_tipus where visible=1 and id_origen=0 order by nom";
 					$resultt = mysql_query(convert_sql($sqlt));
 					while ($rowt = mysql_fetch_array($resultt)){
-						echo "<td class=".$class." style=\"background-color:".$rowt["color"].";\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowt["id"]."\" class=\"gris\" style=\"color:".$rowt["color_lletra"]."\">".$rowt["nom"]."</a></td>";
+						echo "<td class=".$class." style=\"background-color:".$rowt["color"].";\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowt["id"]."\" style=\"color:".$rowt["color_lletra"]."\">".$rowt["nom"]."</a></td>";
 					}
 					echo "</tr>";
 				echo "</table>";
@@ -114,12 +114,12 @@ if (($option == 1008) AND ($autorizado == true)) {
 					while ($rowt = mysql_fetch_array($resultt)){
 						echo "<td style=\"vertical-align:top;\">";
 							echo "<table class=\"lista\">";
-								echo "<tr><td style=\"height:16px;width:120px;text-align:center;vertical-align:middle;background-color: ".$rowt["color"].";color: white;border: 1px solid black\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowt["id"]."\" class=\"gris\" style=\"color: ".$rowt["color_lletra"]."\">".$rowt["nom"]."</a></td></tr>";
+								echo "<tr><td style=\"height:16px;width:120px;text-align:center;vertical-align:middle;background-color: ".$rowt["color"].";color: white;border: 1px solid black\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowt["id"]."\" style=\"color: ".$rowt["color_lletra"]."\">".$rowt["nom"]."</a></td></tr>";
 								echo "<tr><td style=\"height:6px\"></td></tr>";
 								$sqltt = "select * from sgm_clients_classificacio_tipus where visible=1 and id_origen=".$rowt["id"]." order by nom";
 								$resulttt = mysql_query(convert_sql($sqltt));
 								while ($rowtt = mysql_fetch_array($resulttt)){
-									echo "<tr><td style=\"height:16px;width:120px;text-align:center;vertical-align:middle;background-color: ".$rowtt["color"].";color: white;border: 1px solid black\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowtt["id"]."\" class=\"gris\" style=\"color: ".$rowtt["color_lletra"]."\">".$rowtt["nom"]."</a></td></tr>";
+									echo "<tr><td style=\"height:16px;width:120px;text-align:center;vertical-align:middle;background-color: ".$rowtt["color"].";color: white;border: 1px solid black\"><a href=\"index.php?op=1008&sop=0&id_classificacio=".$rowtt["id"]."\" style=\"color: ".$rowtt["color_lletra"]."\">".$rowtt["nom"]."</a></td></tr>";
 								}
 							echo "</table>";
 						echo "</td>";

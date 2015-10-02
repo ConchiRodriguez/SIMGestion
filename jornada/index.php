@@ -96,9 +96,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 								echo "</tr>";
 								echo "<tr>";
 									if($mn == 0) {$option = "menu_select";} else {$option = "menu";}
-									echo "<td class=\"".$option."\"><a href=\"index.php?mn=0\" class=\"".$option."\">".$Inscripcion."</a></td>";
+									echo "<td class=\"".$option."\"><a href=\"index.php?mn=0\" class=\"".$option."\">".$Programa."</a></td>";
 									if($mn == 10) {$option = "menu_select";} else {$option = "menu";}
-									echo "<td class=\"".$option."\"><a href=\"index.php?mn=10\" class=\"".$option."\">".$Programa."</a></td>";
+									echo "<td class=\"".$option."\"><a href=\"index.php?mn=10\" class=\"".$option."\">".$Inscripcion."</a></td>";
 									if($mn == 20) {$option = "menu_select";} else {$option = "menu";}
 									echo "<td class=\"".$option."\"><a href=\"index.php?mn=20\" class=\"".$option."\">".$Patrocinadores."</a></td>";
 									if($mn == 30) {$option = "menu_select";} else {$option = "menu";}
@@ -127,8 +127,8 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 				echo "<table class=\"cabezera\">";
 					echo "<tr class=\"cabezera\">";
 						echo "<td class=\"cuerpo\">";
-							if ($_GET["mn"] == 0) {include("menus/menu_inscripcion.php");}
-							if ($_GET["mn"] == 10) {include("menus/menu_programa.html");}
+							if ($_GET["mn"] == 0) {include("menus/menu_programa.php");}
+							if ($_GET["mn"] == 10) {include("menus/menu_inscripcion.php");}
 							if ($_GET["mn"] == 20) {include("menus/menu_patrocinadores.php");}
 							if ($_GET["mn"] == 30) {include("menus/menu_ubicacion.php");}
 							if ($_GET["mn"] == 40) {include("menus/menu_descargas.php");}

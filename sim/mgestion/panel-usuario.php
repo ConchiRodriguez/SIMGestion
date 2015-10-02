@@ -25,65 +25,65 @@ if (($option == 200) and ($user == false)) {
 					echo "<td class=menu>";
 						echo "<a href=\"index.php?op=200&sop=70&id=".$rowuser["id"]."\" style=\"color:white;\">Cambio de contraseña</a>";
 					echo "</td>";
-					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-					$resultp = mysql_query(convert_sql($sqlp));
-					$rowp = mysql_fetch_array($resultp);
-					if ($rowp["total"] == 1) {
-						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-						$resultpe = mysql_query(convert_sql($sqlpe));
-						$rowpe = mysql_fetch_array($resultpe);
-						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
-						$resultp = mysql_query(convert_sql($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)){
-							if ($rowp["id_user"] == $rowuser["id"]){
-										echo "<td class=menu>";
-											echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
-										echo "</td>";
-							}
-						}
-					}
-					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-					$resultp = mysql_query(convert_sql($sqlp));
-					$rowp = mysql_fetch_array($resultp);
-					if ($rowp["total"] == 1) {
-						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-						$resultpe = mysql_query(convert_sql($sqlpe));
-						$rowpe = mysql_fetch_array($resultpe);
-						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1006";
-						$resultp = mysql_query(convert_sql($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)){
-							if ($rowp["id_user"] == $rowuser["id"]){
-								echo "<td class=menu>";
-									echo "<a href=\"index.php?op=200&sop=40&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
-								echo "</td>";
-							}
-						}
-					}
+#					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
+#					$resultp = mysql_query(convert_sql($sqlp));
+#					$rowp = mysql_fetch_array($resultp);
+#					if ($rowp["total"] == 1) {
+#						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
+#						$resultpe = mysql_query(convert_sql($sqlpe));
+#						$rowpe = mysql_fetch_array($resultpe);
+#						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
+#						$resultp = mysql_query(convert_sql($sqlp));
+#						while ($rowp = mysql_fetch_array($resultp)){
+#							if ($rowp["id_user"] == $rowuser["id"]){
+#										echo "<td class=menu>";
+#											echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
+#										echo "</td>";
+#							}
+#						}
+#					}
+#					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
+#					$resultp = mysql_query(convert_sql($sqlp));
+#					$rowp = mysql_fetch_array($resultp);
+#					if ($rowp["total"] == 1) {
+#						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
+#						$resultpe = mysql_query(convert_sql($sqlpe));
+#						$rowpe = mysql_fetch_array($resultpe);
+#						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1006";
+#						$resultp = mysql_query(convert_sql($sqlp));
+#						while ($rowp = mysql_fetch_array($resultp)){
+#							if ($rowp["id_user"] == $rowuser["id"]){
+#								echo "<td class=menu>";
+#									echo "<a href=\"index.php?op=200&sop=40&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
+#								echo "</td>";
+#							}
+#						}
+#					}
 				echo "</tr>";
 			echo "</table>";
 		echo "</td></tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
-		echo "<tr><td></td><td><table cellpadding=\"1\" cellspacing=\"0\">";
-			echo "<tr style=\"background-color:silver\">";
-				echo "<td style=\"width:100px;text-align:left;\">".$Total."</td>";
-				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where visible=1 and id_incidencia<>0 and id_usuario_registro=".$userid."";
-				$resulti = mysql_query(convert_sql($sqli));
-				$rowi = mysql_fetch_array($resulti);
-				$hora = $rowi["duracion_total"]/60;
-				$horas = explode(".",$hora);
-				$minutos = $rowi["duracion_total"] % 60;
-
-				$fecha1 = strtotime('2013-05-01');
-				$fecha2 = time();
-				$x = 0;
-				for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){
-					$fest = comprobar_festivo($fecha1);
-					if ($fest == 0) {$x++;}
-				}
-				$total_total = $x*8;
-				echo "<td style=\"width:300px;text-align:left;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos." / ".$total_total." ".$Horas." ".$Laborables."</td>";
-			echo "</tr>";
-		echo "</table></td></tr>";
+#		echo "<tr><td></td><td><table cellpadding=\"1\" cellspacing=\"0\">";
+#			echo "<tr style=\"background-color:silver\">";
+#				echo "<td style=\"width:100px;text-align:left;\">".$Total."</td>";
+#				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where visible=1 and id_incidencia<>0 and id_usuario_registro=".$userid."";
+#				$resulti = mysql_query(convert_sql($sqli));
+#				$rowi = mysql_fetch_array($resulti);
+#				$hora = $rowi["duracion_total"]/60;
+#				$horas = explode(".",$hora);
+#				$minutos = $rowi["duracion_total"] % 60;
+#
+#				$fecha1 = strtotime('2013-05-01');
+#				$fecha2 = time();
+#				$x = 0;
+#				for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){
+#					$fest = comprobar_festivo($fecha1);
+#					if ($fest == 0) {$x++;}
+#				}
+#				$total_total = $x*8;
+#				echo "<td style=\"width:300px;text-align:left;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos." / ".$total_total." ".$Horas." ".$Laborables."</td>";
+#			echo "</tr>";
+#		echo "</table></td></tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 	echo "</table><br>";
 	echo "<table class=\"principal\"><tr><td>";
@@ -543,7 +543,7 @@ if (($option == 200) and ($user == false)) {
 							}
 						echo "<td>".$row["nombre"]."</td>";
 						echo "<td style=\"text-align : right;\"><strong>".$row["total"]." €</strong> </td>";
-						echo "<td>&nbsp;&nbsp;<a href=\"mgestion/gestion-facturas-print.php?id=".$row["id"]."\" target=\"_blank\" class=\"gris\">[Visualizar]</a></td>";
+						echo "<td>&nbsp;&nbsp;<a href=\"mgestion/gestion-facturas-print.php?id=".$row["id"]."\" target=\"_blank\">[Visualizar]</a></td>";
 						echo "<td>&nbsp;&nbsp;";
 						if ($rowtipos["id"] == 1) {
 							if ($row["cobrada"] == 1) {

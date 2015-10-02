@@ -43,7 +43,22 @@ if (($option == 1004) AND ($autorizado == true)) {
 			$datosUpdate=array(0);
 			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-		if ($soption == 0) {echo "<h4>".$Articulos."</h4>";}
+		if ($soption == 0) {
+			echo "<h4>".$Articulos."</h4>";
+			echo "<table><tr>";
+				echo "<td class=\"menu\">";
+					if ($_GET["ver"] == 0) { 
+						$sql = "select * from sgm_users where activo=1 order by usuario";
+						echo "<a href=\"index.php?op=1004&sop=0&ver=1\" style=\"color:white;\">".$Descatalogados."</a>";
+					}
+					if ($_GET["ver"] == 1) { 
+						$sql = "select * from sgm_users order by usuario";
+						echo "<a href=\"index.php?op=1004&sop=0&ver=0\" style=\"color:white;\">".$Catalogados."</a>";
+					}
+				echo "</td>";
+			echo "</tr></table>";
+			echo "<br>";
+		}
 		if ($soption == 200) { echo "<h4>".$Buscar."</h4>"; }
 			echo "<table cellspacing=\"0\" cellpadding=\"1\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver;\">";
@@ -52,6 +67,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<th style=\"width:100px\">".$Codigo."</th>";
 					echo "<th style=\"width:400px\">".$Articulo."</th>";
 					echo "<th style=\"width:200px;\">".$Familia." - ".$Subfamilia."</th>";
+					echo "<th style=\"width:80px;\">".$Descatalogado."</th>";
 					echo "<th style=\"width:100px;\">".$PVD."</th>";
 					echo "<th style=\"width:100px;\">".$PVP."</th>";
 					echo "<th></th>";
@@ -76,6 +92,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 									echo "<option value=\"".$rows["id"]."\">".$rowi["grupo"]."-".$rows["subgrupo"]."</option>";
 								}
 							}
+						}
+					echo "</select></td>";
+					echo "<td><select name=\"descatalogat\" style=\"width:80px\">";
+						if ($_POST["descatalogat"] == 0){
+							echo "<option value=\"0\" selected>".$No."</option>";
+							echo "<option value=\"1\">".$Si."</option>";
+						}
+						if ($_POST["descatalogat"] == 1){
+							echo "<option value=\"0\">".$No."</option>";
+							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
 					echo "<td></td>";
@@ -111,11 +137,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<tr><td>&nbsp;</td></tr>";
 		if (($soption == 0) or (($soption == 200) and (($_POST["codigo"] != 0) or ($_POST["nombre"] != 0) or ($_POST["notas"] != 0) or ($_POST["id_subgrupo"] != 0)))) {
 			$sql = "select id,id_subgrupo,codigo,nombre from sgm_articles where visible=1";
+			if ($_POST["id_subgrupo"] < 0) {$subgrupo = $_POST["id_subgrupo"]; }
+			if ($soption == 0){
+				if ($_GET["ver"] == 1) {$sql .= " and descatalogat=1";} else {$sql .= " and descatalogat=0";}
+			}
 			if (($soption == 200) and ($ssoption == 0)){
 				if ($_POST["codigo"] <> "") {$sql .= " and codigo like '%".$_POST["codigo"]."%'";}
 				if ($_POST["nombre"] <> "") {$sql .= " and nombre like '%".$_POST["nombre"]."%'";}
 				if ($_POST["notas"] <> "") {$sql .= " and notas like '%".$_POST["notas"]."%'";}
 				if ($_POST["id_subgrupo"] > 0) {$sql .= " and id_subgrupo=".$_POST["id_subgrupo"]."";}
+				if ($_POST["descatalogat"] == 1) {$sql .= " and descatalogat=1";}
 			}
 			if (($soption == 200) and ($ssoption == 2)) {
 				if ($_POST["codigo2"] <> "") {$sql .= " and codigo like '%".$_POST["codigo2"]."%'";}
@@ -196,7 +227,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
 						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1004&sop=100&id=".$row["id"]."\" style=\"color:white;\">".$Datos." ".$Generales."</a></td></tr>";
-						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1004&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Datos." ".$Adjuntos."</a></td></tr>";
+						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1004&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Archivos."</a></td></tr>";
 						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1004&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Imagenes."</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
@@ -263,7 +294,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 		}
 
-		$sqla = "select id,id_subgrupo,nombre,notas from sgm_articles where id=".$_GET["id"];
+		$sqla = "select id,id_subgrupo,nombre,notas,codigo from sgm_articles where id=".$_GET["id"];
 		$resulta = mysql_query(convert_sql($sqla));
 		$rowa = mysql_fetch_array($resulta);
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -1803,7 +1834,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					$result = mysql_query(convert_sql($sql));
 					while ($row = mysql_fetch_array($result)) {
 					echo "<tr>";
-						echo "<td><a href=\"index.php?op=1004&sop=121&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
+						echo "<td><a href=\"index.php?op=1004&sop=531&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 						echo "<td style=\"width:45%;\">".$row["nombre"]."</td>";
 						echo "<td>".$row["poblacion"]."</td>";
 						echo "<td>".$row["telefono"]."</td>";
@@ -1817,12 +1848,12 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</td>";
 			echo "<td style=\"width:6%\">&nbsp;</td>";
 			echo "<td style=\"width:47%;vertical-align:top;\">";
-				if ($_GET["id"] == 0) {
-					echo "<h4>".$Anadir." ".$Nuevo." ".$Almacen."</h4>";
-				} else {
-					echo "<h4>".$Modificar." ".$Almacen."</h4>";
-				}
 				echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+				if ($_GET["id"] == 0) {
+					echo "<caption>".$Anadir." ".$Nuevo." ".$Almacen."</caption>";
+				} else {
+					echo "<caption>".$Modificar." ".$Almacen."</caption>";
+				}
 					$sql = "select * from sgm_stock_almacenes where visible=1 and id=".$_GET["id"];
 					$result = mysql_query(convert_sql($sql));
 					$row = mysql_fetch_array($result);
@@ -1831,14 +1862,14 @@ if (($option == 1004) AND ($autorizado == true)) {
 					} else {
 						echo "<form action=\"index.php?op=1004&sop=530&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
 					}
-					echo "<tr><td>".$Nombre."</td><td><input type=\"Text\" name=\"nombre\" class=\"px300\" value=\"".$row["nombre"]."\"></td></tr>";
-					echo "<tr><td>".$Direccion."</td><td><input type=\"Text\" name=\"direccion\" class=\"px150\" value=\"".$row["direccion"]."\"></td></tr>";
-					echo "<tr><td>".$Poblacion."</td><td><input type=\"Text\" name=\"poblacion\" class=\"px150\" value=\"".$row["poblacion"]."\"></td></tr>";
-					echo "<tr><td>".$Codigo." ".$Postal."</td><td><input type=\"Text\" name=\"cp\" class=\"px150\" value=\"".$row["cp"]."\"></td></tr>";
-					echo "<tr><td>".$Provincia."</td><td><input type=\"Text\" name=\"provincia\" class=\"px150\" value=\"".$row["provincia"]."\"></td></tr>";
-					echo "<tr><td>".$Email."</td><td><input type=\"Text\" name=\"mail\" class=\"px150\" value=\"".$row["mail"]."\"></td></tr>";
-					echo "<tr><td>".$Telefono."</td><td><input type=\"Text\" name=\"telefono\" class=\"px150\" value=\"".$row["telefono"]."\"></td></tr>";
-					echo "<tr><td>".$Notas."</td><td><textarea name=\"notas\" class=\"px300\" rows=\"6\">".$row["notas"]."</textarea></td></tr>";
+					echo "<tr><td>".$Nombre."</td><td><input type=\"Text\" name=\"nombre\" style=\"width:400px\" value=\"".$row["nombre"]."\"></td></tr>";
+					echo "<tr><td>".$Direccion."</td><td><input type=\"Text\" name=\"direccion\" style=\"width:400px\" value=\"".$row["direccion"]."\"></td></tr>";
+					echo "<tr><td>".$Poblacion."</td><td><input type=\"Text\" name=\"poblacion\" style=\"width:400px\" value=\"".$row["poblacion"]."\"></td></tr>";
+					echo "<tr><td>".$Codigo." ".$Postal."</td><td><input type=\"Text\" name=\"cp\" style=\"width:400px\" value=\"".$row["cp"]."\"></td></tr>";
+					echo "<tr><td>".$Provincia."</td><td><input type=\"Text\" name=\"provincia\" style=\"width:400px\" value=\"".$row["provincia"]."\"></td></tr>";
+					echo "<tr><td>".$Email."</td><td><input type=\"Text\" name=\"mail\" style=\"width:400px\" value=\"".$row["mail"]."\"></td></tr>";
+					echo "<tr><td>".$Telefono."</td><td><input type=\"Text\" name=\"telefono\" style=\"width:400px\" value=\"".$row["telefono"]."\"></td></tr>";
+					echo "<tr><td>".$Notas."</td><td><textarea name=\"notas\" style=\"width:400px\" rows=\"3\">".$row["notas"]."</textarea></td></tr>";
 					if ($_GET["id"] == 0) {
 						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Anadir."\"></td></tr>";
 					} else {

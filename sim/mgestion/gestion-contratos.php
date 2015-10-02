@@ -497,7 +497,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$date."\"></td>";
 					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$date."\"></td>";
 					echo "<td><input style=\"text-align:left;width:400px\" type=\"Text\" name=\"concepto\"></td>";
-					echo "<td><input style=\"text-align:right;width:70px\" type=\"Text\" name=\"importe\" value=\"0\"></td>";
+					echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"1\" step=\"any\" name=\"importe\" value=\"0\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
 				echo "</form>";
 				echo "</tr>";
@@ -516,7 +516,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$row["fecha"]."\"></td>";
 						echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$row["fecha_prevision"]."\"></td>";
 						echo "<td><input style=\"text-align:left;width:400px\" type=\"Text\" name=\"concepto\" value=\"".$rowcu["nombre"]."\"></td>";
-						echo "<td><input style=\"text-align:right;width:70px\" type=\"Text\" name=\"importe\" value=\"".$rowcu["pvp"]."\"></td>";
+						echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"1\" step=\"any\" name=\"importe\" value=\"".$rowcu["pvp"]."\"></td>";
 						echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 						echo "</form>";
 					echo "</tr>";
@@ -575,8 +575,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<option value=\"0\">".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 					echo "</td>";
-					echo "<td><input style=\"text-align:right;width:70px\" type=\"Text\" name=\"sla\" value=\"0\"></td>";
-					echo "<td><input style=\"text-align:right;width:70px\" type=\"Text\" name=\"precio_hora\" value=\"0\"></td>";
+					echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"0\" name=\"sla\" value=\"0\"></td>";
+					echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"0\" step=\"any\" name=\"precio_hora\" value=\"0\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
 				echo "</form>";
 				echo "</tr>";
@@ -654,8 +654,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 								echo "<option value=\"0\" selected>".$No."</option>";
 							}
 						echo "</td>";
-						echo "<td><input type=\"text\" value=\"".$row["sla"]."\" style=\"text-align:right;width:70px\" name=\"sla\"></td>";
-						echo "<td><input type=\"text\" value=\"".$row["precio_hora"]."\" style=\"text-align:right;width:70px\" name=\"precio_hora\"></td>";
+						echo "<td><input type=\"number\" min=\"0\" value=\"".$row["sla"]."\" style=\"text-align:right;width:70px\" name=\"sla\"></td>";
+						echo "<td><input type=\"number\" min=\"0\" step=\"any\" value=\"".$row["precio_hora"]."\" style=\"text-align:right;width:70px\" name=\"precio_hora\"></td>";
 						echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 						echo "</form>";
 						$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$row["id"].")";

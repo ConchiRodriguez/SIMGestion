@@ -10,13 +10,13 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "</td><td style=\"width:92%;vertical-align:top;text-align:left;\">";
 			echo "<table>";
 				echo "<tr>";
-				if ($soption == 100) {$class = "menu_select";} else {$class = "menu";}
+				if (($soption >= 100) and($soption < 110)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=100\" class=".$class.">".$Tarifas."</a></td>";
-				if ($soption == 110) {$class = "menu_select";} else {$class = "menu";}
+				if (($soption >= 110) and($soption < 120)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=110\" class=".$class.">".$Calendario." ".$$Laboral."</a></td>";
-				if ($soption == 130) {$class = "menu_select";} else {$class = "menu";}
+				if (($soption >= 130) and($soption < 140)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=130\" class=".$class.">".$Idioma."</a></td>";
-				if ($soption == 140) {$class = "menu_select";} else {$class = "menu";}
+				if (($soption >= 140) and($soption < 150)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=140\" class=".$class.">".$Pais."</a></td>";
 				echo "</tr>";
 			echo "</table>";
@@ -65,7 +65,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 					echo "</select>";
 				echo "</td>";
 				echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:70px\"></td>";
+				echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\"></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -89,7 +89,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 						echo "</select>";
 					echo "</td>";
 					echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\" value=\"".$row["nombre"]."\"></td>";
-					echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:70px\" value=\"".$row["porcentage"]."\"></td>";
+					echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\" value=\"".$row["porcentage"]."\"></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
 					echo "</form>";
 				echo "</tr>";
@@ -119,7 +119,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			$total_horas = $hora_fi-$hora_ini;
 			$camposUpdate=array('hora_inicio','hora_fin','total_horas');
 			$datosUpdate=array($hora_ini,$hora_fi,$total_horas);
-			updateFunction("sgm_calendario_horario",$_GET["id"],$camposUpdate,$datosUpdate);
+			updateFunction("sgm_calendario_horario",$_GET["id_h"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 5) {
 			deleteFunction ("sgm_calendario",$_GET["id_h"]);
@@ -173,6 +173,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 							echo "<th>".$Dia."</th>";
 							echo "<th>".$Hora_Inicio."</th>";
 							echo "<th>".$Hora_Fin."</th>";
+							echo "<th></th>";
 						echo "</tr>";
 						$sql = "select * from sgm_calendario_horario order by id";
 						$result = mysql_query(convert_sql($sql));
@@ -182,8 +183,8 @@ if (($option == 1023) AND ($autorizado == true)) {
 							echo "<tr>";
 							echo "<form action=\"index.php?op=1023&sop=110&ssop=4&id_h=".$row["id"]."\" method=\"post\">";
 								echo "<td>".$row["dia"]."</td>";
-								echo "<td><input name=\"hora_inicio\" type=\"Text\" value=\"".$hora_ini."\" style=\"width:70px\"></td>";
-								echo "<td><input name=\"hora_fin\" type=\"Text\" value=\"".$hora_fi."\" style=\"width:70px\"></td>";
+								echo "<td><input name=\"hora_inicio\" type=\"number\" min=\"1\" value=\"".$hora_ini."\" style=\"width:60px\"></td>";
+								echo "<td><input name=\"hora_fin\" type=\"number\" min=\"1\" value=\"".$hora_fi."\" style=\"width:60px\"></td>";
 								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
 							echo "</form>";
 							echo "</tr>";

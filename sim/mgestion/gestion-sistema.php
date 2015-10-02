@@ -85,11 +85,11 @@ if (($option == 1022) AND ($autorizado == true)) {
 					$color = "#4B53AF";
 					$lcolor = "white";
 					if ($ssoption == 1) { $color = "white"; $lcolor = "blue"; }
-					echo "<td style=\"height:20px;width:200px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1022&sop=3&ssop=1&usuario=".$userid."\" class=\"gris\" style=\"color:".$lcolor."\">".$Servicios." ".$Incidencias."</a></td>";
+					echo "<td style=\"height:20px;width:200px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1022&sop=3&ssop=1&usuario=".$userid."\" style=\"color:".$lcolor."\">".$Servicios." ".$Incidencias."</a></td>";
 					$color = "#4B53AF";
 					$lcolor = "white";
 					if ($ssoption == 2) { $color = "white"; $lcolor = "blue"; }
-					echo "<td style=\"height:20px;width:200px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1022&sop=3&ssop=2&usuario=".$userid."\" class=\"gris\" style=\"color:".$lcolor."\">".$Estados." ".$Servicios." ".$Incidencias."</a></td>";
+					echo "<td style=\"height:20px;width:200px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1022&sop=3&ssop=2&usuario=".$userid."\" style=\"color:".$lcolor."\">".$Estados." ".$Servicios." ".$Incidencias."</a></td>";
 				echo "</tr></table></center>";
 		echo "</td></tr></table><br>";
 	}

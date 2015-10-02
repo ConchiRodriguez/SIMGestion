@@ -51,7 +51,7 @@ function refactura($idfactura) {
 		$sql = $sql.",total=".$xx;
 		$sql = $sql." WHERE id=".$idfactura;
 		mysql_query(convert_sql($sql));
-		echo $sql;
+#		echo $sql;
 	}
 	if ($row["total_forzado"] == 1) {
 		$sql = "update sgm_cabezera set ";
@@ -64,7 +64,7 @@ function refactura($idfactura) {
 		$sql = $sql.",total=".$row["total"];
 		$sql = $sql." WHERE id=".$idfactura;
 		mysql_query(convert_sql($sql));
-		echo $sql;
+#		echo $sql;
 	}
 }
 

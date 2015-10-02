@@ -220,9 +220,12 @@ if (($option == 1002) AND ($autorizado == true)) {
 						insertFunction ("sgm_users_permisos",$camposInsert,$datosInsert);
 					}
 				}
+				$sqlt = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
+				$resultt = mysql_query(convert_sql($sqlt));
+				$rowt = mysql_fetch_array($resultt);
 				$camposUpdate = array("admin");
 				$datosUpdate = array($_POST["admin".$row["id"]]);
-				updateFunction ("sgm_users_permisos",$_POST["id_linea".$row["id"]],$camposUpdate,$datosUpdate);
+				updateFunction ("sgm_users_permisos",$rowt["id"],$camposUpdate,$datosUpdate);
 			}
 		}
 
@@ -262,7 +265,6 @@ if (($option == 1002) AND ($autorizado == true)) {
 				$sqlad = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$row["id_modulo"];
 				$resultad = mysql_query(convert_sql($sqlad));
 				$rowad = mysql_fetch_array($resultad);
-				echo "<input type=\"Hidden\" name=\"id_linea".$row["id"]."\" value=\"".$rowad["id"]."\">";
 				echo "<td style=\"width:60px\"><select name=\"admin".$row["id"]."\" style=\"width:40px\">";
 					if ($rowad["admin"] == 1) {
 						echo "<option value=\"1\" selected>".$Si."</option>";
