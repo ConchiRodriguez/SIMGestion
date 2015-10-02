@@ -5,7 +5,6 @@ echo "<caption>".$Anfitrion."</caption><br><br>";
 	echo "<tr>";
 		echo "<td style=\"text-align:center;width:400px;\"><a href=\"http://www.migjornser.com/\" target=\"_blank\"><img src=\"images/logo_migjornser.jpg\"></a></td>";
 		echo "<td style=\"text-align:center;width:400px;\"><a href=\"http://www.castell-jalpi.com/\" target=\"_blank\"><img src=\"images/logo_castell_jalpi.jpg\" height=\"150px\" width=\"300px\"></a></td>";
-		echo "<td style=\"text-align:center;width:400px;\"><img src=\"images/Castell_Jalpi.jpg\" height=\"150px\" width=\"300px\"></td>";
 	echo "</tr>";
 echo "</table>";
 echo "<table cellpadding=\"10\">";

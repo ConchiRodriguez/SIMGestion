@@ -9,5 +9,7 @@ echo "<table class=\"cuerpo\">";
 <?php
 		echo "</td>";
 	echo "</tr>";
+	echo "<tr><td>&nbsp;<td></tr>";
+	echo "<tr><td class=\"contact\"></td><td class=\"contact2\"><img src=\"images/Castell_Jalpi.jpg\" height=\"450px\" width=\"750px\"></td></tr>";
 echo "</table>";
 ?>

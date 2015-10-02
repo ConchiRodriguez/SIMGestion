@@ -1,20 +1,23 @@
 <?php
-$Inscripcion = "Inscripci&oacuten";
+$Jornada_titulo = "III Jornada de Monitorizaci&oacuten";
+$Ubicacion_titulo = "05 de Noviembre | Castell Jalp&iacute;";
+
+$Inscripcion = "Inscripci&oacute;n";
 $Programa = "Programa";
 $Patrocinadores = "Patrocinadores";
-$Ubicacion = "Ubicaci&oacuten";
+$Ubicacion = "Ubicaci&oacute;n";
 $Descargas = "Descargas";
 $Contacto = "Contacto";
 $Politica_de_privacidad = "Pol&iacute;tica de Privacidad";
 $Aviso_Legal = "Aviso Legal";
-$FormularioInscripcion = "Formulario de Inscripci&oacuten";
+$FormularioInscripcion = "Formulario de Inscripci&oacute;n";
 $NombreyApellidos = "Nombre y Apellidos";
 $Empresa = "Empresa";
 $Departamento = "Departamento";
 $Inscribir = "Inscribir";
 $Email = "Email";
 $Cargo = "Cargo";
-$Jornada_monitorizacion = "Jornada de Monitorizaci&oacute;n   -   15 de Noviembre   -   Castell Jalpí";
+$Jornada_monitorizacion = "Jornada de Monitorizaci&oacute;n   -   15 de Noviembre   -   Castell Jalp&iacute;";
 $Benvinguda = "Bienvenida";
 $Cafe = "Caf&eacute;";
 $Cloenda = "Clausura";

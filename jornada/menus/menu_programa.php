@@ -50,7 +50,7 @@ echo "<table class=\"prog\">";
 		echo "<td class=\"prog2\">".$Cloenda."</td>";
 	echo "</tr>";
 	echo "<tr>";
-		echo "<td class=\"prog\">09:45</td>";
+		echo "<td class=\"prog\">14:00</td>";
 		echo "<td class=\"prog2\">".$Dinar."</td>";
 	echo "</tr>";
 echo "</table>";

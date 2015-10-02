@@ -13,6 +13,7 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 
 	if ($idioma == "es"){ include ("sim_web_es.php"); $lengua = "es";}
 	if ($idioma == "cat"){ include ("sim_web_cat.php"); $lengua = "ca";}
+	if ($idioma == "en"){ include ("sim_web_en.php"); $lengua = "en";}
 	
 #registre de visites al web
 	$date = getdate();
@@ -54,28 +55,8 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 		<meta name="DC.Type" content="website" >
 		<meta name=”twitter:site” content=”@Solucions_im”>
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<link rel="shortcut icon" href="https://www.solucions-im.com/web/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="https://www.solucions-im.com/jornada/favicon.ico" type="image/x-icon">
 		<div id="fb-root"></div>
-		<script type="text/javascript">
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1";
-			fjs.parentNode.insertBefore(js, fjs);
-		}
-		(document, 'script', 'facebook-jssdk'));
-		</script>
-		<script type="text/javascript">
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-			ga('create', 'UA-41958413-3', 'auto');
-			ga('send', 'pageview');
-
-		</script>
 <body>
 <?php
 	echo "<table class=\"principal\">";
@@ -89,9 +70,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 							echo "<table class=\"cabezera_menu\">";
 								echo "<tr>";
 									echo "<td style=\"text-align:right\" colspan=\"5\">";
-									if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\">Es</a>"; }
-									if ($idioma == "es") {	echo "<a href=\"index.php?i=cat\">Cat</a> | <a href=\"index.php?i=es\"><strong>Es</strong></a>"; }
-									if ($idioma == "en") {	echo "<a href=\"index.php?i=cat\">Cat</a> | <a href=\"index.php?i=es\">Es</a>"; }
+									if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\">Es</a> | <a href=\"index.php?i=en\">En</a>"; }
+									if ($idioma == "es") {	echo "<a href=\"index.php?i=cat\">Cat</a> | <a href=\"index.php?i=es\"><strong>Es</strong></a> | <a href=\"index.php?i=en\">En</a>"; }
+									if ($idioma == "en") {	echo "<a href=\"index.php?i=cat\">Cat</a> | <a href=\"index.php?i=es\">Es</a> | <a href=\"index.php?i=en\"><strong>En</strong></a>"; }
 									echo "</td>";
 								echo "</tr>";
 								echo "<tr>";
@@ -115,9 +96,86 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 		###### INICIO CUERPO
 		echo "<tr class=\"principal_banner\">";
 			echo "<td>";
-				echo "<table class=\"cabezera\">";
-					echo "<tr class=\"cabezera\">";
-						echo "<td class=\"cabezera\"><img src=\"images/inicio_".$idioma.".jpg\" alt=\"logo\"></td>";
+				echo "<table class=\"banner\">";
+					echo "<tr class=\"banner\">";
+						echo "<td class=\"banner\">".$Jornada_titulo."</td>";
+						echo "<td class=\"banner2\" rowspan=\"2\">";
+							echo "<table class=\"banner\">";
+								echo "<tr class=\"banner2\">";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"red\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"red\"></td>";
+								echo "</tr>";
+								echo "<tr class=\"banner2\">";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"red\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+								echo "</tr>";
+								echo "<tr class=\"banner2\">";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+								echo "</tr>";
+								echo "<tr class=\"banner2\">";
+									echo "<td class=\"red\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"red\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+								echo "</tr>";
+								echo "<tr class=\"banner2\">";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"orange\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"red\"></td>";
+									echo "<td class=\"green\"></td>";
+									echo "<td class=\"green\"></td>";
+								echo "</tr>";
+							echo "</table>";
+						echo "</td>";
+					echo "</tr>";
+					echo "<tr class=\"banner\">";
+						echo "<td class=\"banner3\">".$Ubicacion_titulo."</td>";
 					echo "</tr>";
 				echo "</table>";
 			echo "</td>";

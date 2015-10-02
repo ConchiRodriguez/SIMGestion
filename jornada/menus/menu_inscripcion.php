@@ -14,7 +14,7 @@ echo "<table class=\"cuerpo\">";
 		}
 	}
 	if ($send_ok==0){
-		echo "<form name=\"formulario\" action=\"index.php?mn=0&ml=1\" method=\"post\">";
+		echo "<form name=\"formulario\" action=\"index.php?mn=10&ml=1\" method=\"post\">";
 		echo "<tr>";
 			echo "<td class=\"form\">".$NombreyApellidos.":</td>";
 			echo "<td class=\"form2\"><input type=\"text\" name=\"nombre\" class=\"form\" value=\"".$_POST["nombre"]."\"></td>";

@@ -1,4 +1,7 @@
 <?php
+$Jornada_titulo = "III Jornada de Monitoritzaci&oacute";
+$Ubicacion_titulo = "05 de Novembre | Castell Jalp&iacute;";
+
 $Inscripcion = "Inscripci&oacute;";
 $Programa = "Programa";
 $Patrocinadores = "Patrocinadors";
@@ -14,7 +17,7 @@ $Departamento = "Departament";
 $Inscribir = "Inscriure";
 $Email = "Email";
 $Cargo = "C&agrave;rrec";
-$Jornada_monitorizacion = "Jornada de Monitoritzaci&oacute;   -   15 de Noviembre   -   Castell Jalpí";
+$Jornada_monitorizacion = "Jornada de Monitoritzaci&oacute;   -   05 de Noviembre   -   Castell Jalp&iacute;";
 $Benvinguda = "Benvinguda";
 $Cafe = "Caf&egrave;";
 $Cloenda = "Cloenda";
