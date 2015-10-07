@@ -18,7 +18,7 @@ function send_mail($asunto,$nombre,$email,$empresa,$departamento,$cargo){
 
 	$separador = "_separador_de_trozos_".md5 (uniqid (rand())); 
 	$cabecera = "MIME-Version: 1.0".$UN_SALTO; 
-	$cabecera .= "From: ".$nombre." ".$apellido1." ".$apellido2."<".$email.">".$UN_SALTO;
+	$cabecera .= "From: ".$nombre."<".$email.">".$UN_SALTO;
 	$cabecera .= "Return-path: ". $email.$UN_SALTO;
 	$cabecera .= "Reply-To: ".$email.$UN_SALTO;
 	$cabecera .= "X-Mailer: PHP/". phpversion().$UN_SALTO;

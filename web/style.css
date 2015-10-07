@@ -3,6 +3,11 @@ body{
 	font: 10px Verdana;
 	margin: auto;
 	text-align: center;
+	height: 100%;
+}
+
+html {
+	height: 100%;
 }
 
 table.principal{
@@ -12,7 +17,9 @@ table.principal{
 	margin-right:auto;	
 	border-spacing: 0px;
 	padding:0px;
-	width:1000px;
+	max-width:1000px;
+	width: 100%;
+	height: 100%;
 }
 
 tr.principal_cabezera{
@@ -21,8 +28,8 @@ tr.principal_cabezera{
 	margin: 0px;
 	border-spacing: 0px;
 	padding:0px;
-	width:1000px;
-	height:80px;
+	width:100%;
+	height:10%;
 }
 
 td.principal_cabezera{
@@ -31,8 +38,28 @@ td.principal_cabezera{
 	margin: 0px;
 	border-spacing: 0px;
 	padding:0px;
-	width:1000px;
-	height:80px;
+	width:100%;
+}
+
+tr.principal_banner{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:13%;
+}
+
+tr.principal_cuerpo{
+	background-color: White;
+	text-align: center;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
 }
 
 table.cabezera{

@@ -151,22 +151,22 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 			echo "</td>";
 		echo "</tr>";
 		###### INICIO FILA CUERPO
-		echo "<tr>";
+		echo "<tr class=\"principal_banner\">";
 			echo "<td>";
 				echo "<table class=\"cabezera\">";
 					echo "<tr class=\"cabezera\">";
 						echo "<td class=\"cabezera\">";
 						if ($mn == 0) {
-							echo "<a href=\"index.php?".$post."\"><img src=\"images/inicio/inicio1_".$idioma.".jpg\" alt=\"logo\"></a>";
+							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/inicio/inicio1_".$idioma.".jpg\" alt=\"logo\"></a>";
 						} else {
-							echo "<a href=\"index.php?".$post."\"><img src=\"images/inicio/inicio2_".$idioma.".jpg\" alt=\"logo\"></a>";
+							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/inicio/inicio2_".$idioma.".jpg\" alt=\"logo\"></a>";
 						}
 						echo "</td>";
 					echo "</tr>";
 				echo "</table>";
 			echo "</td>";
 		echo "</tr>";
-		echo "<tr>";
+		echo "<tr class=\"principal_cuerpo\">";
 			echo "<td>";
 				echo "<table width=\"100%;\">";
 					echo "<tr>";
