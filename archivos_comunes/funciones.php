@@ -2012,7 +2012,7 @@ function decrypt($string, $key) {
 }
 
 function informesContratos(){
-	global $db,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No;
+	global $db,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma;
 	echo "<strong>".$Informes."</strong>";
 	echo "<br><br>";
 	echo "<center><table cellspacing=\"0\">";
@@ -2023,6 +2023,7 @@ function informesContratos(){
 			echo "<td>".$Contrato."</td>";
 			echo "<td>".$Mes."-".$Ano."</td>";
 			echo "<td>".$Mes."-".$Ano." ".$Hasta."</td>";
+			echo "<td>".$Idioma."</td>";
 			echo "<td>".$Ver_Horas."</td>";
 			echo "<td></td>";
 		echo "</tr><tr>";
@@ -2142,6 +2143,17 @@ function informesContratos(){
 					$proxim_dia = date("d",$mes_act);
 					$mes_act = date("U",mktime(0,0,0,$proxim_mes+1,$proxim_dia,$proxim_any));
 					
+				}
+			echo "</select></td>";
+			echo "<td><select name=\"idioma\" id=\"idioma\" style=\"width:50px\">";
+				$sqlid = "select * from sgm_idiomas where visible=1 order by predefinido desc,idioma";
+				$resultid = mysql_query(convert_sql($sqlid));
+				while ($rowid = mysql_fetch_array($resultid)) {
+					if ($_POST["idioma"] == $rowid["idioma"]){
+						echo "<option value=\"".$rowid["idioma"]."\" selected>".$rowid["idioma"]."</option>";
+					} else {
+						echo "<option value=\"".$rowid["idioma"]."\">".$rowid["idioma"]."</option>";
+					}
 				}
 			echo "</select></td>";
 			echo "<td><select name=\"horas\" style=\"width:50px\">";

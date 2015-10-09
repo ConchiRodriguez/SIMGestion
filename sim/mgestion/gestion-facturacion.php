@@ -617,18 +617,21 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 		}
 
-		$sqlf = "select id_cliente,tipo,divisa,fecha,numero,total from sgm_cabezera where id=".$_GET["id"];
+		$sqlf = "select fecha_vencimiento,id_cliente,tipo,id_divisa,fecha,numero,total from sgm_cabezera where id=".$_GET["id"];
 		$resultf = mysql_query(convert_sql($sqlf));
 		$rowf = mysql_fetch_array($resultf);
-		$sqlc = "select id,nombre,entidadbancaria,domiciliobancario,cuentabancaria,dia_facturacion,dias_vencimiento,dias from sgm_clients where id=".$rowf["id_cliente"];
+		$sqlc = "select id,nombre,entidadbancaria,domiciliobancario,cuentabancaria,dias_vencimiento,dias from sgm_clients where id=".$rowf["id_cliente"];
 		$resultc = mysql_query(convert_sql($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$sqltipos = "select tipo from sgm_factura_tipos where id=".$rowf["tipo"];
 		$resulttipos = mysql_query(convert_sql($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
-		$sqldiv2 = "select abrev from sgm_divisas where id=".$rowf["divisa"];
+		$sqldiv2 = "select abrev from sgm_divisas where id=".$rowf["id_divisa"];
 		$resultdiv2 = mysql_query(convert_sql($sqldiv2));
 		$rowdiv2 = mysql_fetch_array($resultdiv2);
+		$sqlre = "select sum(total) as total_recibos from sgm_recibos where visible=1 and id_factura=".$_GET["id"];
+		$resultre = mysql_query(convert_sql($sqlre));
+		$rowre = mysql_fetch_array($resultre);
 		echo "<h4>".$Recibos."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
@@ -636,22 +639,22 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<table>";
 						echo "<tr><th>".$rowtipos["tipo"]."</th><td>".$rowf["numero"]."</td></tr>";
 						echo "<tr><th>".$Fecha."</th><td>".cambiarFormatoFechaDMY($rowf["fecha"])."</td></tr>";
-						echo "<tr><th>".$Importe."</th><td>".number_format($rowf["total"], 2, ',', '.')." ".$rowdiv2["abrev"]."</td></tr>";
+						echo "<tr><th>".$Fecha." ".$Vencimiento."</th><td>".cambiarFormatoFechaDMY($rowf["fecha_vencimiento"])."</td></tr>";
 					echo "</table>";
 				echo "</td><td style=\"text-align:left;vertical-align:top;width:50%;\">";
 					echo "<table>";
 						echo "<tr><th>".$Cliente."</th><td>".$rowc["nombre"]."</td></tr>";
-						echo "<tr><th>".$Entidad." ".$Bancaria."</th><td>".$rowc["entidadbancaria"]."</td></tr>";
-						echo "<tr><th>".$Direccion." ".$Entidad."</th><td>".$rowc["domiciliobancario"]."</td></tr>";
-					echo "</table>";
-				echo "</td><td style=\"text-align:left;vertical-align:top;width:25%;\">";
-					echo "<table>";
-						echo "<tr><th>".$Numero." ".$Cuenta."</th><td>".$rowc["cuentabancaria"]."</td>";
-						echo "<tr><th>".$Dia." ".$Factura."</th><td>".$rowc["dia_facturacion"]."</td></tr>";
+						echo "<tr><th>".$Importe."</th><td>".number_format($rowf["total"], 2, ',', '.')." ".$rowdiv2["abrev"]."</td></tr>";
 						echo "<tr><th>".$Dia." ".$Vencimiento."</th><td>".$rowc["dias_vencimiento"];
 						if ($rowc["dias"] == 1) { echo " ".$diaas_naturales; }
 						if ($rowc["dias"] == 0) { echo " ".$messes_naturales; }
 						echo "</td></tr>";
+					echo "</table>";
+				echo "</td><td style=\"text-align:left;vertical-align:top;width:25%;\">";
+					echo "<table>";
+						echo "<tr><th>".$Entidad." ".$Bancaria."</th><td>".$rowc["entidadbancaria"]."</td></tr>";
+						echo "<tr><th>".$Direccion." ".$Entidad."</th><td>".$rowc["domiciliobancario"]."</td></tr>";
+						echo "<tr><th>".$Numero." ".$Cuenta."</th><td>".$rowc["cuentabancaria"]."</td>";
 					echo "</table>";
 				echo "</td>";
 			echo "</tr>";
@@ -698,7 +701,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								}
 							}
 							echo "<td><input type=\"Text\" style=\"width:100px;\" name=\"fecha_vencimiento\" value=\"".cambiarFormatoFechaDMY($fecha_vencimiento)."\"></td>";
-							echo "<td><input type=\"Text\" style=\"width:100px;\" name=\"total\" value=\"".$rowf["total"]."\"></td>";
+							echo "<td><input type=\"Text\" style=\"width:100px;\" name=\"total\" value=\"".($rowf["total"]-$rowre["total_recibos"])."\"></td>";
 							echo "<td><select name=\"id_tipo_pago\" style=\"width:100px\">";
 							echo "<option value=\"0\">".$Pendiente."</option>";
 							$sqlfp = "select id,tipo from sgm_tpv_tipos_pago order by tipo";

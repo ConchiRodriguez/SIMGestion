@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
-	$idioma = strtolower("es");
+	$idioma = strtolower($_POST["idioma"]);
 	include ("../../archivos_comunes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../../archivos_comunes/font/");
