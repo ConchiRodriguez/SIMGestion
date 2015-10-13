@@ -1,25 +1,26 @@
 <?php
 $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
-if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>"; }
+if ($autorizado == false) {	echo "<center><br><strong>USUARIO NO AUTORIZADO</strong></center><br><br>"; }
 if (($option == 1020) AND ($autorizado == true)) {
-	echo "<table class=\"principal\"><tr>";
-		echo "<td style=\"width:8%;vertical-align : middle;text-align:left;\">";
-			echo "<h4>".$RRHH."</h4>";
-		echo "</td><td style=\"width:92%;vertical-align : top;text-align:left;\">";
-			echo "<table>";
-				echo "<tr>";
-				if ($soption == 0) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=0".$adres."\" class=".$class.">".$Trabajadores."</a></td>";
-				if($_GET["id"] > 0){$variable = $Editar;} else {$variable = $Anadir;}
-				if (($soption == 100) and ($_GET["id"] == 0)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=100".$adres."\" class=".$class.">".$variable." ".$Trabajadores."</a></td>";
-				if ($soption == 200) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=200".$adres."\" class=".$class.">".$Buscar." ".$Trabajador."</a></td>";
-				if ($soption == 300) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=300\" class=".$class.">".$Organigrama."</a></td>";
-				if (($soption >= 500) and ($soption <= 600) and ($admin == true)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=500\" class=".$class.">".$Administrar."</a></td>";
+	if ($_GET['or'] != "") { $orden = $_GET['or']; } else { $orden = 0; }
+
+	echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
+		echo "<tr><td>";
+			echo "<center><table><tr>";
+				echo "<td style=\"height:20px;width:150px;\";><strong>RRHH 2.0 :</strong></td>";
+				if ($soption == 5) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=5\" style=\"color: ".$lcolor."\">Buscar Empleado</a></td>";
+				if ($soption == 121) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=121\" style=\"color: ".$lcolor."\">Ver Todos</a></td>";
+				if ($soption == 150) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=150&id=0\" style=\"color: ".$lcolor."\">Añadir Empleado</a></td>";
+				if ($_GET["grup"] == 1) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=1\" style=\"color: ".$lcolor."\">Empresa</a></td>";
+				if ($_GET["grup"] == 2) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&grup=2\" style=\"color: ".$lcolor."\">Bolsa / Ofertas</a></td>";
+				if ($soption == 120) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
+				if ($admin == true) { echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=120\" style=\"color: ".$lcolor."\">Administrar</a></td>"; }
 			echo "</tr></table></center>";
 			echo "<center><table><tr>";
 			if ($_GET["grup"] == 1){
@@ -76,12 +77,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<br><br>";
 		echo "<table><tr>";
 				echo "<td style=\"width:150px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1020&sop=2&grup=2\" style=\"color:white;\">A�adir Oferta de Trabajo</a>";
+					echo "<a href=\"index.php?op=1020&sop=2&grup=2\" style=\"color:white;\">Añadir Oferta de Trabajo</a>";
 					echo "</td>";
 		echo "</tr></table>";
 		echo "<center>";
 		echo "<table cellspacing=\"0\">";
-		echo "<tr bgcolor=\"silver\"><td style=\"text-align:center;\"><em>Eliminar</em></td><td style=\"text-align:center;width:100px\">Vigente</td><td style=\"text-align:left;width:100px\">Fecha</td><td style=\"text-align:left;width:100px\">Localidad</td><td style=\"text-align:left;width:100px\">Descripci�n</td><td><em>Editar</em></td></tr>";
+		echo "<tr bgcolor=\"silver\"><td style=\"text-align:center;\"><em>Eliminar</em></td><td style=\"text-align:center;width:100px\">Vigente</td><td style=\"text-align:left;width:100px\">Fecha</td><td style=\"text-align:left;width:100px\">Localidad</td><td style=\"text-align:left;width:100px\">Descripción</td><td><em>Editar</em></td></tr>";
 		$sql = "select * from sgm_rrhh_ofertas where visible=1 order by vigente desc,fecha desc";
 		$result = mysql_query(convert_sql($sql));
 		while ($row = mysql_fetch_array($result)) {
@@ -110,7 +111,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<a href=\"index.php?op=1020&sop=1&grup=2\" style=\"color:white;\">&laquo; Volver</a>";
 				echo "</td>";
 				if ($_GET["id"] == "") {
-					echo "<td style=\"width:660px;text-align:center;\"><strong>A�adir Ofertas de trabajo</strong></td>";
+					echo "<td style=\"width:660px;text-align:center;\"><strong>Añadir Ofertas de trabajo</strong></td>";
 					echo "<form action=\"index.php?op=1020&sop=1&ssop=1\" method=\"post\">";
 				} else {
 					echo "<td style=\"width:660px;text-align:center;\"><strong>Modificar Ofertas de trabajo</strong></td>";
@@ -124,7 +125,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$row = mysql_fetch_array($result);
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Fecha : </td><td><input type=\"Text\" name=\"fecha\" value=\"".$row["fecha"]."\"></td></tr>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Localidad : </td><td><input type=\"Text\" name=\"localidad\" style=\"width:300px\" value=\"".$row["localidad"]."\"></td></tr>";
-			echo "<tr><td style=\"text-align:right;vertical-align:top\">Descripci�n : </td><td><textarea name=\"descripcion\" rows=\"8\" style=\"width:500px\">".$row["descripcion"]."</textarea></td></tr>";
+			echo "<tr><td style=\"text-align:right;vertical-align:top\">Descripción : </td><td><textarea name=\"descripcion\" rows=\"8\" style=\"width:500px\">".$row["descripcion"]."</textarea></td></tr>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Requisitos : </td><td><textarea name=\"requisitos\" rows=\"8\" style=\"width:500px\">".$row["requisitos"]."</textarea></td></tr>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Condiciones : </td><td><textarea name=\"condiciones\" rows=\"8\" style=\"width:500px\">".$row["condiciones"]."</textarea></td></tr>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Vigente : </td><td><select name=\"vigente\">";
@@ -138,7 +139,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			}
 			echo "</select></td></tr>";
 			if ($_GET["id"] == "") {
-				echo "<tr><td style=\"text-align:right;vertical-align:top\"></td><td><input type=\"Submit\" value=\"A�adir Oferta\" style=\"width:300px\"></td></tr>";
+				echo "<tr><td style=\"text-align:right;vertical-align:top\"></td><td><input type=\"Submit\" value=\"Añadir Oferta\" style=\"width:300px\"></td></tr>";
 			} else {
 				echo "<tr><td style=\"text-align:right;vertical-align:top\"></td><td><input type=\"Submit\" value=\"Modificar Oferta\" style=\"width:300px\"></td></tr>";
 			}
@@ -147,7 +148,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 4) {
-		echo "<br><br>�Seguro que desea eliminar esta oferta?";
+		echo "<br><br>¿Seguro que desea eliminar esta oferta?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=1&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1020&sop=1\">[ NO ]</a>";
 	}
 
@@ -310,7 +311,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td>&nbsp;&nbsp;".$row["nombre"]."</td>";
 				echo "<td style=\"text-align:center;\">";
 					echo "<a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/vcard.png\" alt=\"Datos fiscales\" border=\"0\"></a>&nbsp;";
-					echo "<a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/book.png\" alt=\"Datos acad�micos\" border=\"0\"></a>&nbsp;";
+					echo "<a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/book.png\" alt=\"Datos académicos\" border=\"0\"></a>&nbsp;";
 					echo "<a href=\"index.php?op=1020&sop=170&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_medal.png\" alt=\"Cursos formativos\" border=\"0\"></a>&nbsp;";
 					echo "<a href=\"index.php?op=1020&sop=180&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/time.png\" alt=\"Horarios\" border=\"0\"></a>&nbsp;";
 					echo "<a href=\"index.php?op=1020&sop=190&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_stack.png\" alt=\"Contratos\" border=\"0\"></a>&nbsp;";
@@ -361,7 +362,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 11) {
-		echo "<br><br>�Seguro que desea eliminar este curriculum?";
+		echo "<br><br>¿Seguro que desea eliminar este curriculum?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=10&ssop=1&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1020&sop=10\">[ NO ]</a>";
 	}
 
@@ -377,7 +378,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "<tr><td style=\"text-align:right;vertical-align:top\"></td><td><input type=\"Submit\" value=\"Modificar Notas\" style=\"width:500px\"></td></tr>";
 			echo "</form>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Contacto : </td><td><textarea name=\"contacto\" rows=\"8\" style=\"width:500px\" disabled>".$row["contacto"]."</textarea></td></tr>";
-			echo "<tr><td style=\"text-align:right;vertical-align:top\">Carta de presentaci�n : </td><td><textarea name=\"carta\" rows=\"8\" style=\"width:500px\" disabled>".$row["carta"]."</textarea></td></tr>";
+			echo "<tr><td style=\"text-align:right;vertical-align:top\">Carta de presentación : </td><td><textarea name=\"carta\" rows=\"8\" style=\"width:500px\" disabled>".$row["carta"]."</textarea></td></tr>";
 			echo "<tr><td style=\"text-align:right;vertical-align:top\">Curriculum Vitae : </td><td><textarea name=\"cv\" rows=\"15\" style=\"width:500px\" disabled>".$row["cv"]."</textarea></td></tr>";
 		echo "</table>";
 	}
@@ -433,7 +434,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<td><input type=\"text\" name=\"departamento\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr>";
@@ -478,7 +479,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 21) {
-		echo "<center>�Seguro que desea eliminar este departamento?";
+		echo "<center>¿Seguro que desea eliminar este departamento?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=20&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=20\">[ NO ]</a></center>";
 	}
@@ -510,7 +511,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<br><img src=\"mgestion/pics/icons-mini/chart_organisation.png\" border=\"0\">Detalle organizativo del departamento.";
 		echo "<br><img src=\"mgestion/pics/icons-mini/status_online.png\" border=\"0\">Puestos de trabajo.";
 		echo "<br><img src=\"mgestion/pics/icons-mini/status_away.png\" border=\"0\">Control horario de los trabajadores";
-		echo "<br><img src=\"mgestion/pics/icons-mini/user_gray.png\" border=\"0\">Cursos de formaci�n.";
+		echo "<br><img src=\"mgestion/pics/icons-mini/user_gray.png\" border=\"0\">Cursos de formación.";
 	}
 
 	if ($soption == 31) {
@@ -608,7 +609,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<a href=\"index.php?op=1020&sop=120\" style=\"color:white;\">&laquo; Volver</a>";
 				echo "</td>";
 				echo "<td style=\"width:150px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1020&sop=41&ssop=1\" style=\"color:white;\">A�adir Puesto de Trabajo</a>";
+					echo "<a href=\"index.php?op=1020&sop=41&ssop=1\" style=\"color:white;\">Añadir Puesto de Trabajo</a>";
 				echo "</td>";
 		echo "</tr></table>";
 		echo "<br><br>";
@@ -685,7 +686,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 41) {
 		if ($ssoption == 1){
-			echo "<strong>A�adir Nuevo Puesto de Trabajo</strong>";
+			echo "<strong>Añadir Nuevo Puesto de Trabajo</strong>";
 			echo "<form action=\"index.php?op=1020&sop=40&ssop=1\" method=\"post\">";
 		}
 		if ($ssoption == 2) {
@@ -703,7 +704,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			echo "<tr>";
-				if ($ssoption == 1) { echo "<td>&nbsp;</td><td><input type=\"submit\" value=\"A�adir\" style=\"width:200px\"></td>"; }
+				if ($ssoption == 1) { echo "<td>&nbsp;</td><td><input type=\"submit\" value=\"Añadir\" style=\"width:200px\"></td>"; }
 				if ($ssoption == 2) { echo "<td>&nbsp;</td><td><input type=\"submit\" value=\"Modificar\" style=\"width:200px\"></td>"; }
 			echo "</tr><tr>";
 				echo "<td>Puesto</td>";
@@ -724,10 +725,10 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td style=\"vertical-align:top;\">Funciones y Tareas</td>";
 				echo "<td><textarea rows=\"5\" name=\"tareas\" style=\"width:500px\">".$row["tareas"]."</textarea></td>";
 			echo "</tr><tr>";
-				echo "<td style=\"vertical-align:top;\">Formaci�n General</td>";
+				echo "<td style=\"vertical-align:top;\">Formación General</td>";
 				echo "<td><textarea rows=\"5\" name=\"f_general\" style=\"width:500px\">".$row["f_general"]."</textarea></td>";
 			echo "</tr><tr>";
-				echo "<td style=\"vertical-align:top;\">Formaci�n Especifica</td>";
+				echo "<td style=\"vertical-align:top;\">Formación Especifica</td>";
 				echo "<td><textarea rows=\"5\" name=\"f_especifica\" style=\"width:500px\">".$row["f_especifica"]."</textarea></td>";
 			echo "</tr><tr>";
 				echo "<td style=\"vertical-align:top;\">Experiencia</td>";
@@ -736,7 +737,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td style=\"vertical-align:top;\">Habilidades Personales</td>";
 				echo "<td><textarea rows=\"5\" name=\"habilidades\" style=\"width:500px\">".$row["habilidades"]."</textarea></td>";
 			echo "</tr><tr>";
-				if ($ssoption == 1) { echo "<td>&nbsp;</td><td><input type=\"submit\" value=\"A�adir\" style=\"width:200px\"></td>"; }
+				if ($ssoption == 1) { echo "<td>&nbsp;</td><td><input type=\"submit\" value=\"Añadir\" style=\"width:200px\"></td>"; }
 				if ($ssoption == 2) {echo "<td>Activo</td>";
 									echo "<td><select name=\"activo\" style=\"50px\">";
 									$sql = "select * from sgm_rrhh_puesto_trabajo where visible=1 and id=".$_GET["id"]."";
@@ -759,7 +760,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 42) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este puesto de trabajo?";
+		echo "<br><br>¿Seguro que desea eliminar este puesto de trabajo?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=40&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=40\">[ NO ]</a>";
 		echo "</center>";
@@ -767,7 +768,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 43) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea duplicar este puesto de trabajo?";
+		echo "<br><br>¿Seguro que desea duplicar este puesto de trabajo?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=40&ssop=4&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=40\">[ NO ]</a>";
 		echo "</center>";
@@ -871,7 +872,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<a href=\"index.php?op=1020&sop=120\" style=\"color:white;\">&laquo; Volver</a>";
 				echo "</td>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1020&sop=51&ssop=1\" style=\"color:white;\">A�adir Curso</a>";
+					echo "<a href=\"index.php?op=1020&sop=51&ssop=1\" style=\"color:white;\">Añadir Curso</a>";
 				echo "</td>";
 		echo "</tr></table>";
 		echo "<br><br>";
@@ -890,7 +891,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td style=\"text-align:bottom;\"><em>Duplicar</em></td>";
 				echo "<td></td>";
-				echo "<td><em>A�adir<br>personal</em></td>";
+				echo "<td><em>Añadir<br>personal</em></td>";
 			echo "</tr>";
 			$sql = "select * from sgm_rrhh_formacion where visible=1";
 			$result = mysql_query(convert_sql($sql));
@@ -929,7 +930,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 51) {
 		if ($ssoption == 1){
-			echo "<strong>A�adir Nuevo Curso</strong><br><br>";
+			echo "<strong>Añadir Nuevo Curso</strong><br><br>";
 		} else {
 			echo "<strong>Modificar Curso</strong><br><br>";
 		}
@@ -943,7 +944,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "<tr>";
 			if ($ssoption == 1){
 				echo "<form action=\"index.php?op=1020&sop=50&ssop=1\" method=\"post\">";
-				echo "<td></td><td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+				echo "<td></td><td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 			} else {
 				echo "<form action=\"index.php?op=1020&sop=50&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td><td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
@@ -955,9 +956,9 @@ if (($option == 1020) AND ($autorizado == true)) {
 				$date = getdate();
 				$date1 = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 				if ($rowx["fecha"] == ""){
-					echo "<td style=\"text-align:right\">Fecha Previsi�n</td><td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".$date1."\"></td>";
+					echo "<td style=\"text-align:right\">Fecha Previsión</td><td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".$date1."\"></td>";
 				} else {
-					echo "<td style=\"text-align:right\">Fecha Previsi�n</td><td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".$rowx["fecha"]."\"></td>";
+					echo "<td style=\"text-align:right\">Fecha Previsión</td><td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".$rowx["fecha"]."\"></td>";
 				}
 			echo "</tr><tr>";
 				if ($rowx["fecha_inicio"] == ""){
@@ -1031,7 +1032,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "</select></td>";
 			echo "<tr></tr>";
 				if ($ssoption == 1){
-					echo "<td></td><td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+					echo "<td></td><td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 				} else {
 					echo "<td></td><td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
 				}
@@ -1042,7 +1043,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 52) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea duplicar este curso?";
+		echo "<br><br>¿Seguro que desea duplicar este curso?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=50&ssop=4&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=50\">[ NO ]</a>";
 		echo "</center>";
@@ -1050,7 +1051,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 54) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este curso?";
+		echo "<br><br>¿Seguro que desea eliminar este curso?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=50&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=50\">[ NO ]</a>";
 		echo "</center>";
@@ -1111,7 +1112,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		$sqlf = "select * from sgm_rrhh_formacion where visible=1 and id=".$_GET["id"];
 		$resultf = mysql_query(convert_sql($sqlf));
 		$rowf = mysql_fetch_array($resultf);
-		echo "<strong>A�adir Personal al Curso : ".$rowf["nombre"]."</strong>";
+		echo "<strong>Añadir Personal al Curso : ".$rowf["nombre"]."</strong>";
 		echo "<br><br>";
 		echo "<table style=\"width:800px;\"><tr><td>";
 		echo "<table><tr>";
@@ -1138,7 +1139,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 								}
 						echo "</select>";
 				echo "</td>";
-				echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 				echo "</form>";
 			echo "</tr><tr>";
 			echo "</tr><tr>";
@@ -1158,7 +1159,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 							}
 						echo "</select>";
 					echo "</td>";
-					echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1188,7 +1189,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 57) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este empleado del curso?";
+		echo "<br><br>¿Seguro que desea eliminar este empleado del curso?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=56&ssop=3&id=".$_GET["id"]."&id_empleado=".$_GET["id_empleado"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=56&id=".$_GET["id"]."\">[ NO ]</a>";
 		echo "</center>";
@@ -1205,7 +1206,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				$sql = $sql.")";
 				mysql_query(convert_sql($sql));
 			} else {
-				echo mensaje_error("Debe introducir un puesto de trabajo y un empleado para llevar a cabo esta acci�n");
+				echo mensaje_error("Debe introducir un puesto de trabajo y un empleado para llevar a cabo esta acción");
 			}
 		}
 		if ($ssoption == 2) {
@@ -1257,7 +1258,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<input type=\"text\" name=\"fecha_alta\" value=\"".$date1."\" style=\" width:75px\">";
 				echo "</td>";
 				echo "<td>";
-					echo "<input type=\"Submit\" value=\"A�adir\" style=\"width:100px\">";
+					echo "<input type=\"Submit\" value=\"Añadir\" style=\"width:100px\">";
 				echo "</td>";
 			echo "</tr>";
 			echo "</form>";
@@ -1331,7 +1332,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 93) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este trabajador?";
+		echo "<br><br>¿Seguro que desea eliminar este trabajador?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=90&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=90\">[ NO ]</a>";
 		echo "</center>";
@@ -1352,7 +1353,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<a href=\"index.php?op=1020&sop=120\" style=\"color:white;\">&laquo; Volver</a>";
 				echo "</td>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1020&sop=102\" style=\"color:white;\">A�adir Plan</a>";
+					echo "<a href=\"index.php?op=1020&sop=102\" style=\"color:white;\">Añadir Plan</a>";
 				echo "</td>";
 		echo "</tr></table>";
 		echo "<br><br><br>";
@@ -1382,7 +1383,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 101) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este plan de formacion?";
+		echo "<br><br>¿Seguro que desea eliminar este plan de formacion?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=100&ssop=1&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=100\">[ NO ]</a>";
 		echo "</center>";
@@ -1424,7 +1425,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		}
 
 		if ($_GET["id"] == ""){
-			echo "<strong>A�adir Nuevo Plan de Formacion</strong><br><br>";
+			echo "<strong>Añadir Nuevo Plan de Formacion</strong><br><br>";
 		} else {
 			echo "<strong>Modificar Plan de Formacion</strong><br><br>";
 		}
@@ -1442,7 +1443,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 							echo "<td></td>";
 							if ($_GET["id"] == ""){
 								echo "<form action=\"index.php?op=1020&sop=102&ssop=3\" method=\"post\">";
-								echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+								echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 							} else {
 								echo "<form action=\"index.php?op=1020&sop=102&ssop=4&id=".$_GET["id"]."\" method=\"post\">";
 								echo "<td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
@@ -1463,7 +1464,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "</tr><tr>";
 							echo "<td></td>";
 							if ($_GET["id"] == ""){
-								echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+								echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 							} else {
 								echo "<td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
 							}
@@ -1477,7 +1478,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<td></td>";
 							echo "<td></td>";
-							echo "<td>A�adir Cursos al Plan</td>";
+							echo "<td>Añadir Cursos al Plan</td>";
 						echo "</tr><tr>";
 						echo "&nbsp;</tr><tr>";
 							echo "<form action=\"index.php?op=1020&sop=102&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
@@ -1496,7 +1497,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "</tr><tr>";
 							echo "<td></td>";
 							echo "<td></td>";
-							echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+							echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 							echo "</form>";
 						echo "</tr>";
 							$sqlc = "select * from sgm_rrhh_formacion where visible=1 and id_plan=".$_GET["id"]." order by nombre";
@@ -1561,7 +1562,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	if ($soption == 120) {
 		if ($admin == true) {
 			echo "<table cellpadding=\"2\" cellspacing=\"2\" ><tr>";
-				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:#4B53AF;border: 1px solid black\"><a href=\"index.php?op=1020&sop=100\" style=\"color:white\">Planes de Formaci�n</a></td>";
+				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:#4B53AF;border: 1px solid black\"><a href=\"index.php?op=1020&sop=100\" style=\"color:white\">Planes de Formación</a></td>";
 				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:#4B53AF;border: 1px solid black\"><a href=\"index.php?op=1020&sop=50\" style=\"color:white\">Cursos</a></td>";
 				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:#4B53AF;border: 1px solid black\"><a href=\"index.php?op=1020&sop=20\" style=\"color:white\">Departamentos</a></td>";
 				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:#4B53AF;border: 1px solid black\"><a href=\"index.php?op=1020&sop=40\" style=\"color:white\">Puestos de Trabajo</a></td>";
@@ -1572,7 +1573,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	if ($soption == 121) {
 		echo "<center>";
 		if ($_GET["filtro"] == "") {
-			echo "<br><strong>CONTACTOS</strong> en orden alfab�tico :";
+			echo "<br><strong>CONTACTOS</strong> en orden alfabético :";
 			 for ($i = 0; $i <= 127; $i++) {
 			 if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
 				$sqlxt = "select count(*) as total from sgm_rrhh_empleado where visible=1 and nombre like '".chr($i)."%'  order by nombre";
@@ -1596,7 +1597,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<tr style=\"background-color: Silver;\">";
 						echo "<td><a href=\"#indice\" name=\"".chr($i)."\" style=\"color:black;\"><strong>".chr($i)."</strong></a></td>";
 						echo "<td style=\"width:250px;\"><center><em>Nombre cliente</em></center></td>";
-						echo "<td><em><center>Tel�fono</center></em></td>";
+						echo "<td><em><center>Teléfono</center></em></td>";
 						echo "<td></td>";
 						echo "<td></td>";
 						echo "<td><center><em>Ficha de Contacto</em></center></td>";
@@ -1636,7 +1637,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 							### FIN NOMBRE
 							echo "<td style=\"text-align:center;\">";
 								echo "<a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/vcard.png\" alt=\"Datos fiscales\" border=\"0\"></a>&nbsp;";
-								echo "<a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/book.png\" alt=\"Datos acad�micos\" border=\"0\"></a>&nbsp;";
+								echo "<a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/book.png\" alt=\"Datos académicos\" border=\"0\"></a>&nbsp;";
 								echo "<a href=\"index.php?op=1020&sop=170&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_medal.png\" alt=\"Cursos formativos\" border=\"0\"></a>&nbsp;";
 								echo "<a href=\"index.php?op=1020&sop=180&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/time.png\" alt=\"Horarios\" border=\"0\"></a>&nbsp;";
 								echo "<a href=\"index.php?op=1020&sop=190&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_stack.png\" alt=\"Contratos\" border=\"0\"></a>&nbsp;";
@@ -1669,7 +1670,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
 						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\" style=\"color:white;\">Datos fiscales</a></td></tr>";
-						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\" style=\"color:white;\">Datos Acad�micos</a></td></tr>";
+						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\" style=\"color:white;\">Datos Académicos</a></td></tr>";
 						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=170&id=".$row["id"]."\" style=\"color:white;\">Cursos Formativos</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
@@ -1678,14 +1679,14 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<table cellpadding=\"0\">";
 						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=180&id=".$row["id"]."\" style=\"color:white;\">Horarios</a></td></tr>";
 						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=190&id=".$row["id"]."\" style=\"color:white;\">Contratos</a></td></tr>";
-						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=200&id=".$row["id"]."\" style=\"color:black;\">N�minas</a></td></tr>";
+						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=200&id=".$row["id"]."\" style=\"color:black;\">Nóminas</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
 
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
-						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=210&id=".$row["id"]."\" style=\"color:black;\">Valoraci�n</a></td></tr>";
-						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=220&id=".$row["id"]."\" style=\"color:black;\">Gesti�n de dias trabajados</a></td></tr>";
+						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=210&id=".$row["id"]."\" style=\"color:black;\">Valoración</a></td></tr>";
+						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=220&id=".$row["id"]."\" style=\"color:black;\">Gestión de dias trabajados</a></td></tr>";
 						echo "<tr><td style=\"width:120px;text-align:center;vertical-align:middle;background-color: silver;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=230&id=".$row["id"]."\" style=\"color:black;\">Seguridad e Higiene</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
@@ -1698,7 +1699,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<strong>".$row["poblacion"]."</strong>";
 					if ($row["provincia"] != "") {echo " (".$row["provincia"].")";}
 					echo "<br>";
-					if ($row["telefono"] != "") { echo "<br>Tel�fono : <strong>".$row["telefono"]."</strong>"; }
+					if ($row["telefono"] != "") { echo "<br>Teléfono : <strong>".$row["telefono"]."</strong>"; }
 					if ($row["mail"] != "") { echo "<br>eMail : <a href=\"mailto:".$row["email"]."\"><strong>".$row["mail"]."</strong></a>"; }
 					echo "<br>";
 				echo "</td>";
@@ -1709,10 +1710,10 @@ if (($option == 1020) AND ($autorizado == true)) {
 							echo "<td style=\"width:120px;text-align:center;vertical-align:middle;background-color: red;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=152&id=".$row["id"]."\" style=\"color:white;\">Eliminar</a></td>";
 						echo "</tr>";
 						echo "<tr>";
-##							echo "<td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=220&id=".$row["id"]."\" style=\"color:white;\">Datos bancarios<br>Gesti�n de facturaci�n</a></td>";
+##							echo "<td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=220&id=".$row["id"]."\" style=\"color:white;\">Datos bancarios<br>Gestión de facturación</a></td>";
 						echo "</tr>";
 						echo "<tr>";
-##							echo "<td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=230&id=".$row["id"]."\" style=\"color:white;\">Definici�n cliente</a></td>";
+##							echo "<td style=\"width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black;height: 30px;\"><a href=\"index.php?op=1020&sop=230&id=".$row["id"]."\" style=\"color:white;\">Definición cliente</a></td>";
 						echo "</tr>";
 					echo "</table>";
 				echo "</td>";
@@ -1767,9 +1768,9 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<table cellspacing=\"0\">";
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">Nombre: </td><td><input type=\"Text\" name=\"nombre\" value=\"".$rowem["nombre"]."\" class=\"px300\"></td></tr>";
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">NIF: </td><td><input type=\"Text\" name=\"nif\" value=\"".$rowem["nif"]."\" class=\"px300\"></td></tr>";
-			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px;vertical-align:top;\">Direcci�n: </td><td><textarea name=\"direccion\" class=\"px300\" rows=\"3\">".$row["direccion"]."</textarea></td></tr>";
-			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">C�digo Postal: </td><td><input type=\"Text\" name=\"cp\" value=\"".$rowem["cp"]."\" class=\"px300\"></td></tr>";
-			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">Poblaci�n: </td><td><input type=\"Text\" name=\"poblacion\" value=\"".$rowem["poblacion"]."\" class=\"px300\"></td></tr>";
+			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px;vertical-align:top;\">Dirección: </td><td><textarea name=\"direccion\" class=\"px300\" rows=\"3\">".$row["direccion"]."</textarea></td></tr>";
+			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">Código Postal: </td><td><input type=\"Text\" name=\"cp\" value=\"".$rowem["cp"]."\" class=\"px300\"></td></tr>";
+			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">Población: </td><td><input type=\"Text\" name=\"poblacion\" value=\"".$rowem["poblacion"]."\" class=\"px300\"></td></tr>";
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;width:70px\">Provincia: </td><td><input type=\"Text\" name=\"provincia\" value=\"".$rowem["provincia"]."\" class=\"px300\"></td></tr>";
 			echo "<tr><td style=\"text-align:right;width:70px\">Pais: </td><td>";
 				echo "<select name=\"id_pais\" style=\"width:300px;\">";
@@ -1790,10 +1791,10 @@ if (($option == 1020) AND ($autorizado == true)) {
 				}
 			echo "</td></tr>";
 			echo "<tr><td style=\"text-align:right;width:70px\">E-mail</td><td><input type=\"Text\" name=\"mail\" class=\"px300\" value=\"".$rowem["mail"]."\"></td></tr>";
-			echo "<tr><td style=\"text-align:right;width:70px\">Tel�fono</td><td>";
+			echo "<tr><td style=\"text-align:right;width:70px\">Teléfono</td><td>";
 				echo "<table cellspacing=\"0\">";
 					echo "<tr><td><input type=\"Text\" name=\"telefono\" class=\"px120\" value=\"".$rowem["telefono"]."\"></td>";
-					echo "<td style=\"text-align:right;width:55px\">Tel�fono 2</td><td><input type=\"Text\" name=\"telefono2\" class=\"px120\" value=\"".$rowem["telefono2"]."\"></td></tr>";
+					echo "<td style=\"text-align:right;width:55px\">Teléfono 2</td><td><input type=\"Text\" name=\"telefono2\" class=\"px120\" value=\"".$rowem["telefono2"]."\"></td></tr>";
 				echo "</table>";
 			echo "</td></tr>";
 			echo "<tr><td style=\"text-align:right;width:70px\">Fax</td><td>";
@@ -1808,7 +1809,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td style=\"width:200px\"></td>";
 			echo "</tr>";
 		if ($_GET["id"] > 0) { echo "<tr><td></td><td><input type=\"Submit\" value=\"Guardar cambios\" style=\"width:300px\"></td></tr>"; }
-		if ($_GET["id"] == 0) {	echo "<tr><td></td><td><input type=\"Submit\" value=\"A�adir\" style=\"width:300px\"></td></tr>";	}
+		if ($_GET["id"] == 0) {	echo "<tr><td></td><td><input type=\"Submit\" value=\"Añadir\" style=\"width:300px\"></td></tr>";	}
 		echo "</form>";
 		echo "</table>";
 		echo "</center>";
@@ -1836,7 +1837,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		$result = mysql_query(convert_sql($sql));
 		$row = mysql_fetch_array($result);
 		echo "<center>";
-		echo "<br><br>Operaci�n realizada correctamente.";
+		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\">[ Volver ]</a>";
 		echo "&nbsp;<a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\">[ Continuar ]</a>";
 		echo "</center>";
@@ -1844,7 +1845,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 152) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este empleado?";
+		echo "<br><br>¿Seguro que desea eliminar este empleado?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=150&sop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1020&sop=150&id=".$_GET["id"]."\">[ NO ]</a>";
 		echo "</center>";
 	}
@@ -1867,7 +1868,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			mysql_query(convert_sql($sql));
 		}
 
-		echo "<strong>Datos Acad�micos</strong><br>";
+		echo "<strong>Datos Académicos</strong><br>";
 		echo "<table><tr>";
 				echo "<td><a href=\"".$urloriginal."/mgestion/gestion-rrhh-print.php?&op=".$_GET["sop"]."&id=".$_GET["id"]."\" target=\"_blank\"><img src=\"mgestion/pics/icons-mini/printer.png\" style=\"border:0px;\"></a></td>";
 		echo "</tr></table>";
@@ -1886,12 +1887,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 							$date = getdate();
 							$date1 = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 							echo "<tr>";
-								echo "<td style=\"text-align:left\"><strong>Fecha Incorporaci�n</strong></td>";
+								echo "<td style=\"text-align:left\"><strong>Fecha Incorporación</strong></td>";
 							echo "</tr><tr>";
 								echo "<td><input type=\"text\" name=\"fecha_incor\" style=\"width:100px\" value=\"".$date1."\"></td>";
 						} else {
 							echo "<tr>";
-								echo "<td style=\"text-align:left\"><strong>Fecha Incorporaci�n</strong></td>";
+								echo "<td style=\"text-align:left\"><strong>Fecha Incorporación</strong></td>";
 							echo "</tr><tr>";
 								echo "<td><input type=\"text\" name=\"fecha_incor\" style=\"width:100px\" value=\"".$row["fecha_incor"]."\"></td>";
 						}
@@ -1913,7 +1914,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 								echo "<td><textarea rows=\"5\" name=\"trayectoria\" style=\"width:480px\">".$row["trayectoria"]."</textarea></td>";
 							echo "</tr><tr>";
 							if ($ssoption == 1){
-								echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+								echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 							} else {
 								echo "<td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
 							}
@@ -1972,7 +1973,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 161) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este trabajador?";
+		echo "<br><br>¿Seguro que desea eliminar este trabajador?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=160&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=160\">[ NO ]</a>";
 		echo "</center>";
@@ -1998,7 +1999,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 163) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este archivo?";
+		echo "<br><br>¿Seguro que desea eliminar este archivo?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=164&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=160&ssop=2&id=".$_GET["id"]."\">[ NO ]</a>";
 		echo "</center>";
@@ -2007,7 +2008,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 	if ($soption == 164) {
 		$sql = "delete from sgm_files WHERE id=".$_GET["id_archivo"]."";
 		mysql_query(convert_sql($sql));
-		echo "<center><br><br>Operaci�n realizada correctamente.";
+		echo "<center><br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1020&sop=160&ssop=2&id=".$_GET["id"]."\">[ Volver ]</a></center>";
 	}
 
@@ -2107,7 +2108,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td><input type=\"text\" name=\"hora_fi\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_ini2\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_fi2\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
-				echo "<td><input type=\"Submit\" value=\"A�adir\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -2142,7 +2143,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 
 	if ($soption == 181) {
 		echo "<center>";
-		echo "<br><br>�Seguro que desea eliminar este horario?";
+		echo "<br><br>¿Seguro que desea eliminar este horario?";
 		echo "<br><br><a href=\"index.php?op=1020&sop=180&ssop=3&id=".$_GET["id"]."&id_horari=".$_GET["id_horari"]."\">[ SI ]</a>";
 		echo "<a href=\"index.php?op=1020&sop=180\">[ NO ]</a>";
 		echo "</center>";

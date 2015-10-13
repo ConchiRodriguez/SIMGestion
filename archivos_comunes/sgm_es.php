@@ -399,6 +399,7 @@ $Oferta_Comercial = "Oferta Comercial";
 $Oficina_contable = "Oficina Contable";
 $Opciones = "Opciones";
 $Orden = "Orden";
+$Organigrama = "Organigrama";
 $Organo_gestor = "Organo Gestor";
 $Origen = "Origen";
 $Original = "Original";
@@ -462,6 +463,7 @@ $Proximas = "Pr&oacute;ximas";
 $Proyecto = "Proyecto";
 $Proyectos = "Proyectos";
 $Puerto = "Puerto";
+$Puestos_trabajo = "Puestos de Trabajo";
 $PVP = "PVP";
 $PVD = "PVD";
 
@@ -490,6 +492,7 @@ $Resultado = "Resultado";
 $Resultado_de_la_busqueda = "Resultado de la busqueda: ";
 $Resumen = "Resumen";
 $Resumenes = "Resumenes";
+$RRHH = "RRHH";
 
 $Salir = "Salir";
 $Seccion = "Secci&oacute;n";

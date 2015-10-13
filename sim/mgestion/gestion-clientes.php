@@ -5,8 +5,6 @@ $admin = admin($userid,$option);
 if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>"; }
 if (($option == 1008) AND ($autorizado == true)) {
 	$id_client = 0;
-	if ($_GET['or'] != "") { $orden = $_GET['or']; } else { $orden = 0; }
-
 	## canvis en les definicions de clients (noms, color, relacions, etc) ##
 	if (($soption == 560) and ($ssoption == 1) AND ($admin == true)) {
 		if ($_POST["id_origen"] == 0){
