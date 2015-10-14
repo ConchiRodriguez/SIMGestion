@@ -35,7 +35,7 @@ if (($option == 1025) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 10) {
-		echo detalleServidoresMonitorizados ($_GET["id_cli"],$_GET["id_serv"]);
+		echo detalleServidoresMonitorizados ($_GET["id_cli"],$_GET["id_serv"],$color_corp);
 	}
 
 	if ($soption == 500) {

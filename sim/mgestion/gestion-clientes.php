@@ -2259,7 +2259,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 222){
-		detalleServidoresMonitorizados ($_GET["id"],$_GET["id_serv"]);
+		detalleServidoresMonitorizados ($_GET["id"],$_GET["id_serv"],$color_corp);
 	}
 
 #Bases de dades

@@ -1275,7 +1275,7 @@ function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
 }
 
 function detalleServidoresMonitorizados ($id_cliente,$id_serv,$color){
-	global $db,$dbhandle,$Volver,$Dia,$Mes,$Any,$Ultimos,$Estados,$Buscar,$Fecha,$Registro,$Servidor,$Uso,$Memoria,$Espacio;
+	global $db,$dbhandle,$Volver,$Dia,$Mes,$Any,$Ultimos,$Estados,$Buscar,$Fecha,$Registro,$Servidor,$Uso,$Memoria,$Espacio,$simclau;
 		$sqlcbd = "select * from sgm_clients_bases_dades where visible=1 and id_client in (".$id_cliente.")";
 		$resultcbd = mysql_query(convert_sql($sqlcbd));
 		$rowcbd = mysql_fetch_array($resultcbd);
@@ -1295,7 +1295,7 @@ function detalleServidoresMonitorizados ($id_cliente,$id_serv,$color){
 		$sqlcs = "select * from sgm_clients_servidors where servidor=".$id_serv." and id_client in (".$id_cliente.") and visible=1";
 		$resultcs = mysql_query(convert_sql($sqlcs,$dbhandle));
 		$rowcs = mysql_fetch_array($resultcs);
-
+		
 		echo "<strong>".$Ultimos." ".$Estados." :</strong> ".$rowcs["descripcion"]."";
 		echo "<br>";
 			echo "<table><tr>";
@@ -1521,8 +1521,8 @@ function calendari_economic($rec){
 function correo_incidencias(){
 	global $db,$buzon_correo,$buzon_usuario,$buzon_pass;
 
-	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
-#	$imap = imap_open ("{mail.solucions-im.com:143/imap/notls}INBOX", "soporte@solucions-im.com", "Multi12") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
+#	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
+	$imap = imap_open ("{mail.solucions-im.com:143/imap/notls}INBOX", "soporte@solucions-im.com", "Multi12") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
 	$checar = imap_check($imap);
 	// Detalles generales de todos los mensajes del usuario.
 	$resultados = imap_fetch_overview($imap,"1:{$checar->Nmsgs}",0);

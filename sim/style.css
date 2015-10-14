@@ -84,7 +84,7 @@ td.ficha{
 	width: 120px;
 	text-align: center;
 	vertical-align: middle;
-	background-color: #4B53AF;
+	background-color: #33339f;
 	color: white;
 	border: 1px solid black;
 	height: 30px;
@@ -95,7 +95,7 @@ td.maestra{
 	height:20px;
 	text-align:center;
 	vertical-align:middle;
-	background-color:#4B53AF;
+	background-color:#33339f;
 	border:1px solid black;
 }
 
@@ -106,7 +106,7 @@ td.maestra2{
 }
 
 td.menu{
-	background-color: #4B53AF;
+	background-color: #33339f;
 	color: white;
 	border: 1px solid black;
 	text-align: center;
@@ -130,7 +130,7 @@ td.boton{
 	height:20px;
 	text-align:center;
 	vertical-align:middle;
-	background-color:#4B53AF;
+	background-color:#33339f;
 	border:1px solid black;
 }
 
@@ -143,14 +143,14 @@ td.factur{
 a:LINK, a:VISITED {
 	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	font-size: 13px;
-	color: #4B53AF;
+	color: #33339f;
 	text-decoration : none;
 }
 
 a:HOVER {
 	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	font-size: 13px;
-	color: #4B53AF;
+	color: #33339f;
 	text-decoration : none;
 }
 

@@ -12,8 +12,6 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<tr>";
 				if (($soption >= 100) and($soption < 110)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=100\" class=".$class.">".$Tarifas."</a></td>";
-				if (($soption >= 110) and($soption < 120)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=110\" class=".$class.">".$Calendario." ".$$Laboral."</a></td>";
 				if (($soption >= 130) and($soption < 140)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=130\" class=".$class.">".$Idioma."</a></td>";
 				if (($soption >= 140) and($soption < 150)) {$class = "menu_select";} else {$class = "menu";}
@@ -101,104 +99,6 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1023&sop=100&ssop=3&id=".$_GET["id"],"op=1023&sop=100"),array($Si,$No));
-		echo "</center>";
-	}
-
-	if ($soption == 110){
-		if ($ssoption == 1) {
-			$camposInsert = "dia,mes,descripcio";
-			$datosInsert = array($_POST["dia"],$_POST["mes"],$_POST["descripcio"]);
-			insertFunction ("sgm_calendario",$camposInsert,$datosInsert);
-		}
-		if ($ssoption == 2) {
-			deleteFunction ("sgm_calendario",$_GET["id"]);
-		}
-		if ($ssoption == 4) {
-			$hora_ini = $_POST["hora_inicio"]*3600;
-			$hora_fi = $_POST["hora_fin"]*3600;
-			$total_horas = $hora_fi-$hora_ini;
-			$camposUpdate=array('hora_inicio','hora_fin','total_horas');
-			$datosUpdate=array($hora_ini,$hora_fi,$total_horas);
-			updateFunction("sgm_calendario_horario",$_GET["id_h"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 5) {
-			deleteFunction ("sgm_calendario",$_GET["id_h"]);
-		}
-
-		echo "<table cellpadding=\"10px\" class=\"lista\">";
-			echo "<tr>";
-				echo "<td style=\"vertical-align:top;\">";
-					echo "<h4>".$Calendario." ".$$Laboral."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver;\">";
-							echo "<th>".$Eliminar."</th>";
-							echo "<th>".$Dia."</th>";
-							echo "<th>".$Mes."</th>";
-							echo "<th>".$Festividad."</th>";
-							echo "<th></th>";
-						echo "</tr>";
-						echo "<tr>";
-							echo "<td></td>";
-							echo "<form action=\"index.php?op=1023&sop=110&ssop=1&id=".$row["id"]."\" method=\"post\">";
-							echo "<td><select name=\"dia\" style=\"width:40px\">";
-								for ($i=1; $i <= 31; $i++) {
-									echo "<option value=\"".$i."\">".$i."</option>";
-								}
-							echo "</select></td>";
-							echo "<td><select name=\"mes\" style=\"width:40px\">";
-								for ($i=1; $i <= 12; $i++) {
-									echo "<option value=\"".$i."\">".$i."</option>";
-								}
-							echo "</select></td>";
-							echo "<td><input name=\"descripcio\" type=\"Text\" style=\"width:150px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px;\"></td>";
-							echo "</form>";
-						echo "</tr>";
-						$sql = "select * from sgm_calendario order by mes, dia";
-						$result = mysql_query(convert_sql($sql));
-						while ($row = mysql_fetch_array($result)) {
-							echo "<tr>";
-								echo "<td style=\"text-align:center;width:40;\"><a href=\"index.php?op=1023&sop=111&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-								echo "<td>".$row["dia"]."</td>";
-								echo "<td>".$row["mes"]."</td>";
-								echo "<td>".$row["descripcio"]."</td>";
-								echo "<td></td>";
-							echo "</tr>";
-						}
-					echo "</table>";
-				echo "</td><td style=\"width:100px;\">&nbsp;</td><td style=\"vertical-align:top;\">";
-					echo "<h4>".$Horarios."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver;\">";
-							echo "<th>".$Dia."</th>";
-							echo "<th>".$Hora_Inicio."</th>";
-							echo "<th>".$Hora_Fin."</th>";
-							echo "<th></th>";
-						echo "</tr>";
-						$sql = "select * from sgm_calendario_horario order by id";
-						$result = mysql_query(convert_sql($sql));
-						while ($row = mysql_fetch_array($result)) {
-							$hora_ini = $row["hora_inicio"]/3600;
-							$hora_fi = $row["hora_fin"]/3600;
-							echo "<tr>";
-							echo "<form action=\"index.php?op=1023&sop=110&ssop=4&id_h=".$row["id"]."\" method=\"post\">";
-								echo "<td>".$row["dia"]."</td>";
-								echo "<td><input name=\"hora_inicio\" type=\"number\" min=\"1\" value=\"".$hora_ini."\" style=\"width:60px\"></td>";
-								echo "<td><input name=\"hora_fin\" type=\"number\" min=\"1\" value=\"".$hora_fi."\" style=\"width:60px\"></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
-							echo "</form>";
-							echo "</tr>";
-						}
-					echo "</table>";
-				echo "</td>";
-			echo "</tr>";
-		echo "</table>";
-	}
-
-	if ($soption == 111) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1023&sop=110&ssop=2&id=".$_GET["id"],"op=1023&sop=110"),array($Si,$No));
 		echo "</center>";
 	}
 

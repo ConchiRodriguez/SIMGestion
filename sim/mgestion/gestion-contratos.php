@@ -144,7 +144,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\" style=\"width:150px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			echo "</table>";

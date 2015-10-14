@@ -74,6 +74,7 @@ $Boton = "Bot&oacute;";
 $Buscar = "Cercar";
 $Buscar_Contacto = "Cercar Contacte";
 $Busquedas = "Cerques";
+$Buscador = "Buscador";
 
 $Caducadas = "Caducades";
 $Caja = "Caixa";
@@ -215,6 +216,8 @@ $Editar = "Editar";
 $Ejecutar = "Executar";
 $Eliminar = "Eliminar";
 $Email = "E-mail";
+$Empleado = "Empleat";
+$Empleados = "Empleats";
 $Empresa = "Empresa";
 $en_orden_alfabetico = " en ordre alfab&eacute;tic :";
 $Entidad = "Entitat";
@@ -462,7 +465,9 @@ $Proximas = "Pr&oacute;ximes";
 $Proyecto = "Projecte";
 $Proyectos = "Projectes";
 $Puerto = "Port";
-$Puestos_trabajo = "Puestos de Trabajo";
+$Puesto = "Lloc";
+$Puesto_trabajo = "Lloc de Treball";
+$Puestos_trabajo = "Llocs de Treball";
 $PVP = "PVP";
 $PVD = "PVD";
 
@@ -533,6 +538,7 @@ $Subir = "Pujar";
 $Subtipos = "Subtipus";
 $Subtotal = "Subtotal";
 $Sumar = "Sumar";
+$Superior = "Superior";
 
 $Tabla = "Taula";
 $Tarifas = "Tarifes";
