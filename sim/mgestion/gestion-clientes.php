@@ -1746,7 +1746,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			$resultf = mysql_query(convert_sql($sqlf));
 			$rowf = mysql_fetch_array($resultf);
 			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/articulos/".$rowf["name"];
+			$filepath = "archivos/contratos/".$rowf["name"];
 			unlink($filepath);
 		}
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -2059,7 +2059,12 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,2,$_GET["id"]);
 		}
 		if ($ssoption == 2) {
+			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
+			$resultf = mysql_query(convert_sql($sqlf));
+			$rowf = mysql_fetch_array($resultf);
 			deleteFunction ("sgm_files",$_GET["id_archivo"]);
+			$filepath = "archivos/clientes/".$rowf["name"];
+			unlink($filepath);
 		}
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";

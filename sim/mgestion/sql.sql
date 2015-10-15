@@ -628,7 +628,7 @@ ALTER TABLE `sgm_files` ADD `type` varchar(20) NOT NULL default '' AFTER `name`;
 ALTER TABLE `sgm_files` ADD `size` int(11) NOT NULL default '0' AFTER `type`;
 ALTER TABLE `sgm_files` ADD `tipo_id_elemento` int(11) NOT NULL default '0' AFTER `size`;
 ALTER TABLE `sgm_files` ADD `id_elemento` int(11) NOT NULL default '0' AFTER `tipo_id_elemento`;
-/*tipo_id_elemento - 0=factura, 1=articulo, 2=cliente, 3=contrato, 4=incidencia, 5=dispositivo;*/
+/*tipo_id_elemento - 0=factura, 1=articulo, 2=cliente, 3=contrato, 4=incidencia, 5=dispositivo, 6=empleado;*/
 
 CREATE TABLE `sgm_files_tipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_files_tipos` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
@@ -921,15 +921,11 @@ ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `numero` int(15) NOT NULL default '0' 
 CREATE TABLE `sgm_rrhh_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_empleado` ADD `nombre` varchar(255) default NULL AFTER `id`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `fecha_incor` date NOT NULL default '0000-00-00' AFTER `nombre`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `plan_acogida` longtext NOT NULL AFTER `fecha_incor`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `formacion` longtext NOT NULL AFTER `plan_acogida`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `trayectoria` longtext NOT NULL AFTER `formacion`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `trayectoria`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `numero` int(15) NOT NULL default '0' AFTER `visible`;
-ALTER TABLE `sgm_rrhh_empleado` CHANGE `numero` `codigo` VARCHAR( 25 ) DEFAULT NULL;
-ALTER TABLE `sgm_rrhh_empleado` ADD `nif` varchar(15) NOT NULL default '' AFTER `nombre`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `cvia` char(2) NOT NULL default '' AFTER `nif`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `direccion` varchar(50) NOT NULL default '' AFTER `cvia`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `fecha_baja` date NOT NULL default '0000-00-00' AFTER `fecha_incor`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_baja`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `codigo` int(15) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `nif` varchar(15) NOT NULL default '' AFTER `codigo`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `direccion` varchar(255) NOT NULL default '' AFTER `nif`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `poblacion` varchar(50) NOT NULL default '' AFTER `direccion`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `cp` varchar(5) NOT NULL default '' AFTER `poblacion`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `provincia` varchar(15) NOT NULL default '' AFTER `cp`;
@@ -943,6 +939,8 @@ ALTER TABLE `sgm_rrhh_empleado` ADD `notas` longtext AFTER `mail`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `cuentabancaria` varchar(30) default NULL AFTER `notas`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `entidadbancaria` varchar(100) NOT NULL default '' AFTER `cuentabancaria`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `domiciliobancario` varchar(255) NOT NULL default '' AFTER `entidadbancaria`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `domiciliobancario`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `num_segsoc` varchar(25) NOT NULL default '' AFTER `id_usuario`;
 
 CREATE TABLE `sgm_rrhh_puesto_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;

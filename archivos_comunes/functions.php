@@ -1545,6 +1545,7 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 	if ($id_tipo == 3) {$adress = "contratos/";}
 	if ($id_tipo == 4) {$adress = "incidencias/";}
 	if ($id_tipo == 5) {$adress = "dispositivos/";}
+	if ($id_tipo == 6) {$adress = "empleados/";}
 
 	$sql = "select * from sgm_files_tipos where id=".$tipo;
 	$result = mysql_query(convert_sql($sql));
