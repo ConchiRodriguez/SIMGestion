@@ -942,6 +942,20 @@ ALTER TABLE `sgm_rrhh_empleado` ADD `domiciliobancario` varchar(255) NOT NULL de
 ALTER TABLE `sgm_rrhh_empleado` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `domiciliobancario`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `num_segsoc` varchar(25) NOT NULL default '' AFTER `id_usuario`;
 
+CREATE TABLE `sgm_rrhh_empleado_horario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `data_ini` date NOT NULL default '0000-00-00' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `data_fi` date NOT NULL default '0000-00-00' AFTER `data_ini`;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini` int(11) NOT NULL default '0' AFTER `data_fi` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi` int(11) NOT NULL default '0' AFTER `hora_ini` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini2` int(11) NOT NULL default '0' AFTER `hora_fi` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi2` int(11) NOT NULL default '0' AFTER `hora_ini2` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_ini` int(11) NOT NULL default '0' AFTER `hora_fi2` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_fi` int(11) NOT NULL default '0' AFTER `min_ini` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_ini2` int(11) NOT NULL default '0' AFTER `min_fi` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_fi2` int(11) NOT NULL default '0' AFTER `min_ini2` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `min_fi2`;
+
 CREATE TABLE `sgm_rrhh_puesto_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_puesto` int(11) NOT NULL default '0' AFTER `id_empleado`;

@@ -40,7 +40,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 	echo "</table><br>";
 	echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
 		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
-
 	if (($soption == 0) or ($soption == 1) or ($soption == 200)) {
 		if ($ssoption == 3) {
 			mysql_query(convert_sql($sql));
@@ -177,48 +176,47 @@ if (($option == 1020) AND ($autorizado == true)) {
 					if ($ver == true){
 						$contador = 0;
 						$cambio = 0;
-						$sqle = "select id_empleado from sgm_rrhh_puesto_empleado where visible=1 ";
-						if ($_POST["id_puesto"] > 0) { $sqle .= " and id_puesto=".$_POST["id_puesto"]; }
-						elseif ($_POST["id_departamento"] > 0) { $sqle .= " and id_puesto in (select id from sgm_rrhh_puesto_trabajo where id_departamento=".$_POST["id_departamento"].")"; }
-#						echo $sqle."<br>";
-						$resulte = mysql_query(convert_sql($sqle));
-						while ($rowe = mysql_fetch_array($resulte)){
-							$sql = "select * from sgm_rrhh_empleado where visible=1 and nombre like '".chr($i)."%'";
-							if (($_POST["id_departamento"] > 0) or ($_POST["id_puesto"] > 0)) { $sql .= " and id in (".$rowe["id_empleado"].")"; }
+						$sql = "select * from sgm_rrhh_empleado where visible=1 and nombre like '".chr($i)."%'";
+						if (($_POST["id_departamento"] > 0) or ($_POST["id_puesto"] > 0)) {
+							$sql .= " and id in (";
+							$sqle = "select id_empleado from sgm_rrhh_puesto_empleado where visible=1 ";
+							if ($_POST["id_puesto"] > 0) { $sqle .= " and id_puesto=".$_POST["id_puesto"]; }
+							elseif ($_POST["id_departamento"] > 0) { $sqle .= " and id_puesto in (select id from sgm_rrhh_puesto_trabajo where id_departamento=".$_POST["id_departamento"].")"; }
+							$sql .= ")";
+						}
 #							echo $sql;
-							$result = mysql_query(convert_sql($sql));
-							while ($row = mysql_fetch_array($result)) {
-								if ($contador==0){
-									echo "<tr style=\"background-color: Silver;\">";
-										echo "<th><a href=\"#indice\" name=\"".chr($i)."\" style=\"color:black;\">".chr($i)."</a></th>";
-										echo "<th>".$Nombre."</th>";
-										echo "<th>".$Puesto_trabajo."/".$Departamento."</th>";
-									echo "</tr>";
-									$contador++;
-								}
-								if ($cambio == 0) { $color = "white"; $cambio = 1; } else { $color = "#F5F5F5"; $cambio = 0; }
-								echo "<tr style=\"background-color:".$color."\">";
-									if ((valida_nif_cif_nie($row["nif"]) <= 0) OR ($row["nombre"] == "") OR ($row["direccion"] == "") OR ($row["cp"] == "") OR ($row["poblacion"] == "") OR ($row["provincia"] == "")) { 
-										echo "<td style=\"vertical-align:top\"><img src=\"mgestion/pics/icons-mini/page_white_error.png\" alt=\"ERROR\" border=\"0\"></td>";
-									} else { 
-										echo "<td></td>"; 
-									}
-									echo "<td style=\"width:300px;vertical-align:top\"><a href=\"index.php?op=1020&sop=100&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-									echo "<td><table>";
-									$sqlpe = "select * from sgm_rrhh_puesto_empleado where visible=1 and id_empleado=".$row["id"];
-									$resultpe = mysql_query(convert_sql($sqlpe));
-									$rowpe = mysql_fetch_array($resultpe);
-									$sqlp = "select * from sgm_rrhh_puesto_trabajo where visible=1 and id in (select id_puesto from sgm_rrhh_puesto_empleado where visible=1 and id_empleado=".$row["id"].")";
-									$resultp = mysql_query(convert_sql($sqlp));
-									while ($rowp = mysql_fetch_array($resultp)){
-										$sqld = "select * from sgm_rrhh_departamento where visible=1 and id=".$rowp["id_departamento"];
-										$resultd = mysql_query(convert_sql($sqld));
-										$rowd = mysql_fetch_array($resultd);
-										echo "<tr><td style=\"width:150px;\">".$rowp["puesto"]."</td><td>".$rowd["departamento"]."</td></tr>";
-									}
-									echo "</table></td>";
+						$result = mysql_query(convert_sql($sql));
+						while ($row = mysql_fetch_array($result)) {
+							if ($contador==0){
+								echo "<tr style=\"background-color: Silver;\">";
+									echo "<th><a href=\"#indice\" name=\"".chr($i)."\" style=\"color:black;\">".chr($i)."</a></th>";
+									echo "<th>".$Nombre."</th>";
+									echo "<th>".$Puesto_trabajo."/".$Departamento."</th>";
 								echo "</tr>";
+								$contador++;
 							}
+							if ($cambio == 0) { $color = "white"; $cambio = 1; } else { $color = "#F5F5F5"; $cambio = 0; }
+							echo "<tr style=\"background-color:".$color."\">";
+								if ((valida_nif_cif_nie($row["nif"]) <= 0) OR ($row["nombre"] == "") OR ($row["direccion"] == "") OR ($row["cp"] == "") OR ($row["poblacion"] == "") OR ($row["provincia"] == "")) { 
+									echo "<td style=\"vertical-align:top\"><img src=\"mgestion/pics/icons-mini/page_white_error.png\" alt=\"ERROR\" border=\"0\"></td>";
+								} else { 
+									echo "<td></td>"; 
+								}
+								echo "<td style=\"width:300px;vertical-align:top\"><a href=\"index.php?op=1020&sop=100&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
+								echo "<td><table>";
+								$sqlpe = "select * from sgm_rrhh_puesto_empleado where visible=1 and id_empleado=".$row["id"];
+								$resultpe = mysql_query(convert_sql($sqlpe));
+								$rowpe = mysql_fetch_array($resultpe);
+								$sqlp = "select * from sgm_rrhh_puesto_trabajo where visible=1 and id in (select id_puesto from sgm_rrhh_puesto_empleado where visible=1 and id_empleado=".$row["id"].")";
+								$resultp = mysql_query(convert_sql($sqlp));
+								while ($rowp = mysql_fetch_array($resultp)){
+									$sqld = "select * from sgm_rrhh_departamento where visible=1 and id=".$rowp["id_departamento"];
+									$resultd = mysql_query(convert_sql($sqld));
+									$rowd = mysql_fetch_array($resultd);
+									echo "<tr><td style=\"width:150px;\">".$rowp["puesto"]."</td><td>".$rowd["departamento"]."</td></tr>";
+								}
+								echo "</table></td>";
+							echo "</tr>";
 						}
 					}
 				}
@@ -226,13 +224,11 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</table>";
 		}
 	}
-
 	if (($soption >= 100) and ($soption < 200) and  ($_GET["id"] != 0)) {
 		if (($soption == 100) and ($ssoption == 1)) {
-			$camposInsert="nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,telefono2,fax,fax2,notas";
-			$datosInsert = array($_POST["nombre"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["mail"],$_POST["telefono"],$_POST["telefono2"],$_POST["fax"],$_POST["fax2"],$_POST["notas"]);
+			$camposInsert="entidadbancaria,domiciliobancario,cuentabancaria,fecha_baja,fecha_incor,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,telefono2,fax,fax2,notas";
+			$datosInsert = array($_POST["entidadbancaria"],$_POST["domiciliobancario"],$_POST["cuentabancaria"],$_POST["fecha_baja"],$_POST["fecha_incor"],$_POST["nombre"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["mail"],$_POST["telefono"],$_POST["telefono2"],$_POST["fax"],$_POST["fax2"],$_POST["notas"]);
 			insertFunction ("sgm_rrhh_empleado",$camposInsert,$datosInsert);
-
 			$sql = "select id from sgm_rrhh_empleado where visible=1 and nombre='".$_POST["nombre"]."' and nif='".$_POST["nif"]."' order by id desc";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
@@ -241,8 +237,8 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$id_empleado = $_GET["id"];
 		}
 		if (($soption == 100) and ($ssoption == 2)) {
-			$camposUpdate = array('nombre','nif','direccion','poblacion','cp','provincia','id_pais','mail','telefono','telefono2','fax','fax2','notas');
-			$datosUpdate = array($_POST["nombre"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["mail"],$_POST["telefono"],$_POST["telefono2"],$_POST["fax"],$_POST["fax2"],$_POST["notas"]);
+			$camposUpdate = array('entidadbancaria','domiciliobancario','cuentabancaria','fecha_baja','fecha_incor','nombre','nif','direccion','poblacion','cp','provincia','id_pais','mail','telefono','telefono2','fax','fax2','notas');
+			$datosUpdate = array($_POST["entidadbancaria"],$_POST["domiciliobancario"],$_POST["cuentabancaria"],$_POST["fecha_baja"],$_POST["fecha_incor"],$_POST["nombre"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["mail"],$_POST["telefono"],$_POST["telefono2"],$_POST["fax"],$_POST["fax2"],$_POST["notas"]);
 			updateFunction("sgm_rrhh_empleado",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 
@@ -253,8 +249,8 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
-						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=100&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Fiscales."</a></td></tr>";
-						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Adicionales."</a></td></tr>";
+						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=100&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Generales."</a></td></tr>";
+						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Archivos."</a></td></tr>";
 						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Formacion."</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
@@ -270,7 +266,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<tr><td class=\"ficha\"><a href=\"index.php?op=1020&sop=160&id=".$row["id"]."\" style=\"color:white;\">".$Dias_festivos."</a></td></tr>";
 					echo "</table>";
 				echo "</td>";
-
 				echo "<td style=\"vertical-align : top;background-color : Silver; margin : 5px 10px 10px 10px;width:400px;padding : 5px 10px 10px 10px;\">";
 					echo "<a href=\"index.php?op=1020&sop=150&id=".$row["id"]."\" style=\"color:black;\"><strong style=\"font : bold normal normal 20px/normal Verdana, Geneva, Arial, Helvetica, sans-serif;color:black\">".$row["nombre"]."</strong></a>";
 					echo "<br>".$row["nif"];
@@ -282,7 +277,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 					if ($row["mail"] != "") { echo "<br>eMail : <a href=\"mailto:".$row["email"]."\"><strong>".$row["mail"]."</strong></a>"; }
 					echo "<br>";
 				echo "</td>";
-
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
 						echo "<tr>";
@@ -296,80 +290,96 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "</td>";
 			echo "</tr>";
 		echo "</table>";
-
 		echo "</td></tr></table><br>";
 		echo "</center>";
-		echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
+		echo "<table style=\"border-bottom:1px solid grey;border-left:1px solid grey;border-right:1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\"><tr>";
 		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
 	}
-
 	if ($soption == 100) {
 		if ($id_empleado > 0) {
 			$sqlem = "select * from sgm_rrhh_empleado where id=".$id_empleado;
 			$resultem = mysql_query(convert_sql($sqlem));
 			$rowem = mysql_fetch_array($resultem);
-			echo "<form action=\"index.php?op=1020&sop=150&ssop=2&id=".$id_empleado."\"  method=\"post\">";
+			echo "<form action=\"index.php?op=1020&sop=100&ssop=2&id=".$id_empleado."\"  method=\"post\">";
 		} 
 		if ($id_empleado == 0) {
-			echo "<form action=\"index.php?op=1020&sop=151\"  method=\"post\">";
+			echo "<form action=\"index.php?op=1020&sop=100&ssop=1\"  method=\"post\">";
 		}
+
+		echo "<h4>".$Datos_Generales."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr><td></td><th>".$Datos_Fiscales."</th></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px\">".$Nombre.":</th><td><input type=\"Text\" name=\"nombre\" value=\"".$rowem["nombre"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px\">".$NIF.": </th><td><input type=\"Text\" name=\"nif\" value=\"".$rowem["nif"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px;vertical-align:top;\">".$Direccion.": </th><td><textarea name=\"direccion\" rows=\"2\" style=\"width:350px\">".$row["direccion"]."</textarea></td></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px\">".$CP.": </th><td><input type=\"Text\" name=\"cp\" value=\"".$rowem["cp"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px\">".$Poblacion.": </th><td><input type=\"Text\" name=\"poblacion\" value=\"".$rowem["poblacion"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;width:70px\">".$Provincia.": </th><td><input type=\"Text\" name=\"provincia\" value=\"".$rowem["provincia"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr><td style=\"text-align:right;width:70px\">".$Pais.": </td><td>";
-				echo "<select name=\"id_pais\" style=\"width:350px;\">";
-				echo "<option value=\"0\">-</option>";
-				$sqlo = "select * from sys_naciones where visible=1 order by Nacion";
-				$resulto = mysql_query(convert_sql($sqlo));
-				while ($rowo = mysql_fetch_array($resulto)) {
-					if ($_GET["id"] == 0){
-						if ($rowo["predeterminado"] == 1){
-							echo "<option value=\"".$rowo["CodigoNacion"]."\" selected>".$rowo["Nacion"]."</option>";
-						}
-					} else {
-						if ($row["id_pais"] == $rowo["CodigoNacion"]){
-							echo "<option value=\"".$rowo["CodigoNacion"]."\" selected>".$rowo["Nacion"]."</option>";
-						}
-					}
-					echo "<option value=\"".$rowo["CodigoNacion"]."\">".$rowo["Nacion"]."</option>";
-				}
-			echo "</td></tr>";
-			echo "<tr><td style=\"text-align:right;width:70px\">".$Email."</td><td><input type=\"Text\" name=\"mail\" value=\"".$rowem["mail"]."\" style=\"width:350px\"></td></tr>";
-			echo "<tr><td style=\"text-align:right;width:70px\">".$Telefono."</td><td>";
-				echo "<table cellspacing=\"0\">";
-					echo "<tr><td><input type=\"Text\" name=\"telefono\" value=\"".$rowem["telefono"]."\" style=\"width:145px\"></td>";
-					echo "<td style=\"text-align:right;width:55px\">".$Telefono." 2</td><td><input type=\"Text\" name=\"telefono2\" value=\"".$rowem["telefono2"]."\" style=\"width:145px\"></td></tr>";
-				echo "</table>";
-			echo "</td></tr>";
-			echo "<tr><td style=\"text-align:right;width:70px\">".$Fax."</td><td>";
-				echo "<table cellspacing=\"0\">";
-					echo "<tr><td><input type=\"Text\" name=\"fax\" value=\"".$rowem["fax"]."\" style=\"width:145px\"></td>";
-					echo "<td style=\"text-align:right;width:55px\">".$Fax." 2</td><td><input type=\"Text\" name=\"fax2\" value=\"".$rowem["fax2"]."\" style=\"width:145px\"></td></tr>";
-				echo "</table>";
-			echo "</td></tr>";
 			echo "<tr>";
-				echo "<td style=\"text-align:right;width:70px;vertical-align:top;\">".$Notas.": </td>";
-				echo "<td><textarea name=\"notas\" style=\"width:350px\" rows=\"2\">".$rowem["notas"]."</textarea></td>";
-				echo "<td style=\"width:200px\"></td>";
+				echo "<td style=\"vertical-align:top;width:50%\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<tr><td></td><th>".$Datos_Fiscales."</th></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$Nombre.":</th><td colspan=\"3\"><input type=\"Text\" name=\"nombre\" value=\"".$rowem["nombre"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$NIF.": </th><td colspan=\"3\"><input type=\"Text\" name=\"nif\" value=\"".$rowem["nif"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$Numero_segsoc.": </th><td colspan=\"3\"><input type=\"Text\" name=\"num_segsoc\" value=\"".$rowem["num_segsoc"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;;vertical-align:top;\">".$Direccion.": </th><td colspan=\"3\"><textarea name=\"direccion\" rows=\"2\" style=\"width:350px\">".$row["direccion"]."</textarea></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$CP.": </th><td colspan=\"3\"><input type=\"Text\" name=\"cp\" value=\"".$rowem["cp"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$Poblacion.": </th><td colspan=\"3\"><input type=\"Text\" name=\"poblacion\" value=\"".$rowem["poblacion"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr style=\"background-color:Silver;\"><th style=\"text-align:right;\">".$Provincia.": </th><td colspan=\"3\"><input type=\"Text\" name=\"provincia\" value=\"".$rowem["provincia"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr><td></td><th>".$Datos_Adicionales."</th></tr>";
+						echo "<tr><th style=\"text-align:right;\">".$Pais.": </th><td colspan=\"3\">";
+							echo "<select name=\"id_pais\" style=\"width:350px;\">";
+							echo "<option value=\"0\">-</option>";
+							$sqlo = "select * from sgm_paises where visible=1 order by pais";
+							$resulto = mysql_query(convert_sql($sqlo));
+							while ($rowo = mysql_fetch_array($resulto)) {
+								if ($_GET["id"] == 0){
+									if ($rowo["predeterminado"] == 1){
+										echo "<option value=\"".$rowo["id"]."\" selected>".$rowo["pais"]."</option>";
+									}
+								} elseif ($rowem["id_pais"] == $rowo["id"]){
+										echo "<option value=\"".$rowo["id"]."\" selected>".$rowo["pais"]."</option>";
+								} else {
+									echo "<option value=\"".$rowo["id"]."\">".$rowo["pais"]."</option>";
+								}
+							}
+						echo "</td></tr>";
+						echo "<tr><th style=\"text-align:right;\">".$Email."</th><td colspan=\"3\"><input type=\"Text\" name=\"mail\" value=\"".$rowem["mail"]."\" style=\"width:350px\"></td></tr>";
+						echo "<tr><th style=\"text-align:right;\">".$Telefono."</th><td><input type=\"Text\" name=\"telefono\" value=\"".$rowem["telefono"]."\" style=\"width:145px\"></td>";
+							echo "<th style=\"text-align:right;width:60px\">".$Telefono." 2</th><td><input type=\"Text\" name=\"telefono2\" value=\"".$rowem["telefono2"]."\" style=\"width:140px\"></td>";
+						echo "</tr></tr>";
+						echo "<tr><th style=\"text-align:right;\">".$Fax."</th><td><input type=\"Text\" name=\"fax\" value=\"".$rowem["fax"]."\" style=\"width:145px\"></td>";
+							echo "<th style=\"text-align:right;width:60px\">".$Fax." 2</th><td><input type=\"Text\" name=\"fax2\" value=\"".$rowem["fax2"]."\" style=\"width:140px\"></td>";
+						echo "</tr><tr>";
+						if ($rowem["fecha_incor"] == ""){$date1 = date("Y-m-d");} else {$date1 = $rowem["fecha_incor"];}
+						if ($rowem["fecha_baja"] == ""){$date2 = date("Y-m-d");} else {$date2 = $rowem["fecha_baja"];}
+							echo "<th style=\"text-align:right;\">".$Fecha_Incorporacion."</th><td><input type=\"text\" name=\"fecha_incor\" style=\"width:145px\" value=\"".$date1."\"></td>";
+							echo "<th style=\"text-align:right;width:60px\">".$Fecha_Baja."</th><td><input type=\"text\" name=\"fecha_baja\" style=\"width:140px\" value=\"".$date2."\"></td>";
+						echo "</tr><tr>";
+							echo "<th style=\"text-align:right;vertical-align:top;\">".$Notas.": </th>";
+							echo "<td colspan=\"3\"><textarea name=\"notas\" style=\"width:350px\" rows=\"2\">".$rowem["notas"]."</textarea></td>";
+						echo "</tr>";
+					echo "</table>";
+				echo "</td>";
+				echo "<td style=\"vertical-align:top;\"width:50%>";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<tr><td></td><th>".$Datos_Bancarios." : </th><tr>";
+							echo "<th>".$Entidad.": </th>";
+							echo "<td><input type=\"text\" name=\"entidadbancaria\" style=\"width:350px\" value=\"".$rowem["entidadbancaria"]."\"></td>";
+						echo "</tr><tr>";
+							echo "<th>".$Direccion.": </th>";
+							echo "<td><input type=\"Text\" name=\"domiciliobancario\" style=\"width:350px\" value=\"".$rowem["domiciliobancario"]."\"></td>";
+						echo "</tr><tr>";
+							echo "<th>IBAN : </th>";
+							echo "<td><input type=\"Text\" name=\"cuentabancaria\" style=\"width:350px\" value=\"".$rowem["cuentabancaria"]."\"></td>";
+						echo "</tr>";
+					echo "</table>";
+				echo "</td>";
 			echo "</tr>";
-		if ($_GET["id"] > 0) { echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:300px\"></td></tr>"; }
-		if ($_GET["id"] == 0) {	echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:300px\"></td></tr>";	}
-		echo "</form>";
+			if ($_GET["id"] > 0) { echo "<tr><td colspan=\"2\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100%\"></td></tr>"; }
+			if ($_GET["id"] == 0) {	echo "<tr><td colspan=\"2\"><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100%\"></td></tr>";	}
+			echo "</form>";
 		echo "</table>";
 	}
-
 	if ($soption == 101) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=0&ssop=3&id=".$_GET["id"],"op=1020&sop=100&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-
 	if ($soption == 110) {
 		if ($ssoption == 1) {
 			if (version_compare(phpversion(), "4.0.0", ">")) {
@@ -396,258 +406,268 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$filepath = "archivos/empleados/".$rowf["name"];
 			unlink($filepath);
 		}
-		if ($ssoption == 3) {
-			$camposUpdate = array("fecha_incor");
-			$datosUpdate = array($_POST["fecha_incor"]);
-			updateFunction ("sgm_rrhh_empleado",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 4) {
-			$camposUpdate = array("fecha_baja");
-			$datosUpdate = array($_POST["fecha_baja"]);
-			updateFunction ("sgm_rrhh_empleado",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 5) {
-			$camposUpdate = array("entidadbancaria","domiciliobancario","cuentabancaria");
-			$datosUpdate = array($_POST["entidadbancaria"],$_POST["domiciliobancario"],$_POST["cuentabancaria"]);
-			updateFunction ("sgm_rrhh_empleado",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
 
-		echo "<h4>".$Datos_Adicionales."</h4>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" width=\"100%\">";
-			echo "<tr>";
-				echo "<td style=\"vertical-align:top;width:50%\">";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						$sql = "select * from sgm_rrhh_empleado where id=".$_GET["id"]." and visible=1";
+		echo "<h4>".$Archivos."</h4>";
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+				echo "<tr>";
+					echo "<td style=\"width:50%;vertical-align:top;\">";
+						echo "<h4>".$Archivos." :</h4>";
+						echo "<table>";
+						$sql = "select * from sgm_files_tipos order by nombre";
 						$result = mysql_query(convert_sql($sql));
-						$row = mysql_fetch_array($result);
-						if ($row["fecha_incor"] == ""){$date1 = date("Y-m-d");} else {$date1 = $row["fecha_incor"];}
-						if ($row["fecha_baja"] == ""){$date2 = date("Y-m-d");} else {$date2 = $row["fecha_baja"];}
-						echo "<form action=\"index.php?op=1020&sop=110&ssop=3&id=".$_GET["id"]."\" method=\"post\">";
-						echo "<tr>";
-							echo "<th>".$Fecha_Incorporacion."</th>";
-							echo "<td><input type=\"text\" name=\"fecha_incor\" style=\"width:100px\" value=\"".$date1."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-						echo"</tr>";
-						echo "</form>";
-						echo "<form action=\"index.php?op=1020&sop=110&ssop=4&id=".$_GET["id"]."\" method=\"post\">";
-						echo "<tr>";
-							echo "<th>".$Fecha_Baja."</th>";
-							echo "<td><input type=\"text\" name=\"fecha_baja\" style=\"width:100px\" value=\"".$date2."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-						echo "</tr>";
-						echo "</form>";
-					echo "</table><br><br><br>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<form action=\"index.php?op=1020&sop=110&ssop=5&id=".$_GET["id"]."\"  method=\"post\">";
-						echo "<tr>";
-							echo "<th>".$Datos_Bancarios." : </th>";
-						echo "<tr>";
-							echo "<td>".$Entidad.": </td>";
-							echo "<td><input type=\"text\" name=\"entidadbancaria\" style=\"width:300px\" value=\"".$row["entidadbancaria"]."\"></td>";
-						echo "</tr><tr>";
-							echo "<td>".$Direccion.": </td>";
-							echo "<td><input type=\"Text\" name=\"domiciliobancario\" style=\"width:300px\" value=\"".$row["domiciliobancario"]."\"></td>";
-						echo "</tr><tr>";
-							echo "<td>IBAN : </td>";
-							echo "<td><input type=\"Text\" name=\"cuentabancaria\" style=\"width:300px\" value=\"".$row["cuentabancaria"]."\"></td>";
-						echo "</tr><tr>";
-							echo "<td></td>";
-							echo "<td><input type=\"submit\" value=\"".$Guardar."\" style=\"width:300px\"></td>";
-						echo "</tr>";
-					echo "</table>";
-					echo "</form>";
-				echo "</td>";
-				echo "<td style=\"vertical-align:top;\"width:50%>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr>";
-							echo "<td style=\"width:50%;vertical-align:top;\">";
-								echo "<h4>".$Archivos." :</h4>";
-								echo "<table>";
-								$sql = "select * from sgm_files_tipos order by nombre";
-								$result = mysql_query(convert_sql($sql));
-								while ($row = mysql_fetch_array($result)) {
-									$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=6 and id_elemento=".$_GET["id"];
-									$resultele = mysql_query(convert_sql($sqlele));
-									while ($rowele = mysql_fetch_array($resultele)) {
-										echo "<tr>";
-											echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-											echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
-											echo "<td><a href=\"".$urloriginal."/archivos/empleados/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
-											echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
-										echo "</tr>";
+						while ($row = mysql_fetch_array($result)) {
+							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=6 and id_elemento=".$_GET["id"];
+							$resultele = mysql_query(convert_sql($sqlele));
+							while ($rowele = mysql_fetch_array($resultele)) {
+								echo "<tr>";
+									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
+									echo "<td><a href=\"".$urloriginal."/archivos/empleados/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
+									echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
+								echo "</tr>";
+							}
+						}
+						echo "</table>";
+					echo "</td><td style=\"width:50%;vertical-align:top;\">";
+						echo "<h4>".$Formulario_Subir_Archivo." :</h4>";
+						echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1020&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+						echo "<table>";
+							echo "<tr>";
+								echo "<td><select name=\"id_tipo\" style=\"width:300px\">";
+									$sql = "select * from sgm_files_tipos order by nombre";
+									$result = mysql_query(convert_sql($sql));
+									while ($row = mysql_fetch_array($result)) {
+										echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
 									}
-								}
-								echo "</table>";
-							echo "</td><td style=\"width:50%;vertical-align:top;\">";
-								echo "<h4>".$Formulario_Subir_Archivo." :</h4>";
-								echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1020&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-								echo "<table>";
-									echo "<tr>";
-										echo "<td><select name=\"id_tipo\" style=\"width:300px\">";
-											$sql = "select * from sgm_files_tipos order by nombre";
-											$result = mysql_query(convert_sql($sql));
-											while ($row = mysql_fetch_array($result)) {
-												echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
-											}
-										echo "</select></td>";
-									echo "</tr>";
-									echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"30px\"></td></tr>";
-									echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/empleados/\" style=\"width:300px\"></td></tr>";
-								echo "</table>";
-								echo "</form>";
-							echo "</td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td>";
-			echo "</tr>";
-		echo "</table>";
-		echo "<br><br><br>";
+								echo "</select></td>";
+							echo "</tr>";
+							echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"30px\"></td></tr>";
+							echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/empleados/\" style=\"width:300px\"></td></tr>";
+						echo "</table>";
+						echo "</form>";
+					echo "</td>";
+				echo "</tr>";
+			echo "</table>";
+		echo "<br><br>";
 	}
-
 	if ($soption == 111) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=110&ssop=2&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"],"op=1020&sop=110&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-
-	if ($soption == 170){
-		echo "<strong>Cursos Formativos</strong><br><br>";
-		echo "<center>";
-			echo "<table cellspacing=\"0\" style=\"width:375px;vertical-align:top\">";
-				echo "<tr style=\"background-color: Silver;\">";
-					echo "<td>&nbsp;</td><td><strong>Cursos Realizados</strong></td>";
-					echo "<td><strong>Fecha Inicio</strong></td>";
-					echo "<td><strong>Fecha Fin</strong></td>";
-				echo "</tr>";
-				echo "<tr></tr>";
-				echo "<tr></tr>";
-				$sqlc = "select * from sgm_rrhh_formacion_empleado where id_empleado=".$_GET["id"]." and visible=1";
-				$resultc = mysql_query(convert_sql($sqlc));
-				while ($rowc = mysql_fetch_array($resultc)){
-					$sqlf = "select * from sgm_rrhh_formacion where id=".$rowc["id_curso"];
-					$resultf = mysql_query(convert_sql($sqlf));
-					while ($rowf = mysql_fetch_array($resultf)){
-						echo "<tr>";
-							echo "<td>&nbsp;</td><td>".$rowf["nombre"]."</td>";
-							echo "<td>".$rowf["fecha_inicio"]."</td>";
-							echo "<td>".$rowf["fecha_fin"]."</td></tr>";
-					}
+	if ($soption == 120){
+		echo "<h4>".$Formacion."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<td>".$Cursos."</td>";
+				echo "<td>".$Fecha_Inicio."</td>";
+				echo "<td>".$Fecha_Fin."</td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sqlc = "select * from sgm_rrhh_formacion_empleado where id_empleado=".$_GET["id"]." and visible=1";
+			$resultc = mysql_query(convert_sql($sqlc));
+			while ($rowc = mysql_fetch_array($resultc)){
+				$sqlf = "select * from sgm_rrhh_formacion where id=".$rowc["id_curso"];
+				$resultf = mysql_query(convert_sql($sqlf));
+				while ($rowf = mysql_fetch_array($resultf)){
+					echo "<tr>";
+						echo "<td>".$rowf["nombre"]."</td>";
+						echo "<td>".$rowf["fecha_inicio"]."</td>";
+						echo "<td>".$rowf["fecha_fin"]."</td></tr>";
 				}
-			echo "</table>";
-		echo "</center>";
+			}
+		echo "</table>";
 		echo "<br>";
 	}
-
-	if ($soption == 180){
+	if ($soption == 130){
+		if ($ssoption == 3) {
+			$camposUpdate = array("visible");
+			$datosUpdate = array("0");
+			updateFunction ("sgm_rrhh_formacion",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
 		if ($ssoption == 1) {
 			if (($_POST["data_ini"] > $_POST["data_fi"]) or ($_POST["hora_ini"] > $_POST["hora_fi"]) or ($_POST["hora_ini2"] > $_POST["hora_fi2"])){
-				echo "<center>Las fechas o las horas introducidas no son correctas</center>";
+				echo mensaje_error($ErrorEmpleadoHorario);
 			} else {
-				$sql = "insert into sgm_rrhh_empleado_horario (id_empleado,data_ini,data_fi,hora_ini,hora_fi,hora_ini2,hora_fi2) ";
-				$sql = $sql."values (";
-				$sql = $sql."".$_GET["id"];
-				$sql = $sql.",'".$_POST["data_ini"]."'";
-				$sql = $sql.",'".$_POST["data_fi"]."'";
-				$sql = $sql.",'".$_POST["hora_ini"]."'";
-				$sql = $sql.",'".$_POST["hora_fi"]."'";
-				$sql = $sql.",'".$_POST["hora_ini2"]."'";
-				$sql = $sql.",'".$_POST["hora_fi2"]."'";
-				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				$camposinsert = "id_empleado,data_ini,data_fi,hora_ini,hora_fi,hora_ini2,hora_fi2,min_ini,min_fi,min_ini2,min_fi2";
+				$datosInsert = array($_GET["id"],$_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"],$_POST["min_ini"],$_POST["min_fi"],$_POST["min_ini2"],$_POST["min_fi2"]);
+				insertFunction ("sgm_rrhh_empleado_horario",$camposinsert,$datosInsert);
 			}
 		}
 		if ($ssoption == 2) {
 			if (($_POST["data_ini"] > $_POST["data_fi"]) or ($_POST["hora_ini"] > $_POST["hora_fi"]) or ($_POST["hora_ini2"] > $_POST["hora_fi2"])) {
-				echo "<center>Las fechas o las horas introducidas no son correctas</center>";
+				echo mensaje_error($ErrorEmpleadoHorario);
 			} else {
-				$sql = "update sgm_rrhh_empleado_horario set ";
-				$sql = $sql."data_ini='".$_POST["data_ini"]."'";
-				$sql = $sql.",data_fi='".$_POST["data_fi"]."'";
-				$sql = $sql.",hora_ini='".$_POST["hora_ini"]."'";
-				$sql = $sql.",hora_fi='".$_POST["hora_fi"]."'";
-				$sql = $sql.",hora_ini2='".$_POST["hora_ini2"]."'";
-				$sql = $sql.",hora_fi2='".$_POST["hora_fi2"]."'";
-				$sql = $sql." WHERE id=".$_GET["id_horari"]."";
-				mysql_query(convert_sql($sql));
+				$camposUpdate = array("data_ini","data_fi","hora_ini","hora_fi","hora_ini2","hora_fi2","min_ini","min_fi","min_ini2","min_fi2");
+				$datosUpdate = array($_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"],$_POST["min_ini"],$_POST["min_fi"],$_POST["min_ini2"],$_POST["min_fi2"]);
+				updateFunction ("sgm_rrhh_empleado_horario",$_GET["id_horari"],$camposUpdate,$datosUpdate);
 			}
 		}
 		if ($ssoption == 3) {
-			$sql = "update sgm_rrhh_empleado_horario set ";
-			$sql = $sql."visible=0";
-			$sql = $sql." WHERE id=".$_GET["id_horari"]."";
-			mysql_query(convert_sql($sql));
+			$camposUpdate = array("visible");
+			$datosUpdate = array("0");
+			updateFunction ("sgm_rrhh_empleado_horario",$_GET["id_horari"],$camposUpdate,$datosUpdate);
 		}
-
-		echo "<strong>Horarios</strong><br><br>";
+		echo "<h4>".$Horarios."</h4>";
 		$sqle = "select * from sgm_rrhh_empleado where visible=1 and id=".$_GET["id"];
 		$resulte = mysql_query(convert_sql($sqle));
 		$rowe = mysql_fetch_array($resulte);
-		echo "<center><table cellspacing=\"0\">";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
-				echo "<td style=\"text-align:center;\"><em>Eliminar</em></td>";
-				echo "<td style=\"text-align:center;\">Fecha Inicio</td>";
-				echo "<td style=\"text-align:center;\">&nbsp;</td>";
-				echo "<td style=\"text-align:center;\">Fecha Fin</td>";
-				echo "<td style=\"text-align:center;\">&nbsp;</td>";
-				echo "<td style=\"text-align:center;\">Hora Inicio</td>";
-				echo "<td style=\"text-align:center;\">Hora Fin</td>";
-				echo "<td style=\"text-align:center;\">Hora Inicio 2</td>";
-				echo "<td style=\"text-align:center;\">Hora Fin 2</td>";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Fecha_Inicio."</th>";
+				echo "<th>".$Fecha_Fin."</th>";
+				echo "<th colspan=\"2\">".$Hora_Inicio."</th>";
+				echo "<th colspan=\"2\">".$Hora_Fin."</th>";
+				echo "<th colspan=\"2\">".$Hora_Inicio." 2</th>";
+				echo "<th colspan=\"2\">".$Hora_Fin." 2</th>";
 				echo "<td></td>";
 			echo "</tr>";
 			echo "<tr>";
-				echo "<form action=\"index.php?op=1020&sop=180&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<form action=\"index.php?op=1020&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td><input type=\"text\" name=\"data_ini\" style=\"width:100px;text-align:right;\" value=\"0000-00-00\"></td>";
-				echo "<td></td>";
-				echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;text-align:right;\" value=\"0000-00-00\"></td>";
-				echo "<td></td>";
-				echo "<td><input type=\"text\" name=\"hora_ini\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
-				echo "<td><input type=\"text\" name=\"hora_fi\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
-				echo "<td><input type=\"text\" name=\"hora_ini2\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
-				echo "<td><input type=\"text\" name=\"hora_fi2\" style=\"width:100px;text-align:right;\" value=\"00:00\"></td>";
-				echo "<td><input type=\"Submit\" value=\"Añadir\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"text\" name=\"data_ini\" style=\"width:100px;\" value=\"".date("Y-m-d")."\"></td>";
+				echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;\" value=\"0000-00-00\"></td>";
+				echo "<td><select name=\"hora_ini\" style=\"width:40px\">";
+					for ($i=0; $i <= 23; $i++) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><strong>:</strong><select name=\"min_ini\" style=\"width:40px\">";
+					for ($i=0; $i <= 55; $i+=5) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><select name=\"hora_fi\" style=\"width:40px\">";
+					for ($i=0; $i <= 23; $i++) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><strong>:</strong><select name=\"min_fi\" style=\"width:40px\">";
+					for ($i=0; $i <= 55; $i+=5) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><select name=\"hora_ini2\" style=\"width:40px\">";
+					for ($i=0; $i <= 23; $i++) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><strong>:</strong><select name=\"min_ini2\" style=\"width:40px\">";
+					for ($i=0; $i <= 55; $i+=5) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><select name=\"hora_fi2\" style=\"width:40px\">";
+					for ($i=0; $i <= 23; $i++) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><strong>:</strong><select name=\"min_fi2\" style=\"width:40px\">";
+					for ($i=0; $i <= 55; $i+=5) {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$date = getdate();
-			if ($date["mon"] < 10){ $date["mon"] = "0".$date["mon"]; }
-			$fecha = $date["year"]."-".$date["mon"]."-".$date["mday"];
-			$i = "1";
+			$fecha = date("Y-m-d");
 			$sql = "select * from sgm_rrhh_empleado_horario where visible=1 and id_empleado=".$_GET["id"]." order by data_ini desc";
 			$result = mysql_query(convert_sql($sql));
-			while (($row = mysql_fetch_array($result)) and ($i <=4)){
+			while ($row = mysql_fetch_array($result)){
 				$color = "white";
-				if (($fecha >= $row["data_ini"]) and ($fecha <= $row["data_fi"])) { $color = "red"; }
+				if (($fecha >= $row["data_ini"]) and ($fecha <= $row["data_fi"])) { $color = "green"; }
 				echo "<tr style=\"background-color:".$color."\">";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=181&id=".$_GET["id"]."&id_horari=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-					echo "<form action=\"index.php?op=1020&sop=180&ssop=2&id=".$_GET["id"]."&id_horari=".$row["id"]."\" method=\"post\">";
-					echo "<td><input type=\"text\" name=\"data_ini\" style=\"width:100px;text-align:right;\" value=\"".$row["data_ini"]."\"></td>";
-					echo "<td></td>";
-					echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;text-align:right;\" value=\"".$row["data_fi"]."\"></td>";
-					echo "<td></td>";
-					echo "<td><input type=\"text\" name=\"hora_ini\" style=\"width:100px;text-align:right;\" value=\"".$row["hora_ini"]."\"></td>";
-					echo "<td><input type=\"text\" name=\"hora_fi\" style=\"width:100px;text-align:right;\" value=\"".$row["hora_fi"]."\"></td>";
-					echo "<td><input type=\"text\" name=\"hora_ini2\" style=\"width:100px;text-align:right;\" value=\"".$row["hora_ini2"]."\"></td>";
-					echo "<td><input type=\"text\" name=\"hora_fi2\" style=\"width:100px;text-align:right;\" value=\"".$row["hora_fi2"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"Modificar\" style=\"width:100px\"></td>";
-					echo "<td></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=131&id=".$_GET["id"]."&id_horari=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<form action=\"index.php?op=1020&sop=130&ssop=2&id=".$_GET["id"]."&id_horari=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"text\" name=\"data_ini\" style=\"width:100px;\" value=\"".$row["data_ini"]."\"></td>";
+					echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;\" value=\"".$row["data_fi"]."\"></td>";
+					echo "<td><select name=\"hora_ini\" style=\"width:40px\">";
+						for ($i=0; $i <= 23; $i++) {
+							if ($i==$row["hora_ini"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><strong>:</strong><select name=\"min_ini\" style=\"width:40px\">";
+						for ($i=0; $i <= 55; $i+=5) {
+							if ($i==$row["min_ini"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select name=\"hora_fi\" style=\"width:40px\">";
+						for ($i=0; $i <= 23; $i++) {
+							if ($i==$row["hora_fi"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><strong>:</strong><select name=\"min_fi\" style=\"width:40px\">";
+						for ($i=0; $i <= 55; $i+=5) {
+							if ($i==$row["min_fi"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select name=\"hora_ini2\" style=\"width:40px\">";
+						for ($i=0; $i <= 23; $i++) {
+							if ($i==$row["hora_ini2"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><strong>:</strong><select name=\"min_ini2\" style=\"width:40px\">";
+						for ($i=0; $i <= 55; $i+=5) {
+							if ($i==$row["min_ini2"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select name=\"hora_fi2\" style=\"width:40px\">";
+						for ($i=0; $i <= 23; $i++) {
+							if ($i==$row["hora_fi2"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><strong>:</strong><select name=\"min_fi2\" style=\"width:40px\">";
+						for ($i=0; $i <= 55; $i+=5) {
+							if ($i==$row["min_fi2"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
-				$i ++;
 			}
-		echo "</table></center><br>";
+		echo "</table><br>";
 	}
-
-	if ($soption == 181) {
+	if ($soption == 131) {
 		echo "<center>";
-		echo "<br><br>¿Seguro que desea eliminar este horario?";
-		echo "<br><br><a href=\"index.php?op=1020&sop=180&ssop=3&id=".$_GET["id"]."&id_horari=".$_GET["id_horari"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1020&sop=180\">[ NO ]</a>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1020&sop=130&ssop=3&id=".$_GET["id"]."&id_horari=".$_GET["id_horari"],"op=1020&sop=130&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-
 	if ($soption == 190){
 		echo "<strong>Contratos</strong><br><br>";
 		echo "<center>";
@@ -673,7 +693,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "</table>";
 		echo "</center>";
 	}
-
 	if ($soption == 500) {
 		if ($admin == true) {
 			echo boton(array("op=1020&sop=510","op=1020&sop=520","op=1020&sop=530","op=1020&sop=540"),array($Calendario." ".$$Laboral,$Horarios,$Departamentos,$Cursos));
@@ -682,7 +701,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo $UseNoAutorizado;
 		}
 	}
-
 	if (($soption == 510) AND ($admin == true)) {
 		if ($ssoption == 1) {
 			$camposInsert = "dia,mes,descripcio";
@@ -692,7 +710,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 		if ($ssoption == 2) {
 			deleteFunction ("sgm_calendario",$_GET["id"]);
 		}
-
 		echo "<h4>".$Calendario." ".$$Laboral."</h4>";
 		echo boton(array("op=1020&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -733,14 +750,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 			}
 		echo "</table>";
 	}
-
 	if ($soption == 511) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=510&ssop=2&id=".$_GET["id"],"op=1020&sop=510"),array($Si,$No));
 		echo "</center>";
 	}
-
 	if (($soption == 520) AND ($admin == true)) {
 		if ($ssoption == 1) {
 			$hora_ini = $_POST["hora_inicio"]*3600;
@@ -750,7 +765,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$datosUpdate=array($hora_ini,$hora_fi,$total_horas);
 			updateFunction("sgm_calendario_horario",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-
 		echo "<h4>".$Horarios."</h4>";
 		echo boton(array("op=1020&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -776,7 +790,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			}
 		echo "</table>";
 	}
-
 	if (($soption == 530) AND ($admin == true)) {
 		if ($ssoption == 1){
 			$camposinsert = "id_departamento,departamento";
@@ -793,7 +806,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$datosUpdate = array("0");
 			updateFunction ("sgm_rrhh_departamento",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-
 		echo "<h4>".$Departamentos."</h4>";
 		echo boton(array("op=1020&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -851,14 +863,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 			}
 		echo "</table>";
 	}
-
 	if (($soption == 531) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=510&ssop=3&id=".$_GET["id"],"op=1020&sop=510"),array($Si,$No));
 		echo "</center>";
 	}
-
 	if (($soption == 535) AND ($admin == true)) {
 		if ($ssoption == 1){
 			$camposinsert = "id_departamento,puesto,tareas,f_general,f_especifica,experiencia,habilidades";
@@ -879,7 +889,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$sql = "select * from sgm_rrhh_puesto_trabajo where id=".$_GET["id_puesto"];
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
-
 			$camposinsert = "id_departamento,puesto,tareas,f_general,f_especifica,experiencia,habilidades,activo";
 			$datosInsert = array($row["id_departamento"],$row["puesto"],$row["tareas"],$row["f_general"],$row["f_especifica"],$row["experiencia"],$row["habilidades"],$row["activo"]);
 			insertFunction ("sgm_rrhh_puesto_trabajo",$camposinsert,$datosInsert);
@@ -894,7 +903,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$datosUpdate = array("1");
 			updateFunction ("sgm_rrhh_puesto_trabajo",$_GET["id_puesto"],$camposUpdate,$datosUpdate);
 		}
-
 		$sql = "select * from sgm_rrhh_departamento where visible=1 and id=".$_GET["id"];
 		$result = mysql_query(convert_sql($sql));
 		$row = mysql_fetch_array($result);
@@ -1015,14 +1023,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</table>";
 	}
-
 	if ($soption == 536) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=535&ssop=3&id=".$_GET["id"],"op=1020&sop=535"),array($Si,$No));
 		echo "</center>";
 	}
-
 	if ($soption == 537){
 		echo boton(array("op=1020&sop=535&id=".$_GET["id"]),array("&laquo; ".$Volver));
 		$sql = "select * from sgm_rrhh_puesto_trabajo where id=".$_GET["id_puesto"];
@@ -1051,7 +1057,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "</table>";
 		echo "</center>";
 	}
-
 	if ($soption == 540) {
 		if ($ssoption == 1){
 			$camposinsert = "fecha,fecha_inicio,fecha_fin,numero,nombre,tipo,impartidor,duracion,temario,observaciones,coste,planificado,realizado";
@@ -1072,12 +1077,10 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$sql = "select * from sgm_rrhh_formacion where id=".$_GET["id"];
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
-
 			$camposinsert = "fecha,fecha_inicio,fecha_fin,numero,nombre,tipo,impartidor,duracion,temario,observaciones,coste,planificado,realizado";
 			$datosInsert = array($row["fecha"],$row["fecha_inicio"],$row["fecha_fin"],$row["numero"],$row["nombre"],$row["tipo"],$row["impartidor"],$row["duracion"],$row["temario"],$row["observaciones"],$row["coste"],$row["planificado"],$row["realizado"]);
 			insertFunction ("sgm_rrhh_formacion",$camposinsert,$datosInsert);
 		}
-
 		echo "<h4>".$Cursos."</h4>";
 		echo boton(array("op=1020&sop=500"),array("&laquo; ".$Volver));
 		echo boton(array("op=1020&sop=540&edit=1"),array($Anadir." ".$Curso));
@@ -1152,7 +1155,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 									echo "<option value=\"0\">".$Interno."</option>";
 									echo "<option value=\"1\">".$Externo."</option>";
 								echo "</select></td>";
-								echo "<th style=\"text-align:right\">".$Costes."</th><td><input type=\"Text\" name=\"coste\" style=\"width:100px;text-align:right\" value=\"".$rowx["coste"]."\">€</td>";
+								echo "<th style=\"text-align:right\">".$Costes."</th><td><input type=\"Text\" name=\"coste\" style=\"width:100px;text-align:right\" value=\"".$rowx["coste"]."\">?</td>";
 							echo "</tr><tr>";
 								echo "<th style=\"text-align:right\">".$Numero."</th><td colspan=\"5\"><input type=\"text\" name=\"numero\" style=\"width:200px\" value=\"".$rowx["numero"]."\"></td>";
 							echo "</tr><tr>";
@@ -1198,14 +1201,12 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</table>";
 	}
-
 	if ($soption == 541) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=540&ssop=3&id=".$_GET["id"],"op=1020&sop=540&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-
 	if ($soption == 542){
 		if ($ssoption == 1) {
 			$sqlt2 = "select count(*) as total from sgm_rrhh_formacion_empleado where visible=1 and id_curso=".$_GET["id"]." and id_empleado=".$_POST["id_empleado"];
@@ -1224,11 +1225,9 @@ if (($option == 1020) AND ($autorizado == true)) {
 				$sql = "select * from sgm_rrhh_puesto_empleado where visible=1 and id_puesto=".$rowp["id"];
 				$result = mysql_query(convert_sql($sql));
 				$row = mysql_fetch_array($result);
-
 				$sqlt2 = "select count(*) as total from sgm_rrhh_formacion_empleado where visible=1 and id_curso=".$_GET["id"]." and id_empleado=".$row["id_empleado"];
 				$resultt2 = mysql_query(convert_sql($sqlt2));
 				$rowt2 = mysql_fetch_array($resultt2);
-
 				if ($rowt2["total"] == 0) {
 					if ($row["fecha_baja"] == '0000-00-00') {
 						$camposinsert = "id_empleado,id_curso";
@@ -1242,7 +1241,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$sql = "update sgm_rrhh_formacion_empleado set visible=0 WHERE id_curso=".$_GET["id"]." and id_empleado=".$_GET["id_empleado"];
 			mysql_query(convert_sql($sql));
 		}
-
 		$sqlf = "select * from sgm_rrhh_formacion where visible=1 and id=".$_GET["id"];
 		$resultf = mysql_query(convert_sql($sqlf));
 		$rowf = mysql_fetch_array($resultf);
@@ -1303,21 +1301,14 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</table>";
 	}
-
 	if ($soption == 543) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=542&ssop=3&id=".$_GET["id"],"op=1020&sop=542&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-
-
-
 	echo "</td></tr></table><br>";
 }
-
-
-
 function busca_puesto($iddep)
 {
 	global $db;
@@ -1335,7 +1326,6 @@ function busca_puesto($iddep)
 			}
 		}
 }
-
 function busca_departamentos($id,$x)
 { 
 	global $db;
@@ -1352,7 +1342,6 @@ function busca_departamentos($id,$x)
 				busca_departamentos($row["id"],($x+50));
 			}
 }
-
 function busca_departamentos2($id,$x)
 { 
 	global $db;
@@ -1380,5 +1369,4 @@ function busca_departamentos2($id,$x)
 				busca_departamentos2($row["id"],($x+50));
 			}
 }
-
 ?>

@@ -409,6 +409,7 @@ $Nuevo = "Nou";
 $nuevo = "nou";
 $Numero = "Nombre";
 $Numero_serie = "N&uacute;mero Serie";
+$Numero_segsoc = "N&uacute;mero Seguritat Social";
 
 $Obligatorio = "Obligatori";
 $Obligatorios = "Obligatoris";
@@ -725,5 +726,7 @@ $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es 
 $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";
 
 $pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
+
+$ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
 
 ?>

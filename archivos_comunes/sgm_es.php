@@ -411,6 +411,7 @@ $Nuevo = "Nuevo";
 $nuevo = "nuevo";
 $Numero = "N&uacute;mero";
 $Numero_serie = "N&uacute;mero Serie";
+$Numero_segsoc = "N&uacute;mero Seguridad Social";
 
 $Obligatorio = "Obligatorio";
 $Obligatorios = "Obligatorios";
@@ -726,5 +727,7 @@ $ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute
 $ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";
 
 $pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta acci&oacute;n puede durar varios minutos, ya que se har&aacute; un rec&aacute;lculo total desde el 1 de Enero de 2012.";
+
+$ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
 
 ?>

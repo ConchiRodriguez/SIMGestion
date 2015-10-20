@@ -384,26 +384,28 @@ if (($option == 1008) AND ($autorizado == true)) {
 						if (($ver == true) and (($_GET["id_classificacio"] != "") OR ($id_classificacio != ""))) {
 							if (($_GET["id_classificacio"] != "") OR ($id_classificacio != 0))  {
 								if ($_GET["id_classificacio"] != "") { $id_classificacio = $_GET["id_classificacio"]; }
-								$sqlcxx = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus in (".$id_classificacio.")";
-								$resultcxx = mysql_query(convert_sql($sqlcxx));
-								$rowcxx = mysql_fetch_array($resultcxx);
-								if ($rowcxx["total"] <= 0) { $ver = false; }
+								if ($id_classificacio > 0) {
+									$sqlcxx = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus in (".$id_classificacio.")";
+									$resultcxx = mysql_query(convert_sql($sqlcxx));
+									$rowcxx = mysql_fetch_array($resultcxx);
+									if ($rowcxx["total"] <= 0) { $ver = false; }
 
-								$sqlcxx2 = "select id from sgm_clients_classificacio_tipus where id_origen in (".$id_classificacio.")";
-								$resultcxx2 = mysql_query(convert_sql($sqlcxx2));
-								while ($rowcxx2 = mysql_fetch_array($resultcxx2)) {
-									$sqlcxx3 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx2["id"];
-									$resultcxx3 = mysql_query(convert_sql($sqlcxx3));
-									$rowcxx3 = mysql_fetch_array($resultcxx3);
-									if ($rowcxx3["total"] > 0) { $ver = true; }
+									$sqlcxx2 = "select id from sgm_clients_classificacio_tipus where id_origen in (".$id_classificacio.")";
+									$resultcxx2 = mysql_query(convert_sql($sqlcxx2));
+									while ($rowcxx2 = mysql_fetch_array($resultcxx2)) {
+										$sqlcxx3 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx2["id"];
+										$resultcxx3 = mysql_query(convert_sql($sqlcxx3));
+										$rowcxx3 = mysql_fetch_array($resultcxx3);
+										if ($rowcxx3["total"] > 0) { $ver = true; }
 
-									$sqlcxx4 = "select id from sgm_clients_classificacio_tipus where id_origen=".$rowcxx2["id"];
-									$resultcxx4 = mysql_query(convert_sql($sqlcxx4));
-									while ($rowcxx4 = mysql_fetch_array($resultcxx4)) {
-										$sqlcxx5 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx4["id"];
-										$resultcxx5 = mysql_query(convert_sql($sqlcxx5));
-										$rowcxx5 = mysql_fetch_array($resultcxx5);
-										if ($rowcxx5["total"] > 0) { $ver = true; }
+										$sqlcxx4 = "select id from sgm_clients_classificacio_tipus where id_origen=".$rowcxx2["id"];
+										$resultcxx4 = mysql_query(convert_sql($sqlcxx4));
+										while ($rowcxx4 = mysql_fetch_array($resultcxx4)) {
+											$sqlcxx5 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx4["id"];
+											$resultcxx5 = mysql_query(convert_sql($sqlcxx5));
+											$rowcxx5 = mysql_fetch_array($resultcxx5);
+											if ($rowcxx5["total"] > 0) { $ver = true; }
+										}
 									}
 								}
 							}
@@ -650,13 +652,13 @@ if (($option == 1008) AND ($autorizado == true)) {
 	}
 
 	#Mascara superior del clients
-	if (($soption >= 100) and ($soption < 300) and ($_GET["id"] != 0)) {
+	if (($soption >= 100) and ($soption < 300) and (($_GET["id"] != 0) or ($ssoption != 0))) {
 		if (($soption == 100) and ($ssoption == 1)) {
 			$camposInsert="id_origen,id_agrupacio,nombre,cognom1,cognom2,alias,nif,direccion,poblacion,cp,provincia,client,clientvip,sector,id_tipo,id_grupo,id_ubicacion,id_pais,id_idioma,mail,telefono,telefono2,fax,fax2,web,notas,tipo_identificador,tipo_persona,tipo_residencia,dir3_oficina_contable,dir3_organo_gestor,dir3_unidad_tramitadora";
 			$datosInsert = array($_POST["id_origen"],$_POST["id_agrupacio"],$_POST["nombre"],$_POST["cognom1"],$_POST["cognom2"],$_POST["alias"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["client"],$_POST["clientvip"],$_POST["sector"],$_POST["id_tipo"],$_POST["id_grupo"],$_POST["id_ubicacion"],$_POST["id_pais"],$_POST["id_idioma"],$_POST["mail"],$_POST["telefono"],$_POST["telefono2"],$_POST["fax"],$_POST["fax2"],$_POST["web"],$_POST["notas"],$_POST["tipo_identificador"],$_POST["tipo_persona"],$_POST["tipo_residencia"],$_POST["dir3_oficina_contable"],$_POST["dir3_organo_gestor"],$_POST["dir3_unidad_tramitadora"]);
 			insertFunction ("sgm_clients",$camposInsert,$datosInsert);
 
-			$sql = "select id from sgm_clients where visible=1 and nombre='".$_POST["nombre"]."' and nif='".$_POST["nif"]."' order by id desc";
+			echo $sql = "select id from sgm_clients where visible=1 and nombre='".comillas($_POST["nombre"])."' and nif='".$_POST["nif"]."' order by id desc";
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
 			$camposInsert="id_client,id_clasificacio_tipus";
@@ -881,7 +883,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 		} 
 		if ($id_client <= 0) {
 			echo "<h4>".$Nuevo." ".$Cliente."</h4>";
-			echo "<form action=\"index.php?op=1008&sop=100&ssop=1&id=-1\"  method=\"post\">";
+			echo "<form action=\"index.php?op=1008&sop=100&ssop=1\"  method=\"post\">";
 		}
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
