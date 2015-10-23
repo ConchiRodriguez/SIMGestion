@@ -1193,7 +1193,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 							if ($i <= cal_days_in_month(CAL_GREGORIAN, $me, $_POST["any"])){
 								$data1 = date(U, mktime(0, 0, 0, $me, $i, $_POST["any"]));
 								$data2 = date(U, mktime(0, 0, 0, $me, $i+1, $_POST["any"]));
-								if (comprobar_festivo2($data1) == 1){ $color = "Tomato"; } else {$color = "white";}
+								if (comprobar_festivo_empleado($data1,$_POST["id_usuario"]) == 1){ $color = "Orange"; } else {$color = "white";}
+								if (comprobar_festivo2($data1) == 1){ $color = "Tomato"; } else {$color = $color;}
 								echo "<tr style=\"background-color:".$color."\">";
 									if ($count == 0){echo "<th style=\"background-color:white;\">".$i."</th>";} else {echo "<td></td>";}
 									$sqlis = "select sum(duracion) as duracion_total from sgm_incidencias where visible=1 and id_incidencia<>0 and id_usuario_registro=".$_POST["id_usuario"]." and fecha_inicio between ".$data1." and ".$data2."";
@@ -1339,6 +1340,20 @@ if (($option == 1018) AND ($autorizado == true)) {
 #estados incidencias fin#
 
 	echo "</td></tr></table><br>";
+}
+
+function comprobar_festivo_empleado($fecha,$id_user)
+{
+	global $db;
+	$festivo=0;
+	$sqle = "select * from sgm_rrhh_empleado_calendario where ((data_ini=".$fecha.") or ((".$fecha." >= data_ini) and (".$fecha." <= data_fi))) and id_empleado=(select id from sgm_rrhh_empleado where id_usuario=".$id_user.")";
+	$resulte = mysql_query(convert_sql($sqle));
+	$rowe = mysql_fetch_array($resulte);
+	if ($rowe){
+		$festivo=1;
+	}
+#	echo $festivo."<br>";
+	return $festivo;
 }
 
 ?>

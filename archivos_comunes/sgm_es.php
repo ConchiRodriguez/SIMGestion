@@ -261,6 +261,7 @@ $Familia = "Familia";
 $Familias = "Familias";
 $Fax = "Fax";
 $Fecha = "Fecha";
+$Fecha_Alta = "Fecha Alta";
 $Fecha_Baja = "Fecha Baja";
 $Fecha_Fin = "Fecha Fin";
 $Fecha_Incorporacion = "Fecha Incorporaci&oacute;n";
@@ -411,13 +412,15 @@ $Nuevo = "Nuevo";
 $nuevo = "nuevo";
 $Numero = "N&uacute;mero";
 $Numero_serie = "N&uacute;mero Serie";
-$Numero_segsoc = "N&uacute;mero Seguridad Social";
+$Num_ins_segsoc = "N&uacute;mero Inscripci&oacute;n Seguridad Social";
+$Num_afil_segsoc = "N&uacute;mero Afiliaci&oacute;n Seguridad Social";
 
 $Obligatorio = "Obligatorio";
 $Obligatorios = "Obligatorios";
 $Observacions = "Observaciones";
 $Oferta_Comercial = "Oferta Comercial";
 $Oficina_contable = "Oficina Contable";
+$Opcional = "Opcional";
 $Opciones = "Opciones";
 $Orden = "Orden";
 $Organigrama = "Organigrama";
@@ -613,6 +616,8 @@ $Valoracion = "Valoraci&oacute;n";
 $Valores = "Valores";
 $Vencimiento = "Vencimiento";
 $Ver = "Ver";
+$Ver_Empleados = "Ver Empleados";
+$Ver_Departamentos = "Ver Departamentos";
 $Ver_Horas = "Ver Horas";
 $Ver_Todos = "Ver Todos";
 $Ver_Todos_Personales = "Ver Todos Personales";
@@ -729,5 +734,6 @@ $ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos l
 $pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta acci&oacute;n puede durar varios minutos, ya que se har&aacute; un rec&aacute;lculo total desde el 1 de Enero de 2012.";
 
 $ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
+$ErrorEmpleadoCalendario = "Las fechas no son correctas";
 
 ?>

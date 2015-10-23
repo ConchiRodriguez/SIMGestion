@@ -1805,11 +1805,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($row["pre_pagos"] > 0) {$color_pre = "red";$color_letra1 = "white";} else {$color_pre = $color_fondo; $color_letra1 = "black";}
 					if ($row["ingresos"] > 0) {$color3 = "#1EB53A";} else {$color3 = $color_fondo;}
 					if ($row["liquido"] >= 0) {$color2 = "#1EB53A"; $color_letra2 = "black";} else {$color2 = "red"; $color_letra2 = "white";}
-					if ($dia_actual2 < $hoy){ $tipus = 5;} else { $tipus = 3;}
-					echo "<tr><td style=\"text-align:right;background-color:".$color.";\"><a href=\"index.php?op=1003&sop=490&tipo=1&fecha=".$dia_actual."\" style=\"color:".$color_letra.";\">".number_format($row["gastos"], 2)."</a></td></tr>";
-					echo "<tr><td style=\"text-align:right;background-color:".$color_pre."\"><a href=\"index.php?op=1003&sop=490tipo=2&fecha=".$dia_actual."\" style=\"color:".$color_letra1.";\">".number_format($row["pre_pagos"], 2)."</a></td></tr>";
-					echo "<tr><td style=\"text-align:right;background-color:".$color3."\"><a href=\"index.php?op=1003&sop=490&tipo=".$tipus."&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["ingresos"], 2)."</a></td></tr>";
-					echo "<tr><td style=\"text-align:right;background-color:#0084C9\"><a href=\"index.php?op=1003&sop=490&tipo=4&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["externos"], 2)."</a></td></tr>";
+					if ($dia_actual2 < $hoy){ $tipus = 5;} elseif ($dia_actual2 == $hoy){$tipus = 9;} else { $tipus = 3;}
+					echo "<tr><td style=\"text-align:right;background-color:".$color.";\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=1&fecha=".$dia_actual."\" style=\"color:".$color_letra.";\">".number_format($row["gastos"], 2)."</a></td></tr>";
+					echo "<tr><td style=\"text-align:right;background-color:".$color_pre."\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=2&fecha=".$dia_actual."\" style=\"color:".$color_letra1.";\">".number_format($row["pre_pagos"], 2)."</a></td></tr>";
+					echo "<tr><td style=\"text-align:right;background-color:".$color3."\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=".$tipus."&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["ingresos"], 2)."</a></td></tr>";
+					echo "<tr><td style=\"text-align:right;background-color:#0084C9\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=4&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["externos"], 2)."</a></td></tr>";
 					echo "<tr><td style=\"text-align:right;background-color:".$color2.";\">".number_format($row["liquido"], 2)."</td></tr>";
 				echo "</table>";
 			echo "</td>";
@@ -2145,6 +2145,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if ($_GET["tipo"] == 6) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha between '".$_GET["y"]."-".$_GET["m"]."-01' and '".$_GET["y"]."-".$_GET["m"]."-31'";}
 			if ($_GET["tipo"] == 7) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha between '".$_GET["y"]."-".($_GET["m"]-2)."-01' and '".$_GET["y"]."-".$_GET["m"]."-31'";}
 			if ($_GET["tipo"] == 8) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha='".$_GET["y"]."-".$_GET["m"]."-".$_GET["d"]."'";}
+			if ($_GET["tipo"] == 9) {$sqlca = "select * from sgm_cabezera where visible=1 and ((tipo IN (7,1,9) AND fecha_vencimiento='".date("Y-m-d", $_GET["fecha"])."') or (id in (select id_factura from sgm_recibos where fecha='".date("Y-m-d", $_GET["fecha"])."' and visible=1)))";}
 			$sqlca = $sqlca." order by numero desc,version desc,fecha desc";
 #			echo $sqlca;
 			$resultca = mysql_query(convert_sql($sqlca));

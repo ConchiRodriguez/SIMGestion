@@ -892,31 +892,10 @@ ALTER TABLE `sgm_rrhh_bolsa` ADD `carta` longtext NOT NULL AFTER `cv`;
 ALTER TABLE `sgm_rrhh_bolsa` ADD `notas` longtext NOT NULL AFTER `carta`;
 ALTER TABLE `sgm_rrhh_bolsa` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `notas`;
 
-CREATE TABLE `sgm_rrhh_ofertas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY (`id`) );
-ALTER TABLE `sgm_rrhh_ofertas` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `descripcion` longtext NOT NULL AFTER `fecha`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `requisitos` longtext NOT NULL AFTER `descripcion`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `condiciones` longtext NOT NULL AFTER `requisitos`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `localidad` varchar(75) NOT NULL default '' AFTER `condiciones`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `localidad`;
-ALTER TABLE `sgm_rrhh_ofertas` ADD `vigente` tinyint(1) NOT NULL default '1' AFTER `visible`;
-
 CREATE TABLE `sgm_rrhh_departamento` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_departamento` ADD `id_departamento` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_rrhh_departamento` ADD `departamento` varchar(255) default NULL AFTER `id_departamento`;
 ALTER TABLE `sgm_rrhh_departamento` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `departamento`;
-
-CREATE TABLE `sgm_rrhh_puesto_trabajo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `puesto` varchar(255) default NULL AFTER `id`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `id_departamento` int(11) NOT NULL default '0' AFTER `puesto`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `tareas` longtext NOT NULL AFTER `id_departamento`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `f_general` longtext NOT NULL AFTER `tareas`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `f_especifica` longtext NOT NULL AFTER `f_general`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `experiencia` longtext NOT NULL AFTER `f_especifica`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `habilidades` longtext NOT NULL AFTER `experiencia`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `habilidades`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `activo` tinyint(1) NOT NULL default '1' AFTER `visible`;
-ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `numero` int(15) NOT NULL default '0' AFTER `visible`;
 
 CREATE TABLE `sgm_rrhh_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_empleado` ADD `nombre` varchar(255) default NULL AFTER `id`;
@@ -932,36 +911,36 @@ ALTER TABLE `sgm_rrhh_empleado` ADD `provincia` varchar(15) NOT NULL default '' 
 ALTER TABLE `sgm_rrhh_empleado` ADD `id_pais` int(11) NOT NULL default '0' AFTER `provincia`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `telefono` varchar(15) NOT NULL default '' AFTER `id_pais`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `telefono2` varchar(15) NOT NULL default '' AFTER `telefono`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `fax` varchar(15) NOT NULL default '' AFTER `telefono2`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `fax2` varchar(15) NOT NULL default '' AFTER `fax`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `mail` varchar(50) NOT NULL default '' AFTER `fax2`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `notas` longtext AFTER `mail`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `cuentabancaria` varchar(30) default NULL AFTER `notas`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `entidadbancaria` varchar(100) NOT NULL default '' AFTER `cuentabancaria`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `domiciliobancario` varchar(255) NOT NULL default '' AFTER `entidadbancaria`;
 ALTER TABLE `sgm_rrhh_empleado` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `domiciliobancario`;
-ALTER TABLE `sgm_rrhh_empleado` ADD `num_segsoc` varchar(25) NOT NULL default '' AFTER `id_usuario`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `num_ins_segsoc` varchar(25) NOT NULL default '' AFTER `id_usuario`;
+ALTER TABLE `sgm_rrhh_empleado` ADD `num_afil_segsoc` varchar(25) NOT NULL default '' AFTER `num_ins_segsoc`;
+
+CREATE TABLE `sgm_rrhh_empleado_calendario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `data_ini` int(20) NOT NULL default '0' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `data_fi` int(20) NOT NULL default '0' AFTER `data_ini`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `motivo` varchar(255) NOT NULL default '' AFTER `data_fi`;
 
 CREATE TABLE `sgm_rrhh_empleado_horario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `data_ini` date NOT NULL default '0000-00-00' AFTER `id_empleado`;
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `data_fi` date NOT NULL default '0000-00-00' AFTER `data_ini`;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini` int(11) NOT NULL default '0' AFTER `data_fi` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi` int(11) NOT NULL default '0' AFTER `hora_ini` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini2` int(11) NOT NULL default '0' AFTER `hora_fi` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi2` int(11) NOT NULL default '0' AFTER `hora_ini2` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_ini` int(11) NOT NULL default '0' AFTER `hora_fi2` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_fi` int(11) NOT NULL default '0' AFTER `min_ini` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_ini2` int(11) NOT NULL default '0' AFTER `min_fi` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `min_fi2` int(11) NOT NULL default '0' AFTER `min_ini2` ;
-ALTER TABLE `sgm_rrhh_empleado_horario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `min_fi2`;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini` varchar(11) NOT NULL default '00:00' AFTER `data_fi` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi` varchar(11) NOT NULL default '00:00' AFTER `hora_ini` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini2` varchar(11) NOT NULL default '00:00' AFTER `hora_fi` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi2` varchar(11) NOT NULL default '00:00' AFTER `hora_ini2` ;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `hora_fi2`;
 
-CREATE TABLE `sgm_rrhh_puesto_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_puesto` int(11) NOT NULL default '0' AFTER `id_empleado`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_alta` date NOT NULL default '0000-00-00' AFTER `id_puesto`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_baja` date NOT NULL default '0000-00-00' AFTER `fecha_alta`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_baja`;
+CREATE TABLE `sgm_rrhh_empleado_nominas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `total` decimal(11,2) NOT NULL default '0.00' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `data_ini` int(20) NOT NULL default '0' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `data_fi` int(20) NOT NULL default '0' AFTER `data_ini`;
 
 CREATE TABLE `sgm_rrhh_formacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_formacion` ADD `numero` varchar(15) NOT NULL default '1' AFTER `id`;
@@ -992,6 +971,34 @@ CREATE TABLE `sgm_rrhh_formacion_empleado` ( `id` int(11) NOT NULL auto_incremen
 ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `id_curso` int(11) NOT NULL default '0' AFTER `id_empleado`;
 ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_curso`;
+
+CREATE TABLE `sgm_rrhh_ofertas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY (`id`) );
+ALTER TABLE `sgm_rrhh_ofertas` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `descripcion` longtext NOT NULL AFTER `fecha`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `requisitos` longtext NOT NULL AFTER `descripcion`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `condiciones` longtext NOT NULL AFTER `requisitos`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `localidad` varchar(75) NOT NULL default '' AFTER `condiciones`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `localidad`;
+ALTER TABLE `sgm_rrhh_ofertas` ADD `vigente` tinyint(1) NOT NULL default '1' AFTER `visible`;
+
+CREATE TABLE `sgm_rrhh_puesto_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_puesto` int(11) NOT NULL default '0' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_alta` date NOT NULL default '0000-00-00' AFTER `id_puesto`;
+ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_baja` date NOT NULL default '0000-00-00' AFTER `fecha_alta`;
+ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_baja`;
+
+CREATE TABLE `sgm_rrhh_puesto_trabajo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `puesto` varchar(255) default NULL AFTER `id`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `id_departamento` int(11) NOT NULL default '0' AFTER `puesto`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `tareas` longtext NOT NULL AFTER `id_departamento`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `f_general` longtext NOT NULL AFTER `tareas`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `f_especifica` longtext NOT NULL AFTER `f_general`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `experiencia` longtext NOT NULL AFTER `f_especifica`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `habilidades` longtext NOT NULL AFTER `experiencia`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `habilidades`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `activo` tinyint(1) NOT NULL default '1' AFTER `visible`;
+ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `numero` int(15) NOT NULL default '0' AFTER `visible`;
 
 CREATE TABLE `sgm_servidores_correo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_servidores_correo` ADD `servidorSMTP` varchar(50) NOT NULL default '' AFTER `id`;

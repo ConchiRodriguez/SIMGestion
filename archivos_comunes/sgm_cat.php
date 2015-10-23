@@ -259,6 +259,7 @@ $Familia = "Familia";
 $Familias = "Families";
 $Fax = "Fax";
 $Fecha = "Data";
+$Fecha_Alta = "Fecha Alta";
 $Fecha_Baja = "Data Baixa";
 $Fecha_Fin = "Fecha Fin";
 $Fecha_Incorporacion = "Data Incorporaci&oacute;";
@@ -409,13 +410,15 @@ $Nuevo = "Nou";
 $nuevo = "nou";
 $Numero = "Nombre";
 $Numero_serie = "N&uacute;mero Serie";
-$Numero_segsoc = "N&uacute;mero Seguritat Social";
+$Num_ins_segsoc = "N&uacute;mero Inscripci&oacute; Seguritat Social";
+$Num_afil_segsoc = "N&uacute;mero Afiliaci&oacute; Seguritat Social";
 
 $Obligatorio = "Obligatori";
 $Obligatorios = "Obligatoris";
 $Observacions = "Observacions";
 $Oferta_Comercial = "Oferta Comercial";
 $Oficina_contable = "Oficina Contable";
+$Opcional = "Opcional";
 $Opciones = "Opcions";
 $Orden = "Ordre";
 $Organigrama = "Organigrama";
@@ -611,6 +614,8 @@ $Valoracion = "Valoraci&oacute;";
 $Valores = "Valors";
 $Vencimiento = "Venciment";
 $Ver = "Veure";
+$Ver_Empleados = "Veure Empleats";
+$Ver_Departamentos = "Veure Departaments";
 $Ver_Horas = "Veure Hores";
 $Ver_Todos = "Veure Tots";
 $Ver_Todos_Personales = "Veure Tots Personals";
@@ -728,5 +733,6 @@ $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les
 $pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
 
 $ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
+$ErrorEmpleadoCalendario = "Les dates no son correctas";
 
 ?>
