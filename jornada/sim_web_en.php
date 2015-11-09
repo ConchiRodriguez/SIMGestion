@@ -1,8 +1,7 @@
 <?php
 $Jornada_titulo = "III Monitoring Day";
 $Ubicacion_titulo = "November 5th | Castell Jalp&iacute;";
-$$Encuesta_satisfaccion = "Al finalizar el evento se realizar&aacute; un sorteo de un mini Ipad, por cortesia de Dagram, entre todos los que entregen la encuesta de satisfaci&oacute;n rellenada.";
-$Encuesta_satisfaccion = "At the end of the event there will be a draw of an Ipad mini, courtesy of Dagram, between all the attendees who turn over survey of satisfaction filled.";
+$Encuesta_satisfaccion = "At the end of the event there will be a draw of an Ipad mini, courtesy of Dagram, and two backpacks, courtesy of Fortinet, between all the attendees who turn over survey of satisfaction filled.";
 
 $Inscripcion = "Registration";
 $Programa = "Schedule";
@@ -42,5 +41,7 @@ $Ajuda_error = "All fields are mandatory";
 $Ajuda_error2 = "You must accept the privacy policy";
 $mail_enviado = "Your registration has been successfully completed, thanks";
 $info_descargas = "After the celebration of the day you will be able to download contents";
+
+$Menu_Jornada = "<b>Menu:</b><br><br><i>- Salad with sprinkles of salmon, italian tomato and vinaigrette of asparagus<br>- Tower of beef with sauce Porto<br>- Brownie with creamy chocolate<br><br>Coffees & teas<br><br>Wine cellar: Nuviana white and black, Mineral waters, Soft drinks</i>";
 
 ?>

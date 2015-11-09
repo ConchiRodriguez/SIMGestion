@@ -60,5 +60,6 @@ $acreedor = "Acreedor";
 $deudor = "Deudor";
 $recibo = "Recibo";
 $listado_articulos = "Listado de Articulos";
+$retenciones = "Retenciones";
 
 ?>

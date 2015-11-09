@@ -48,7 +48,8 @@ function refactura($idfactura) {
 		if ($row["descuento"] == 0) { $x = $subtotal - $row["descuento_absoluto"] ;	}
 		$sql = $sql.",subtotaldescuento=".$x;
 		$xx = (($x / 100) * $row["iva"]) + $x;
-		$sql = $sql.",total=".$xx;
+		$xxx = $xx -(($x / 100) * $row["retenciones"]);
+		$sql = $sql.",total=".$xxx;
 		$sql = $sql." WHERE id=".$idfactura;
 		mysql_query(convert_sql($sql));
 #		echo $sql;
@@ -56,7 +57,7 @@ function refactura($idfactura) {
 	if ($row["total_forzado"] == 1) {
 		$sql = "update sgm_cabezera set ";
 		$sql = $sql."subtotal=".$subtotal;
-		$x = $row["total"]/(1+($row["iva"]/100));
+		$x = $row["total"]/(1+(($row["iva"]/100) - ($row["retenciones"]/100)));
 		$sql = $sql.",subtotaldescuento=".$x;
 		$xx = 100-($x/($subtotal/100));
 		$sql = $sql.",descuento=".$xx;

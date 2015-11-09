@@ -520,6 +520,7 @@ $Resultado = "Resultado";
 $Resultado_de_la_busqueda = "Resultado de la busqueda: ";
 $Resumen = "Resumen";
 $Resumenes = "Resumenes";
+$Retenciones = "Retenciones";
 $RRHH = "RRHH";
 
 $Salir = "Salir";

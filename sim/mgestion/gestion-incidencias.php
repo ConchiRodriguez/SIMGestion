@@ -1146,7 +1146,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
 				echo "<th>".$Usuario."</th>";
-				echo "<th>".$Mes."</th>";
+				echo "<th>".$Ano."</th>";
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1018&sop=300\" method=\"post\">";

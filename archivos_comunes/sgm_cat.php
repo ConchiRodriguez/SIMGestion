@@ -518,6 +518,7 @@ $Respuesta = "Resposta";
 $Resultado = "Resultat";
 $Resultado_de_la_busqueda = "Resultat de la Cerca: ";
 $Resumenes = "Resums";
+$Retenciones = "Retencions";
 $Resumen = "Resum";
 $RRHH = "RRHH";
 

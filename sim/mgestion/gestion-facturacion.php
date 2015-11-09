@@ -974,6 +974,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 			updateFunction ("sgm_cuerpo",$_GET["id_linea"],$camposUpdate,$datosUpdate);
 			conta_aprovats($_GET["id_linea"],$_GET["id"]);
 		}
+		if ($ssoption == 14) {
+			$camposUpdate = array("retenciones");
+			$datosUpdate = array($_POST["retenciones"]);
+			updateFunction ("sgm_cabezera",$_GET["id"],$camposUpdate,$datosUpdate);
+			refactura($_GET["id"]);
+		}
 		if ($ssoption == 15) {
 			if ($_POST["descuento"] == "") {
 				$descuento=0;
@@ -1440,7 +1446,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 							echo "<tr><td colspan=\"13\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
-							$sql = "select id,subtotal,descuento,iva,total_forzado,descuento_absoluto,total from sgm_cabezera where id=".$_GET["id"];
+							$sql = "select id,subtotal,descuento,iva,total_forzado,descuento_absoluto,total,retenciones from sgm_cabezera where id=".$_GET["id"];
 							$result = mysql_query(convert_sql($sql));
 							$row = mysql_fetch_array($result);
 							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Subtotal."</th><td style=\"text-align:right;\">".number_format ($row["subtotal"],3)." ".$row2["abrev"]."</td><td></td></tr>";
@@ -1452,6 +1458,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=16&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
 							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">IVA</th><td><input type=\"Text\" name=\"iva\" style=\"text-align:right;width:70px\" value=\"".$row["iva"]."\">%</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "</form>";
+							echo "<form action=\"index.php?op=1003&sop=100&ssop=14&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Retenciones."</th><td><input type=\"Text\" name=\"retenciones\" style=\"text-align:right;width:70px\" value=\"".$row["retenciones"]."\">%</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=17&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
 							$color_fondo_total = "white";

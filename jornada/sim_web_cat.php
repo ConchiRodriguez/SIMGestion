@@ -1,7 +1,7 @@
 <?php
 $Jornada_titulo = "III Jornada de Monitoritzaci&oacute";
 $Ubicacion_titulo = "05 de Novembre | Castell Jalp&iacute;";
-$Encuesta_satisfaccion = "Al finalitzar l'event es realitzar&agrave; un sorteig d'un mini Ipad, per cortesia de Dagram, entre tots els assistents que entreguin l'enquesta de satisfaci&oacute; omplenada.";
+$Encuesta_satisfaccion = "Al finalitzar l'event es realitzar&agrave; un sorteig d'un mini Ipad, per cortesia de Dagram, i dues motxilles, por cortesia de Fortinet, entre tots els assistents que entreguin l'enquesta de satisfaci&oacute; omplenada.";
 
 $Inscripcion = "Inscripci&oacute;";
 $Programa = "Programa";
@@ -43,5 +43,7 @@ $mail_enviado = "La seva inscripci&oacute; s'ha realitzat amb &eacute;xit, graci
 $info_descargas = "Despr&eacute;s de la celebraci&oacute; de la jornada es podran descarregar continguts relacionats";
 
 $AccesoPartner = "Acc&eacute;s a web de Partner";
+
+$Menu_Jornada = "<b>Men&uacute;:</b><br><br><i>- Amanida amb espurnes de salm&oacute;, tom&agrave;quet itali&agrave; i vinagreta d’esp&agrave;rrecs<br>- Torre de vedella amb salsa Porto<br>- Brownie amb crem&oacute;s de xocolata<br><br>Caf&egrave;s i infusions<br><br>Bodega: Nuviana blanc i negre, Aig&uuml;es minerals, Refrescos.</i>";
 
 ?>

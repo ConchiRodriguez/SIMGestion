@@ -55,6 +55,18 @@ echo "<table class=\"prog\">";
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td class=\"prog\"></td>";
+		echo "<td class=\"prog2\" style=\"color:black;\">";
+			echo "<table>";
+				echo "<tr>";
+					echo "<td><img src=\"images/Castell_Jalpi.jpg\" height=\"250px\" width=\"450px\"></td>";
+					echo "<td width=\"50px;\"></td>";
+					echo "<td>".$Menu_Jornada."</td>";
+				echo "</tr>";
+			echo "</table>";
+		echo "</td>";
+	echo "</tr>";
+	echo "<tr>";
+		echo "<td class=\"prog\"></td>";
 		echo "<td class=\"prog2\"></td>";
 	echo "</tr>";
 	echo "<tr>";
@@ -62,5 +74,6 @@ echo "<table class=\"prog\">";
 		echo "<td class=\"prog3\">".$Encuesta_satisfaccion."</td>";
 	echo "</tr>";
 echo "</table>";
+echo "<br><br>";
 
 ?>

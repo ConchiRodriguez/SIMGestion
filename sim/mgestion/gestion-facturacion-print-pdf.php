@@ -70,7 +70,7 @@ class PDF extends FPDF
 	}
 
 	function factura_print($id,$tipo){
-		global $cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
+		global $retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
 		//Creación del objeto de la clase heredada
 	
 		$sqlele = "select * from sgm_dades_origen_factura";
@@ -234,19 +234,22 @@ class PDF extends FPDF
 		}
 #		$this->Cell(180,5,'','LBR',1);
 
-		$this->Cell(30,5,"".$unitats."",'LTR',0);
-		$this->Cell(30,5,"".$importe."",'LTR',0);
-		$this->Cell(30,5,"".$descuento."",'LTR',0);
-		$this->Cell(30,5,"".$subtotal."",'LTR',0);
-		$this->Cell(30,5,"IVA",'LTR',0);
+		$this->Cell(20,5,"".$unitats."",'LTR',0);
+		$this->Cell(25,5,"".$importe."",'LTR',0);
+		$this->Cell(25,5,"".$descuento."",'LTR',0);
+		$this->Cell(25,5,"".$subtotal."",'LTR',0);
+		$this->Cell(25,5,"IVA (".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+		$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
 		$this->Cell(30,5,"".$total."",'LTR',1);
 	
-		$this->Cell(30,5,number_format($unidades2, 2, ',', '.'),'LBR',0);
-		$this->Cell(30,5,number_format($rowcabezera["subtotal"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
-		$this->Cell(30,5,number_format($rowcabezera["subtotal"]-$rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"].' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LBR',0);
-		$this->Cell(30,5,number_format($rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(20,5,number_format($unidades2, 2, ',', '.'),'LBR',0);
+		$this->Cell(25,5,number_format($rowcabezera["subtotal"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(25,5,number_format($rowcabezera["subtotal"]-$rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"].' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LBR',0);
+		$this->Cell(25,5,number_format($rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
 		$iva = (($rowcabezera["subtotaldescuento"] / 100) * $rowcabezera["iva"]);
-		$this->Cell(30,5,number_format($iva, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(25,5,number_format($iva, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$retencion = (($rowcabezera["subtotaldescuento"] / 100) * $rowcabezera["retenciones"]);
+		$this->Cell(30,5,number_format($retencion, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
 		$this->Cell(30,5,number_format($rowcabezera["total"], 2, ',', '.').$rowdi["simbolo"],'LBR',1);
 	
 		$sqld = "select * from sgm_divisas where predefinido=1";
@@ -254,11 +257,12 @@ class PDF extends FPDF
 		$rowd = mysql_fetch_array($resultd);
 		
 		if ($rowcabezera["id_divisa"] != $rowd["id"]){
-			$this->Cell(30,5,$cambio.": 1".$rowd["simbolo"]."=".number_format($rowdi["canvi"], 2, ',', '.').$rowdi["simbolo"],'LTR',0);
-			$this->Cell(30,5,"".$importe."",'LTR',0);
-			$this->Cell(30,5,"".$descuento."",'LTR',0);
-			$this->Cell(30,5,"".$subtotal."",'LTR',0);
-			$this->Cell(30,5,"IVA",'LTR',0);
+			$this->Cell(20,5,$cambio.": 1".$rowd["simbolo"]."=".number_format($rowdi["canvi"], 2, ',', '.').$rowdi["simbolo"],'LTR',0);
+			$this->Cell(25,5,"".$importe."",'LTR',0);
+			$this->Cell(25,5,"".$descuento."",'LTR',0);
+			$this->Cell(25,5,"".$subtotal."",'LTR',0);
+			$this->Cell(25,5,"IVA(".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+			$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
 			$this->Cell(30,5,"".$total."",'LTR',1);
 		
 			$div_importe = $rowcabezera["subtotal"] * $rowdi["canvi"];
@@ -267,12 +271,14 @@ class PDF extends FPDF
 			$div_total = $rowcabezera["total"] * $rowdi["canvi"];
 
 		
-			$this->Cell(30,5,"(".$rowdiv["fecha"].")",'LBR',0);
-			$this->Cell(30,5,number_format($div_importe, 2, ',', '.').$rowd["simbolo"],'LBR',0);
-			$this->Cell(30,5,number_format($div_decuento, 2, ',', '.').$rowd["simbolo"].' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LBR',0);
-			$this->Cell(30,5,number_format($div_subtotal, 2, ',', '.').$rowd["simbolo"],'LBR',0);
+			$this->Cell(20,5,"(".$rowdiv["fecha"].")",'LBR',0);
+			$this->Cell(25,5,number_format($div_importe, 2, ',', '.').$rowd["simbolo"],'LBR',0);
+			$this->Cell(25,5,number_format($div_decuento, 2, ',', '.').$rowd["simbolo"].' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LBR',0);
+			$this->Cell(25,5,number_format($div_subtotal, 2, ',', '.').$rowd["simbolo"],'LBR',0);
 			$iva = (($div_subtotal / 100) * $rowcabezera["iva"]);
-			$this->Cell(30,5,number_format($iva, 2, ',', '.').$rowd["simbolo"],'LBR',0);
+			$this->Cell(25,5,number_format($iva, 2, ',', '.').$rowd["simbolo"],'LBR',0);
+			$retencion = (($div_subtotal / 100) * $rowcabezera["retenciones"]);
+			$this->Cell(30,5,number_format($retencion, 2, ',', '.').$rowd["simbolo"],'LBR',0);
 			$this->Cell(30,5,number_format($div_total, 2, ',', '.').$rowd["simbolo"],'LBR',1);
 		}
 

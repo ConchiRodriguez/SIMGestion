@@ -182,6 +182,7 @@ ALTER TABLE `sgm_cabezera` ADD `id_contrato` int(11) NOT NULL default '0' AFTER 
 ALTER TABLE `sgm_cabezera` ADD `id_licencia` int(11) NOT NULL default '0' AFTER `id_contrato`;
 ALTER TABLE `sgm_cabezera` ADD `id_pagador` int(11) NOT NULL default '0' AFTER `id_licencia`;
 ALTER TABLE `sgm_cabezera` ADD `id_dades_origen_factura_iban` int(11) NOT NULL default '0' AFTER `id_pagador`;
+ALTER TABLE `sgm_cabezera` ADD `retenciones` decimal(11,3) NOT NULL default '0.000' AFTER `id_dades_origen_factura_iban`;
 
 ALTER TABLE `sgm_cabezera` ADD `fecha2` int(15) NOT NULL default '0' AFTER `numero_cliente`;
 ALTER TABLE `sgm_cabezera` ADD `fecha_prevision2` int(15) NOT NULL default '0' AFTER `fecha2`;
@@ -942,6 +943,13 @@ ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `total` decimal(11,2) NOT NULL defau
 ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `data_ini` int(20) NOT NULL default '0' AFTER `id_empleado`;
 ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `data_fi` int(20) NOT NULL default '0' AFTER `data_ini`;
 
+CREATE TABLE `sgm_rrhh_empleado_puesto` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_empleado_puesto` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_empleado_puesto` ADD `id_puesto` int(11) NOT NULL default '0' AFTER `id_empleado`;
+ALTER TABLE `sgm_rrhh_empleado_puesto` ADD `fecha_alta` date NOT NULL default '0000-00-00' AFTER `id_puesto`;
+ALTER TABLE `sgm_rrhh_empleado_puesto` ADD `fecha_baja` date NOT NULL default '0000-00-00' AFTER `fecha_alta`;
+ALTER TABLE `sgm_rrhh_empleado_puesto` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_baja`;
+
 CREATE TABLE `sgm_rrhh_formacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_formacion` ADD `numero` varchar(15) NOT NULL default '1' AFTER `id`;
 ALTER TABLE `sgm_rrhh_formacion` ADD `nombre` varchar(255) default NULL AFTER `numero`;
@@ -980,13 +988,6 @@ ALTER TABLE `sgm_rrhh_ofertas` ADD `condiciones` longtext NOT NULL AFTER `requis
 ALTER TABLE `sgm_rrhh_ofertas` ADD `localidad` varchar(75) NOT NULL default '' AFTER `condiciones`;
 ALTER TABLE `sgm_rrhh_ofertas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `localidad`;
 ALTER TABLE `sgm_rrhh_ofertas` ADD `vigente` tinyint(1) NOT NULL default '1' AFTER `visible`;
-
-CREATE TABLE `sgm_rrhh_puesto_empleado` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `id_puesto` int(11) NOT NULL default '0' AFTER `id_empleado`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_alta` date NOT NULL default '0000-00-00' AFTER `id_puesto`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `fecha_baja` date NOT NULL default '0000-00-00' AFTER `fecha_alta`;
-ALTER TABLE `sgm_rrhh_puesto_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_baja`;
 
 CREATE TABLE `sgm_rrhh_puesto_trabajo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `puesto` varchar(255) default NULL AFTER `id`;
