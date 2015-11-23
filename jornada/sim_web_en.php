@@ -24,6 +24,7 @@ $Cafe = "Coffee";
 $Cloenda = "Closure";
 $Dinar = "Lunch";
 $Anfitrion = "Amphitryon";
+$Fotografias = "Fotographs";
 
 $titol_ponencia_1 = "Improving the present, Nagios to Naemon (Speaker: Frank Espasa)";
 $titol_ponencia_2 = "Discussion: tools around monitoring (Speaker: Albert Orriols)";

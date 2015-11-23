@@ -197,6 +197,8 @@ $Dia = "D&iacute;a";
 $diaas_naturales = "d&iacute;a/es naturales";
 $Dias = "Dias";
 $Dias_festivos = "Dias Festivos";
+$Dias_libres_any = "Dias Libres/ A&ntilde;o";
+$Dias_vacaciones_any = "Dias Vacaciones/ A&ntilde;o";
 $disponible = "disponible";
 $Dispositivo = "Dispositivo";
 $Dispositivos = "Dispositivos";
@@ -320,6 +322,8 @@ $Hoja = "Hoja";
 $Hojas = "Hojas";
 $Hora_Inicio = "Hora Inicio";
 $Hora_Fin = "Hora Fin";
+$Horario = "Horario";
+$Horario_atencion = "Horario Atenci&oacute;n";
 $Horarios = "Horarios";
 $Horas = "Horas";
 
@@ -357,6 +361,7 @@ $Inventario = "Inventario";
 $Invitadas = "Invitadas";
 
 $Jornada = "Jornada";
+$Jornada_anual = "Jornada Anual";
 $Juridica = "Jur&iacute;dica";
 
 $Laborables = "Laborables";
@@ -509,6 +514,7 @@ $Relacionado = "Relacionado";
 $Relaciones = "Relaciones";
 $Remitente = "Remitente";
 $Remoto = "Remoto";
+$Remunerado = "Remunerado";
 $Repetir = "Repetir";
 $Reports = "Reports";
 $Residente = "Residente";
@@ -611,6 +617,7 @@ $Uso = "Uso";
 $Usuario = "Usuario";
 $Usuarios = "Usuarios";
 
+$Vacaciones = "Vacaciones";
 $Validado = "Validado";
 $Valor = "Valor";
 $Valoracion = "Valoraci&oacute;n";
@@ -736,5 +743,6 @@ $pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta a
 
 $ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
 $ErrorEmpleadoCalendario = "Las fechas no son correctas";
+$ErrorPuestoDasactivar = "No se puede desactivar un puesto de trabajo con un empleado asignado";
 
 ?>

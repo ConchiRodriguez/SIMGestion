@@ -24,6 +24,7 @@ $Cafe = "Caf&eacute;";
 $Cloenda = "Clausura";
 $Dinar = "Comida";
 $Anfitrion = "Anfitri&oacute;n";
+$Fotografias = "Fotograf&iacute;as";
 
 $titol_ponencia_1 = "Mejorando el presente, de Nagios a Naemon (Ponente: Frank Espasa)";
 $titol_ponencia_2 = "Debate: Herramientas alrededor de la monitorizaci&oacute;n (Ponente: Albert Orriols)";

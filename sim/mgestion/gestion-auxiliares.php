@@ -10,8 +10,6 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "</td><td style=\"width:92%;vertical-align:top;text-align:left;\">";
 			echo "<table>";
 				echo "<tr>";
-				if (($soption >= 100) and($soption < 110)) {$class = "menu_select";} else {$class = "menu";}
-				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=100\" class=".$class.">".$Tarifas."</a></td>";
 				if (($soption >= 130) and($soption < 140)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=130\" class=".$class.">".$Idioma."</a></td>";
 				if (($soption >= 140) and($soption < 150)) {$class = "menu_select";} else {$class = "menu";}
@@ -25,81 +23,6 @@ if (($option == 1023) AND ($autorizado == true)) {
 
 
 	if ($soption == 0) {
-	}
-
-	if ($soption == 100) {
-		if ($ssoption == 1) {
-			$camposInsert = "nombre,porcentage,descuento";
-			$datosInsert = array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
-			insertFunction ("sgm_tarifas",$camposInsert,$datosInsert);
-		}
-		if ($ssoption == 2) {
-			$camposUpdate=array('nombre','porcentage','descuento');
-			$datosUpdate=array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
-			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 3) {
-			$camposUpdate=array('visible');
-			$datosUpdate=array(0);
-			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
-
-		echo "<h4>".$Tarifas."</h4>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "</tr>";
-			echo "<tr style=\"background-color: Silver;\">";
-				echo "<th>".$Eliminar."</th>";
-				echo "<th>".$Descuento."/".$Incremento."</th>";
-				echo "<th>".$Nombre."</th>";
-				echo "<th>".$Porcentage."</th>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<form action=\"index.php?op=1023&sop=100&ssop=1\" method=\"post\">";
-				echo "<td></td>";
-				echo "<td>";
-					echo "<select name=\"descuento\" style=\"width:150px\">";
-						echo "<option value=\"1\" selected>".$Descuento." ".$PVP."</option>";
-						echo "<option value=\"0\">".$Incremento." ".$PVD."</option>";
-					echo "</select>";
-				echo "</td>";
-				echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
-				echo "</form>";
-			echo "</tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select * from sgm_tarifas where visible=1";
-			$result = mysql_query(convert_sql($sql));
-			while ($row = mysql_fetch_array($result)) {
-				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=101&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-					echo "<form action=\"index.php?op=1023&sop=100&ssop=2&id=".$row["id"]."\" method=\"post\">";
-					echo "<td>";
-						echo "<select name=\"descuento\" style=\"width:150px\">";
-							if ($row["descuento"] == 0) {
-								echo "<option value=\"1\">".$Descuento." PVP</option>";
-								echo "<option value=\"0\" selected>".$Incremento." PVD</option>";
-							}
-							if ($row["descuento"] == 1) {
-								echo "<option value=\"1\" selected>".$Descuento." PVP</option>";
-								echo "<option value=\"0\">".$Incremento." PVD</option>";
-							}
-						echo "</select>";
-					echo "</td>";
-					echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\" value=\"".$row["nombre"]."\"></td>";
-					echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\" value=\"".$row["porcentage"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
-					echo "</form>";
-				echo "</tr>";
-			}
-		echo "</table>";
-	}
-
-	if ($soption == 101) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1023&sop=100&ssop=3&id=".$_GET["id"],"op=1023&sop=100"),array($Si,$No));
-		echo "</center>";
 	}
 
 	if ($soption == 130){

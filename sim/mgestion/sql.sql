@@ -35,7 +35,6 @@ ALTER TABLE `sgm_articles_archivos` ADD `name` varchar(100) NOT NULL default '' 
 ALTER TABLE `sgm_articles_archivos` ADD `type` varchar(20) NOT NULL default '' AFTER `name`;
 ALTER TABLE `sgm_articles_archivos` ADD `size` int(11) NOT NULL default '0' AFTER `type`;
 
-
 CREATE TABLE `sgm_articles_escandall` ( `id` int(11) NOT NULL auto_increment,  PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_articles_escandall` ADD `id_escandall` int(11) NOT NULL default '0' AFTER `id` ;
 ALTER TABLE `sgm_articles_escandall` ADD `id_article` int(11) NOT NULL default '0' AFTER `id_escandall` ;
@@ -925,7 +924,10 @@ CREATE TABLE `sgm_rrhh_empleado_calendario` ( `id` int(11) NOT NULL auto_increme
 ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `data_ini` int(20) NOT NULL default '0' AFTER `id_empleado`;
 ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `data_fi` int(20) NOT NULL default '0' AFTER `data_ini`;
-ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `motivo` varchar(255) NOT NULL default '' AFTER `data_fi`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `total_dias` int(20) NOT NULL default '0' AFTER `data_fi`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `motivo` varchar(255) NOT NULL default '' AFTER `total_dias`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `vacaciones` tinyint(1) NOT NULL default '0' AFTER `motivo`;
+ALTER TABLE `sgm_rrhh_empleado_calendario` ADD `remunerado` tinyint(1) NOT NULL default '0' AFTER `vacaciones`;
 
 CREATE TABLE `sgm_rrhh_empleado_horario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;
@@ -980,6 +982,9 @@ ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `id_empleado` int(11) NOT NULL def
 ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `id_curso` int(11) NOT NULL default '0' AFTER `id_empleado`;
 ALTER TABLE `sgm_rrhh_formacion_empleado` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_curso`;
 
+CREATE TABLE `sgm_rrhh_jornada_anual` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_jornada_anual` ADD `num_horas_any` int(11) NOT NULL default '0' AFTER `id`;
+
 CREATE TABLE `sgm_rrhh_ofertas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY (`id`) );
 ALTER TABLE `sgm_rrhh_ofertas` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id`;
 ALTER TABLE `sgm_rrhh_ofertas` ADD `descripcion` longtext NOT NULL AFTER `fecha`;
@@ -1000,6 +1005,12 @@ ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `habilidades` longtext NOT NULL AFTER 
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `habilidades`;
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `activo` tinyint(1) NOT NULL default '1' AFTER `visible`;
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `numero` int(15) NOT NULL default '0' AFTER `visible`;
+
+CREATE TABLE `sgm_rrhh_num_dias_vacaciones` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_num_dias_vacaciones` ADD `num_dias_vac` int(11) NOT NULL default '0' AFTER `id`;
+
+CREATE TABLE `sgm_rrhh_num_dias_libres` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_rrhh_num_dias_libres` ADD `num_dias_lib` int(11) NOT NULL default '0' AFTER `id`;
 
 CREATE TABLE `sgm_servidores_correo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_servidores_correo` ADD `servidorSMTP` varchar(50) NOT NULL default '' AFTER `id`;

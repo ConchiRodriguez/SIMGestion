@@ -2330,8 +2330,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=530","op=1008&sop=540","op=1008&sop=550","op=1008&sop=560","op=1008&sop=570");
-			$texto = array($Grupos,$Sectores,$Ubicaciones,$Tratos,$Tipos,$Definiciones,$Busquedas);
+			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=530","op=1008&sop=540","op=1008&sop=550","op=1008&sop=560","op=1008&sop=570","op=1008&sop=580");
+			$texto = array($Grupos,$Sectores,$Ubicaciones,$Tratos,$Tipos,$Definiciones,$Busquedas,$Tarifas);
 			echo boton($ruta_botons,$texto);
 		}
 		if ($admin == false) {
@@ -2368,7 +2368,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			mysql_query(convert_sql($sql));
 		}
 
-		echo "<h4>".$Administracion." de ".$Grupos." de ".$Clientes." :</h4>";
+		echo "<h4>".$Grupos." :</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<form action=\"index.php?op=1008&sop=510&ssop=1\" method=\"post\">";
@@ -2530,7 +2530,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			mysql_query(convert_sql($sql));
 		}
 		
-		echo "<h4>".$Administracion." de ".$Ubicaciones." de ".$Clientes." :</h4>";
+		echo "<h4>".$Ubicaciones." :</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		echo "<form action=\"index.php?op=1008&sop=530&ssop=1\" method=\"post\">";
@@ -2612,7 +2612,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			mysql_query(convert_sql($sql));
 		}
 
-		echo "<h4>".$Administracion." de ".$Tratos." de ".$Clientes." :</h4>";
+		echo "<h4>".$Tratos." :</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		echo "<form action=\"index.php?op=1008&sop=540&ssop=1\" method=\"post\">";
@@ -2695,7 +2695,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			mysql_query(convert_sql($sql));
 		}
 		
-		echo "<h4>".$Administracion." de ".$Tipos." de ".$Clientes." :</h4>";
+		echo "<h4>".$Tipos." :</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		echo "<form action=\"index.php?op=1008&sop=550&ssop=1\" method=\"post\">";
@@ -2750,7 +2750,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	}
 
 	if (($soption == 560)) {
-		echo "<h4>".$Administracion." de ".$Definiciones." :</h4>";
+		echo "<h4>".$Definiciones." :</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
@@ -2943,7 +2943,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			deleteFunction ("sgm_cerques",$_GET["id"]);
 		}
 	
-		echo "<h4>".$Busquedas."</h4><br><br>";
+		echo "<h4>".$Busquedas."</h4>";
 		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
@@ -3001,6 +3001,82 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
+	}
+
+	if ($soption == 580) {
+		if ($ssoption == 1) {
+			$camposInsert = "nombre,porcentage,descuento";
+			$datosInsert = array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
+			insertFunction ("sgm_tarifas",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('nombre','porcentage','descuento');
+			$datosUpdate=array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
+			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Tarifas."</h4>";
+		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "</tr>";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Descuento."/".$Incremento."</th>";
+				echo "<th>".$Nombre."</th>";
+				echo "<th>".$Porcentage."</th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1008&sop=580&ssop=1\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td>";
+					echo "<select name=\"descuento\" style=\"width:150px\">";
+						echo "<option value=\"1\" selected>".$Descuento." ".$PVP."</option>";
+						echo "<option value=\"0\">".$Incremento." ".$PVD."</option>";
+					echo "</select>";
+				echo "</td>";
+				echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select * from sgm_tarifas where visible=1";
+			$result = mysql_query(convert_sql($sql));
+			while ($row = mysql_fetch_array($result)) {
+				echo "<tr>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=581&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<form action=\"index.php?op=1008&sop=580&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td>";
+						echo "<select name=\"descuento\" style=\"width:150px\">";
+							if ($row["descuento"] == 0) {
+								echo "<option value=\"1\">".$Descuento." PVP</option>";
+								echo "<option value=\"0\" selected>".$Incremento." PVD</option>";
+							}
+							if ($row["descuento"] == 1) {
+								echo "<option value=\"1\" selected>".$Descuento." PVP</option>";
+								echo "<option value=\"0\">".$Incremento." PVD</option>";
+							}
+						echo "</select>";
+					echo "</td>";
+					echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\" value=\"".$row["nombre"]."\"></td>";
+					echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\" value=\"".$row["porcentage"]."\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 581) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1008&sop=580&ssop=3&id=".$_GET["id"],"op=1008&sop=580"),array($Si,$No));
+		echo "</center>";
 	}
 
 	if ($soption == 600){

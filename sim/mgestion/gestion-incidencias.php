@@ -1242,7 +1242,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 		$hora3 = $total_any/60;
 		$horas3 = explode(".",$hora3);
 		$minutos3 = $total_any % 60;
-		echo "<table><tr><td><strong>".$Total." ".$Horas." ".$Ano." : ".$horas3[0]." ".$Horas." ".$minutos3." ".$Minutos."</strong></td></tr></table>";
+		$sqlr = "select num_horas_any from sgm_rrhh_jornada_anual";
+		$resultr = mysql_query(convert_sql($sqlr));
+		$rowr = mysql_fetch_array($resultr);
+		echo "<table><tr><td><strong>".$Total." ".$Horas." ".$Ano." : ".$horas3[0]." ".$Horas." ".$minutos3." ".$Minutos." / ".$rowr["num_horas_any"]." ".$Horas."</strong></td></tr></table>";
 		}
 	}
 #fi indicadores

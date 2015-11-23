@@ -195,6 +195,8 @@ $Dia = "Dia";
 $diaas_naturales = "dia/es naturals";
 $Dias = "Dies";
 $Dias_festivos = "Dies Festius";
+$Dias_libres_any = "Dies Lliures/ Any";
+$Dias_vacaciones_any = "Dies Vacacions/ Any";
 $Direcciones = "Adreces";
 $Direccion = "Adre&ccedila";
 $Direcciones_Envio = "Adreces d'Enviament";
@@ -318,6 +320,8 @@ $Hoja = "Fulla";
 $Hojas = "Fulles";
 $Hora_Inicio = "Hora Inici";
 $Hora_Fin = "Hora Fi";
+$Horario = "Horari";
+$Horario_atencion = "Horari Atenci&oacute;";
 $Horarios = "Horaris";
 $Horas = "Hores";
 
@@ -355,6 +359,7 @@ $Inventario = "Inventari";
 $Invitadas = "Invitades";
 
 $Jornada = "Jornada";
+$Jornada_anual = "Jornada Anual";
 $Juridica = "Jur&iacute;dica";
 
 $Laborables = "Laborables";
@@ -508,6 +513,7 @@ $Relacionado = "Relacionat";
 $Relaciones = "Relacions";
 $Remitente = "Remitent";
 $Remoto = "Remot";
+$Remunerado = "Remunerat";
 $Repetir = "Repetir";
 $Reports = "Reports";
 $Responsable = "Responsable";
@@ -609,6 +615,7 @@ $Uso = "Us";
 $Usuario = "Usuari";
 $Usuarios = "Usuaris";
 
+$Vacaciones = "Vacacions";
 $Validado = "Validat";
 $Valor = "Valor";
 $Valoracion = "Valoraci&oacute;";
@@ -735,5 +742,6 @@ $pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta 
 
 $ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
 $ErrorEmpleadoCalendario = "Les dates no son correctas";
+$ErrorPuestoDasactivar = "No es pot desactivar un lloc de treball amb un empleat assignat";
 
 ?>
