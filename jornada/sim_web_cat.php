@@ -25,6 +25,7 @@ $Cloenda = "Cloenda";
 $Dinar = "Dinar";
 $Anfitrion = "Anfitri&oacute;";
 $Fotografias = "Fotografies";
+$Documentos = "Documents";
 
 $titol_ponencia_1 = "Millorant el present, de Nagios a Naemon (Ponent: Frank Espasa)";
 $titol_ponencia_2 = "Debat: Eines al voltant de la monitoritzaci&oacute; (Ponent: Albert Orriols)";

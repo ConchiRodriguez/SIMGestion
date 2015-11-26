@@ -1,26 +1,26 @@
 <?php 
 #error_reporting(~E_ALL);
 
-	include ("../../archivos_comunes/config.php");
+	include ("../config.php");
 	include ("../../archivos_comunes/functions.php");
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 	$idioma = strtolower("es");
-	include ("../../archivos_comunes/factura-print-".$idioma.".php");
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
 
 	$pdf=new FPDF();
-	$pdf->AddFont('Verdana','','../../archivos_comunes/font/verdana.php');
-	$pdf->AddFont('Verdana-Bold','B','../../archivos_comunes/font/verdanab.php');
-	$pdf->AddFont('Verdana','B','../../archivos_comunes/font/verdanab.php');
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
 
 	$pdf->Image('../../archivos_comunes/images/logo1.jpg',10,10,60,13);
-	$pdf->SetFont('Verdana','B',8);
+	$pdf->SetFont('Calibri','B',8);
 	$pdf->SetXY(10,25);
 
 	if ($_POST["subfamilia"] > 0){ 

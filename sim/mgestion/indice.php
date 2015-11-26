@@ -1,8 +1,8 @@
 <?php
 #	if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 
+	if ($option == 100) { include ("mgestion/registrarse.php");}
 	if ($option == 200) { include ("mgestion/panel-usuario.php");}
-	if ($option == 800) { include ("mgestion/lenguajes/help-es.php");}
 
 	if ($option == 1001) { include ("mgestion/gestion-contenidos.php");}
 	if ($option == 1002) { include ("mgestion/gestion-usuarios.php");}

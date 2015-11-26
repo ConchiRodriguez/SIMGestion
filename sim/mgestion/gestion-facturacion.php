@@ -885,7 +885,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			$result = mysql_query(convert_sql($sql));
 			$row = mysql_fetch_array($result);
-			$sqls = "select pvd,pvp from sgm_stock  where id=".$row["id"];
+			$sqls = "select pvd,pvp from sgm_stock  where id_article=".$row["id"];
 			$results = mysql_query(convert_sql($sqls));
 			$rows = mysql_fetch_array($results);
 			if ($row) {
@@ -974,7 +974,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$camposUpdate = array("aprovat");
 			$datosUpdate = array("1");
 			updateFunction ("sgm_cuerpo",$_GET["id_linea"],$camposUpdate,$datosUpdate);
-			conta_aprovats($_GET["id_linea"],$_GET["id"]);
+			contaAprovats($_GET["id_linea"],$_GET["id"]);
 		}
 		if ($ssoption == 14) {
 			$camposUpdate = array("retenciones");
@@ -1540,7 +1540,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</tr>";
 			echo "</table>";
 		} else {
-				echo mensaje_error($ErrorAnadirArticulo);
+				echo mensageError($ErrorAnadirArticulo);
 			echo "<table cellpadding=\"1\" cellspacing=\"\" class=\"lista\">";
 				echo "<tr>";
 					echo boton_form("op=1003&sop=100&id=".$_GET["idfactura"]."&id_tipo=".$_GET["id_tipo"]."&id_tipo=".$_GET["id_tipo"],$Volver);
@@ -2351,7 +2351,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 				}
 			}else{
-				echo mensaje_error($errorSubirArchivoTamany);
+				echo mensageError($errorSubirArchivoTamany);
 			}
 		}
 		if ($ssoption == 2) {

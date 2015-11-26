@@ -1,16 +1,16 @@
 <?php 
-error_reporting(E_ALL);
+#error_reporting(E_ALL);
 
-	include ("../../archivos_comunes/config.php");
+	include ("../config.php");
 	include ("../../archivos_comunes/functions.php");
 #	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 	$idioma = strtolower($_POST["idioma"]);
-	include ("../../archivos_comunes/factura-print-".$idioma.".php");
+	include ("lenguajes/factura-print-".$idioma.".php");
 
-	define("FPDF_FONTPATH","../../archivos_comunes/font/");
+	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
 
 class PDF extends FPDF
@@ -457,9 +457,9 @@ class PDF extends FPDF
 }
 
 	$pdf=new PDF();
-	$pdf->AddFont('Calibri','','Calibri.php');
-	$pdf->AddFont('Calibri-Bold','B','Calibrib.php');
-	$pdf->AddFont('Calibri','B','Calibrib.php');
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$sql = "select * from sgm_clients where visible=1";
 	if ($_POST["id_cliente"] > 0){ $sql .= " and id=".$_POST["id_cliente"]."";} else {$sql .= " and id in (select id_cliente from sgm_contratos where visible=1)";}
 	$sql .= " order by nombre";

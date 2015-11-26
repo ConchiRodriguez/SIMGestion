@@ -1,6 +1,6 @@
 <?php
 echo "<b>".$Descargas."</b><br><br>";
-echo "<table style=\"width:100%;height:100%;\">";
+echo "<table class=\"cuerpo\">";
 	echo "<tr><td>".$Fotografias."</td></tr>";
 	echo "<tr>";
 	$counter = 0;
@@ -14,6 +14,12 @@ echo "<table style=\"width:100%;height:100%;\">";
 		}
 	}
 	echo "</tr>";
+	echo "<tr><td>&nbsp;</td></tr>";
+	echo "<tr><td>".$Documentos."</td></tr>";
+	foreach (glob("docs/*.pptx") as $filename)
+	{
+		echo "<tr><td><a href=\"http://www.solucions-im.com/jornada/".$filename."\" target=\"_blank\">".$filename."</a></td></tr>";
+	}
 echo "</table>";
-
+echo "<br><br>";
 ?>

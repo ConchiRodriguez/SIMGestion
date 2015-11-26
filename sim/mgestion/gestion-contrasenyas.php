@@ -118,7 +118,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 			$resultc = mysql_query(convert_sql($sqlc));
 			$rowc = mysql_fetch_array($resultc);
 			if ($rowc["total"] > 0){
-				mensaje_error($ContrasenyaAppErrorEliminar);
+				mensageError($ContrasenyaAppErrorEliminar);
 			} else {
 				$camposUpdate = array("visible");
 				$datosUpdate = array("0");
@@ -161,7 +161,6 @@ if (($option == 1024) AND ($autorizado == true)) {
 	if (($soption == 511) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo "<br><br><a href=\"index.php?op=1024&sop=510&ssop=3&id=".$_GET["id"]."\">[ SI ]</a><a href=\"index.php?op=1024&sop=510\">[ NO ]</a>";
 		echo boton(array("op=1024&sop=510&ssop=3&id=".$_GET["id"],"op=1024&sop=510"),array($Si,$No));
 		echo "</center>";
 	}

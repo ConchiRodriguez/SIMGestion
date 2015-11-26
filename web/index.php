@@ -88,7 +88,7 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 				############# INICIO DE LA CABEZERA
 				echo "<table class=\"cabezera\">";
 					echo "<tr class=\"cabezera\">";
-						echo "<td class=\"cabezera_logo\"><a href=\"index.php\"><img src=\"images/logo.jpg\" alt=\"logo\"></a></td>";
+						echo "<td class=\"cabezera_logo\"><a href=\"index.php\"><img src=\"images/logos/logo.jpg\" alt=\"logo\"></a></td>";
 						echo "<td class=\"cabezera_menu\">";
 							echo "<table class=\"cabezera_menu\">";
 								echo "<tr class=\"cabezera_menu\">";
@@ -157,9 +157,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 					echo "<tr class=\"cabezera\">";
 						echo "<td class=\"cabezera\">";
 						if ($mn == 0) {
-							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/inicio/inicio1_".$idioma.".jpg\" alt=\"logo\"></a>";
+							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/banners/inicio1_".$idioma."_hivern.jpg\" alt=\"logo\"></a>";
 						} else {
-							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/inicio/inicio2_".$idioma.".jpg\" alt=\"logo\"></a>";
+							echo "<a href=\"http://www.jornada.solucions-im.com/\"><img src=\"images/banners/inicio2_".$idioma."_hivern.jpg\" alt=\"logo\"></a>";
 						}
 						echo "</td>";
 					echo "</tr>";
@@ -172,9 +172,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 					echo "<tr>";
 					if ($_GET["mn"] == 0){
 						echo "<td class=\"cuerpo2\">";
-							if ($_GET["mn"] != 230) {echo "<a href=\"index.php?mn=230\"><img src=\"images/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
-								echo "<a href=\"index.php?mn=600\"><img src=\"images/demos.jpg\" alt=\"logo\"></a><br><br>";
-							if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+							if ($_GET["mn"] != 230) {echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+								echo "<a href=\"index.php?mn=600\"><img src=\"images/botones/demos.jpg\" alt=\"logo\"></a><br><br>";
+							if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/botones/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 						echo "</td>";
 					}
 					if ($_GET["mn"] != 0){
@@ -246,13 +246,13 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 					}
 						echo "</td>";
 						echo "<td class=\"cuerpo2\">";
-							if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
-							if ($_GET["mn"] != 120){echo "<a href=\"index.php?mn=120\"><img src=\"images/partner_op5.jpg\" alt=\"logo\"></a><br><br>";}
-							if ($_GET["mn"] != 120){echo "<a href=\"index.php?mn=120\"><img src=\"images/partner_nagios.jpg\" alt=\"logo\"></a><br><br>";}
+							if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/botones/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+							if ($_GET["mn"] != 120){echo "<a href=\"index.php?mn=120\"><img src=\"images/botones/partner_op5.jpg\" alt=\"logo\"></a><br><br>";}
+							if ($_GET["mn"] != 120){echo "<a href=\"index.php?mn=120\"><img src=\"images/botones/partner_nagios.jpg\" alt=\"logo\"></a><br><br>";}
 							if ($_GET["mn"] != 0){
-								if ($_GET["mn"] != 230) { echo "<a href=\"index.php?mn=230\"><img src=\"images/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
-								if ($_GET["mn"] != 600) { echo "<a href=\"index.php?mn=600\"><img src=\"images/demos.jpg\" alt=\"logo\"></a><br><br>";}
-								if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+								if ($_GET["mn"] != 230) { echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+								if ($_GET["mn"] != 600) { echo "<a href=\"index.php?mn=600\"><img src=\"images/botones/demos.jpg\" alt=\"logo\"></a><br><br>";}
+								if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/botones/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 							}
 						echo "</td>";
 					echo "</tr>";
@@ -299,11 +299,11 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 							echo "<table style=\"width:200px;\" class=\"footer\">";
 								echo "<tr>";
 									echo "<td><table><tr>";
-										echo "<td><a href=\"https://twitter.com/Solucions_im\" target=\"_blank\"><img src=\"images/32x32-twitter.png\" alt=\"twitter\"></a></td>";
-										echo "<td><a href=\"https://www.facebook.com/pages/Solucions-Informatiques-Maresme-SLU/384997628255026\" target=\"_blank\"><img src=\"images/32x32-facebook.png\" alt=\"facebook\"></a></td>";
-										echo "<td><a href=\"https://www.linkedin.com/company/solucions-informatiques-maresme-slu?trk=cp_followed_name_solucions-informatiques-maresme-slu\" target=\"_blank\"><img src=\"images/32x32-linkedin.png\" alt=\"linkedin\"></a></td>";
-										echo "<td><a href=\"https://www.youtube.com/channel/UCB6v5clKL3SdF34VqrnUGTg\" target=\"_blank\"><img src=\"images/32x32-youtube.png\" alt=\"youtube\"></a></td>";
-										echo "<td><a href=\"https://www.solucions-im.com/blogs/tecnic/\" target=\"_blank\"><img src=\"images/32x32-wordpress.png\" alt=\"facebook\"></a></td>";
+										echo "<td><a href=\"https://twitter.com/Solucions_im\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-twitter.png\" alt=\"twitter\"></a></td>";
+										echo "<td><a href=\"https://www.facebook.com/pages/Solucions-Informatiques-Maresme-SLU/384997628255026\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-facebook.png\" alt=\"facebook\"></a></td>";
+										echo "<td><a href=\"https://www.linkedin.com/company/solucions-informatiques-maresme-slu?trk=cp_followed_name_solucions-informatiques-maresme-slu\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-linkedin.png\" alt=\"linkedin\"></a></td>";
+										echo "<td><a href=\"https://www.youtube.com/channel/UCB6v5clKL3SdF34VqrnUGTg\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-youtube.png\" alt=\"youtube\"></a></td>";
+										echo "<td><a href=\"https://www.solucions-im.com/blogs/tecnic/\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-wordpress.png\" alt=\"facebook\"></a></td>";
 									echo "</tr></table></td>";
 								echo "</tr>";
 								echo "<tr><td><a href=\"index.php?mn=98\" class=\"footer\">".$Aviso_Legal."</a></td></tr>";
@@ -318,8 +318,8 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 			echo "<td>";
 				echo "<center><table width=\"20%\">";
 					echo "<tr>";
-						echo "<td><a href=\"http://jigsaw.w3.org/css-validator/check/referer\"><img style=\"border:0\" src=\"images/W3Ccss.gif\" alt=\"CSS Valido!\"></a></td>";
-						echo "<td><a href=\"http://validator.w3.org/check?uri=referer\"><img src=\"images/W3Cxhtml.gif\" alt=\"Valid HTML 4.01 Transitional\"></a></td>";
+						echo "<td><a href=\"http://jigsaw.w3.org/css-validator/check/referer\"><img style=\"border:0\" src=\"images/logos/W3Ccss.gif\" alt=\"CSS Valido!\"></a></td>";
+						echo "<td><a href=\"http://validator.w3.org/check?uri=referer\"><img src=\"images/logos/W3Cxhtml.gif\" alt=\"Valid HTML 4.01 Transitional\"></a></td>";
 					echo "</tr>";
 				echo "</table></center>";
 			echo "</td>";

@@ -9,7 +9,7 @@
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 	$idioma = strtolower("es");
-	include ("../../archivos_comunes/factura-print-".$idioma.".php");
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');

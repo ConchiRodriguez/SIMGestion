@@ -1,14 +1,14 @@
 <?php 
 #error_reporting(~E_ALL);
 
-	include ("../../archivos_comunes/config.php");
+	include ("../config.php");
 	include ("../../archivos_comunes/functions.php");
 #	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 	$idioma = strtolower($_POST["idioma"]);
-	include ("../../archivos_comunes/factura-print-".$idioma.".php");
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
@@ -99,7 +99,7 @@ class PDF extends FPDF
 			$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
 	
 			$this->SetXY(10,25);
-			$this->SetFont('Verdana','',8);
+			$this->SetFont('Calibri','',10);
 			$this->Cell(90,4,$rowele["nombre"],0,0);
 			$this->Cell(90,4,$rowele["direccion"],0,1);
 			$this->Cell(90,4,$rowele["nif"],0,0);
@@ -110,7 +110,7 @@ class PDF extends FPDF
 			$this->Cell(90,4,"",0,1);
 			$this->Cell(90,4,"",0,1);
 	
-			$this->SetFont('Verdana','',8);
+			$this->SetFont('Calibri','',10);
 			$this->Cell(90,5,$numero." : ".$rowcabezera["numero"]." / ".$rowcabezera["version"],1,0);
 			$this->Cell(90,5,$pedido." : ".$rowcabezera["numero_cliente"],1,1);
 			$this->Cell(90,5,$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"]),1,0);
@@ -133,7 +133,7 @@ class PDF extends FPDF
 			$this->Image('../../archivos_comunes/images/logo1.jpg',10,10,80,18);
 		
 			$this->SetXY(10,35);
-			$this->SetFont('Verdana','',8);
+			$this->SetFont('Calibri','',10);
 			$this->Cell(90,4,"".$rowele["nombre"],0,1);
 			$this->Cell(90,4,"".$rowele["nif"],0,1);
 			$this->Cell(90,4,$rowele["direccion"],0,1);
@@ -144,11 +144,11 @@ class PDF extends FPDF
 			$this->Cell(90,4,"",0,1);
 		
 			$this->SetXY(102,10);
-			$this->SetFont('Verdana','',8);
+			$this->SetFont('Calibri','',10);
 			$this->MultiCell(90,3,$numero." : ".$rowcabezera["numero"]." / ".$rowcabezera["version"]."\n".$pedido." : ".$rowcabezera["numero_cliente"]."\n".$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"])."\n".$fecha_vencimiento." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_vencimiento"])."\n".$nombre." : ".str_replace("&#39;", "'", $rowcabezera["nombre"])."\nNIF / CIF: ".$rowcabezera["nif"]."",0,'L');
 		
 			$this->SetXY(102,45);
-			$this->SetFont('Verdana','',10);
+			$this->SetFont('Calibri','',12);
 			$this->MultiCell(95,5,str_replace("&#39;", "'", $rowcabezera["nombre"])."\n".str_replace("&#39;", "'", $rowcabezera["direccion"])."\n".str_replace("&#39;", "'", $rowcabezera["poblacion"])." (".$rowcabezera["cp"].") ".$rowcabezera["provincia"],0,'L');
 			$this->SetY(71);
 			$limit_lines = 34;
@@ -174,9 +174,9 @@ class PDF extends FPDF
 			$fac_tipo = $rowi["tipo"];
 		}
 
-		$this->SetFont('Verdana','B',18);
+		$this->SetFont('Calibri','B',20);
 		$this->Cell(180,20,$fac_tipo,0,1,'C');
-		$this->SetFont('Verdana','',10);
+		$this->SetFont('Calibri','',12);
 		$this->Cell(20,5,"".$fecha."",'LTB',0);
 		$this->Cell(20,5,"".$codigo."",'TB',0);
 		$this->Cell(80,5,"".$nombre."",'TB',0);
@@ -184,7 +184,7 @@ class PDF extends FPDF
 		$this->Cell(20,5,"".$precio."",'TB',0);
 		$this->Cell(20,5,"".$total."",'TBR',1);
 	
-		$this->SetFont('Verdana','',8);
+		$this->SetFont('Calibri','',10);
 		$unidades2 = 0;
 		$lineas = 0;
 		$sql = "select * from sgm_cuerpo where idfactura=".$id." order by linea";
@@ -213,14 +213,14 @@ class PDF extends FPDF
 			$lineas += $num_lines;
 			if ($lineas > $limit_lines){
 				$this->AddPage();
-				$this->SetFont('Verdana','',10);
+				$this->SetFont('Calibri','',12);
 				$this->Cell(20,5,"".$fecha."",'LTB',0);
 				$this->Cell(20,5,"".$codigo."",'TB',0);
 				$this->Cell(80,5,"".$nombre."",'TB',0);
 				$this->Cell(20,5,"".$unitats."",'TB',0);
 				$this->Cell(20,5,"".$precio."",'TB',0);
 				$this->Cell(20,5,"".$total."",'TBR',1);
-				$this->SetFont('Verdana','',8);
+				$this->SetFont('Calibri','',10);
 				$lineas = -16;
 			}
 		}
@@ -282,9 +282,10 @@ class PDF extends FPDF
 			$this->Cell(25,5,number_format($div_total, 2, ',', '.').$rowd["simbolo"],'LBR',1);
 		}
 
+		$this->SetFont('Calibri','',8);
 		$this->MultiCell(180,3,$notas.":\n".$text_notes,'LRTB',1);
 		$this->Cell(180,3,' ',0,1);
-		$this->SetFont('Verdana','',6);
+		$this->SetFont('Calibri','',6);
 		$this->MultiCell(180,3,$texto_pdatos,0,'J');
 
 	}
@@ -292,9 +293,9 @@ class PDF extends FPDF
 
 	$pdf=new PDF();
 #	$pdf->AddFont('codi_barres','','../../archivos_comunes/font/codi_barres.php');
-	$pdf->AddFont('Verdana','','../../archivos_comunes/font/verdana.php');
-	$pdf->AddFont('Verdana-Bold','B','../../archivos_comunes/font/verdanab.php');
-	$pdf->AddFont('Verdana','B','../../archivos_comunes/font/verdanab.php');
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AliasNbPages();
 
 
