@@ -13,11 +13,11 @@ $user = false;
 if ($_COOKIE["username"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("username", $_POST["user"], time()+86400*$cookiestime, "/", $domain);
@@ -29,11 +29,11 @@ if ($_COOKIE["username"] == "") {
 }
 else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ( md5( $row["pass"] ) == $_COOKIE["password"] ) {
 			$user = true;
@@ -65,7 +65,7 @@ $autorizado = true;
 if ($autorizado == true) {
 
 		$sqlf = "select * from sgm_cabezera where id=".$_GET["id"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 
 		$sp = 0;
@@ -75,7 +75,7 @@ if ($autorizado == true) {
 		}
 		$linies .= "0";
 		$sqlp = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." and id in (".$linies.") order by linea";
-		$resultp = mysql_query(convert_sql($sqlp));
+		$resultp = mysql_query(convertSQL($sqlp));
 		while ($rowp = mysql_fetch_array($resultp)) {
 			if ($sp == 1) { echo "<H1 class=SaltoDePagina> </H1>"; }
 			if ($sp == 0) { $sp = 1; }
@@ -95,7 +95,7 @@ if ($autorizado == true) {
 						echo "<br><strong>Fecha entrega : </strong>".cambiarFormatoFechaDMY($rowp["fecha_prevision"]);
 				echo "</td></tr></table><br>";
 				$sql = "select * from sgm_cuerpo_orden_seguimiento where id_cuerpo=".$rowp["id"];
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				echo "<table cellpadding=\"0\" cellspacing=\"0\" style=\";border:0px;\"><tr><td style=\"vertical-align:top;text-align:right;width:85px;border:0px;\">Descripción&nbsp;</td>";
 				echo "<td><textarea name=\"descripcion\" style=\"width:550px;height:50px\">".$row["descripcion"]."</textarea></td></tr></table>";
@@ -409,7 +409,7 @@ if ($autorizado == true) {
 				echo "<table cellpadding=\"0\" cellspacing=\"0\"  style=\"border:0px\"><tr><td style=\"vertical-align:top;text-align:right;width:85px;\">Materiales&nbsp;:</td>";
 				echo "<td>";
 				$sqlfx = "select * from sgm_cuerpo where id_cuerpo=".$rowp["id"];
-				$resultfx = mysql_query(convert_sql($sqlfx));
+				$resultfx = mysql_query(convertSQL($sqlfx));
 				$x = 0;
 				while ($rowfx = mysql_fetch_array($resultfx)) {
 					if ($x == 1) { echo "<br>- <strong>".number_format($rowfx["unidades"],2,',','.')."</strong> unidad/es de <strong>".$rowfx["nombre"]."</strong>"; }

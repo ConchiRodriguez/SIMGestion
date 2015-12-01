@@ -1,9 +1,11 @@
 <?php 
-#error_reporting(E_ALL);
+	error_reporting(~E_ALL);
 
 	include ("../config.php");
-	include ("../../archivos_comunes/functions.php");
-#	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
+	foreach (glob("../auxiliar/*.php") as $filename)
+	{
+		include ($filename);
+	}
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
@@ -18,7 +20,7 @@ class PDF extends FPDF
 	function Header()
 	{
 		$sqlele = "select * from sgm_dades_origen_factura";
-		$resultele = mysql_query(convert_sql($sqlele));
+		$resultele = mysql_query(convertSQL($sqlele));
 		$rowele = mysql_fetch_array($resultele);
 
 		$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
@@ -111,11 +113,11 @@ class PDF extends FPDF
 
 		$sqlcli = "select * from sgm_clients where id=".$id_cliente;
 #		echo $sqlcli."<br>";
-		$resultcli = mysql_query(convert_sql($sqlcli));
+		$resultcli = mysql_query(convertSQL($sqlcli));
 		$rowcli = mysql_fetch_array($resultcli);
 
 		$sqlcon = "select * from sgm_contratos where visible=1 and id=".$id_contrato;
-		$resultcon = mysql_query(convert_sql($sqlcon));
+		$resultcon = mysql_query(convertSQL($sqlcon));
 #		echo $sqlcon."<br>";
 		$rowcon = mysql_fetch_array($resultcon);
 
@@ -136,11 +138,11 @@ class PDF extends FPDF
 		$this->Cell(90,3,$fecha_fin." : ".cambiarFormatoFechaDMY($rowcon["fecha_fin"]),0,1);
 
 		$sqlx = "select * from sgm_users where id=".$rowcon["id_responsable"];
-		$resultx = mysql_query(convert_sql($sqlx));
+		$resultx = mysql_query(convertSQL($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 
 		$sqly = "select * from sgm_users where id=".$rowcon["id_tecnico"];
-		$resulty = mysql_query(convert_sql($sqly));
+		$resulty = mysql_query(convertSQL($sqly));
 		$rowy = mysql_fetch_array($resulty);
 
 		$this->Cell(90,3,$cp." : ".$rowcli["cp"],0,0);
@@ -190,32 +192,32 @@ class PDF extends FPDF
 			$time = 0;
 
 			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
-			$resultcs = mysql_query(convert_sql($sqlcs));
+			$resultcs = mysql_query(convertSQL($sqlcs));
 			while ($rowcs = mysql_fetch_array($resultcs)) {
 				$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";
 				$sqli1 = $sqli1." and (fecha_inicio between ".$mes_act." and ".$mes_seg." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$mes_act." and ".$mes_seg." and visible=1))";
 #				echo $sqli1."<br>";
-				$resulti1 = mysql_query(convert_sql($sqli1));
+				$resulti1 = mysql_query(convertSQL($sqli1));
 				$rowi1 = mysql_fetch_array($resulti1);
 				$open =$open + $rowi1["abiertas"];
 				$sqli2 = "select count(*) as cerradas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado=-2";
 				$sqli2 = $sqli2." and (fecha_inicio between ".$mes_act." and ".$mes_seg." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$mes_act." and ".$mes_seg." and visible=1))";
-				$resulti2 = mysql_query(convert_sql($sqli2));
+				$resulti2 = mysql_query(convertSQL($sqli2));
 				$rowi2 = mysql_fetch_array($resulti2);
 				$close =$close + $rowi2["cerradas"];
 				$sqli3 = "select count(*) as pendientes from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado<>-2 and pausada=0";
 				$sqli3 = $sqli3." and (fecha_inicio between ".$mes_act." and ".$mes_seg." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$mes_act." and ".$mes_seg." and visible=1))";
-				$resulti3 = mysql_query(convert_sql($sqli3));
+				$resulti3 = mysql_query(convertSQL($sqli3));
 				$rowi3 = mysql_fetch_array($resulti3);
 				$pendin =$pendin + $rowi3["pendientes"];
 				$sqli4 = "select count(*) as pausadas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado<>-2 and pausada=1";
 				$sqli4 = $sqli4." and (fecha_inicio between ".$mes_act." and ".$mes_seg." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$mes_act." and ".$mes_seg." and visible=1))";
-				$resulti4 = mysql_query(convert_sql($sqli4));
+				$resulti4 = mysql_query(convertSQL($sqli4));
 				$rowi4 = mysql_fetch_array($resulti4);
 				$stoped =$stoped + $rowi4["pausadas"];
 				$sqli5 = "select count(*) as fora_sla from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado=-2 and sla=1";
 				$sqli5 = $sqli5." and (fecha_inicio between ".$mes_act." and ".$mes_seg." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$mes_act." and ".$mes_seg." and visible=1))";
-				$resulti5 = mysql_query(convert_sql($sqli5));
+				$resulti5 = mysql_query(convertSQL($sqli5));
 				$rowi5 = mysql_fetch_array($resulti5);
 				if ($rowcs["sla"] == 0){
 					$fora_sla = "--";
@@ -227,7 +229,7 @@ class PDF extends FPDF
 				if ($_POST["horas"] == 1){
 					$sqli6 = "select sum(duracion) as temps from sgm_incidencias where visible=1 and fecha_inicio between ".$mes_act." and ".$mes_seg." and id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1)";
 #echo $sqli6;
-					$resulti6 = mysql_query(convert_sql($sqli6));
+					$resulti6 = mysql_query(convertSQL($sqli6));
 					$rowi6 = mysql_fetch_array($resulti6);
 					$time =$time + $rowi6["temps"];
 					$hora = $rowi6["temps"]/60;
@@ -248,7 +250,7 @@ class PDF extends FPDF
 				}
 
 				$sqlcsc = "select * from sgm_contratos_sla_cobertura where visible=1 and id=".$rowcs["id_cobertura"];
-				$resultcsc = mysql_query(convert_sql($sqlcsc));
+				$resultcsc = mysql_query(convertSQL($sqlcsc));
 				$rowcsc = mysql_fetch_array($resultcsc);
 
 				$this->SetFont('Calibri','',7);
@@ -313,10 +315,10 @@ class PDF extends FPDF
 		$this->Cell(15,4,"SLA",'B',1);
 
 		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
-		$resultcs = mysql_query(convert_sql($sqlcs));
+		$resultcs = mysql_query(convertSQL($sqlcs));
 		while ($rowcs = mysql_fetch_array($resultcs)) {
 			$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado<>-2 and visible=1";
-			$resulti0 = mysql_query(convert_sql($sqli0));
+			$resulti0 = mysql_query(convertSQL($sqli0));
 			while ($rowi0 = mysql_fetch_array($resulti0)){
 				if ($rowi0["id_estado"] == -1){$estatinc = $abierta;}
 				if ($rowi0["pausada"] == 1){$estatinc = $pausada;}
@@ -353,26 +355,26 @@ class PDF extends FPDF
 		$time = 0;
 
 		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
-		$resultcs = mysql_query(convert_sql($sqlcs));
+		$resultcs = mysql_query(convertSQL($sqlcs));
 		while ($rowcs = mysql_fetch_array($resultcs)) {
 			$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";
-			$resulti1 = mysql_query(convert_sql($sqli1));
+			$resulti1 = mysql_query(convertSQL($sqli1));
 			$rowi1 = mysql_fetch_array($resulti1);
 			$open =$open + $rowi1["abiertas"];
 			$sqli2 = "select count(*) as cerradas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado=-2";
-			$resulti2 = mysql_query(convert_sql($sqli2));
+			$resulti2 = mysql_query(convertSQL($sqli2));
 			$rowi2 = mysql_fetch_array($resulti2);
 			$close =$close + $rowi2["cerradas"];
 			$sqli3 = "select count(*) as pendientes from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado<>-2 and pausada=0";
-			$resulti3 = mysql_query(convert_sql($sqli3));
+			$resulti3 = mysql_query(convertSQL($sqli3));
 			$rowi3 = mysql_fetch_array($resulti3);
 			$pendin =$pendin + $rowi3["pendientes"];
 			$sqli4 = "select count(*) as pausadas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado<>-2 and pausada=1";
-			$resulti4 = mysql_query(convert_sql($sqli4));
+			$resulti4 = mysql_query(convertSQL($sqli4));
 			$rowi4 = mysql_fetch_array($resulti4);
 			$stoped =$stoped + $rowi4["pausadas"];
 			$sqli5 = "select count(*) as fora_sla from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1 and id_estado=-2 and sla=1";
-			$resulti5 = mysql_query(convert_sql($sqli5));
+			$resulti5 = mysql_query(convertSQL($sqli5));
 			$rowi5 = mysql_fetch_array($resulti5);
 			if ($rowcs["sla"] == 0){
 				$fora_sla = "--";
@@ -383,7 +385,7 @@ class PDF extends FPDF
 
 			if ($_POST["horas"] == 1){
 				$sqli6 = "select sum(duracion) as temps from sgm_incidencias where visible=1 and id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1)";
-				$resulti6 = mysql_query(convert_sql($sqli6));
+				$resulti6 = mysql_query(convertSQL($sqli6));
 				$rowi6 = mysql_fetch_array($resulti6);
 				$time =$time + $rowi6["temps"];
 				$hora = $rowi6["temps"]/60;
@@ -404,7 +406,7 @@ class PDF extends FPDF
 			}
 
 			$sqlcsc = "select * from sgm_contratos_sla_cobertura where visible=1 and id=".$rowcs["id_cobertura"];
-			$resultcsc = mysql_query(convert_sql($sqlcsc));
+			$resultcsc = mysql_query(convertSQL($sqlcsc));
 			$rowcsc = mysql_fetch_array($resultcsc);
 
 			$this->SetFont('Calibri','',7);
@@ -464,11 +466,11 @@ class PDF extends FPDF
 	if ($_POST["id_cliente"] > 0){ $sql .= " and id=".$_POST["id_cliente"]."";} else {$sql .= " and id in (select id_cliente from sgm_contratos where visible=1)";}
 	$sql .= " order by nombre";
 #	echo $sql;
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	while ($row = mysql_fetch_array($result)){
 		if ($_POST["id_contrato"] == 0) {$sqlcon = "select * from sgm_contratos where visible=1 and id_cliente=".$row["id"];}
 		else {$sqlcon = "select * from sgm_contratos where visible=1 and id=".$_POST["id_contrato"];}
-		$resultcon = mysql_query(convert_sql($sqlcon));
+		$resultcon = mysql_query(convertSQL($sqlcon));
 		while ($rowcon = mysql_fetch_array($resultcon)){
 			$pdf->AliasNbPages();
 			$pdf->AddPage();

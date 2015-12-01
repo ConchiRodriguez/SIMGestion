@@ -18,11 +18,11 @@ if ($soption == 666) {
 if ($_COOKIE["username"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("username", $_POST["user"], time()+86400*$cookiestime, "/", $domain);
@@ -33,11 +33,11 @@ if ($_COOKIE["username"] == "") {
 	}
 } else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ( md5( $row["pass"] ) == $_COOKIE["password"] ) {
 			$user = true;
@@ -60,26 +60,26 @@ if ($_COOKIE["username"] == "") {
 $autorizado = true;
 if ($user == true) {
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 }
 if ($autorizado == true) {
 
 		$sqlr = "select * from sgm_recibos where id=".$_GET["id"];
-		$resultr = mysql_query(convert_sql($sqlr));
+		$resultr = mysql_query(convertSQL($sqlr));
 		$rowr = mysql_fetch_array($resultr);
 
 		$sqlcli = "select * from sgm_clients where id=".$rowr["id_cliente"];
-		$resultcli = mysql_query(convert_sql($sqlcli));
+		$resultcli = mysql_query(convertSQL($sqlcli));
 		$rowcli = mysql_fetch_array($resultcli);
 
 		$sqlf = "select * from sgm_cabezera where id=".$rowr["id_factura"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 
 		$sqld = "select * from sgm_dades_origen_factura";
-		$resultd = mysql_query(convert_sql($sqld));
+		$resultd = mysql_query(convertSQL($sqld));
 		$rowd = mysql_fetch_array($resultd);
 
 	echo "<table width=\"700px\" cellpadding=\"0px\" cellspacing=\"0px\" style=\"border: 0px solid black\"><tr><td style=\"border: 0px solid black\"><center>";
@@ -133,7 +133,7 @@ if ($autorizado == true) {
 				echo "</tr>";
 			echo "</table>";
 			echo "<br>";
-				echo "<br><center><font style=\"font-size : 8px\">LA CANTIDAD DE € : </font> ".strtoupper(convertir_a_letras($rowr["total"]))."</center>";
+				echo "<br><center><font style=\"font-size : 8px\">LA CANTIDAD DE € : </font> ".strtoupper(convertirNumALetra($rowr["total"]))."</center>";
 			echo "<br>";
 			echo "<br>";
 
@@ -146,7 +146,7 @@ if ($autorizado == true) {
 					} else {
 						echo "<font style=\"font-size : 8px\">FORMA DE PAGO</font>";
 						$sqlxx = "select * from sgm_tpv_tipos_pago WHERE id=".$rowr["id_tipo_pago"];
-						$resultxx = mysql_query(convert_sql($sqlxx));
+						$resultxx = mysql_query(convertSQL($sqlxx));
 						$rowxx = mysql_fetch_array($resultxx);
 
 						echo "<br><strong>".$rowxx["tipo"]."</strong>";

@@ -22,7 +22,7 @@ if (($option == 1025) AND ($autorizado == true)) {
 		if ($ssoption == 1) {
 			if ($_POST["accion"] == 3){
 				$sql = "select * from sgm_plan where visible=1 and id=".$_POST["id_version"];
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				$multicuerpo = $row["multicuerpo"];
 			} else {
@@ -183,7 +183,7 @@ function formTablaAuxTipos($tabla, $option, $soption, $soptionEliminar, $soption
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 		$sql = "select * from ".$tabla." where visible=1 order by nombre";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$option."&sop=".$soptionEliminar."&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -260,7 +260,7 @@ function insertTablaAuxTipos($tabla)
 	$sql = $sql.",".$_POST["plantilla"]."";
 	$sql = $sql.",".$_POST["subplans"]."";
 	$sql = $sql.")";
-	mysql_query(convert_sql($sql));
+	mysql_query(convertSQL($sql));
 }
 
 function updateTablaAuxTipos($tabla)
@@ -274,22 +274,22 @@ function updateTablaAuxTipos($tabla)
 	$sql = $sql.",plantilla=".$_POST["plantilla"]."";
 	$sql = $sql.",subplans=".$_POST["subplans"]."";
 	$sql = $sql." WHERE id=".$_GET["id"]."";
-	mysql_query(convert_sql($sql));
+	mysql_query(convertSQL($sql));
 }
 
 function bajaTablaAuxTipos($tabla,$tabla2,$id)
 {
 	global $errorEliminar;
 	$sqlc = "select count(*) as total from ".$tabla2." where visible=1 and ".$id."=".$_GET["id"];
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 	if ($rowc["total"] > 0){
-		mensaje_error($errorEliminar);
+		mensageError($errorEliminar);
 	} else {
 		$sql = "update ".$tabla." set ";
 		$sql = $sql."visible=0";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 	}
 }
 
@@ -314,7 +314,7 @@ function formTablaPlanes($option, $soption, $soptionSubplanes, $soptionVersiones
 			echo "<td><select name=\"id_plantilla\" style=\"width:200px;\">";
 				echo "<option value=\"0\">-</option>";
 				$sql = "select * from sgm_plan where visible=1 and id_plantilla=0 and id_plan=0 order by nombre";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					echo "<option value=\"".$row["id"]."\">".$row["nombre"]."</option>";
 				}
@@ -326,7 +326,7 @@ function formTablaPlanes($option, $soption, $soptionSubplanes, $soptionVersiones
 			echo "<td><select name=\"id_plan_tipo\" style=\"width:300px;\">";
 				echo "<option value=\"0\">-</option>";
 				$sqlpt = "select * from sgm_plan_tipos where visible=1 order by nombre";
-				$resultpt = mysql_query(convert_sql($sqlpt));
+				$resultpt = mysql_query(convertSQL($sqlpt));
 				while ($rowpt = mysql_fetch_array($resultpt)) {
 					echo "<option value=\"".$rowpt["id"]."\">".$rowpt["nombre"]."</option>";
 				}
@@ -339,18 +339,18 @@ function formTablaPlanes($option, $soption, $soptionSubplanes, $soptionVersiones
 		if ($accion == 1) { $sql .= " and id_plantilla<>0";}
 		if ($accion == 2) { $sql .= " and id_plantilla=0";}
 		$sql .= " order by nombre";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$option."&sop=".$soptionEliminar."&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 				echo "<form action=\"index.php?op=".$option."&sop=".$soption."&ssop=2&id=".$row["id"]."\" method=\"post\">";
 				echo "<td><input type=\"text\" style=\"width:300px\" name=\"nombre\" value=\"".$row["nombre"]."\"></td>";
 				$sqlp = "select * from sgm_plan where visible=1 and id=".$row["id_plan"];
-				$resultp = mysql_query(convert_sql($sqlp));
+				$resultp = mysql_query(convertSQL($sqlp));
 				$rowp = mysql_fetch_array($resultp);
 				echo "<td style=\"width:300px\">".$rowp["nombre"]."</td>";
 				$sqlp = "select * from sgm_plan where visible=1 and id=".$row["id_version"];
-				$resultp = mysql_query(convert_sql($sqlp));
+				$resultp = mysql_query(convertSQL($sqlp));
 				$rowp = mysql_fetch_array($resultp);
 				echo "<td style=\"width:100px\">".$rowp["nombre"]."</td>";
 				if ($row["id_plan_tipo"] == 1){ $idPlanTipo = "Si";} else { $idPlanTipo = "No";}
@@ -390,15 +390,15 @@ function insertTablaPlanes($accion, $multicuerpo)
 	if ($accion == 4) {$sql = $sql.",".$_POST["id_plantilla"];}
 	$sql = $sql.",".$_POST["id_plan_tipo"];
 	$sql = $sql.")";
-	mysql_query(convert_sql($sql));
+	mysql_query(convertSQL($sql));
 echo $sql;
 
 	if ($accion == 3) {
 		$sqlp1 = "select * from sgm_plan where visible=1 order by id desc";
-		$resultp1 = mysql_query(convert_sql($sqlp1));
+		$resultp1 = mysql_query(convertSQL($sqlp1));
 		$rowp1 = mysql_fetch_array($resultp1);
 		$sqlp = "select * from sgm_plan where visible=1 and id_plan =".$_POST["id_version"];
-		$resultp = mysql_query(convert_sql($sqlp));
+		$resultp = mysql_query(convertSQL($sqlp));
 		while ($rowp = mysql_fetch_array($resultp)) {
 			$sql = "insert into sgm_plan (nombre,id_plan,id_version,multicuerpo) ";
 			$sql = $sql."values (";
@@ -407,15 +407,15 @@ echo $sql;
 			$sql = $sql.",".$rowp["id"];
 			$sql = $sql.",".$rowp["multicuerpo"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 	}
 	if ($accion == 4) {
 		$sqlp1 = "select * from sgm_plan where visible=1 order by id desc";
-		$resultp1 = mysql_query(convert_sql($sqlp1));
+		$resultp1 = mysql_query(convertSQL($sqlp1));
 		$rowp1 = mysql_fetch_array($resultp1);
 		$sqlp = "select * from sgm_plan where visible=1 and id_plan =".$_POST["id_plantilla"];
-		$resultp = mysql_query(convert_sql($sqlp));
+		$resultp = mysql_query(convertSQL($sqlp));
 		while ($rowp = mysql_fetch_array($resultp)) {
 			$sql = "insert into sgm_plan (nombre,id_plan,id_plantilla,multicuerpo) ";
 			$sql = $sql."values (";
@@ -424,7 +424,7 @@ echo $sql;
 			$sql = $sql.",".$rowp["id"];
 			$sql = $sql.",".$rowp["multicuerpo"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 	}
 }
@@ -434,21 +434,21 @@ function updateTablaPlanes($nombre)
 	$sql = "update sgm_plan set ";
 	$sql = $sql."nombre='".$nombre."'";
 	$sql = $sql." WHERE id=".$_GET["id"]."";
-	mysql_query(convert_sql($sql));
+	mysql_query(convertSQL($sql));
 }
 
 function bajaTablaPlanes()
 {
 	$sqlp = "select * from sgm_plan where visible=1 and (id_plan=".$_GET["id"]." or id_version=".$_GET["id"]." or id_plantilla=".$_GET["id"].")";
-	$resultp = mysql_query(convert_sql($sqlp));
+	$resultp = mysql_query(convertSQL($sqlp));
 	$rowp = mysql_fetch_array($resultp);
 	if (!$rowp){
 		$sql = "update sgm_plan set ";
 		$sql = $sql."visible=0";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 	} else {
-		echo mensaje_error_c("no se puede eliminar el elemento que contiene subelementos","red");
+		echo mensageInfo("no se puede eliminar el elemento que contiene subelementos","red");
 	}
 }
 

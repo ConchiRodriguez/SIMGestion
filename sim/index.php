@@ -17,15 +17,10 @@ date_default_timezone_set('Europe/Madrid');
 
 
 include ("config.php");
-#include ("../archivos_comunes/variables.php");
-include ("../archivos_comunes/functions.php");
-#include ("../archivos_comunes/funciones.php");
-#include ("../archivos_comunes/funciones_modificadoras.php");
 foreach (glob("auxiliar/*.php") as $filename)
 {
     include ($filename);
 }
-#if(!isset($HTTP_SERVER_VARS[HTTPS])) { header("Location: ".$urlmgestion); }
 
 ### CONEXION
 $dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
@@ -34,9 +29,6 @@ $db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB")
 if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 if ($_GET['sop'] != "") { $soption = $_GET['sop']; } else { $soption = 0; }
 if ($_GET['ssop'] != "") { $ssoption = $_GET['ssop']; } else { $ssoption = 0; }
-#if ($_GET['fu'] != "") { $funcio = $_GET['fu']; } else { $funcio = 0; }
-#if ($_GET['sfu'] != "") { $sfuncio = $_GET['sfu']; } else { $sfuncio = 0; }
-#if ($_GET['idioma'] != "") { $idioma = $_GET['dir']; } else { $idioma = "es"; }
 
 $user = false;
 $userid = 0;
@@ -67,16 +59,14 @@ if ($_GET["i"] != "") {
 if ($idioma == "es"){ include ("sgm_es.php");}
 if ($idioma == "cat"){ include ("sgm_cat.php");}
 
-#include ("mgestion/funciones.php");
-
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
-			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$sql = "select * from sgm_users WHERE usuario='".$_POST["user"]."'";
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if (crypt($_POST["pass"], $row["pass"]) == $row["pass"]){
 				$user = true;
@@ -89,13 +79,28 @@ if ($_COOKIE["musername"] == "") {
 			}
 		}
 	}
+	if ($_GET["idp"] != "") {
+		$sql = "select * from sgm_users WHERE validado=1 AND activo=1";
+		$result = mysql_query(convertSQL($sql));
+		while ($row = mysql_fetch_array($result)){
+			if ($_GET["idp"] == $row["pass"]){
+				$user = true;
+				$username = $row["usuario"];
+				$userid = $row["id"];
+				$sgm = $row["sgm"];
+				setcookie("musername", $row["usuario"], time()+60*$cookiestime, "/sim");
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/sim");
+				header("Location: ".$urlmgestion."/index.php?op=200&sop=70");
+			}
+		}
+	}
 } else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
 	$result = mysql_query($sql);
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -187,7 +192,7 @@ if (($option == 900) or ($option == 600)) {
 
 				if ($option <> 0) {
 					$sqlmodulo = "select * from sgm_users_permisos_modulos where id_modulo=".$option;
-					$resultmodulo = mysql_query(convert_sql($sqlmodulo));
+					$resultmodulo = mysql_query(convertSQL($sqlmodulo));
 					$rowmodulo = mysql_fetch_array($resultmodulo);
 					$id_grupo = $rowmodulo["id_grupo"];
 				} else {
@@ -198,11 +203,11 @@ if (($option == 900) or ($option == 600)) {
 					if ($option == 200) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_usuario."</a></td>";
 					$sqlu = "select * from sgm_users where id=".$userid;
-					$resultu = mysql_query(convert_sql($sqlu));
+					$resultu = mysql_query(convertSQL($sqlu));
 					$rowu = mysql_fetch_array($resultu);
 						if ($rowu["sgm"] == 1) {
 							$sqlm = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
-							$resultm = mysql_query(convert_sql($sqlm));
+							$resultm = mysql_query(convertSQL($sqlm));
 							while ($rowm = mysql_fetch_array($resultm)) {
 								if ($rowm["id"] == $id_grupo) {$class = "menu_select";} else {$class = "menu";}
 								echo "<td class=".$class."><a href=\"index.php?id_grupo=".$rowm["id"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
@@ -213,7 +218,7 @@ if (($option == 900) or ($option == 600)) {
 	##			if ($option == 0) {
 					echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
 						$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$id_grupo." order by nombre";
-						$resultm = mysql_query(convert_sql($sqlm));
+						$resultm = mysql_query(convertSQL($sqlm));
 						while ($rowm = mysql_fetch_array($resultm)) {
 								if ($rowm["id_modulo"] == $option) {$class = "menu_select";} else {$class = "menu";}
 							echo "<td class=".$class."><a href=\"index.php?op=".$rowm["id_modulo"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";

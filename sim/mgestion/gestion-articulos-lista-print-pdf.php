@@ -1,8 +1,11 @@
 <?php 
-#error_reporting(~E_ALL);
+	error_reporting(~E_ALL);
 
 	include ("../config.php");
-	include ("../../archivos_comunes/functions.php");
+	foreach (glob("../auxiliar/*.php") as $filename)
+	{
+		include ($filename);
+	}
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
@@ -25,11 +28,11 @@
 
 	if ($_POST["subfamilia"] > 0){ 
 		$sqlsf = "select * from sgm_articles_subgrupos where id=".$_POST["subfamilia"];
-		$resultsf = mysql_query(convert_sql($sqlsf));
+		$resultsf = mysql_query(convertSQL($sqlsf));
 		$rowsf = mysql_fetch_array($resultsf);
 
 		$sqlf = "select * from sgm_articles_grupos where id=".$rowsf["id_grupo"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 
 		$pdf->Cell(180,10, $listado_articulos.": ".$rowf["grupo"]." - ".$rowsf["subgrupo"],0,1);
@@ -46,10 +49,10 @@
 	$sql = "select * from sgm_articles where visible=1 ";
 	if ($_POST["subfamilia"] > 0){ $sql = $sql."and id_subgrupo=".$_POST["subfamilia"];	}
 	$sql = $sql." order by codigo";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	while ($row = mysql_fetch_array($result)) {
 		$sqls = "select * from sgm_stock WHERE vigente=1 and id_article=".$row["id"];
-		$results = mysql_query(convert_sql($sqls));
+		$results = mysql_query(convertSQL($sqls));
 		$rows = mysql_fetch_array($results);
 
 		$pdf->Cell(40,5,$row["codigo"],'',0);

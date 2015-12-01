@@ -1,7 +1,7 @@
 <?php
 #	if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 
-	if ($option == 100) { include ("mgestion/registrarse.php");}
+	if ($option == 100) { include ("mgestion/login.php");}
 	if ($option == 200) { include ("mgestion/panel-usuario.php");}
 
 	if ($option == 1001) { include ("mgestion/gestion-contenidos.php");}

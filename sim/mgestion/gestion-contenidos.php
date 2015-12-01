@@ -48,7 +48,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql.",".$_POST["id_idioma"]."";
 			$sql = $sql.",".$_POST["id_origen"]."";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_news_grupos set ";
@@ -59,11 +59,11 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql.",id_idioma=".$_POST["id_idioma"]."";
 			$sql = $sql.",id_origen=".$_POST["id_origen"]."";
 			$sql = $sql." WHERE id=".$_POST["id_grupo"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$sql = "delete from sgm_news_grupos WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 			echo "<strong>Grupos de Contenidos :</strong><br><br>";
@@ -94,7 +94,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_origen\" style=\"width:200px\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select * from sgm_news_grupos where visible=1 and id_origen=0";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["name"]."</option>";
 						}
@@ -114,7 +114,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><select name=\"id_idioma\" style=\"width:80px\">";
 						$sql = "select * from sgm_idiomas where visible=1";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["descripcion"]."</option>";
 						}
@@ -124,14 +124,14 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_news_grupos ORDER BY name";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<form action=\"index.php?op=1001&sop=1&ssop=2\" method=\"post\">";
 				echo "<input type=\"Hidden\" name=\"id_grupo\" value=\"".$row["id"]."\">";
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\">".$row["id"]."</td>";
 						$sqlt = "select count(*) as total from sgm_news_posts where id_grupo=".$row["id"];
-						$resultt = mysql_query(convert_sql($sqlt));
+						$resultt = mysql_query(convertSQL($sqlt));
 						$rowt = mysql_fetch_array($resultt);
 					echo "<td style=\"text-align:right;\">".$rowt["total"]."</td>";
 					echo "<td  style=\"text-align:center;\">";
@@ -142,7 +142,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_origen\" style=\"width:200px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlg = "select * from sgm_news_grupos where visible=1 and id_origen=0 and id<>".$row["id"];
-						$resultg = mysql_query(convert_sql($sqlg));
+						$resultg = mysql_query(convertSQL($sqlg));
 						while ($rowg = mysql_fetch_array($resultg)) {
 							if ($row["id_origen"] == $rowg["id"]){
 								echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["name"]."</option>";
@@ -188,7 +188,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><select name=\"id_idioma\" style=\"width:80px\">";
 						$sqli = "select * from sgm_idiomas where visible=1";
-						$resulti = mysql_query(convert_sql($sqli));
+						$resulti = mysql_query(convertSQL($sqli));
 						while ($rowi = mysql_fetch_array($resulti)) {
 							if ($row["id_idioma"] == $rowi["id"]){
 								echo "<option value=\"".$rowi["id"]."\" selected>".$rowi["descripcion"]."</option>";
@@ -229,12 +229,12 @@ if (($option == 1001) AND ($autorizado == true)) {
 				$sql = $sql.",".$_POST["id_site"]."";
 				$sql = $sql.",'".$_POST["idioma"]."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_news_posts set visible=0 WHERE id=".$_GET["id_new"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>Últimos 10 Contenidos de cada Grupo :</strong>";
@@ -242,19 +242,19 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:780px\">";
 				$sqlg = "select * from sgm_users_permisos_news WHERE id_user=".$userid;
-				$resultg = mysql_query(convert_sql($sqlg));
+				$resultg = mysql_query(convertSQL($sqlg));
 				while ($rowg = mysql_fetch_array($resultg)) {
 					$sqlg2 = "select * from sgm_news_grupos WHERE id=".$rowg["id_news"];
-					$resultg2 = mysql_query(convert_sql($sqlg2));
+					$resultg2 = mysql_query(convertSQL($sqlg2));
 					$rowg2 = mysql_fetch_array($resultg2);
 						$sqlg3 = "select * from sgm_idiomas WHERE id=".$rowg2["id_idioma"];
-						$resultg3 = mysql_query(convert_sql($sqlg3));
+						$resultg3 = mysql_query(convertSQL($sqlg3));
 						$rowg3 = mysql_fetch_array($resultg3);
 					echo "<br><br><br><strong>".$rowg3["idioma"]." - ".$rowg2["name"]."</strong> : <a href=\"index.php?op=1001&sop=21&id_grupo=".$rowg2["id"]."\">[ Ver todas ]</a>";
 				if ($rowg["admin"] == 1) { echo " <strong>Eres administrador</strong>"; }
 				if ($rowg["admin"] == 0) { $sql = "select * from sgm_news_posts WHERE (id_grupo=".$rowg["id_news"].") AND (id_user=".$userid.") AND (visible=1) AND (validada=1) ORDER BY fecha DESC,hora DESC"; }
 				if ($rowg["admin"] == 1) { $sql = "select * from sgm_news_posts WHERE (id_grupo=".$rowg["id_news"].") AND (visible=1) ORDER BY fecha DESC,hora DESC"; }
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$count = 1;
 				echo "<br>";
 				while ($row = mysql_fetch_array($result)) {
@@ -290,7 +290,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql.",id_site=".$_POST["id_site"]."";
 			$sql = $sql.",validada=1";
 			$sql = $sql." WHERE id=".$_POST["id_new"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 2) {
 			$sql = "insert into sgm_news_elementos_news (id_new,id_elemento) ";
@@ -298,11 +298,11 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql."'".$_GET["id_new"]."'";
 			$sql = $sql.",".$_POST["id_elemento"]."";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$sql = "delete from sgm_news_elementos_news WHERE id_elemento=".$_GET["id_element"]." and id_new=".$_GET["id_new"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		if ($_GET["id_new"] != "") {
@@ -319,7 +319,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 		}
 			echo "<br><br>";
 		$sqlnew = "select * from sgm_news_posts WHERE id=".$_GET["id_new"];
-		$resultnew = mysql_query(convert_sql($sqlnew));
+		$resultnew = mysql_query(convertSQL($sqlnew));
 		$rownew = mysql_fetch_array($resultnew);
 		echo "<table><tr><td>";
 			echo "<input type=\"Hidden\" name=\"id_new\" value=\"".$_GET["id_new"]."\">";
@@ -327,7 +327,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<tr><td>Fuente</td><td><select name=\"id_site\" class=\"px400\">";
 				echo "<option value=\"0\">- Selecciona un fuente -</option>";
 				$sql = "select * from sgm_news_sites WHERE showonweb=1";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					if ($rownew["id_site"] == $row["id"]) {
 						echo "<option value=\"".$row["id"]."\" selected>".$row["name"]."</option>";
@@ -338,13 +338,13 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<tr><td>Grupo de noticias</td><td><select name=\"id_grupo\" class=\"px400\">";
 				echo "<option value=\"0\">- Selecciona un grupo -</option>";
 				$sql2 = "select * from sgm_news_grupos order by id_idioma";
-				$result2 = mysql_query(convert_sql($sql2));
+				$result2 = mysql_query(convertSQL($sql2));
 				while ($row2 = mysql_fetch_array($result2)) {
 					$sql = "select * from sgm_users_permisos_news WHERE id_news=".$row2["id"]." and id_user=".$userid;
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					while ($row = mysql_fetch_array($result)) {
 						$sql3 = "select * from sgm_idiomas WHERE id=".$row2["id_idioma"];
-						$result3 = mysql_query(convert_sql($sql3));
+						$result3 = mysql_query(convertSQL($sql3));
 						$row3 = mysql_fetch_array($result3);
 							if ($rownew["id_grupo"] == $row2["id"]) {
 								echo "<option value=\"".$row2["id"]."\" selected>".$row3["idioma"]." - ".$row2["name"]."</option>";
@@ -383,11 +383,11 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<br><br><strong>Elementos a incluir en el contenido:</strong><br><br>";
 				echo "<form action=\"index.php?op=1001&sop=15&ssop=2&id_new=".$_GET["id_new"]."\" method=\"post\">";
 				$sql = "select * from sgm_news_elementos_tipos order by nombre";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				echo "<select name=\"id_elemento\" style=\"width:250px\">";
 				while ($row = mysql_fetch_array($result)) {
 					$sqlele = "select * from sgm_news_elementos where id_tipo=".$row["id"];
-					$resultele = mysql_query(convert_sql($sqlele));
+					$resultele = mysql_query(convertSQL($sqlele));
 					while ($rowele = mysql_fetch_array($resultele)) {
 						echo "<option value=\"".$rowele["id"]."\">".$row["nombre"]." - ".$rowele["name"]."</option>";
 					}
@@ -398,10 +398,10 @@ if (($option == 1001) AND ($autorizado == true)) {
 				echo "<img src=\"mgestion/pics/icons-mini/error.png\" border=\"0\"> Guarda primero los cambios o se perderán.";
 				echo "<br><br><br><strong>Elementos incluidos en el contenido:</strong><br>";
 				$sql = "select * from sgm_news_elementos_news where id_new=".$_GET["id_new"];
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					$sqlele = "select * from sgm_news_elementos where id=".$row["id_elemento"];
-					$resultele = mysql_query(convert_sql($sqlele));
+					$resultele = mysql_query(convertSQL($sqlele));
 					$rowele = mysql_fetch_array($resultele);
 					if ($rowele["id_tipo"] == 1) {
 						echo "<br><a href=\"javascript:emoticon('[img]".$urloriginal."/uploads/".$rowele["name"]."[/img]')\"><img src=\"mgestion/pics/icons-mini/page_white_copy.png\" border=\"0\"></a>";
@@ -433,17 +433,17 @@ if (($option == 1001) AND ($autorizado == true)) {
 	if ($soption == 20) {
 		#suma lecturas
 		$sql8 = "select * from sgm_news_posts WHERE id=".$_GET["id_new"];
-		$result8 = mysql_query(convert_sql($sql8));
+		$result8 = mysql_query(convertSQL($sql8));
 		$row8 = mysql_fetch_array($result8);
 		$visitas = $row8["lecturas"] + 1;
 
 		$sql9 = "update sgm_news_posts set ";
 		$sql9 = $sql9."lecturas=".$visitas;
 		$sql9 = $sql9." WHERE id=".$_GET["id_new"];
-		mysql_query(convert_sql($sql9));
+		mysql_query(convertSQL($sql9));
 		#final suma lecturas
 		$sqlnew = "select * from sgm_news_posts WHERE id=".$_GET["id_new"];
-		$resultnew = mysql_query(convert_sql($sqlnew));
+		$resultnew = mysql_query(convertSQL($sqlnew));
 		$rownew = mysql_fetch_array($resultnew);
 		echo "<table><tr>";
 				echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
@@ -461,7 +461,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<br> Fecha : <em>".fechalarga($rownew["fecha"])." ".hora($rownew["hora"])."</em>";
 			echo "<hr><br><center><strong>\"".$rownew["asunto"]."\"</strong></center><br><br>".verpost($rownew["cuerpo"])."<br><br>";
 			$sqlsite = "select * from sgm_news_sites WHERE id=".$rownew["id_site"];
-			$resultsite = mysql_query(convert_sql($sqlsite));
+			$resultsite = mysql_query(convertSQL($sqlsite));
 			$rowsite = mysql_fetch_array($resultsite);
 			echo "<hr>Fuente : ";
 			echo "<br><strong><a href=\"".$rowsite["url"]."\" target=\"_blank\">".$rowsite["name"]."</a></strong>";
@@ -474,10 +474,10 @@ if (($option == 1001) AND ($autorizado == true)) {
 		echo "</td><td style=\"vertical-align:top;wicth:160px;text-align:center;\">";
 				echo "<br><br><br><strong>Elementos incluidos :</strong><br>";
 				$sql = "select * from sgm_news_elementos_news where id_new=".$_GET["id_new"];
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					$sqlele = "select * from sgm_news_elementos where id=".$row["id_elemento"];
-					$resultele = mysql_query(convert_sql($sqlele));
+					$resultele = mysql_query(convertSQL($sqlele));
 					$rowele = mysql_fetch_array($resultele);
 					if ($rowele["id_tipo"] == 1) { echo "<br><br><a href=\"uploads/".$rowele["name"]."\" target=\"_blank\"><img src=\"uploads/".$rowele["name"]."\" border=\"0\" width=\"150\" /></a>"; }
 					if ($rowele["id_tipo"] == 2) { echo "<br><br><table><tr><td><a href=\"uploads/".$rowele["name"]."\"><img src=\"pics/docs/video.gif\" border=\"0\"/></a></td><td><a href=\"".$urloriginal."/backoffice/uploads/".$rowele["name"]."\"><strong style=\"color:gray\">DESCARGAR VIDEO</strong><br><br>".$rowele["name"]."</a></td></tr></table>"; }
@@ -499,11 +499,11 @@ if (($option == 1001) AND ($autorizado == true)) {
 		echo "<tr><td style=\"width:780px;\">";
 			echo "<strong>Todos&nbsp;los&nbsp;contenidos&nbsp;publicados&nbsp;en&nbsp;el&nbsp;grupo :</strong>";
 			$sqlg = "select * from sgm_news_grupos WHERE id=".$_GET["id_grupo"];
-			$resultg = mysql_query(convert_sql($sqlg));
+			$resultg = mysql_query(convertSQL($sqlg));
 			$rowg = mysql_fetch_array($resultg);
 			echo "&nbsp;<strong>\"".$rowg["name"]."\"</strong>";
 			$sqlm = "select count(*) as total from sgm_news_posts WHERE id_grupo=".$_GET["id_grupo"]." AND visible=1";
-			$resultm = mysql_query(convert_sql($sqlm));
+			$resultm = mysql_query(convertSQL($sqlm));
 			$rowm = mysql_fetch_array($resultm);
 			if ($_GET["page"] == "") { $page = 1; } else { $page = $_GET["page"]; }
 			$match4page = 20;
@@ -521,7 +521,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "<br>";
 			$date = getdate(); 
 			$sql = "select * from sgm_news_posts WHERE visible=1 AND id_grupo=".$rowg["id"]." ORDER BY fecha DESC,hora DESC";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				if (($count <= $maxup) AND ($count >= $mindown)) {
 						echo "<br>";
@@ -546,7 +546,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql.",'".$_POST["banner"]."'";
 			$sql = $sql.",".$_POST["showonweb"]."";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_news_sites set ";
@@ -555,11 +555,11 @@ if (($option == 1001) AND ($autorizado == true)) {
 			$sql = $sql.",banner='".$_POST["banner"]."'";
 			$sql = $sql.",showonweb=".$_POST["showonweb"]."";
 			$sql = $sql." WHERE id=".$_POST["id_site"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$sql = "delete from sgm_news_sites WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 			echo "<strong>Administración de Fuentes para Contenidos :</strong><br><br>";
@@ -597,14 +597,14 @@ if (($option == 1001) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_news_sites ORDER BY name";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<form action=\"index.php?op=1001&sop=30&ssop=2\" method=\"post\">";
 				echo "<input type=\"Hidden\" name=\"id_site\" value=\"".$row["id"]."\">";
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\">".$row["id"]."</td>";
 						$sqlt = "select count(*) as total from sgm_news_posts where id_site=".$row["id"];
-						$resultt = mysql_query(convert_sql($sqlt));
+						$resultt = mysql_query(convertSQL($sqlt));
 						$rowt = mysql_fetch_array($resultt);
 					echo "<td style=\"text-align:right;\">".$rowt["total"]."</td>";
 					echo "<td><input type=\"Text\" name=\"name\" value=\"".$row["name"]."\" style=\"width:200px\"></td>";
@@ -641,7 +641,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 
 	if (($soption == 40) and ($admin == true)) {
 		$sql = "select * from sgm_users order by usuario";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 			echo "<strong>Administración de Usuarios para Contenidos :</strong><br><br>";
 			echo "<table><tr>";
 					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
@@ -659,7 +659,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1002&sop=2\" method=\"post\">";
 				echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$row["id"]."\">";
 				$sqlt = "select count(*) as total from sgm_users_permisos_news where id_user=".$row["id"];
-				$resultt = mysql_query(convert_sql($sqlt));
+				$resultt = mysql_query(convertSQL($sqlt));
 				$rowt = mysql_fetch_array($resultt);
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1001&sop=41&id_user=".$row["id"]."\">";
 				if ($total =! 0){echo "<img src=\"mgestion/pics/icons-mini/application_key.png\" border=\"0\"></a></td>";}
@@ -674,7 +674,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 		if ($ssoption == 1) {
 			if ($_POST["permiso"] == 0) {
 				$sql = "delete from sgm_users_permisos_news WHERE id_user=".$_GET["id_user"]." and id_news=".$_POST["id_news"];
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			if ($_POST["permiso"] == 1) {
 				$sql = "insert into sgm_users_permisos_news (id_user,id_news) ";
@@ -682,14 +682,14 @@ if (($option == 1001) AND ($autorizado == true)) {
 				$sql = $sql."".$_GET["id_user"]."";
 				$sql = $sql.",".$_POST["id_news"]."";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_users_permisos_news set ";
 			$sql = $sql."admin=".$_POST["admin"]."";
 			$sql = $sql." WHERE id_user=".$_GET["id_user"]." and id_news=".$_POST["id_news"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>Permisos de: ".$row["usuario"]."</strong>";
@@ -701,10 +701,10 @@ if (($option == 1001) AND ($autorizado == true)) {
 		echo "</tr></table>";
 		echo "<br><br>";
 		$sql = "select * from sgm_users where id=".$_GET["id_user"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		$sql = "select * from sgm_news_grupos order by name";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		echo "<center><table cellpadding=\"1\" cellspacing=\"0\">";
 		echo "<tr style=\"background-color:silver\">";
 			echo "<td></td>";
@@ -715,7 +715,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 		echo "</tr>";
 		while ($row = mysql_fetch_array($result)) {
 			$sqlt = "select count(*) as total from sgm_users_permisos_news where id_user=".$_GET["id_user"]." and id_news=".$row["id"];
-			$resultt = mysql_query(convert_sql($sqlt));
+			$resultt = mysql_query(convertSQL($sqlt));
 			$rowt = mysql_fetch_array($resultt);
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1001&sop=41&ssop=1&id_user=".$_GET["id_user"]."\" method=\"post\">";
@@ -734,7 +734,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 				echo "</form>";
 				if ($rowt["total"] == 1) {
 					$sqlx = "select * from sgm_users_permisos_news where id_user=".$_GET["id_user"]." and id_news=".$row["id"];
-					$resultx = mysql_query(convert_sql($sqlx));
+					$resultx = mysql_query(convertSQL($sqlx));
 					$rowx = mysql_fetch_array($resultx);
 					echo "<form action=\"index.php?op=1001&sop=41&ssop=2&id_user=".$_GET["id_user"]."\" method=\"post\">";
 					echo "<input type=\"Hidden\" name=\"id_news\" value=\"".$row["id"]."\">";
@@ -761,17 +761,17 @@ if (($option == 1001) AND ($autorizado == true)) {
 	if ($soption == 50) {
 		if ($ssoption == 3) {
 			$sql = "delete from sgm_news_elementos WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<strong>Gestión de Elementos.</strong>";
 			echo "<table cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"width:400px;vertical-align:top;\">";
 						echo "<br><br><strong>Listado de Elementos disponibles :</strong>";
 						$sql = "select * from sgm_news_elementos_tipos order by nombre";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						echo "<table>";
 						while ($row = mysql_fetch_array($result)) {
 							$sqlele = "select * from sgm_news_elementos where id_tipo=".$row["id"];
-							$resultele = mysql_query(convert_sql($sqlele));
+							$resultele = mysql_query(convertSQL($sqlele));
 							while ($rowele = mysql_fetch_array($resultele)) {
 								echo "<tr><td style=\"text-align:right;\">".$row["nombre"]."</td>";
 								echo "<td><strong>".$rowele["name"]."</strong>";
@@ -786,7 +786,7 @@ if (($option == 1001) AND ($autorizado == true)) {
 					echo "<center>";
 					echo "<select name=\"id_tipo\" style=\"width:200px\">";
 						$sql = "select * from sgm_news_elementos_tipos order by nombre";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
 						}
@@ -805,14 +805,14 @@ if (($option == 1001) AND ($autorizado == true)) {
 		$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
 		$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
 		$sql = "select * from sgm_news_elementos_tipos where id=".$HTTP_POST_VARS["id_tipo"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		$lim_tamano = $row["limite_kb"]*1000;
 		$sqlt = "select count(*) as total from sgm_news_elementos where name='".$archivo_name."'";
-		$resultt = mysql_query(convert_sql($sqlt));
+		$resultt = mysql_query(convertSQL($sqlt));
 		$rowt = mysql_fetch_array($resultt);
 		if ($rowt["total"] != 0) {
-			echo mensaje_error("No se puede añadir elemento por que ya existe uno con el mismo nombre.");
+			echo mensageError("No se puede añadir elemento por que ya existe uno con el mismo nombre.");
 		} else {
 			if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size <= $lim_tamano)){
 			    if (copy ($archivo, "uploads/".$archivo_name)) {
@@ -829,10 +829,10 @@ if (($option == 1001) AND ($autorizado == true)) {
 					$sql = $sql.",'".$archivo_type."'";
 					$sql = $sql.",".$archivo_size."";
 					$sql = $sql.")";
-					mysql_query(convert_sql($sql));
+					mysql_query(convertSQL($sql));
 	              }
 				} else {
-				    echo mensaje_error("<h2>No ha podido transferirse el fichero</h2><br><h3>su tamaño no puede exceder de ".$lim_tamano." bytes</h3>");
+				    echo mensageError("<h2>No ha podido transferirse el fichero</h2><br><h3>su tamaño no puede exceder de ".$lim_tamano." bytes</h3>");
 			}
 		}
 	}

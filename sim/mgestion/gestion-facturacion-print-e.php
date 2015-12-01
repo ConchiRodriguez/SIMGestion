@@ -20,11 +20,11 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
@@ -39,7 +39,7 @@ if ($_COOKIE["musername"] == "") {
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -62,17 +62,17 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqli = "select * from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 		$rowpermiso = mysql_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
@@ -96,27 +96,27 @@ function factura_print_e($id)
 		$residencia = array('R','U','E');
 
 		$sqlcabezera = "select * from sgm_cabezera where id=".$id;
-		$resultcabezera = mysql_query(convert_sql($sqlcabezera));
+		$resultcabezera = mysql_query(convertSQL($sqlcabezera));
 		$rowcabezera = mysql_fetch_array($resultcabezera);
 
 		$sqlx = "select * from sgm_clients where id=".$rowcabezera["id_cliente"];
-		$resultx = mysql_query(convert_sql($sqlx));
+		$resultx = mysql_query(convertSQL($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 
 		$sqlsys = "select siglas from sgm_paises where id=".$rowx["id_pais"];
-		$resultsys = mysql_query(convert_sql($sqlsys));
+		$resultsys = mysql_query(convertSQL($sqlsys));
 		$rowsys = mysql_fetch_array($resultsys);
 
 		$sqldiv = "select abrev from sgm_divisas where id=".$rowcabezera["id_divisa"];
-		$resultdiv = mysql_query(convert_sql($sqldiv));
+		$resultdiv = mysql_query(convertSQL($sqldiv));
 		$rowdiv = mysql_fetch_array($resultdiv);
 
 		$sqlcc = "select nombre,apellido1,apellido2 from sgm_clients_contactos where pred=1 and id_client=".$rowcabezera["id"];
-		$resultcc = mysql_query(convert_sql($sqlcc));
+		$resultcc = mysql_query(convertSQL($sqlcc));
 		$rowcc = mysql_fetch_array($resultcc);
 
 		$sqlele = "select * from sgm_dades_origen_factura";
-		$resultele = mysql_query(convert_sql($sqlele));
+		$resultele = mysql_query(convertSQL($sqlele));
 		$rowele = mysql_fetch_array($resultele);
 		
 		$f = fopen('efactura.xml','w+');
@@ -331,11 +331,11 @@ function factura_print_e($id)
 		$content .= "			<Items>\n";
 
 	$sqlco = "select * from sgm_contratos where id=".$rowcabezera["id_contrato"];
-	$resultco = mysql_query(convert_sql($sqlco));
+	$resultco = mysql_query(convertSQL($sqlco));
 	$rowco = mysql_fetch_array($resultco);
 
 	$sqlcuerpo = "select * from sgm_cuerpo where idfactura=".$rowcabezera["id"];
-	$resultcuerpo = mysql_query(convert_sql($sqlcuerpo));
+	$resultcuerpo = mysql_query(convertSQL($sqlcuerpo));
 	while ($rowcuerpo = mysql_fetch_array($resultcuerpo)){
 
 		$content .= "				<InvoiceLine>\n";
@@ -407,7 +407,7 @@ function factura_print_e($id)
 		$content .= "				</InvoiceLine>\n";
 	}
 	$sqliban = "select * from sgm_dades_origen_factura_iban where id=".$rowcabezera["id_dades_origen_factura_iban"];
-	$resultiban = mysql_query(convert_sql($sqliban));
+	$resultiban = mysql_query(convertSQL($sqliban));
 	$rowiban = mysql_fetch_array($resultiban);
 
 		$content .= "			</Items>\n";

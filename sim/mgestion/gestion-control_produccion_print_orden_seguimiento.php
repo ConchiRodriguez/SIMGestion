@@ -18,11 +18,11 @@ if ($soption == 666) {
 if ($_COOKIE["username"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("username", $_POST["user"], time()+86400*$cookiestime, "/", $domain);
@@ -34,11 +34,11 @@ if ($_COOKIE["username"] == "") {
 }
 else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ( md5( $row["pass"] ) == $_COOKIE["password"] ) {
 			$user = true;
@@ -64,11 +64,11 @@ $autorizado = true;
 if ($autorizado == true) {
 
 		$sqlp = "select * from sgm_cuerpo where id=".$_GET["id"];
-		$resultp = mysql_query(convert_sql($sqlp));
+		$resultp = mysql_query(convertSQL($sqlp));
 		$rowp = mysql_fetch_array($resultp);
 
 		$sqlf = "select * from sgm_cabezera where id=".$rowp["idfactura"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 
 		echo "<table style=\"width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr><td style=\"width:50%;vertical-align : top;text-align:left;\">";
@@ -91,17 +91,17 @@ if ($autorizado == true) {
 
 
 		$sqlp = "select count(*) as total from sgm_cuerpo_orden_seguimiento where id_cuerpo=".$_GET["id"];
-		$resultp = mysql_query(convert_sql($sqlp));
+		$resultp = mysql_query(convertSQL($sqlp));
 		$rowp = mysql_fetch_array($resultp);
 		if ($rowp["total"] == 0) {
 			$sql1 = "insert into sgm_cuerpo_orden_seguimiento (id_cuerpo) ";
 			$sql1 = $sql1."values (";
 			$sql1 = $sql1."".$_GET["id"];
 			$sql1 = $sql1.")";
-			mysql_query(convert_sql($sql1));
+			mysql_query(convertSQL($sql1));
 		}
 		$sql = "select * from sgm_cuerpo_orden_seguimiento where id_cuerpo=".$_GET["id"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 
 
@@ -424,7 +424,7 @@ if ($autorizado == true) {
 		echo "<td>";
 
 		$sqlf = "select * from sgm_cuerpo where id_cuerpo=".$_GET["id"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$x = 0;
 		while ($rowf = mysql_fetch_array($resultf)) {
 			if ($x == 1) { echo "<br>- <strong>".number_format($rowf["unidades"],2,',','.')."</strong> unidad/es de <strong>".$rowf["nombre"]."</strong>"; }

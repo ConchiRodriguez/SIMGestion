@@ -19,11 +19,11 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
@@ -39,7 +39,7 @@ else {
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -80,17 +80,17 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqli = "select * from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 		$rowpermiso = mysql_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
@@ -98,7 +98,7 @@ if ($user == true) {
 if ($autorizado == true) {
 	if ($_POST["carta"] != "") {
 		$sql = "select * from sgm_cartas where id=".$_POST["carta"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		$clients = $_POST["clients"];
 		for ($i = 0; $i < strlen($clients) ; $i++){

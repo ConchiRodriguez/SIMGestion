@@ -13,11 +13,11 @@ $user = false;
 if ($_COOKIE["username"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("username", $_POST["user"], time()+86400*$cookiestime, "/", $domain);
@@ -29,11 +29,11 @@ if ($_COOKIE["username"] == "") {
 }
 else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ( md5( $row["pass"] ) == $_COOKIE["password"] ) {
 			$user = true;
@@ -59,7 +59,7 @@ $autorizado = true;
 if ($autorizado == true) {
 
 		$sqlf = "select * from sgm_cabezera where id=".$_GET["id"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 
 		echo "<table style=\"width:640px\" cellpadding=\"2\" cellspacing=\"2\" ><tr><td style=\"width:50px;vertical-align : top;text-align:left;\">";
@@ -77,7 +77,7 @@ if ($autorizado == true) {
 
 
 		$sqlx = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by id";
-		$resultx = mysql_query(convert_sql($sqlx));
+		$resultx = mysql_query(convertSQL($sqlx));
 		$x = 0;
 		while ($rowx = mysql_fetch_array($resultx)) {
 			if ($x == 1) { $sql2 = $sql2." or id_cuerpo=".$rowx["id"]; }
@@ -85,12 +85,12 @@ if ($autorizado == true) {
 		}
 		$sql = "select * from sgm_cuerpo where ".$sql2." order by id";
 
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		echo "<table cellpadding=\"0\" cellspacing=\"0\" style=\"border:0px;width:640px\"><tr><td><strong>LISTA DE MATERIALES :</strong><br><br></td></tr>";
 		while ($row = mysql_fetch_array($result)) {
 
 			$sql2 = "select * from sgm_cuerpo where id=".$row["id_cuerpo"];
-			$result2 = mysql_query(convert_sql($sql2));
+			$result2 = mysql_query(convertSQL($sql2));
 			$row2 = mysql_fetch_array($result2);
 
 

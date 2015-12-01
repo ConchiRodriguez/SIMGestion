@@ -36,11 +36,11 @@ error_reporting(E_ALL);
 	$pdf->AddPage();
 	$pdf->SetFont('times','B',16);
 	$sql = "select * from sgm_clients where id=".$_GET["id"];
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 
 	$sqlt = "select * from sgm_clients_tratos where id=".$row["id_trato"];
-	$resultt = mysql_query(convert_sql($sqlt));
+	$resultt = mysql_query(convertSQL($sqlt));
 	$rowt = mysql_fetch_array($resultt);
 	$pdf->Cell(0,10,"".$rowt["trato"]." ".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."",0,1);
 	$pdf->SetFont('times','',10);
@@ -50,13 +50,13 @@ error_reporting(E_ALL);
 		$direccion = $row["cvia"]." ".$row["direccion"];
 	} else {
 		$sqlt = "select * from sgm_clients_carrer_tipo where id=".$row["id_tipo_carrer"];
-		$resultt = mysql_query(convert_sql($sqlt));
+		$resultt = mysql_query(convertSQL($sqlt));
 		$rowt = mysql_fetch_array($resultt);
 		$sqlc = "select * from sgm_clients_carrer where id=".$row["id_carrer"];
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$sqlz = "select * from sgm_clients_sector_zf where id=".$row["id_sector_zf"];
-		$resultz = mysql_query(convert_sql($sqlz));
+		$resultz = mysql_query(convertSQL($sqlz));
 		$rowz = mysql_fetch_array($resultz);
 		$direccion = $rowt["nombre"]." ".$rowc["nombre"]."";
 		if ($row["numero"] > 0){ $direccion .= " num.";}
@@ -68,15 +68,15 @@ error_reporting(E_ALL);
 	$pdf->Cell(0,5,"".$row["provincia"]." ".$row["mail"]."",0,1);
 	if ($row["id_agrupacio"] > 0){
 		$sqlj = "select count(*) as total from sgm_clients where visible=1 and id_agrupacio=".$row["id_agrupacio"]." and id<>".$row["id"];
-		$resultj = mysql_query(convert_sql($sqlj));
+		$resultj = mysql_query(convertSQL($sqlj));
 		$rowj = mysql_fetch_array($resultj);
 		$sqlj2 = "select count(*) as total from sgm_clients where visible=1 and id=".$row["id_agrupacio"];
-		$resultj2 = mysql_query(convert_sql($sqlj2));
+		$resultj2 = mysql_query(convertSQL($sqlj2));
 		$rowj2 = mysql_fetch_array($resultj2);
 	}
 	if ($row["id_agrupacio"] == 0){
 		$sqlj3 = "select count(*) as total from sgm_clients where visible=1 and id_agrupacio=".$row["id"]." and id<>".$row["id_agrupacio"];
-		$resultj3 = mysql_query(convert_sql($sqlj3));
+		$resultj3 = mysql_query(convertSQL($sqlj3));
 		$rowj3 = mysql_fetch_array($resultj3);
 	}
 	if (($rowj["total"] > 0) or ($rowj2["total"] > 0) or ($rowj3["total"] > 0)){
@@ -84,19 +84,19 @@ error_reporting(E_ALL);
 		$pdf->Cell(40,10,"Contacto Principal y Delegaciones",0,1);
 	}
 	$sqlc = "select * from sgm_clients where visible=1 order by nombre";
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	while ($rowc = mysql_fetch_array($resultc)) {
 		if( $rowc["id_carrer"] < 0 ){
 			$direccion1 = $rowc["cvia"]." ".$rowc["direccion"];
 		} else {
 			$sqlt = "select * from sgm_clients_carrer_tipo where id=".$rowc["id_tipo_carrer"];
-			$resultt = mysql_query(convert_sql($sqlt));
+			$resultt = mysql_query(convertSQL($sqlt));
 			$rowt = mysql_fetch_array($resultt);
 			$sqlca = "select * from sgm_clients_carrer where id=".$rowc["id_carrer"];
-			$resultca = mysql_query(convert_sql($sqlca));
+			$resultca = mysql_query(convertSQL($sqlca));
 			$rowca = mysql_fetch_array($resultca);
 			$sqlz = "select * from sgm_clients_sector_zf where id=".$rowc["id_sector_zf"];
-			$resultz = mysql_query(convert_sql($sqlz));
+			$resultz = mysql_query(convertSQL($sqlz));
 			$rowz = mysql_fetch_array($resultz);
 			$direccion1 = $rowt["nombre"]." ".$rowca["nombre"]."";
 			if ($row["numero"] > 0){ $direccion1 .= " num.";}
@@ -157,15 +157,15 @@ error_reporting(E_ALL);
 	}
 	if ($row["id_origen"] > 0){
 		$sqlj = "select count(*) as total from sgm_clients where visible=1 and id_origen=".$row["id_origen"]." and id<>".$row["id"];
-		$resultj = mysql_query(convert_sql($sqlj));
+		$resultj = mysql_query(convertSQL($sqlj));
 		$rowj = mysql_fetch_array($resultj);
 		$sqlj2 = "select count(*) as total from sgm_clients where visible=1 and id=".$row["id_origen"];
-		$resultj2 = mysql_query(convert_sql($sqlj2));
+		$resultj2 = mysql_query(convertSQL($sqlj2));
 		$rowj2 = mysql_fetch_array($resultj2);
 	}
 	if ($row["id_origen"] == 0){
 		$sqlj3 = "select count(*) as total from sgm_clients where visible=1 and id_origen=".$row["id"]." and id<>".$row["id_origen"];
-		$resultj3 = mysql_query(convert_sql($sqlj3));
+		$resultj3 = mysql_query(convertSQL($sqlj3));
 		$rowj3 = mysql_fetch_array($resultj3);
 	}
 	if ((($row["id_origen"] > 0) and (($rowj["total"] > 0) or ($rowj2["total"] > 0))) or (($row["id_origen"] == 0) and ($rowj3["total"] > 0))){
@@ -173,19 +173,19 @@ error_reporting(E_ALL);
 		$pdf->Cell(40,10,"Delegación Central",0,1);
 	}
 	$sqlc = "select * from sgm_clients where visible=1 order by nombre";
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	while ($rowc = mysql_fetch_array($resultc)) {
 		if( $rowc["id_carrer"] < 0 ){
 			$direccion2 = $rowc["cvia"]." ".$rowc["direccion"];
 		} else {
 			$sqlt = "select * from sgm_clients_carrer_tipo where id=".$rowc["id_tipo_carrer"];
-			$resultt = mysql_query(convert_sql($sqlt));
+			$resultt = mysql_query(convertSQL($sqlt));
 			$rowt = mysql_fetch_array($resultt);
 			$sqlca = "select * from sgm_clients_carrer where id=".$rowc["id_carrer"];
-			$resultca = mysql_query(convert_sql($sqlca));
+			$resultca = mysql_query(convertSQL($sqlca));
 			$rowca = mysql_fetch_array($resultca);
 			$sqlz = "select * from sgm_clients_sector_zf where id=".$rowc["id_sector_zf"];
-			$resultz = mysql_query(convert_sql($sqlz));
+			$resultz = mysql_query(convertSQL($sqlz));
 			$rowz = mysql_fetch_array($resultz);
 			$direccion2 = $rowt["nombre"]." ".$rowca["nombre"]."";
 			if ($row["numero"] > 0){ $direccion2 .= " num.";}
@@ -229,10 +229,10 @@ error_reporting(E_ALL);
 	$pdf->SetFont('times','',10);
 	$pdf->Cell(40,10,"Contactos Personales",0,1);
 	$sqlc = "select * from sgm_clients_contactos where id_client=".$_GET["id"];
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	while ($rowc = mysql_fetch_array($resultc)) {
 		$sqlt = "select * from sgm_clients_tratos where id=".$rowc["id_trato"];
-		$resultt = mysql_query(convert_sql($sqlt));
+		$resultt = mysql_query(convertSQL($sqlt));
 		$rowt = mysql_fetch_array($resultt);
 		$pdf->SetFont('times','',8);
 		$pdf->Cell(0,5,"".$rowt["trato"]." ".$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"]." ".$rowc["telefono"]." ".$rowc["movil"]." ".$rowc["fax"]." ".$rowc["mail"]."",0,1);

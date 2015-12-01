@@ -51,7 +51,7 @@ if (($option == 1022) AND ($autorizado == true)) {
 			$buffer = fgets($DescriptorFichero,4096); 
 			$longitud = strlen($buffer)-2;
 			$sql = substr($buffer, 0, $longitud);
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			echo $sql."<BR>"; 
 		} 
 	}
@@ -59,22 +59,22 @@ if (($option == 1022) AND ($autorizado == true)) {
 	if ($soption == 3){
 		if ($ssoption == 1){
 			$sqlser = "select * from sgm_incidencias_servicios where visible=0 order by servicio";
-			$resultser = mysql_query(convert_sql($sqlser));
+			$resultser = mysql_query(convertSQL($sqlser));
 			while ($rowser = mysql_fetch_array($resultser)) {
 				$sql = "update sgm_incidencias_servicios_cliente set ";
 				$sql = $sql."visible=0";
 				$sql = $sql." WHERE id_servicio=".$rowser["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 2){
 			$sqlser = "select * from sgm_incidencias_servicios_estados where visible=0 order by servicio";
-			$resultser = mysql_query(convert_sql($sqlser));
+			$resultser = mysql_query(convertSQL($sqlser));
 			while ($rowser = mysql_fetch_array($resultser)) {
 				$sql = "update sgm_incidencias_servicios_cliente set ";
 				$sql = $sql."visible=0";
 				$sql = $sql." WHERE id_estado=".$rowser["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 

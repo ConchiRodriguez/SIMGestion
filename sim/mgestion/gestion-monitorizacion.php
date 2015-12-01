@@ -82,7 +82,7 @@ if (($option == 1025) AND ($autorizado == true)) {
 				echo "<th>".$Valor."</th>";
 			echo "</tr>";
 			$sql = "select * from sgm_clients_servidors_param";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			echo "<form action=\"index.php?op=1025&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
 			echo "<tr><td>CPU</td><td><input name=\"cpu\" type=\"Text\" value=\"".$row["cpu"]."\" style=\"width:100px\"></td></tr>";
@@ -111,13 +111,13 @@ if (($option == 1025) AND ($autorizado == true)) {
 
 #	if ($soption == 1234) {
 #		$sql = "select * from sgm_clients_bases_dades";
-#		$result = mysql_query(convert_sql($sql));
+#		$result = mysql_query(convertSQL($sql));
 #		while ($row = mysql_fetch_array($result)) {
 #			$cadena = encrypt($row["pass"], $simclau);
 #			$sql = "update sgm_clients_bases_dades set ";
 #			$sql = $sql."pass='".$cadena."'";
 #			$sql = $sql." WHERE id=".$row["id"]."";
-#			mysql_query(convert_sql($sql));
+#			mysql_query(convertSQL($sql));
 #			echo $sql."<br>";
 #		}
 #	}

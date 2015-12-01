@@ -45,7 +45,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			$sql = "update sgm_idiomas set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id<>".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$camposUpdate=array('predefinido');
 			$datosUpdate=array(1);
 			updateFunction("sgm_idiomas",$_GET["id"],$camposUpdate,$datosUpdate);
@@ -77,7 +77,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "</form>";
 			echo "</tr>";
 			$sql = "select * from sgm_idiomas where visible=1";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 					$color = "white";
 					if ($row["predefinido"] == 1) { $color = "#FF4500"; }
@@ -135,7 +135,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			$sql = "update sgm_paises set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id<>".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$camposUpdate=array('predefinido');
 			$datosUpdate=array(1);
 			updateFunction("sgm_paises",$_GET["id"],$camposUpdate,$datosUpdate);
@@ -167,7 +167,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_paises where visible=1 order by pais";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 					$color = "white";
 					if ($row["predefinido"] == 1) { $color = "#FF4500"; }

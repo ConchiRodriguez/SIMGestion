@@ -228,6 +228,7 @@ $Empresa = "Empresa";
 $en_orden_alfabetico = " en orden alfab&eacute;tico :";
 $Entidad = "Entidad";
 $Entrada = "Entrada";
+$Entrar = "Entrar";
 $Entrega = "Entrega";
 $Enviar = "Enviar";
 $Envio = "Envio";
@@ -503,6 +504,7 @@ $Realizado = "Realizado";
 $Recalcular = "Recalcular";
 $Recibo = "Recibo";
 $Recibos = "Recibos";
+$Recuperar = "Recuperar";
 $Red = "Red";
 $Referencias = "Referencias";
 $Registrada = "Registrada";
@@ -672,7 +674,7 @@ $MailIncorrecto = "<br>Valor en el campo e-mail incorrecto.";
 $PassIncorrecto = "<br>Valor en los campos passwords incorrecto.";
 $CompletaCorrect = "Completa correctamente todos los campos obligatorios.";
 $InvalidarUsuario = "<br><br>¿Seguro que desea invalidar este usuario?";
-$ErrorPass = "<br><br>Error al introducir las contraseñas<br><br>";
+$ErrorPass = "<br><br>Error al introducir las contrase&ntilde;as<br><br>";
 $NotasDes = "No se puede introducir una incidencia sin texto";
 $cambiarDatos = "Si desea cambiar los datos de la empresa, pongase en contacto con ";
 
@@ -730,6 +732,7 @@ $ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los dif
 <br><strong>Presu</strong> - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.
 <br><strong>D&iacute;as</strong> - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.
 <br><strong>Aprobar</strong> - Dar aprovaci&oacute;n a un presupuesto.
+<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualita n&uacute;mero RFQ.
 ";
 
 $ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
@@ -744,5 +747,16 @@ $pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta a
 $ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
 $ErrorEmpleadoCalendario = "Las fechas no son correctas";
 $ErrorPuestoDasactivar = "No se puede desactivar un puesto de trabajo con un empleado asignado";
+
+$ayudaLogin = "¿Olvidaste el usuario y/o la contrase&ntilde;a?";
+$asuntoMensajeRecuperacion = "Mensaje de recuperaci&oacute;n de contrase&ntilde;a.";
+$textoMensajeRecuperacion1 = "Siga el link para restaurar la contrase&ntilde;a";
+$textoMensajeRecuperacion2 = "No responda este e-mail";
+$ayudaMensajeRecuperacion = "Se ha enviado un e-mail para la recuperaci&oacute;n del usuario y la contrase&ntilde;a a : ";
+$errorMensajeRecuperacion = "Esta direcci&oacute;n e-mail no esta registrada";
+
+$ayudaPanelUserPass = "M&aacute;x. 10 car&aacute;cteres";
+$ayudaPanelUserPass2 = "Si no pudiera hacer correctamente el login de nuevo, borre las cookies referentes a solucions-im.com de su navegador.";
+$errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
 
 ?>

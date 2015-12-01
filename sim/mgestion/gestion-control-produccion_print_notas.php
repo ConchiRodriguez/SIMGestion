@@ -16,11 +16,11 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
@@ -36,7 +36,7 @@ else {
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -53,17 +53,17 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqli = "select * from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 		$rowpermiso = mysql_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
@@ -94,10 +94,10 @@ if ($autorizado == true) {
 	$pdf->AddPage();
 	$pdf->SetFont('times','B',10);
 	$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
-	$resulttipos = mysql_query(convert_sql($sqltipos));
+	$resulttipos = mysql_query(convertSQL($sqltipos));
 	$rowtipos = mysql_fetch_array($resulttipos);
 		$pdf->Cell(70,15,$rowtipos["tipo"]." nº: ".$row["numero"],0,1,'',false);
 		$pdf->MultiCell(70,5,$row["notas_prod"],0,'',false);

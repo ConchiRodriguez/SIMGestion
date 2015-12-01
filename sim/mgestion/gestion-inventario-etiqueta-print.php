@@ -20,7 +20,7 @@ $db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB")
 
 <?php
 $sql = "select * from sgm_inventario where id=".$_GET["id"].$row1["id"];
-$result = mysql_query(convert_sql($sql));
+$result = mysql_query(convertSQL($sql));
 $row = mysql_fetch_array($result);
 echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" >";
 	echo "<tr>";
@@ -30,17 +30,17 @@ echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" >";
 	echo "<tr><td style=\"text-align:right;\">".$Nombre.": </td><td>".$row["nombre"]."</td></tr>";
 	echo "<tr><td style=\"text-align:right;\">".$Tipo.": </td>";
 		$sqlo = "select * from sgm_inventario_tipo where visible=1 and id=".$row["id_tipo"];
-		$resulto = mysql_query(convert_sql($sqlo));
+		$resulto = mysql_query(convertSQL($sqlo));
 		$rowo = mysql_fetch_array($resulto);
 		echo "<td>".$rowo["tipo"]."</td>";
 	echo "</tr>";
 	echo "<tr><td>&nbsp;</td></tr>";
 	echo "<tr><td></td><td><strong>".$Atributos."</strong></td></tr>";
 	$sqla = "select * from sgm_inventario_tipo_atributo where visible=1 and id_tipo=".$row["id_tipo"]."";
-	$resulta = mysql_query(convert_sql($sqla));
+	$resulta = mysql_query(convertSQL($sqla));
 	while ($rowa = mysql_fetch_array($resulta)) {
 		$sqld = "select * from sgm_inventario_tipo_atributo_dada where visible=1 and id_atribut=".$rowa["id"]." and id_inventario=".$row["id"]."";
-		$resultd = mysql_query(convert_sql($sqld));
+		$resultd = mysql_query(convertSQL($sqld));
 		$rowd = mysql_fetch_array($resultd);
 		echo "<tr><td style=\"text-align:right;\">".$rowa["atributo"]." : </td><td>".$rowd["dada"]."</td></tr>";
 	}

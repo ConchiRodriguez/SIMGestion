@@ -1,9 +1,11 @@
 <?php 
-#error_reporting(~E_ALL);
+	error_reporting(~E_ALL);
 
 	include ("../config.php");
-	include ("../../archivos_comunes/functions.php");
-#	$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
+	foreach (glob("../auxiliar/*.php") as $filename)
+	{
+		include ($filename);
+	}
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
@@ -12,6 +14,7 @@
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
+	
 
 class PDF extends FPDF
 {
@@ -74,24 +77,24 @@ class PDF extends FPDF
 		//Creación del objeto de la clase heredada
 	
 		$sqlele = "select * from sgm_dades_origen_factura";
-		$resultele = mysql_query(convert_sql($sqlele));
+		$resultele = mysql_query(convertSQL($sqlele));
 		$rowele = mysql_fetch_array($resultele);
 
 	
 		$sqlcabezera = "select * from sgm_cabezera where id=".$id;
-		$resultcabezera = mysql_query(convert_sql($sqlcabezera));
+		$resultcabezera = mysql_query(convertSQL($sqlcabezera));
 		$rowcabezera = mysql_fetch_array($resultcabezera);
 	
 		$sqlele2 = "select * from sgm_dades_origen_factura_iban where id=".$rowcabezera["id_dades_origen_factura_iban"];
-		$resultele2 = mysql_query(convert_sql($sqlele2));
+		$resultele2 = mysql_query(convertSQL($sqlele2));
 		$rowele2 = mysql_fetch_array($resultele2);
 
 		$sqldi = "select * from sgm_divisas where id=".$rowcabezera["id_divisa"];
-		$resultdi = mysql_query(convert_sql($sqldi));
+		$resultdi = mysql_query(convertSQL($sqldi));
 		$rowdi = mysql_fetch_array($resultdi);
 
 		$sqldiv = "select * from sgm_divisas_mod_canvi where id_divisa=".$rowdi["id"]." order by fecha desc";
-		$resultdiv = mysql_query(convert_sql($sqldiv));
+		$resultdiv = mysql_query(convertSQL($sqldiv));
 		$rowdiv = mysql_fetch_array($resultdiv);
 
 		if ($tipo == 1) {
@@ -160,16 +163,16 @@ class PDF extends FPDF
 
 
 		$sqlx = "select * from sgm_factura_tipos where id=".$rowcabezera["tipo"];
-		$resultx = mysql_query(convert_sql($sqlx));
+		$resultx = mysql_query(convertSQL($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 		if ($idioma == "es"){
 			$fac_tipo = $rowx["tipo"];
 		} else {
 			$sqlid = "select * from sgm_idiomas where idioma='".$idioma."'";
-			$resultid = mysql_query(convert_sql($sqlid));
+			$resultid = mysql_query(convertSQL($sqlid));
 			$rowid = mysql_fetch_array($resultid);
 			$sqli = "select * from sgm_factura_tipos_idiomas where id_tipo=".$rowx["id"]." and id_idioma=".$rowid["id"];
-			$resulti = mysql_query(convert_sql($sqli));
+			$resulti = mysql_query(convertSQL($sqli));
 			$rowi = mysql_fetch_array($resulti);
 			$fac_tipo = $rowi["tipo"];
 		}
@@ -188,7 +191,7 @@ class PDF extends FPDF
 		$unidades2 = 0;
 		$lineas = 0;
 		$sql = "select * from sgm_cuerpo where idfactura=".$id." order by linea";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			$data = date("d / m / y", strtotime($row["fecha_prevision"])); 
 			$X = $this->GetX();
@@ -253,7 +256,7 @@ class PDF extends FPDF
 		$this->Cell(25,5,number_format($rowcabezera["total"], 2, ',', '.').$rowdi["simbolo"],'LBR',1);
 	
 		$sqld = "select * from sgm_divisas where predefinido=1";
-		$resultd = mysql_query(convert_sql($sqld));
+		$resultd = mysql_query(convertSQL($sqld));
 		$rowd = mysql_fetch_array($resultd);
 		
 		if ($rowcabezera["id_divisa"] != $rowd["id"]){
@@ -298,13 +301,12 @@ class PDF extends FPDF
 	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AliasNbPages();
 
-
 	if ($_POST["data_desde"] == ""){
 		$pdf->AddPage();
 		$pdf->factura_print($_GET["id"],$_POST["tipo"]);
 	} else {
 		$sql = "select * from sgm_cabezera where tipo=".$_POST["id_tipo"]." and fecha_prevision between '".cambiarFormatoFechaYMD($_POST["data_desde"])."' and '".cambiarFormatoFechaYMD($_POST["data_fins"])."' and visible=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)){
 			$pdf->AddPage();
 			$pdf->factura_print($row["id"],$_POST["tipo"]);

@@ -16,13 +16,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<br><a href=\"index.php?op=1003&sop=120\">&raquo; ".$Resumenes." por ".$Usuarios."</a>";
 		echo "</td><td style=\"width:20%;vertical-align : top;text-align:left;\">";
 		$sqltipos = "select count(*) as total from sgm_factura_tipos where visible=1";
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
 		$lineas = number_format((($rowtipos["total"])/3), 0, ',', '.');
 		$x = 0;
 		$y = 1;
 		$sqltipos2 = "select * from sgm_factura_tipos where visible=1 order by orden,descripcion";
-		$resulttipos2 = mysql_query(convert_sql($sqltipos2));
+		$resulttipos2 = mysql_query(convertSQL($sqltipos2));
 		while ($rowtipos2 = mysql_fetch_array($resulttipos2)) {
 			if ($x >= ($lineas*$y)) {
 				echo "</td><td style=\"width:20%;vertical-align : top;text-align:left;\">";
@@ -30,11 +30,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			$x++;
 			$sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
-			$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+			$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 			$rowpermiso = mysql_fetch_array($resultpermiso);
 			if ($rowpermiso["total"] > 0) { 
 				$sqlpermiso2 = "select * from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
-				$resultpermiso2 = mysql_query(convert_sql($sqlpermiso2));
+				$resultpermiso2 = mysql_query(convertSQL($sqlpermiso2));
 				$rowpermiso2 = mysql_fetch_array($resultpermiso2);
 				if ($rowpermiso2["admin"] == 0) { echo "<br><a href=\"index.php?op=1003&sop=10&id=".$rowtipos2["id"]."\">&raquo; ".$rowtipos2["tipo"]."</a>"; }
 				if ($rowpermiso2["admin"] == 1) { echo "<br><a href=\"index.php?op=1003&sop=10&id=".$rowtipos2["id"]."\">&raquo; <strong>".$rowtipos2["tipo"]."</strong></a>"; }
@@ -70,14 +70,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
 			}
 			$sql = "select * from sgm_files_tipos where id=".$_POST["id_tipo"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$lim_tamano = $row["limite_kb"]*1000;
 			$sqlt = "select count(*) as total from sgm_files where name='".$archivo_name."'";
-			$resultt = mysql_query(convert_sql($sqlt));
+			$resultt = mysql_query(convertSQL($sqlt));
 			$rowt = mysql_fetch_array($resultt);
 			if ($rowt["total"] != 0) {
-				echo mensaje_error("No se puede añadir archivo por que ya existe uno con el mismo nombre.");
+				echo mensageError("No se puede añadir archivo por que ya existe uno con el mismo nombre.");
 			} else {
 				if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size<=$lim_tamano)){
 					if (copy ($archivo, "files/facturacion/".$archivo_name)) {
@@ -89,10 +89,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$sql = $sql.",".$archivo_size."";
 						$sql = $sql.",".$_GET["id"]."";
 						$sql = $sql.")";
-						mysql_query(convert_sql($sql));
+						mysql_query(convertSQL($sql));
 					}
 				}else{
-					echo mensaje_error("<h2>No ha podido transferirse el archivo.</h2><br><h3>Su tamaño no puede exceder de ".$lim_tamano." bytes.</h2>");
+					echo mensageError("<h2>No ha podido transferirse el archivo.</h2><br><h3>Su tamaño no puede exceder de ".$lim_tamano." bytes.</h2>");
 				}
 			}
 		}
@@ -106,7 +106,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 		if ($ssoption == 1002) {
 			$sql = "delete from sgm_files WHERE id=".$_GET["id_archivo"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			echo "<center>";
 			echo "Operación realizada correctamente.";
 			echo "</center>";
@@ -121,11 +121,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "<table cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"width:600px;vertical-align:top;\">";
 			echo "<strong>".$Listado." de ".$Archivos." :</strong><br><br>";
 						$sql = "select * from sgm_files_tipos order by nombre";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						echo "<table>";
 						while ($row = mysql_fetch_array($result)) {
 							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and id_cuerpo=".$_GET["id"];
-							$resultele = mysql_query(convert_sql($sqlele));
+							$resultele = mysql_query(convertSQL($sqlele));
 							while ($rowele = mysql_fetch_array($resultele)) {
 								echo "<tr><td style=\"text-align:right;\">".$row["nombre"]."</td>";
 								echo "<td><a href=\"".$urlmgestion."/files/facturacion/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
@@ -139,7 +139,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1003&sop=5&ssop=1000&id=".$_GET["id"]."&id_factura=".$_GET["id_factura"]."\" method=\"post\">";
 					echo "<select name=\"id_tipo\" style=\"width:300px\">";
 						$sql = "select * from sgm_files_tipos order by nombre";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
 						}
@@ -158,7 +158,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		if ($_POST["cobrada"] != 'ok') { $sql = $sql."cobrada=0"; }
 		$sql = $sql.",id_tipo_pago=".$_POST["id_tipo_pago"];
 		$sql = $sql." WHERE id=".$_POST["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=10&id=".$_GET["id_tipo"]."\">[ ".$Volver." ]</a>";
 	}
@@ -166,7 +166,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 10) {
 		if ($ssoption == 1) {
 			$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$_POST["numero"]." and tipo=".$_POST["tipo"];
-			$resultcc = mysql_query(convert_sql($sqlcc));
+			$resultcc = mysql_query(convertSQL($sqlcc));
 			$rowcc = mysql_fetch_array($resultcc);
 			if ($rowcc["total"] == 0){
 				insertCabezera($_POST["numero"],$_POST["tipo"],$_POST["subtipo"],$_POST["version"],$_POST["numero_rfq"],$_POST["numero_cliente"],cambiarFormatoFechaYMD($_POST["fecha"]),cambiarFormatoFechaYMD($_POST["fecha_prevision"]),$_POST["cliente"],0,0,0);
@@ -176,7 +176,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id_fact"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 7) {
 			echo trafactura($_GET["id_fact"],$_POST["id_tipus"],$_POST["data"]);
@@ -185,15 +185,15 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."cerrada=1";
 			$sql = $sql." WHERE id=".$_GET["id_fact"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<center>";
 		$sqltipos = "select * from sgm_factura_tipos where id=".$_GET["id"];
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
 		$admin_tipo = 0;
 		$sqlpermiso2 = "select * from sgm_factura_tipos_permisos where id_tipo=".$rowtipos["id"]." and id_user=".$userid;
-		$resultpermiso2 = mysql_query(convert_sql($sqlpermiso2));
+		$resultpermiso2 = mysql_query(convertSQL($sqlpermiso2));
 		$rowpermiso2 = mysql_fetch_array($resultpermiso2);
 		if ($rowpermiso2["admin"] == 1) { $admin_tipo = 1; }
 		echo "<table style=\"width:100%\">";
@@ -224,7 +224,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<option value=\"0\">-</option>";
 								$sql = "select * from sgm_clients where visible=1 ";
 								$sql = $sql."order by nombre";
-								$result = mysql_query(convert_sql($sql));
+								$result = mysql_query(convertSQL($sql));
 								while ($row = mysql_fetch_array($result)) {
 									if ($_POST["id_cliente"] == $row["id"]){
 										echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
@@ -264,7 +264,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<option value=\"0\">-</option>";
 								$sql = "select * from sgm_clients where visible=1 ";
 								$sql = $sql."order by nombre";
-								$result = mysql_query(convert_sql($sql));
+								$result = mysql_query(convertSQL($sql));
 								while ($row = mysql_fetch_array($result)) {
 									if ($_POST["id_cliente2"] == $row["id"]){
 										echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
@@ -322,7 +322,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1003&sop=10&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<input type=\"Hidden\" name=\"tipo\" value=\"".$rowtipos["id"]."\">";
 				$sql = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipos["id"]." order by numero desc";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				$numero = $row["numero"] + 1;
 				echo "<td></td>";
@@ -362,7 +362,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<option value=\"0\">-</option>";
 						$sql = "select * from sgm_clients where visible=1 ";
 						$sql = $sql."order by nombre";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						}
@@ -377,7 +377,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<select style=\"width:70px\" name=\"subtipo\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select * from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["subtipo"]."</option>";
 						}
@@ -404,7 +404,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if (($_GET["filtra"] == 1) AND ($_POST["data_desde2"] != 0)) { $sql = $sql." AND fecha>='".cambiarFormatoFechaDMY($_POST["data_desde2"])."'"; }
 			if (($_GET["filtra"] == 1) AND ($_POST["data_fins2"] != 0)) { $sql = $sql." AND fecha<='".cambiarFormatoFechaDMY($_POST["data_fins2"])."'"; }
 			$sql = $sql." order by numero desc,version desc,fecha desc";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$fechahoy = getdate();
 			$data1 = date("Y-m-d", mktime(0,0,0,$fechahoy["mon"] ,$fechahoy["mday"]-100, $fechahoy["year"]));
 			$hoy = date("Y-m-d", mktime(0,0,0,$fechahoy["mon"] ,$fechahoy["mday"], $fechahoy["year"]));
@@ -425,7 +425,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$sqlcc = "select * from sgm_cuerpo where idfactura=".$row["id"]."";
 					if ($_POST["articulo"] != '') { $sqlcc = $sqlcc." AND ((codigo like '%".$_POST["articulo"]."%') or (nombre like '%".$_POST["articulo"]."%'))"; }
 #					echo $sqlcc."<br>";
-					$resultcc = mysql_query(convert_sql($sqlcc));
+					$resultcc = mysql_query(convertSQL($sqlcc));
 					$rowcc = mysql_fetch_array($resultcc);
 					if ($rowcc){ $ver = 1; } else { $ver = 0; }
 				}
@@ -459,7 +459,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$color = "#FFFFFF";
 						$fecha_aviso2 = $fecha_aviso;
 						$sqlc = "select * from sgm_cuerpo where idfactura=".$row["id"]." and id_estado<>-1 and facturado<>1 order by  fecha_prevision";
-						$resultc = mysql_query(convert_sql($sqlc));
+						$resultc = mysql_query(convertSQL($sqlc));
 						$rowc = mysql_fetch_array($resultc);
 						$a = date("Y", strtotime($rowc["fecha_prevision"]));
 						$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -489,7 +489,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$fecha_aviso1 = $fecha_aviso;
 						$fecha_aviso2 = $fecha_aviso;
 						$sqlc = "select * from sgm_cuerpo where idfactura=".$row["id"]."";
-						$resultc = mysql_query(convert_sql($sqlc));
+						$resultc = mysql_query(convertSQL($sqlc));
 						while ($rowc = mysql_fetch_array($resultc)){
 							$a = date("Y", strtotime($rowc["fecha_prevision"]));
 							$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -526,11 +526,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 								$color = "#FF0000";
 							}
 							$sqld = "select count(*) as total from sgm_recibos where visible=1 and cobrada=0 and id_tipo_pago=4 AND id_factura =".$row["id"];
-							$resultd = mysql_query(convert_sql($sqld));
+							$resultd = mysql_query(convertSQL($sqld));
 							$rowd = mysql_fetch_array($resultd);
 							if ($rowd["total"] > 0) { $color = "#0000FF"; }
 							$sqlcalc = "select * from sgm_recibos where visible=1 and cobrada=1 AND id_factura =".$row["id"];
-							$resultcalc = mysql_query(convert_sql($sqlcalc));
+							$resultcalc = mysql_query(convertSQL($sqlcalc));
 							$rowcalc = mysql_fetch_array($resultcalc);
 							if ($rowcalc["total"]) { $color = "#FFFF00"; }
 						}
@@ -547,7 +547,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<td><form method=\"post\" action=\"index.php?op=1003&sop=600&id=".$row["id"]."&id_tipo=".$_GET["id"]."\"><input type=\"Submit\" value=\"Opciones\" style=\"width:70px\"></form></td>";
 					if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
 						$sqlca = "select count(*) as total from sgm_files where id_cuerpo in (select id from sgm_cuerpo where idfactura=".$row["id"].")";
-						$resultca = mysql_query(convert_sql($sqlca));
+						$resultca = mysql_query(convertSQL($sqlca));
 						$rowca = mysql_fetch_array($resultca);
 						if ($rowca["total"] == 0) {$color_docs = "yellow";} else {$color_docs = "white";}
 						echo "<td style=\"background-color:".$color_docs.";\">(".$rowca["total"].")</td>";
@@ -566,7 +566,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								$fecha_proxima = $row["fecha"];
 								$multiplica = 0;
 								$sql00 = "select * from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-								$result00 = mysql_query(convert_sql($sql00));
+								$result00 = mysql_query(convertSQL($sql00));
 								while ($row00 = mysql_fetch_array($result00)) {
 									if ($fecha_proxima == $row00["fecha"]) {
 										$multiplica++;
@@ -622,7 +622,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<select style=\"width:70px\" name=\"subtipo\" disabled>";
 											echo "<option value=\"0\">-</option>";
 											$sqlsss = "select * from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
-											$resultsss = mysql_query(convert_sql($sqlsss));
+											$resultsss = mysql_query(convertSQL($sqlsss));
 											while ($rowsss = mysql_fetch_array($resultsss)) {
 												if ($row["subtipo"] == $rowsss["id"]) {
 													echo "<option value=\"".$rowsss["id"]."\" selected>".$rowsss["subtipo"]."</option>";
@@ -635,10 +635,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 								}
 							}
 							$sqldiv = "select * from sgm_divisas where predefinido=1";
-							$resultdiv = mysql_query(convert_sql($sqldiv));
+							$resultdiv = mysql_query(convertSQL($sqldiv));
 							$rowdiv = mysql_fetch_array($resultdiv);
 							$sqldi = "select * from sgm_divisas where id=".$row["id_divisa"];
-							$resultdi = mysql_query(convert_sql($sqldi));
+							$resultdi = mysql_query(convertSQL($sqldi));
 							$rowdi = mysql_fetch_array($resultdi);
 
 							echo "<td style=\"background-color : ".$color.";text-align : right;\">".number_format($row["total"],2).$rowdi["simbolo"]."</td>";
@@ -664,7 +664,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									echo "<form method=\"post\" action=\"index.php?op=1003&sop=200&id=".$row["id"]."\"><input type=\"Submit\" value=\"".$Recibos."\" style=\"width:50px\"></form>";
 								echo "</td>";
 									$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
-									$resultr = mysql_query(convert_sql($sqlr));
+									$resultr = mysql_query(convertSQL($sqlr));
 									$rowr = mysql_fetch_array($resultr);
 									echo "<td style=\"background-color:".$color.";width:400px;text-align:right;\">".number_format(($row["total"]-$rowr["total"]),2).$rowdi["simbolo"]."</td>";
 							}
@@ -706,7 +706,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($_POST["data_desde2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision>='".cambiarFormatoFechaYMD($_POST["data_desde2"])."'"; }
 					if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
 					if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
-					$resultxx = mysql_query(convert_sql($sqlxx));
+					$resultxx = mysql_query(convertSQL($sqlxx));
 					$rowxx = mysql_fetch_array($resultxx);
 					if ($rowxx["total"] > 0){
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -731,7 +731,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
 							if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
 							$sqlxx = $sqlxx." order by linea";
-							$resultxx = mysql_query(convert_sql($sqlxx));
+							$resultxx = mysql_query(convertSQL($sqlxx));
 							while ($rowxx = mysql_fetch_array($resultxx)) {
 								$color = "white";
 								if ($row["tipo"] == 5) {
@@ -760,7 +760,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									echo "<td><input type=\"Text\" style=\"width:50px\" name=\"unidades\" style=\"text-align:right;\" value=\"".$rowxx["unidades"]."\"></td>";
 									if ($row["pvd"] == 0){
 										$sqla = "select * from sgm_articles_costos where visible=1 and id_cuerpo=".$rowxx["id"]." and aprovat=1";
-										$resulta = mysql_query(convert_sql($sqla));
+										$resulta = mysql_query(convertSQL($sqla));
 										$rowa = mysql_fetch_array($resulta);
 										echo "<td><input type=\"Text\" style=\"width:60px\" name=\"pvd\" style=\"text-align:right;background-color:white;color:silver\" value=\"".$rowa["preu_cost"]."\"></td>";
 									} else {
@@ -817,7 +817,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"idioma\" style=\"width:90px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqli = "select * from sgm_idiomas where visible=1";
-						$resulti = mysql_query(convert_sql($sqli));
+						$resulti = mysql_query(convertSQL($sqli));
 						while ($rowi = mysql_fetch_array($resulti)) {
 							if ($rowi["predefinido"] == 1) {
 								echo "<option value=\"".$rowi["idioma"]."\" selected>".$rowi["descripcion"]."</option>";
@@ -837,7 +837,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"idioma\" style=\"width:90px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqli = "select * from sgm_idiomas where visible=1";
-						$resulti = mysql_query(convert_sql($sqli));
+						$resulti = mysql_query(convertSQL($sqli));
 						while ($rowi = mysql_fetch_array($resulti)) {
 							if ($rowi["predefinido"] == 1) {
 								echo "<option value=\"".$rowi["idioma"]."\" selected>".$rowi["descripcion"]."</option>";
@@ -861,10 +861,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td>".$Fecha."</td>";
 			echo "</tr>";
 			$sql = "select * from sgm_factura_modificacio where id_factura=".$_GET["id"]." order by data";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$sqlu = "select * from sgm_users where id=".$row["id_usuario"];
-				$resultu = mysql_query(convert_sql($sqlu));
+				$resultu = mysql_query(convertSQL($sqlu));
 				$rowu = mysql_fetch_array($resultu);
 				echo "<tr>";
 					echo "<td>".$rowu["usuario"]."</td>";
@@ -877,7 +877,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 22) {
 		if ($ssoption == 1) {
 			$sql = "select * from sgm_clients where id=".$_POST["cliente"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."nombre='".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."'";
@@ -900,7 +900,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			if ($row["id_direccion_envio"] <> 0) {
 				$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
-				$result3 = mysql_query(convert_sql($sql3));
+				$result3 = mysql_query(convertSQL($sql3));
 				$row3 = mysql_fetch_array($result3);
 				$sql = $sql.",edireccion='".$row3["direccion"]."'";
 				$sql = $sql.",epoblacion='".$row3["poblacion"]."'";
@@ -908,7 +908,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",eprovincia='".$row3["provincia"]."'";
 			}
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$data = getdate();
 			$fecha = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 			$hora = date("H:i:s", mktime($date["hours"] ,$date["minutes"], $date["seconds"],$date["mon"] ,$date["mday"], $date["year"]));
@@ -919,18 +919,18 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 2) {
 			$sqlc = "select * from sgm_clients_contactos where id=".$_POST["id_contacto"];
-			$resultc = mysql_query(convert_sql($sqlc));
+			$resultc = mysql_query(convertSQL($sqlc));
 			$rowc = mysql_fetch_array($resultc);
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."cnombre='".$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"]."'";
 			$sql = $sql.",ctelefono='".$rowc["telefono"]."'";
 			$sql = $sql.",cmail='".$rowc["mail"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$data = getdate();
 			$fecha = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 			$hora = date("H:i:s", mktime($date["hours"] ,$date["minutes"], $date["seconds"],$date["mon"] ,$date["mday"], $date["year"]));
@@ -941,11 +941,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 3) {
 			$sql = "select * from sgm_clients where id=".$_GET["id_cliente"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$sql = "update sgm_cabezera set ";
 			if ($_POST["id_direccion_envio"] == 0) {
@@ -956,7 +956,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			if ($_POST["id_direccion_envio"] <> 0) {
 				$sql3 = "select * from sgm_clients_envios where id=".$_POST["id_direccion_envio"];
-				$result3 = mysql_query(convert_sql($sql3));
+				$result3 = mysql_query(convertSQL($sql3));
 				$row3 = mysql_fetch_array($result3);
 				$sql = $sql."edireccion='".$row3["direccion"]."'";
 				$sql = $sql.",epoblacion='".$row3["poblacion"]."'";
@@ -964,7 +964,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",eprovincia='".$row3["provincia"]."'";
 			}
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$data = getdate();
 			$fecha = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 			$hora = date("H:i:s", mktime($date["hours"] ,$date["minutes"], $date["seconds"],$date["mon"] ,$date["mday"], $date["year"]));
@@ -975,13 +975,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 4) {
 			$data = getdate();
 			$fecha = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
 			$sqlf = "select * from sgm_cabezera where id=".$_GET["id"];
-			$resultf = mysql_query(convert_sql($sqlf));
+			$resultf = mysql_query(convertSQL($sqlf));
 			$rowf = mysql_fetch_array($resultf);
 			if ($rowf["fecha_prevision"] != cambiarFormatoFechaDMY($_POST["fecha_prevision"])){
 				$sqlf = "insert into sgm_factura_canvi_data_prevision (id_factura,id_usuario,fecha_ant,data) ";
@@ -991,7 +991,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sqlf = $sqlf.",'".cambiarFormatoFechaDMY($rowf["fecha_prevision"])."'";
 				$sqlf = $sqlf.",'".$fecha."'";
 				$sqlf = $sqlf.")";
-				mysql_query(convert_sql($sqlf));
+				mysql_query(convertSQL($sqlf));
 			}
 			if ($rowf["fecha_entrega"] != cambiarFormatoFechaDMY($_POST["fecha_entrega"])){
 				$sqlf = "insert into sgm_factura_canvi_data_entrega (id_factura,id_usuario,fecha_ant,data) ";
@@ -1001,7 +1001,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sqlf = $sqlf.",'".cambiarFormatoFechaDMY($rowf["fecha_entrega"])."'";
 				$sqlf = $sqlf.",'".$fecha."'";
 				$sqlf = $sqlf.")";
-				mysql_query(convert_sql($sqlf));
+				mysql_query(convertSQL($sqlf));
 			}
 			$fechaf = cambiarFormatoFechaDMY($_POST["fecha"]);
 			$fecha_prevf = cambiarFormatoFechaDMY($_POST["fecha_prevision"]);
@@ -1018,12 +1018,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 5) {
 			if ((($_POST["nombre"] == "") and ($_POST["codigo"] != "")) or ($_POST["buscar"] == 1)) {
 				$sql = "select * from sgm_articles where codigo='".$_POST["codigo"]."' or codigo2='".$_POST["codigo"]."'";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 		#### INSERTA DATOS EN EL CUERPO
 				$sql = "insert into sgm_cuerpo (idfactura,linea,codigo,nombre,pvd,pvp,unidades,total,fecha_prevision,id_article,stock,fecha_prevision_propia) ";
@@ -1043,7 +1043,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",1";
 				$sql = $sql.",'".cambiarFormatoFechaDMY($_POST["fecha_prevision"])."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 #				echo $sql;
 			} else {
 				$sql = "insert into sgm_cuerpo (idfactura,linea,codigo,nombre,pvd,pvp,unidades,total,fecha_prevision,id_article,stock,fecha_prevision_propia) ";
@@ -1062,7 +1062,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",1";
 				$sql = $sql.",'".cambiarFormatoFechaDMY($_POST["fecha_prevision"])."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			refactura($_GET["id"]);
 			$data = getdate();
@@ -1075,15 +1075,15 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 6) {
 			$sql = "delete from sgm_cuerpo WHERE id=".$_GET["id_cuerpo"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			refactura($_GET["idfactura"]);
 			$num = 1;
 			$sqll = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea";
-			$resultl = mysql_query(convert_sql($sqll));
+			$resultl = mysql_query(convertSQL($sqll));
 			while ($rowl = mysql_fetch_array($resultl)) {
 				if ($num == $rowl["linea"]) {
 					$num++;
@@ -1091,7 +1091,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$sql = "update sgm_cuerpo set ";
 					$sql = $sql."linea=".$num;
 					$sql = $sql." WHERE id=".$rowl["id"]."";
-					mysql_query(convert_sql($sql));
+					mysql_query(convertSQL($sql));
 					$num++;
 				}
 			}
@@ -1106,12 +1106,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 9) {
 			$x=1;
 			$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by id";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				if ($row["fecha_prevision"] != $_POST["fecha_prevision".$x.""]){
 					$date = getdate();
@@ -1124,7 +1124,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$sqlf = $sqlf.",'".$fecha."'";
 					$sqlf = $sqlf.",".$row["id"];
 					$sqlf = $sqlf.")";
-					mysql_query(convert_sql($sqlf));
+					mysql_query(convertSQL($sqlf));
 				}
 				$sql = "update sgm_cuerpo set ";
 				$sql = $sql."codigo='".$_POST["codigo".$x.""]."'";
@@ -1155,7 +1155,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",total=".$total;
 				$sql = $sql.",fecha_prevision='".cambiarFormatoFechaDMY($_POST["fecha_prevision".$x.""])."'";
 				$sql = $sql." WHERE id=".$_POST["id".$x.""]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 				$x++;
 			}
 			refactura($_GET["id"]);
@@ -1169,14 +1169,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		$cambio_pago = false;
 		if ($ssoption == 10) {
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."id_tipo_pago=".$_POST["id_tipo_pago"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$cambio_pago = true;
 			$data = getdate();
 			$fecha = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
@@ -1188,28 +1188,28 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".$fecha."'";
 			$sqlf = $sqlf.",'".$hora."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 11) {
 			$sql = "update sgm_cuerpo set ";
 			$sql = $sql."suma=1";
 			$sql = $sql." WHERE id=".$_GET["id_linea"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			refactura($_GET["id"]);
 		}
 		if ($ssoption == 12) {
 			$sql = "update sgm_cuerpo set ";
 			$sql = $sql."suma=0";
 			$sql = $sql." WHERE id=".$_GET["id_linea"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			refactura($_GET["id"]);
 		}
 		if ($ssoption == 13) {
 			$sql = "update sgm_cuerpo set ";
 			$sql = $sql."aprovat=1";
 			$sql = $sql." WHERE id=".$_GET["id_linea"]."";
-			mysql_query(convert_sql($sql));
-			conta_aprovats($_GET["id_linea"],$_GET["id"]);
+			mysql_query(convertSQL($sql));
+			contaAprovats($_GET["id_linea"],$_GET["id"]);
 		}
 		refactura($_GET["id"]);
 		if ($fu == ""){
@@ -1219,10 +1219,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</td>";
 			echo "</tr></table>";
 			$sql = "select * from sgm_cabezera where id=".$_GET["id"]." ORDER BY id";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$sqlf = "select * from sgm_factura_tipos where id=".$row["tipo"];
-			$resultf = mysql_query(convert_sql($sqlf));
+			$resultf = mysql_query(convertSQL($sqlf));
 			$rowf = mysql_fetch_array($resultf);
 			echo "<center>";
 			if ($rowf["tpv"] == 1) {
@@ -1232,7 +1232,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<select name=\"id_tipo_pago\" style=\"width:150px;\">";
 				echo "<option value=\"0\">-</option>";
 				$sql1 = "select * from sgm_tpv_tipos_pago order by id";
-				$result1 = mysql_query(convert_sql($sql1));
+				$result1 = mysql_query(convertSQL($sql1));
 				while ($row1 = mysql_fetch_array($result1)) {
 					if ($row["id_tipo_pago"] == $row1["id"]) {
 						echo "<option value=\"".$row1["id"]."\" selected>".$row1["tipo"]."</option>";
@@ -1262,10 +1262,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<select name=\"cliente\" style=\"width:200px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqltipos = "select * from sgm_factura_tipos where (id=".$row["tipo"].") order by id";
-					$resulttipos = mysql_query(convert_sql($sqltipos));
+					$resulttipos = mysql_query(convertSQL($sqltipos));
 					$rowtipos = mysql_fetch_array($resulttipos);
 					$sqlx = "select * from sgm_clients where visible=1 order by nombre";
-					$resultx = mysql_query(convert_sql($sqlx));
+					$resultx = mysql_query(convertSQL($sqlx));
 					while ($rowx = mysql_fetch_array($resultx)) {
 						echo "<option value=\"".$rowx["id"]."\">".$rowx["nombre"]." ".$rowx["cognom1"]." ".$rowx["cognom2"]."</option>";
 					}
@@ -1277,7 +1277,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_contacto\" style=\"width:200px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlcc = "select * from sgm_clients_contactos where id_client=".$row["id_cliente"]." order by nombre";
-					$resultcc = mysql_query(convert_sql($sqlcc));
+					$resultcc = mysql_query(convertSQL($sqlcc));
 					while ($rowcc = mysql_fetch_array($resultcc)) {
 						echo "<option value=\"".$rowcc["id"]."\">".$rowcc["nombre"]." ".$rowcc["apellido1"]." ".$rowcc["apellido2"]."</option>";
 					}
@@ -1289,7 +1289,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<option value=\"0\">-</option>";
 					echo "<option value=\"0\">".$Direccion." ".$Datos_Fiscales."</option>";
 					$sql1 = "select * from sgm_clients_envios where id_client=".$row["id_cliente"]." order by nombre";
-					$result1 = mysql_query(convert_sql($sql1));
+					$result1 = mysql_query(convertSQL($sql1));
 					while ($row1 = mysql_fetch_array($result1)) {
 						echo "<option value=\"".$row1["id"]."\">".$row1["nombre"]."(".$row1["direccion"].", ".$row1["poblacion"]." (".$row1["cp"].") ".$row1["provincia"].")</option>";
 					}
@@ -1338,7 +1338,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 												echo "<tr><td>".$Provincia."</td><td><input type=\"Text\" name=\"provincia\" style=\"width:250px\" value=\"".$row["provincia"]."\"></td></tr>";
 												echo "<tr><td>".$Pais."</td><td><select name=\"id_pais\" style=\"width:250px\">";
 												$sqlp = "select * from sgm_paises where visible=1 order by pais";
-												$resultp = mysql_query(convert_sql($sqlp));
+												$resultp = mysql_query(convertSQL($sqlp));
 												while ($rowp = mysql_fetch_array($resultp)){
 													if ($row["id_pais"] == $rowp["id"]){
 														echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["pais"]."</option>";
@@ -1375,7 +1375,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<strong>".$Datos." ".$Origen." ".$Factura."</strong><br>";
 								echo "<table>";
 								$sqlpermiso2 = "select * from sgm_factura_tipos_permisos where id_tipo=".$rowf["id"]." and id_user=".$userid;
-								$resultpermiso2 = mysql_query(convert_sql($sqlpermiso2));
+								$resultpermiso2 = mysql_query(convertSQL($sqlpermiso2));
 								$rowpermiso2 = mysql_fetch_array($resultpermiso2);
 									echo "<tr>";
 										echo "<td>IBAN</td>";
@@ -1387,7 +1387,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 											}
 											$seleccionar = 0;
 											$sql1 = "select * from sgm_dades_origen_factura_iban";
-											$result1 = mysql_query(convert_sql($sql1));
+											$result1 = mysql_query(convertSQL($sql1));
 											while ($row1 = mysql_fetch_array($result1)) {
 												if ($row["id_dades_origen_factura_iban"] == $row1["id"]) { 
 													echo "<option value=\"".$row1["id"]."\" selected>".$row1["entidad_bancaria"]." (".$row1["descripcion"].")</option>";
@@ -1412,7 +1412,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 											}
 											echo "<option value=\"0\">-</option>";
 											$sql1 = "select * from sgm_clients where visible=1 order by nombre";
-											$result1 = mysql_query(convert_sql($sql1));
+											$result1 = mysql_query(convertSQL($sql1));
 											while ($row1 = mysql_fetch_array($result1)) {
 												if ($row["id_cliente"] == $row1["id"]) {
 													echo "<option value=\"".$row1["id"]."\" selected>".$row1["nombre"]."</option>";
@@ -1432,7 +1432,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 											}
 											echo "<option value=\"0\">-</option>";
 											$sql1 = "select * from sgm_users where sgm=1 order by usuario";
-											$result1 = mysql_query(convert_sql($sql1));
+											$result1 = mysql_query(convertSQL($sql1));
 											while ($row1 = mysql_fetch_array($result1)) {
 												if ($row["id_user"] == $row1["id"]) {
 													echo "<option value=\"".$row1["id"]."\" selected>".$row1["usuario"]."</option>";
@@ -1452,7 +1452,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 											}
 											echo "<option value=\"0\">-</option>";
 											$sql1 = "select * from sgm_users where sgm=1 order by usuario";
-											$result1 = mysql_query(convert_sql($sql1));
+											$result1 = mysql_query(convertSQL($sql1));
 											while ($row1 = mysql_fetch_array($result1)) {
 												if ($row["id_pagador"] == $row1["id"]) {
 													echo "<option value=\"".$row1["id"]."\" selected>".$row1["usuario"]."</option>";
@@ -1492,7 +1492,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 												echo "<tr><td><select name=\"id_divisa\" style=\"width:150px;\">";
 													echo "<option value=\"0\">-</option>";
 													$sql1 = "select * from sgm_divisas where visible=1";
-													$result1 = mysql_query(convert_sql($sql1));
+													$result1 = mysql_query(convertSQL($sql1));
 													while ($row1 = mysql_fetch_array($result1)) {
 														if ($row["id_divisa"] == $row1["id"]) {
 															echo "<option value=\"".$row1["id"]."\" selected>".$row1["divisa"]."</option>";
@@ -1523,7 +1523,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</form>";
 			}
 			$sql2 = "select * from sgm_divisas where visible=1 and id=".$row["id_divisa"];
-			$result2 = mysql_query(convert_sql($sql2));
+			$result2 = mysql_query(convertSQL($sql2));
 			$row2 = mysql_fetch_array($result2);
 			echo "<br>";
 			echo "<table cellspacing=\"0\">";
@@ -1534,7 +1534,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"buscar\" value=\"1\">";
 					echo "<td></td>";
 					$sqlxx = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea desc";
-					$resultxx = mysql_query(convert_sql($sqlxx));
+					$resultxx = mysql_query(convertSQL($sqlxx));
 					$rowxx = mysql_fetch_array($resultxx);
 					$linea = $rowxx["linea"] +1;
 					echo "<td><input type=\"Text\" name=\"linea\" style=\"width:20px\" value=\"".$linea."\"></td>";
@@ -1555,7 +1555,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<form action=\"index.php?op=1003&sop=22&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
 						echo "<td></td>";
 						$sqlxx = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea desc";
-						$resultxx = mysql_query(convert_sql($sqlxx));
+						$resultxx = mysql_query(convertSQL($sqlxx));
 						$rowxx = mysql_fetch_array($resultxx);
 						$linea = $rowxx["linea"] +1;
 						echo "<td><input type=\"Text\" name=\"linea\" style=\"width:20px\" value=\"".$linea."\"></td>";
@@ -1575,7 +1575,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1003&sop=22&ssop=9&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>&nbsp;</td><td></td><td></td><td></td><td></td><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:70px\"></td></tr>";
 			$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$color = "white";
 				if ($id_tipo == 5) {
@@ -1615,7 +1615,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 					if ($row["pvd"] == 0){
 						$sqla = "select * from sgm_articles_costos where visible=1 and id_cuerpo=".$row["id"]." and aprovat=1";
-						$resulta = mysql_query(convert_sql($sqla));
+						$resulta = mysql_query(convertSQL($sqla));
 						$rowa = mysql_fetch_array($resulta);
 						echo "<td><input type=\"Text\" name=\"pvd".$x."\" style=\"text-align:right;width:60px;background-color:white;color:silver\" value=\"".number_format ($rowa["preu_cost"],3)."\"></td>";
 					} else {
@@ -1648,7 +1648,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>&nbsp;</td><td></td><td></td><td></td><td></td><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:70px\"></td></tr>";
 			echo "</form>";
 			$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			echo "<tr><td style=\"text-align:right;\" colspan=\"11\"><em>".$Subtotal."</em></td><td style=\"text-align:right;\">".number_format ($row["subtotal"],3)." ".$row2["simbolo"]."</td><td></td></tr>";
 			echo "<form action=\"index.php?op=1003&sop=27&id=".$row["id"]."\" method=\"post\">";
@@ -1711,7 +1711,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 	if ($soption == 26) {
 		$sqlc = "select * from sgm_cuerpo where id=".$_GET["id"];
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$sqlf = "insert into sgm_articles (nombre,fecha,fecha_ant,data,id_cuerpo) ";
 		$sqlf = $sqlf."values (";
@@ -1720,16 +1720,16 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$fecha = date("Y-m-d", mktime(0,0,0,$hoy["mon"] ,$hoy["mday"]-1000, $hoy["year"]));
 		$sqlf = $sqlf.",'".$fecha."'";
 		$sqlf = $sqlf.")";
-		mysql_query(convert_sql($sqlf));
+		mysql_query(convertSQL($sqlf));
 		$sqla = "select * from sgm_articles order by id desc";
-		$resulta = mysql_query(convert_sql($sqla));
+		$resulta = mysql_query(convertSQL($sqla));
 		$rowa = mysql_fetch_array($resulta);
 		$id = $rowa["id"] + 1;
 		$sql = "update sgm_articles_costos set ";
 		$sql = $sql."id_article=".$id;
 		$sql = $sql.",id_cuerpo=0";
 		$sql = $sql." WHERE id_cuerpo=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 	}
 
 	if ($soption == 27) {
@@ -1744,7 +1744,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		}
 		$sql = $sql.",total_forzado=0";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		refactura($_GET["id"]);
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=22&id=".$_GET["id"]."\">[ ".$Volver." ]</a>";
@@ -1754,7 +1754,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = "update sgm_cabezera set ";
 		$sql = $sql."iva=".$_POST["iva"];
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		refactura($_GET["id"]);
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=22&id=".$_GET["id"]."\">[ ".$Volver." ]</a>";
@@ -1765,7 +1765,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = $sql."total=".$_POST["total"];
 		$sql = $sql.",total_forzado=1";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		refactura($_GET["id"]);
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=22&id=".$_GET["id"]."\">[ ".$Volver." ]</a>";
@@ -1812,7 +1812,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = $sql.",'".$_POST["fecha"]."'";
 		$sql = $sql.",".$_POST["id_factura"];
 		$sql = $sql.")";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=0\">[ ".$Volver." ]</a>";
 	}
@@ -1829,20 +1829,20 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 	if ($soption == 52) {
 		$sql = "select * from sgm_cabezera where id=".$_POST["id_plantilla"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		### COPIA CABEZERA PLANTILLA
 		$sql = "insert into sgm_cabezera (numero,numero_cliente,fecha,fecha_prevision,fecha_vencimiento,tipo,nombre,nif,direccion,poblacion,cp,provincia,mail,telefono,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,edireccion,epoblacion,ecp,eprovincia,notas,subtotal,descuento,subtotaldescuento,iva,total,id_cliente,id_user) ";
 		$sql = $sql."values (";
 		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=1 order by numero desc";
-		$resultxx = mysql_query(convert_sql($sqlxx));
+		$resultxx = mysql_query(convertSQL($sqlxx));
 		$rowxx = mysql_fetch_array($resultxx);
 		$numero = $rowxx["numero"] + 1;
 		$sql = $sql."".$numero."";
 		$sql = $sql.",'".$row["numero_cliente"]."'";
 		$sql = $sql.",'".$_POST["fecha_nueva"]."'";
 		$sql = $sql.",'".$row["fecha_prevision"]."'";
-		$sql = $sql.",'".calcular_fecha_vencimiento($row["id_cliente"],$_POST["fecha_nueva"])."'";
+		$sql = $sql.",'".calculDataVencimientFact($row["id_cliente"],$_POST["fecha_nueva"])."'";
 		$sql = $sql.",1";
 		$sql = $sql.",'".$row["nombre"]."'";
 		$sql = $sql.",'".$row["nif"]."'";
@@ -1873,10 +1873,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = $sql.",".$row["id_cliente"]."";
 		$sql = $sql.",".$row["id_user"]."";
 		$sql = $sql.")";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		### COPIA LINEAS PLANTILLA
 		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=1 order by numero desc";
-		$resultxx = mysql_query(convert_sql($sqlxx));
+		$resultxx = mysql_query(convertSQL($sqlxx));
 		$rowxx = mysql_fetch_array($resultxx);
 		$numero_factura = $rowxx["numero"];
 		$id_factura = $rowxx["id"];
@@ -1890,9 +1890,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql1 = $sql1.",0";
 		$sql1 = $sql1.",0";
 		$sql1 = $sql1.")";
-		mysql_query(convert_sql($sql1));
+		mysql_query(convertSQL($sql1));
 		$sql = "select * from sgm_cuerpo where idfactura=".$_POST["id_plantilla"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			$sql1 = "insert into sgm_cuerpo (idfactura,linea,fecha_prevision,codigo,nombre,pvd,pvp,unidades,total) ";
 			$sql1 = $sql1."values (";
@@ -1906,7 +1906,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql1 = $sql1.",".$row["unidades"];
 			$sql1 = $sql1.",".$row["total"];
 			$sql1 = $sql1.")";
-			mysql_query(convert_sql($sql1));
+			mysql_query(convertSQL($sql1));
 		}
 		### RELACIONA PLANTILLA CON FACTURA
 		$sql = "insert into sgm_facturas_relaciones (id_plantilla,fecha,id_factura) ";
@@ -1915,19 +1915,19 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = $sql.",'".$_POST["fecha"]."'";
 		$sql = $sql.",".$numero_factura;
 		$sql = $sql.")";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		### PONE COBRADO EL ALBARAN
 		$sql = "update sgm_cabezera set ";
 		$sql = $sql."cobrada=1";
 		$sql = $sql." WHERE id=".$_POST["id_plantilla"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=0\">[ ".$Volver." ]</a>";
 	}
 
 	if ($soption == 53) {
 		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=1 AND numero=".$_POST["id_factura"];
-		$resultxx = mysql_query(convert_sql($sqlxx));
+		$resultxx = mysql_query(convertSQL($sqlxx));
 		$rowxx = mysql_fetch_array($resultxx);
 		$id_factura = $rowxx["id"];
 		$sql1 = "insert into sgm_cuerpo (idfactura,codigo,nombre,pvd,pvp,unidades,total) ";
@@ -1940,10 +1940,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql1 = $sql1.",0";
 		$sql1 = $sql1.",0";
 		$sql1 = $sql1.")";
-		mysql_query(convert_sql($sql1));
+		mysql_query(convertSQL($sql1));
 		### COPIA LINEAS PLANTILLA
 		$sql = "select * from sgm_cuerpo where idfactura=".$_POST["id_plantilla"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			$sql1 = "insert into sgm_cuerpo (idfactura,codigo,nombre,pvd,pvp,unidades,total) ";
 			$sql1 = $sql1."values (";
@@ -1955,7 +1955,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql1 = $sql1.",".$row["unidades"];
 			$sql1 = $sql1.",".$row["total"];
 			$sql1 = $sql1.")";
-			mysql_query(convert_sql($sql1));
+			mysql_query(convertSQL($sql1));
 		}
 		refactura($id_factura);
 		### PONE COBRADO EL ALBARAN
@@ -1963,7 +1963,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = $sql."cobrada=1";
 		$sql = $sql." WHERE id=".$_POST["id_plantilla"]."";
 		#echo "<br>".$sql;
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=0\">[ ".$Volver." ]</a>";
 	}
@@ -1972,7 +1972,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$sql = "update sgm_cabezera set ";
 		$sql = $sql."cerrada=1";
 		$sql = $sql." WHERE id=".$_POST["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=1003&sop=10&id=".$_GET["serie"]."\">[ ".$Volver." ]</a>";
 	}
@@ -1995,12 +1995,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if ($_GET["classe"] == 3) {
 				$sql = "select * from sgm_factura_canvi_data_prevision_cuerpo where id_factura=".$_GET["id"]." and id_cuerpo=".$_GET["id_cuerpo"];
 			}
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)){
 				echo "<tr>";
 				echo "<td>".$row["data"]."</td>";
 				$sqlu = "select * from sgm_users where id=".$row["id_usuario"];
-				$resultu = mysql_query(convert_sql($sqlu));
+				$resultu = mysql_query(convertSQL($sqlu));
 				$rowu = mysql_fetch_array($resultu);
 				echo "<td>".$rowu["usuario"]."</td>";
 				echo "<td>".$row["fecha_ant"]."</td>";
@@ -2025,7 +2025,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<select name=\"id_tipo\" style=\"width:200px\">";
 				echo "<option value=\"0\">-</option>";
 				$sqlx = "select * from sgm_factura_tipos where visible=1 order by tipo";
-				$resultx = mysql_query(convert_sql($sqlx));
+				$resultx = mysql_query(convertSQL($sqlx));
 				while ($rowx = mysql_fetch_array($resultx)) {
 					echo "<option value=\"".$rowx["id"]."\">".$rowx["tipo"]."</option>";
 				}
@@ -2042,7 +2042,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><select name=\"idioma\" style=\"width:90px\">";
 				echo "<option value=\"0\">-</option>";
 				$sqli = "select * from sgm_idiomas where visible=1";
-				$resulti = mysql_query(convert_sql($sqli));
+				$resulti = mysql_query(convertSQL($sqli));
 				while ($rowi = mysql_fetch_array($resulti)) {
 					if ($rowi["predefinido"] == 1) {
 						echo "<option value=\"".$rowi["idioma"]."\" selected>".$rowi["descripcion"]."</option>";
@@ -2073,14 +2073,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 100) {
 		if ($ssoption == 1) {
 			$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$_POST["numero"]." and tipo=".$_POST["tipo"];
-			$resultcc = mysql_query(convert_sql($sqlcc));
+			$resultcc = mysql_query(convertSQL($sqlcc));
 			$rowcc = mysql_fetch_array($resultcc);
 			if ($rowcc["total"] == 0){
 				$sql = "select * from sgm_clients where id=".$_POST["cliente"];
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				$sqltipos = "select * from sgm_factura_tipos where id=".$_POST["tipo"];
-				$resulttipos = mysql_query(convert_sql($sqltipos));
+				$resulttipos = mysql_query(convertSQL($sqltipos));
 				$rowtipos = mysql_fetch_array($resulttipos);
 				$sql = "insert into sgm_cabezera (numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,cuenta) ";
 				$sql = $sql."values (";
@@ -2093,7 +2093,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",'".cambiarFormatoFechaYMD($_POST["fecha_prevision"])."'";
 				$sql = $sql.",'".cambiarFormatoFechaYMD($_POST["fecha_prevision"])."'";
 				if ($rowtipos["v_fecha_vencimiento"] == 1) {
-					$fecha_vencimiento = calcular_fecha_vencimiento($_POST["cliente"],cambiarFormatoFechaYMD($_POST["fecha"]));
+					$fecha_vencimiento = calculDataVencimientFact($_POST["cliente"],cambiarFormatoFechaYMD($_POST["fecha"]));
 				} else { $fecha_vencimiento = cambiarFormatoFechaYMD($_POST["fecha"]); }
 				if ($rowtipos["presu"] == 1) {
 					$suma = $rowtipos["presu_dias"];
@@ -2123,7 +2123,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				}
 				if ($row["id_direccion_envio"] <> 0) {
 					$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
-					$result3 = mysql_query(convert_sql($sql3));
+					$result3 = mysql_query(convertSQL($sql3));
 					$row3 = mysql_fetch_array($result3);
 					$sql = $sql.",'".$row3["direccion"]."'";
 					$sql = $sql.",'".$row3["poblacion"]."'";
@@ -2131,7 +2131,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$sql = $sql.",'".$row3["provincia"]."'";
 				}
 				$sql2 = "select * from sgm_dades_origen_factura";
-				$result2 = mysql_query(convert_sql($sql2));
+				$result2 = mysql_query(convertSQL($sql2));
 				$row2 = mysql_fetch_array($result2);
 				$sql = $sql.",'".$row["nombre"]."'";
 				$sql = $sql.",'".$row["nif"]."'";
@@ -2144,12 +2144,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",".$_POST["cliente"];
 				$sql = $sql.",".$userid;
 				$sqld = "select * from sgm_divisas where predefinido=1";
-				$resultd = mysql_query(convert_sql($sqld));
+				$resultd = mysql_query(convertSQL($sqld));
 				$rowd = mysql_fetch_array($resultd);
 				$sql = $sql.",".$rowd["id"];
 				$sql = $sql.",".$rowd["canvi"];
 				$sqlc = "select * from sgm_clients_contactos where pred=1 and id_client=".$_POST["cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				$sql = $sql.",'".$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"]."'";
 				$sql = $sql.",'".$rowc["mail"]."'";
@@ -2160,14 +2160,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$sql = $sql.",0";
 				}
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 20) {
 			$sql = "update sgm_cabezera set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id_fact"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 7) {
 			echo trafactura($_GET["id_fact"],$_POST["id_tipus"],$_POST["data"]);
@@ -2186,7 +2186,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		if ($_GET["tipo"] == 3) {$sqltipo = "select * from sgm_factura_tipos where id IN (7,1,9)";}
 		if ($_GET["tipo"] == 4) {$sqltipo = "select * from sgm_factura_tipos where id IN (8,5)";}
 		if ($_GET["tipo"] == 5) {$sqltipo = "select * from sgm_factura_tipos where id = 1";}
-		$resulttipo = mysql_query(convert_sql($sqltipo));
+		$resulttipo = mysql_query(convertSQL($sqltipo));
 		while ($rowtipo = mysql_fetch_array($resulttipo)){
 			if ($rowtipo["presu"] == 1){ $presu = 1; }
 			if ($rowtipo["v_fecha_prevision"] == 1) { $v_fecha_pre = 1; }
@@ -2225,7 +2225,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if (($_GET["tipo"] != 4) and ($_GET["tipo"] != 5) and ($_GET["iduser"] <= 0)){$sqlca = $sqlca." AND fecha_vencimiento='".date("Y-m-d", $_GET["fecha"])."'";}
 			$sqlca = $sqlca." order by numero desc,version desc,fecha desc";
 #			echo $sqlca;
-			$resultca = mysql_query(convert_sql($sqlca));
+			$resultca = mysql_query(convertSQL($sqlca));
 			while ($rowca = mysql_fetch_array($resultca)) {
 		#### OPCIONES DE VISUALIZACION SI SE MUESTRA O NO
 				$ver = 0;
@@ -2270,7 +2270,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$color = "#FFFFFF";
 						$fecha_aviso2 = $fecha_aviso;
 						$sqlc = "select * from sgm_cuerpo where idfactura=".$rowca["id"]." and id_estado<>-1 and facturado<>1 order by  fecha_prevision";
-						$resultc = mysql_query(convert_sql($sqlc));
+						$resultc = mysql_query(convertSQL($sqlc));
 						$rowc = mysql_fetch_array($resultc);
 						$a = date("Y", strtotime($rowc["fecha_prevision"]));
 						$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -2300,7 +2300,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$fecha_aviso1 = $fecha_aviso;
 						$fecha_aviso2 = $fecha_aviso;
 						$sqlc = "select * from sgm_cuerpo where idfactura=".$rowca["id"]."";
-						$resultc = mysql_query(convert_sql($sqlc));
+						$resultc = mysql_query(convertSQL($sqlc));
 						while ($rowc = mysql_fetch_array($resultc)){
 							$a = date("Y", strtotime($rowc["fecha_prevision"]));
 							$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -2337,11 +2337,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 								$color = "#FF0000";
 							}
 							$sqld = "select count(*) as total from sgm_recibos where visible=1 and cobrada=0 and id_tipo_pago=4 AND id_factura =".$rowca["id"];
-							$resultd = mysql_query(convert_sql($sqld));
+							$resultd = mysql_query(convertSQL($sqld));
 							$rowd = mysql_fetch_array($resultd);
 							if ($rowd["total"] > 0) { $color = "#0000FF"; }
 							$sqlcalc = "select * from sgm_recibos where visible=1 and cobrada=1 AND id_factura =".$rowca["id"];
-							$resultcalc = mysql_query(convert_sql($sqlcalc));
+							$resultcalc = mysql_query(convertSQL($sqlcalc));
 							$rowcalc = mysql_fetch_array($resultcalc);
 							if ($rowcalc["total"]) { $color = "#FFFF00"; }
 						}
@@ -2357,7 +2357,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 #						echo "<td><table cellpadding=\"0\" cellspacing=\"0\"><tr>";
 						echo "<td><form method=\"post\" action=\"index.php?op=1003&sop=600&id=".$rowca["id"]."&id_tipo=".$_GET["id"]."\"><input type=\"Submit\" value=\"Opciones\" style=\"width:70px\"></form></td>";
 						$sqlca2 = "select count(*) as total from sgm_files where id_cuerpo in (select id from sgm_cuerpo where idfactura=".$rowca["id"].")";
-						$resultca2 = mysql_query(convert_sql($sqlca2));
+						$resultca2 = mysql_query(convertSQL($sqlca2));
 						$rowca2 = mysql_fetch_array($resultca2);
 						echo "<td>(".$rowca2["total"].")</td>";
 #						echo "</tr></table></td>";
@@ -2374,7 +2374,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								$fecha_proxima = $rowca["fecha"];
 								$multiplica = 0;
 								$sql00 = "select * from sgm_facturas_relaciones where id_plantilla=".$rowca["id"]." order by fecha";
-								$result00 = mysql_query(convert_sql($sql00));
+								$result00 = mysql_query(convertSQL($sql00));
 								while ($row00 = mysql_fetch_array($result00)) {
 									if ($fecha_proxima == $row00["fecha"]) {
 										$multiplica++;
@@ -2430,7 +2430,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<select style=\"width:70px\" name=\"subtipo\" disabled>";
 											echo "<option value=\"0\">-</option>";
 											$sqlsss = "select * from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
-											$resultsss = mysql_query(convert_sql($sqlsss));
+											$resultsss = mysql_query(convertSQL($sqlsss));
 											while ($rowsss = mysql_fetch_array($resultsss)) {
 												if ($rowca["subtipo"] == $rowsss["id"]) {
 													echo "<option value=\"".$rowsss["id"]."\" selected>".$rowsss["subtipo"]."</option>";
@@ -2461,7 +2461,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									echo "<form method=\"post\" action=\"index.php?op=1003&sop=200&id=".$rowca["id"]."\"><input type=\"Submit\" value=\"".$Recibos."\" style=\"width:50px\"></form>";
 								echo "</td>";
 									$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$rowca["id"]." order by numero desc, numero_serie desc";
-									$resultr = mysql_query(convert_sql($sqlr));
+									$resultr = mysql_query(convertSQL($sqlr));
 									$rowr = mysql_fetch_array($resultr);
 									echo "<td style=\"background-color:".$color.";width:300px;text-align:right;\">".number_format(($rowca["total"]-$rowr["total"]),2)." €</td>";
 							}
@@ -2526,7 +2526,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:right;\"><strong>".$Total."</strong></td>";
 			echo "</tr><tr>";
 			$sqltipos = "select * from sgm_factura_tipos where visible=1 order by orden";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				$totala1 = 0;
 				$totala3 = 0;
@@ -2536,7 +2536,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($x < 10) { $d = "0".$x; } else { $d = $x; }
 					$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and fecha='".$yact."-".$mact."-".$d."'";
 					if ($rowtipos["v_recibos"] == 1) { $sql = $sql." and cobrada=1"; }
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					$row = mysql_fetch_array($result);
 					echo "<td style=\"text-align:right;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></td>";
 					$totala1 = $totala1+$row["total1"];
@@ -2590,7 +2590,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:right;\"><strong>".$Total."</strong></td>";
 			echo "</tr>";
 			$sqltipos = "select * from sgm_factura_tipos where visible=1 order by orden";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				echo "<tr>";
 				$totala1 = 0;
@@ -2613,7 +2613,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 					$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
 #					if ($rowtipos["v_recibos"] == 1) { $sql = $sql." and cobrada=1"; }
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					$row = mysql_fetch_array($result);
 					echo "<td style=\"text-align:right;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></td>";
 					$tri1 = $tri1+$row["total1"];
@@ -2698,7 +2698,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
 				}
 				$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_GET["id"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				echo "<td style=\"text-align:right;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></td>";
 				$tri1 = $tri1+$row["total1"];
@@ -2789,7 +2789,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%\">";
 					echo "<tr><td><strong>".$d."</strong></td></tr>";
 					$sql = "select * from sgm_factura_calendario where fecha='".$dia_actual."'";
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					$row = mysql_fetch_array($result);
 					if ($row["gastos"] > 0) {$color = "red";$color_letra = "white";} else {$color = $color_fondo; $color_letra = "black";}
 					if ($row["pre_pagos"] > 0) {$color_pre = "red";$color_letra1 = "white";} else {$color_pre = $color_fondo; $color_letra1 = "black";}
@@ -2819,7 +2819,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 	if ($soption == 110) {
 		$sqltipos = "select * from sgm_factura_tipos where id=".$_GET["id"];
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
 		echo "<strong>".$Resumen." ".$Periodico." (".$Base_imponible.", IVA ".$ygriega." ".$Total.") : ".$rowtipos["tipo"]."</strong><br><br>";
 		echo "<table><tr>";
@@ -2849,7 +2849,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"0\">-</option>";
 							$sql = "select * from sgm_clients where visible=1 ";
 							$sql = $sql."order by nombre";
-							$result = mysql_query(convert_sql($sql));
+							$result = mysql_query(convertSQL($sql));
 							while ($row = mysql_fetch_array($result)) {
 								if ($row["nombre"] == $_POST["cliente"]){
 									echo "<option value=\"".$row["nombre"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
@@ -2889,7 +2889,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						if ($_POST["cliente"]) { $sql = $sql." and nombre='".$_POST["cliente"]."'"; }
 						if (($_GET["filtra"]  == 1) AND ($_POST["id_cliente"] != 0)) { $sql = $sql." AND id_cliente=".$_POST["id_cliente"]; }
 						$sql = $sql." order by numero desc,version desc,fecha desc";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						$fechahoy = getdate();
 						$data1 = date("Y-m-d", mktime(0,0,0,$fechahoy["mon"] ,$fechahoy["mday"]-100, $fechahoy["year"]));
 						$hoy = date("Y-m-d", mktime(0,0,0,$fechahoy["mon"] ,$fechahoy["mday"], $fechahoy["year"]));
@@ -2921,7 +2921,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									$color = "#FFFFFF";
 									$fecha_aviso2 = $fecha_aviso;
 									$sqlc = "select * from sgm_cuerpo where idfactura=".$row["id"]." and id_estado<>-1 order by  fecha_prevision";
-									$resultc = mysql_query(convert_sql($sqlc));
+									$resultc = mysql_query(convertSQL($sqlc));
 									$rowc = mysql_fetch_array($resultc);
 									$a = date("Y", strtotime($rowc["fecha_prevision"]));
 									$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -2950,7 +2950,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									$fecha_aviso1 = $fecha_aviso;
 									$fecha_aviso2 = $fecha_aviso;
 									$sqlc = "select * from sgm_cuerpo where idfactura=".$row["id"]."";
-									$resultc = mysql_query(convert_sql($sqlc));
+									$resultc = mysql_query(convertSQL($sqlc));
 									while ($rowc = mysql_fetch_array($resultc)){
 										$a = date("Y", strtotime($rowc["fecha_prevision"]));
 										$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -3010,7 +3010,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										$fecha_proxima = $row["fecha"];
 										$multiplica = 0;
 										$sql00 = "select * from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-										$result00 = mysql_query(convert_sql($sql00));
+										$result00 = mysql_query(convertSQL($sql00));
 										while ($row00 = mysql_fetch_array($result00)) {
 											if ($fecha_proxima == $row00["fecha"]) {
 												$multiplica++;
@@ -3046,7 +3046,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<select style=\"width:70px\" name=\"subtipo\" disabled>";
 										echo "<option value=\"0\">-</option>";
 										$sqlsss = "select * from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
-										$resultsss = mysql_query(convert_sql($sqlsss));
+										$resultsss = mysql_query(convertSQL($sqlsss));
 										while ($rowsss = mysql_fetch_array($resultsss)) {
 											if ($row["subtipo"] == $rowsss["id"]) {
 												echo "<option value=\"".$rowsss["id"]."\" selected>".$rowsss["subtipo"]."</option>";
@@ -3077,7 +3077,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									echo "<form method=\"post\" action=\"index.php?op=1003&sop=200&id=".$row["id"]."\"><input type=\"Submit\" value=\"".$Recibos."\" style=\"width:50px\"></form>";
 									echo "</td><td style=\"width:100px;text-align:right;\">";
 									$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
-									$resultr = mysql_query(convert_sql($sqlr));
+									$resultr = mysql_query(convertSQL($sqlr));
 									$rowr = mysql_fetch_array($resultr);
 									echo "".number_format(($row["total"]-$rowr["total"]), 3, '.', '')." €";
 									echo "</td>";
@@ -3106,7 +3106,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$total = 0;
 					$sql = "select * from sgm_cabezera where fecha between '".cambiarFormatoFechaYMD($_POST["fecha_inici"])."' and '".cambiarFormatoFechaYMD($_POST["fecha_fi"])."' and tipo=".$_GET["id"];
 					if ($_POST["cliente"]) { $sql = $sql." and nombre='".$_POST["cliente"]."'"; }
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					while ($row = mysql_fetch_array($result)){
 						if ($row["subtotaldescuento"] != ""){
 							$base_imp = $base_imp + $row["subtotaldescuento"];
@@ -3126,7 +3126,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<td style=\"text-align:right;\">".number_format ($total,2)."</td>";
 						$total2 = 0;
 						$sqlp = "select * from sgm_cabezera where fecha between '".cambiarFormatoFechaYMD($_POST["fecha_inici"])."' and '".cambiarFormatoFechaYMD($_POST["fecha_fi"])."' and tipo=".$_GET["id"]." and visible=1";
-						$resultp = mysql_query(convert_sql($sqlp));
+						$resultp = mysql_query(convertSQL($sqlp));
 						while ($rowp = mysql_fetch_array($resultp)){
 							$total2 = $total2 + $rowp["total"];
 						}
@@ -3191,7 +3191,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$total = 0;
 					if ($mes < 10) {$mesi = "0".$mes;} else {$mesi = $mes;}
 					$sql = "select * from sgm_cabezera where fecha between '".$_POST["any"]."-".$mesi."-01' and '".$_POST["any"]."-".$mesi."-31' and tipo=".$_GET["id"];
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					while ($row = mysql_fetch_array($result)){
 						if ($row["subtotaldescuento"] != ""){
 							$base_imp = $base_imp + $row["subtotaldescuento"];
@@ -3260,10 +3260,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td>".$Total."</td>";
 			echo "</tr>";
 			$sqls= "select * from sgm_users where activo=1 and validado=1 and sgm=1 order by usuario";
-			$results = mysql_query(convert_sql($sqls));
+			$results = mysql_query(convertSQL($sqls));
 			while ($rows = mysql_fetch_array($results)) {
 				$sqlf= "select sum(total) as totales from sgm_cabezera where visible=1 and tipo=5 and id_pagador = ".$rows["id"];
-				$resultf = mysql_query(convert_sql($sqlf));
+				$resultf = mysql_query(convertSQL($sqlf));
 				$rowf = mysql_fetch_array($resultf);
 				echo "<tr>";
 					echo "<td style=\"text-align:left;width:150px\"><a href=\"index.php?op=1003&sop=100&iduser=".$rows["id"]."&filtra=1\">".$rows["usuario"]."</a></td>";
@@ -3276,13 +3276,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 200) {
 		if ($ssoption == 1) {
 			$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			### COPIA CABEZERA PLANTILLA
 			$sql = "insert into sgm_recibos (numero,numero_serie,id_factura,fecha,fecha_vencimiento,nombre,nif,direccion,poblacion,cp,provincia,onombre,onif,odireccion,opoblacion,ocp,oprovincia,total,id_cliente,id_user,id_tipo_pago,cobrada) ";
 			$sql = $sql."values (";
 			$sqlxx = "select * from sgm_recibos where visible=1 and id_factura=".$_GET["id"]." order by numero desc,numero_serie desc";
-			$resultxx = mysql_query(convert_sql($sqlxx));
+			$resultxx = mysql_query(convertSQL($sqlxx));
 			$rowxx = mysql_fetch_array($resultxx);
 			$numero = $rowxx["numero"] + 1;
 			$numero_serie = $rowxx["numero_serie"] + 1;
@@ -3309,28 +3309,28 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",".$_POST["id_tipo_pago"]."";
 			$sql = $sql.",".$_POST["cobrada"]."";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			## COMPRUEBA SI ESTAN LOS RECIBOS REALIZADOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"];
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set recibos=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set recibos=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			## COMPRUEBA SI ESTA COBRADA O NO A PARTIR DE LOS RECIBOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"]." and cobrada=1";
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set cobrada=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set cobrada=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 2) {
@@ -3342,75 +3342,75 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",id_tipo_pago=".$_POST["id_tipo_pago"]."";
 			$sql = $sql.",cobrada=".$_POST["cobrada"]."";
 			$sql = $sql." WHERE id=".$_GET["id_recibo"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			## COMPRUEBA SI ESTAN LOS RECIBOS REALIZADOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"];
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set recibos=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set recibos=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			## COMPRUEBA SI ESTA COBRADA O NO A PARTIR DE LOS RECIBOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"]." and cobrada=1";
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set cobrada=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set cobrada=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 3) {
 			$sql = "update sgm_recibos set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id_recibo"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			
 			$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			
 			## COMPRUEBA SI ESTAN LOS RECIBOS REALIZADOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"];
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set recibos=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set recibos=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			## COMPRUEBA SI ESTA COBRADA O NO A PARTIR DE LOS RECIBOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$row["id"]." and cobrada=1";
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $row["total"]) {
 				$sql = "update sgm_cabezera set cobrada=1 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set cobrada=0 WHERE id=".$row["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 
 		$sqlf = "select * from sgm_cabezera where id=".$_GET["id"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 		$sqlc = "select * from sgm_clients where id=".$rowf["id_cliente"];
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$sqltipos = "select * from sgm_factura_tipos where id=".$rowf["tipo"];
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
 		echo "<table><tr><td style=\"vertical-align:top;width:250px;\">";
 			echo "<strong>".$Recibos."</strong>";
@@ -3432,7 +3432,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<center><table border=\"0px\" cellpadding=\"0\">";
 			echo "<tr>";
 				$sqlrecs = "select * from sgm_recibos order by numero";
-				$resulrecs = mysql_query(convert_sql($sqlrecs));
+				$resulrecs = mysql_query(convertSQL($sqlrecs));
 				$rowrecs = mysql_fetch_array($resultrecs);
 				echo "<td></td>";
 				echo "<td></td>";
@@ -3453,7 +3453,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><strong>".$Serie."</strong></td>";
 				echo "<td><input type=\"Text\" style=\"width:75px;\" name=\"fecha_emision\" value=\"".cambiarFormatoFechaDMY(date("Y-m-d"))."\"></td>";
 				$sqlt = "select count(*) as total from sgm_clients_dias_recibos where id_cliente=".$rowc["id"]." order by dia";
-				$resultt = mysql_query(convert_sql($sqlt));
+				$resultt = mysql_query(convertSQL($sqlt));
 				$rowt = mysql_fetch_array($resultt);
 				if ($rowt["total"] == 0) {
 					$a = date("Y", strtotime($rowf["fecha"]));
@@ -3463,7 +3463,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($rowc["dias"] == 0) { $fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$m+$rowc["dias_vencimiento"] ,$d, $a)); }
 				} else {
 					$sqlz = "select * from sgm_clients_dias_recibos where id_cliente=".$rowc["id"]." order by dia";
-					$resultz = mysql_query(convert_sql($sqlz));
+					$resultz = mysql_query(convertSQL($sqlz));
 					while ($rowz = mysql_fetch_array($resultz)) {
 						$a = date("Y", strtotime($rowf["fecha"]));
 						$m = date("m", strtotime($rowf["fecha"]));
@@ -3480,7 +3480,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><select name=\"id_tipo_pago\" style=\"width:90px\">";
 				echo "<option value=\"0\">".$Pendiente."</option>";
 				$sqlfp = "select * from sgm_tpv_tipos_pago order by tipo";
-				$resultfp = mysql_query(convert_sql($sqlfp));
+				$resultfp = mysql_query(convertSQL($sqlfp));
 				while ($rowfp = mysql_fetch_array($resultfp)) {
 					if ($rowfp["id"] == $row["id_tipo_pago"]) {
 						echo "<option value=\"".$rowfp["id"]."\" selected>".$rowfp["tipo"]."</option>";
@@ -3499,7 +3499,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td></td>";
 			echo "</tr>";
 			$sqlr = "select * from sgm_recibos where visible=1 and id_factura=".$_GET["id"]." order by numero desc, numero_serie desc";
-			$resultr = mysql_query(convert_sql($sqlr));
+			$resultr = mysql_query(convertSQL($sqlr));
 			while ($rowr = mysql_fetch_array($resultr)) {
 				echo "<tr>";
 					echo "<form action=\"index.php?op=1003&sop=200&ssop=2&id=".$_GET["id"]."&id_recibo=".$rowr["id"]."\" method=\"post\">";
@@ -3512,7 +3512,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_tipo_pago\" style=\"width:90px\">";
 						echo "<option value=\"0\">Pendiente</option>";
 						$sqlfp = "select * from sgm_tpv_tipos_pago order by tipo";
-						$resultfp = mysql_query(convert_sql($sqlfp));
+						$resultfp = mysql_query(convertSQL($sqlfp));
 						while ($rowfp = mysql_fetch_array($resultfp)) {
 							if ($rowfp["id"] == $rowr["id_tipo_pago"]) {
 								echo "<option value=\"".$rowfp["id"]."\" selected>".$rowfp["tipo"]."</option>";
@@ -3537,7 +3537,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<input type=\"Submit\" value=\"".$Imprimir."\"></form>";
 					echo "</td>";
 					$sqlx = "select * from sgm_clients where id=".$rowf["id_cliente"];
-					$resultx = mysql_query(convert_sql($sqlx));
+					$resultx = mysql_query(convertSQL($sqlx));
 					$rowx = mysql_fetch_array($resultx);
 					if (($rowx["cuentabancaria"] != "") and ($rowr["id_tipo_pago"] == 4)) {
 						echo "<td><a href=\"index.php?op=1003&sop=9999&id_factura=".$rowr["id_factura"]."\">*</a></td>";
@@ -3563,19 +3563,19 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql."".$_GET["id_tipo"]."";
 			$sql = $sql.",'".$_POST["subtipo"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_factura_subtipos set ";
 			$sql = $sql."subtipo='".$_POST["subtipo"]."'";
 			$sql = $sql." WHERE id=".$_GET["id_subtipo"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$sql = "update sgm_factura_subtipos set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<strong>".$Administracion." ".$Subtipos." :</strong><br><br>";
 		echo "<table><tr>";
@@ -3585,7 +3585,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "</tr></table>";
 		echo "<center><table>";
 		$sqltipos = "select * from sgm_factura_tipos where visible=1 order by tipo";
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		while ($rowtipos = mysql_fetch_array($resulttipos)) {
 			echo "<form action=\"index.php?op=1003&sop=300&ssop=1&id_tipo=".$rowtipos["id"]."\" method=\"post\">";
 			echo "<tr>";
@@ -3595,7 +3595,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "</form>";
 			$sqlstipos = "select * from sgm_factura_subtipos where visible=1 and id_tipo=".$rowtipos["id"]." order by subtipo";
-			$resultstipos = mysql_query(convert_sql($sqlstipos));
+			$resultstipos = mysql_query(convertSQL($sqlstipos));
 			while ($rowstipos = mysql_fetch_array($resultstipos)) {
 				echo "<form action=\"index.php?op=1003&sop=300&ssop=2&id_subtipo=".$rowstipos["id"]."\" method=\"post\">";
 				echo "<tr>";
@@ -3617,7 +3617,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 310){
 		if (($ssoption == 1) and ($admin == true)) {
 			$sql = "select count(*) as total from sgm_dades_origen_factura";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["total"] == 0){
 				$sql = "insert into sgm_dades_origen_factura (nombre,nif,direccion,poblacion,cp,provincia,mail,telefono,notas) ";
@@ -3632,7 +3632,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",'".$_POST["telefono"]."'";
 				$sql = $sql.",'".$_POST["notas"]."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			if ($row["total"] == 1) {
 				$sql = "update sgm_dades_origen_factura set ";
@@ -3645,7 +3645,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",mail='".$_POST["mail"]."'";
 				$sql = $sql.",telefono='".$_POST["telefono"]."'";
 				$sql = $sql.",notas='".$_POST["notas"]."'";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if (($ssoption == 2) and ($admin == true)) {
@@ -3656,7 +3656,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",'".$_POST["iban"]."'";
 			$sql = $sql.",'".$_POST["descripcion"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_dades_origen_factura_iban set ";
@@ -3664,27 +3664,27 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",iban='".$_POST["iban"]."'";
 			$sql = $sql.",descripcion='".$_POST["descripcion"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 4) and ($admin == true)) {
 			$sql = "delete from sgm_dades_origen_factura_iban WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 5) and ($admin == true)) {
 			$sql = "update sgm_dades_origen_factura_iban set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id<>".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$sql = "update sgm_dades_origen_factura_iban set ";
 			$sql = $sql."predefinido = 1";
 			$sql = $sql." WHERE id =".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 6) and ($admin == true)) {
 			$sql = "update sgm_dades_origen_factura_iban set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id =".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<strong>".$Administracion." ".$Datos." ".$Origen." :</strong>";
 		echo "<br>";
@@ -3697,7 +3697,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<table><tr>";
 			echo "<td style=\"vertical-align:top;width:40%\">";
 				$sql = "select * from sgm_dades_origen_factura";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				$row = mysql_fetch_array($result);
 				echo "<table>";
 				echo "<form action=\"index.php?op=1003&sop=310&ssop=1\" method=\"post\">";
@@ -3736,7 +3736,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
 					$sql2 = "select * from sgm_dades_origen_factura_iban where id_dades_origen_factura=".$row["id"];
-					$result2 = mysql_query(convert_sql($sql2));
+					$result2 = mysql_query(convertSQL($sql2));
 					while ($row2 = mysql_fetch_array($result2)) {
 						echo "<tr>";
 				$color = "white";
@@ -3796,7 +3796,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if (($soption == 400) and ($_GET["tip"] == 1)) {
 		if (($ssoption == 1) and ($admin == true)) {
 			$sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$_GET["id_tipo"]." and id_user=".$_POST["id_user"];
-			$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+			$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 			$rowpermiso = mysql_fetch_array($resultpermiso);
 			if ($rowpermiso["total"] == 0) { 
 				$sql = "insert into sgm_factura_tipos_permisos (id_user,id_tipo,admin) ";
@@ -3805,26 +3805,26 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",".$_GET["id_tipo"];
 				$sql = $sql.",".$_POST["admin"];
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sqlpermiso2 = "select * from sgm_factura_tipos_permisos where id_tipo=".$_POST["id_tipo"]." and id_user=".$_POST["id_user"];
-				$resultpermiso2 = mysql_query(convert_sql($sqlpermiso2));
+				$resultpermiso2 = mysql_query(convertSQL($sqlpermiso2));
 				$rowpermiso2 = mysql_fetch_array($resultpermiso2);
 				$sql = "update sgm_factura_tipos_permisos set ";
 				$sql = $sql."admin=".$_POST["admin"];
 				$sql = $sql." WHERE id=".$rowpermiso2["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_factura_tipos_permisos set ";
 			$sql = $sql."admin=".$_POST["admin"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "delete from sgm_factura_tipos_permisos WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<center>";
@@ -3836,7 +3836,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">Admin.</td>";
 			echo "</tr>";
 			$sql = "select * from sgm_factura_tipos where visible=1 order by tipo";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr style=\"background-color : Silver;\">";
@@ -3846,7 +3846,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_user\" style=\"width:150px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlx = "select * from sgm_users where sgm=1 and activo=1 and validado=1 order by usuario";
-						$resultx = mysql_query(convert_sql($sqlx));
+						$resultx = mysql_query(convertSQL($sqlx));
 						while ($rowx = mysql_fetch_array($resultx)) {
 							echo "<option value=\"".$rowx["id"]."\">".$rowx["usuario"]."</option>";
 						}
@@ -3859,10 +3859,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</form>";
 				echo "</tr>";
 				$sql2 = "select * from sgm_factura_tipos_permisos where visible=1 and id_tipo=".$row["id"];
-				$result2 = mysql_query(convert_sql($sql2));
+				$result2 = mysql_query(convertSQL($sql2));
 				while ($row2 = mysql_fetch_array($result2)) {
 					$sqlv = "select * from sgm_users where id=".$row2["id_user"];
-					$resultv = mysql_query(convert_sql($sqlv));
+					$resultv = mysql_query(convertSQL($sqlv));
 					$rowv = mysql_fetch_array($resultv);
 					echo "<tr>";
 					echo "<form action=\"index.php?op=1003&sop=400&tip=1&ssop=2&id=".$row2["id"]."\" method=\"post\">";
@@ -3899,7 +3899,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if (($soption == 400) and ($_GET["tip"] == 2)) {
 		if (($ssoption == 1) and ($admin == true)) {
 			$sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$_POST["id_tipo"]." and id_user=".$_GET["id_user"];
-			$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+			$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 			$rowpermiso = mysql_fetch_array($resultpermiso);
 			if ($rowpermiso["total"] == 0) { 
 				$sql = "insert into sgm_factura_tipos_permisos (id_user,id_tipo,admin) ";
@@ -3908,26 +3908,26 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",".$_POST["id_tipo"];
 				$sql = $sql.",".$_POST["admin"];
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sqlpermiso2 = "select * from sgm_factura_tipos_permisos where id_tipo=".$_POST["id_tipo"]." and id_user=".$_POST["id_user"];
-				$resultpermiso2 = mysql_query(convert_sql($sqlpermiso2));
+				$resultpermiso2 = mysql_query(convertSQL($sqlpermiso2));
 				$rowpermiso2 = mysql_fetch_array($resultpermiso2);
 				$sql = "update sgm_factura_tipos_permisos set ";
 				$sql = $sql."admin=".$_POST["admin"];
 				$sql = $sql." WHERE id=".$rowpermiso2["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_factura_tipos_permisos set ";
 			$sql = $sql."admin=".$_POST["admin"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "delete from sgm_factura_tipos_permisos WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<center>";
@@ -3939,7 +3939,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center;\">Admin.</td>";
 			echo "</tr>";
 			$sqlx = "select * from sgm_users where sgm=1 and activo=1 and validado=1 order by usuario";
-			$resultx = mysql_query(convert_sql($sqlx));
+			$resultx = mysql_query(convertSQL($sqlx));
 			while ($rowx = mysql_fetch_array($resultx)) {
 				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr style=\"background-color : Silver;\">";
@@ -3949,7 +3949,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_tipo\" style=\"width:150px\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select * from sgm_factura_tipos where visible=1 order by tipo";
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["tipo"]."</option>";
 						}
@@ -3962,10 +3962,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</form>";
 				echo "</tr>";
 				$sql2 = "select * from sgm_factura_tipos_permisos where id_user=".$rowx["id"];
-				$result2 = mysql_query(convert_sql($sql2));
+				$result2 = mysql_query(convertSQL($sql2));
 				while ($row2 = mysql_fetch_array($result2)) {
 					$sqlv = "select * from sgm_factura_tipos where visible=1 and id=".$row2["id_tipo"];
-					$resultv = mysql_query(convert_sql($sqlv));
+					$resultv = mysql_query(convertSQL($sqlv));
 					$rowv = mysql_fetch_array($resultv);
 					echo "<tr>";
 					echo "<form action=\"index.php?op=1003&sop=400&tip=2&ssop=2&id=".$row2["id"]."\" method=\"post\">";
@@ -4024,7 +4024,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$id_cuerpo = $HTTP_POST_VARS["id_cuerpo"];
 			}
 			$sql = "select * from sgm_files_tipos where id=".$tipo;
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$lim_tamano = $row["limite_kb"]*1000;
 			if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size<=$lim_tamano)){
@@ -4040,17 +4040,17 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($_GET["logo"] == 1){
 						$sql = "update sgm_dades_origen_factura set ";
 						$sql = $sql."logo1='".$archivo_name."'";
-						mysql_query(convert_sql($sql));
+						mysql_query(convertSQL($sql));
 					}
 					if ($_GET["logo"] == 2){
 						$sql = "update sgm_dades_origen_factura set ";
 						$sql = $sql."logo2='".$archivo_name."'";
-						mysql_query(convert_sql($sql));
+						mysql_query(convertSQL($sql));
 					}
 					if ($_GET["logo"] == 3){
 						$sql = "update sgm_dades_origen_factura set ";
 						$sql = $sql."logo_ticket='".$archivo_name."'";
-						mysql_query(convert_sql($sql));
+						mysql_query(convertSQL($sql));
 					}
 				}
 			}else{
@@ -4069,7 +4069,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if ($_GET["logo"] == 1){ $sql = $sql."logo1=''";}
 			if ($_GET["logo"] == 2){ $sql = $sql."logo2=''";}
 			if ($_GET["logo"] == 3){ $sql = $sql."logo_ticket=''";}
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			echo "<center>";
 			echo "Operación realizada correctamente.";
 			echo "</center>";
@@ -4085,7 +4085,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"width:200px;vertical-align:top;\">";
 					echo "<table>";
 						$sqlele = "select * from sgm_dades_origen_factura";
-						$resultele = mysql_query(convert_sql($sqlele));
+						$resultele = mysql_query(convertSQL($sqlele));
 						$rowele = mysql_fetch_array($resultele);
 						echo "<tr><td><strong>Logo Factura format no Sobre :</strong><br>dimensión recomendada 500x130 píxels.</td></tr>";
 						if ($rowele["logo1"] != ""){
@@ -4111,7 +4111,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"width:200px;vertical-align:top;\">";
 					echo "<table>";
 						$sqlele = "select * from sgm_dades_origen_factura";
-						$resultele = mysql_query(convert_sql($sqlele));
+						$resultele = mysql_query(convertSQL($sqlele));
 						$rowele = mysql_fetch_array($resultele);
 						echo "<tr><td><strong>Logo Factura format Sobre :</strong><br>dimensión recomendada 200x130 píxels.</td></tr>";
 						if ($rowele["logo2"] != ""){
@@ -4137,7 +4137,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"width:200px;vertical-align:top;\">";
 					echo "<table>";
 						$sqlele = "select * from sgm_dades_origen_factura";
-						$resultele = mysql_query(convert_sql($sqlele));
+						$resultele = mysql_query(convertSQL($sqlele));
 						$rowele = mysql_fetch_array($resultele);
 						echo "<tr><td><strong>Logo Factura format Ticket :</strong><br>dimensión recomendada 50x50 píxels.</td></tr>";
 						if ($rowele["logo_ticket"] != ""){
@@ -4187,7 +4187,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",".$_POST["aprovado"];
 			$sql = $sql.",".$_POST["v_rfq"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 2) {
 			$sql = "update sgm_factura_tipos set ";
@@ -4212,13 +4212,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",aprovado=".$_POST["aprovado"];
 			$sql = $sql.",v_rfq=".$_POST["v_rfq"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$sql = "update sgm_factura_tipos set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Administracion." de ".$Tipos." :</strong><br><br>";
@@ -4330,7 +4330,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td>&nbsp;</td>";
 			echo "</tr>";
 			$sqltipos = "select * from sgm_factura_tipos where visible=1 order by orden,descripcion";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)) {
 				echo "<form action=\"index.php?op=1003&sop=500&ssop=2&id=".$rowtipos["id"]."\" method=\"post\">";
 				echo "<tr>";
@@ -4526,7 +4526,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 510) {
 		if ($ssoption == 1) {
 			$sqli = "select count(*) as total from sgm_factura_tipos_idiomas where id_tipo=".$_GET["id"];
-			$resulti = mysql_query(convert_sql($sqli));
+			$resulti = mysql_query(convertSQL($sqli));
 			$rowi = mysql_fetch_array($resulti);
 			if ($rowi["total"] > 0){
 				$sql = "update sgm_factura_tipos_idiomas set ";
@@ -4534,7 +4534,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",uk='".$_POST["uk"]."'";
 				$sql = $sql.",fr='".$_POST["fr"]."'";
 				$sql = $sql." WHERE id_tipo=".$_GET["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "insert into sgm_factura_tipos_idiomas (id_tipo,cat,uk,fr) ";
 				$sql = $sql."values (";
@@ -4543,7 +4543,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql.",'".$_POST["uk"]."'";
 				$sql = $sql.",'".$_POST["fr"]."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		echo "<strong>".$Idiomas." ".$Tipos." : </strong>";
@@ -4555,10 +4555,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "</tr></table>";
 		echo "<center><table>";
 		$sqltipos = "select * from sgm_factura_tipos where visible=1 and id=".$_GET["id"];
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		$rowtipos = mysql_fetch_array($resulttipos);
 		$sqli = "select * from sgm_factura_tipos_idiomas where id_tipo=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 		echo "<form method=\"post\" action=\"index.php?op=1003&sop=510&ssop=1&id=".$rowtipos["id"]."\">";
 			echo "<tr><td><strong>".$rowtipos["tipo"]."</strong></td><td></td></tr>";
@@ -4577,12 +4577,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sql = $sql."".$_GET["id_tipo_o"];
 				$sql = $sql.",".$_POST["id_tipo_d"];
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 		if ($ssoption == 3) {
 			$sql = "delete from sgm_factura_tipos_relaciones WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<strong>".$Relaciones." ".$Tipos." : </strong>";
 		echo "<br><br>";
@@ -4593,7 +4593,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "</tr></table>";
 		echo "<br>Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturación. Si queremos convertir albaranes en facturas, debemos indicar que albaranes tienen destino en facturas.<br><br>";
 		$sqltipos = "select * from sgm_factura_tipos where visible=1 order by tipo";
-		$resulttipos = mysql_query(convert_sql($sqltipos));
+		$resulttipos = mysql_query(convertSQL($sqltipos));
 		echo "<center><table cellspacing=\"0\">";
 		while ($rowtipos = mysql_fetch_array($resulttipos)) {
 		echo "<form method=\"post\" action=\"index.php?op=1003&sop=550&ssop=1&id_tipo_o=".$rowtipos["id"]."\">";
@@ -4602,7 +4602,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><select name=\"id_tipo_d\" style=\"width:150px;\">";
 					echo "<option value=\"0\">-</option>";
 					$sqltipos1 = "select * from sgm_factura_tipos where visible=1 order by tipo";
-					$resulttipos1 = mysql_query(convert_sql($sqltipos1));
+					$resulttipos1 = mysql_query(convertSQL($sqltipos1));
 					while ($rowtipos1 = mysql_fetch_array($resulttipos1)) {
 						echo "<option value=\"".$rowtipos1["id"]."\">".$rowtipos1["tipo"]."</option>";
 					}
@@ -4611,10 +4611,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "<tr>";
 			echo "</form>";
 			$sqltiposrel = "select * from sgm_factura_tipos_relaciones where id_tipo_o=".$rowtipos["id"];
-			$resulttiposrel = mysql_query(convert_sql($sqltiposrel));
+			$resulttiposrel = mysql_query(convertSQL($sqltiposrel));
 			while ($rowtiposrel = mysql_fetch_array($resulttiposrel)) {
 				$sqltipos2 = "select * from sgm_factura_tipos where id=".$rowtiposrel["id_tipo_d"];
-				$resulttipos2 = mysql_query(convert_sql($sqltipos2));
+				$resulttipos2 = mysql_query(convertSQL($sqltipos2));
 				$rowtipos2 = mysql_fetch_array($resulttipos2);
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=552&id=".$rowtiposrel["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -4636,13 +4636,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql."confirmada=".$_POST["confirmada"];
 			$sql = $sql.",confirmada_cliente=".$_POST["confirmada_cliente"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		$sql = "select * from sgm_cabezera where id=".$_GET["id"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		$sqlf = "select * from sgm_factura_tipos where id=".$row["tipo"];
-		$resultf = mysql_query(convert_sql($sqlf));
+		$resultf = mysql_query(convertSQL($sqlf));
 		$rowf = mysql_fetch_array($resultf);
 		echo "<strong>".$Opciones."</strong><br><br>";
 		echo "<center><table style=\"width:900px\" cellspacing=\"10\">";
@@ -4692,10 +4692,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td><select name=\"id_tipus\" style=\"width:200px\">";
 									echo "<option value=\"".$rowf["id"]."\">".$rowf["tipo"]."</option>";
 									$sqlr = "select * from sgm_factura_tipos_relaciones where id_tipo_o=".$_GET["id_tipo"];
-									$resultr = mysql_query(convert_sql($sqlr));
+									$resultr = mysql_query(convertSQL($sqlr));
 									while ($rowr = mysql_fetch_array($resultr)) {
 										$sqld = "select * from sgm_factura_tipos where id=".$rowr["id_tipo_d"];
-										$resultd = mysql_query(convert_sql($sqld));
+										$resultd = mysql_query(convertSQL($sqld));
 										$rowd = mysql_fetch_array($resultd);
 										echo "<option value=\"".$rowd["id"]."\">".$rowd["tipo"]."</option>";
 									}
@@ -4731,10 +4731,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = $sql.",".$_POST["canvi"]."";
 			$sql = $sql.",'".$_POST["simbolo"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 
 			$sqld = "select * from sgm_divisas order by id desc";
-			$resultd = mysql_query(convert_sql($sqld));
+			$resultd = mysql_query(convertSQL($sqld));
 			$rowd = mysql_fetch_array($resultd);
 			$sqlf = "insert into sgm_divisas_mod_canvi (id_divisa,id_usuario,fecha,canvi) ";
 			$sqlf = $sqlf."values (";
@@ -4743,11 +4743,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlf = $sqlf.",'".date("Y")."-".date("m")."-".date("d")."'";
 			$sqlf = $sqlf.",'".$_POST["canvi"]."'";
 			$sqlf = $sqlf.")";
-			mysql_query(convert_sql($sqlf));
+			mysql_query(convertSQL($sqlf));
 		}
 		if ($ssoption == 2) {
 			$sqld = "select * from sgm_divisas where id=".$_GET["id"];
-			$resultd = mysql_query(convert_sql($sqld));
+			$resultd = mysql_query(convertSQL($sqld));
 			$rowd = mysql_fetch_array($resultd);
 			if ($rowd["canvi"] != $_POST["canvi"]){
 				$sqlf = "insert into sgm_divisas_mod_canvi (id_divisa,id_usuario,fecha,canvi) ";
@@ -4757,7 +4757,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sqlf = $sqlf.",'".date("Y")."-".date("m")."-".date("d")."'";
 				$sqlf = $sqlf.",'".$_POST["canvi"]."'";
 				$sqlf = $sqlf.")";
-				mysql_query(convert_sql($sqlf));
+				mysql_query(convertSQL($sqlf));
 			}
 
 			$sqlc = "update sgm_divisas set ";
@@ -4766,29 +4766,29 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlc = $sqlc.",canvi=".$_POST["canvi"]."";
 			$sqlc = $sqlc.",simbolo='".$_POST["simbolo"]."'";
 			$sqlc = $sqlc." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sqlc));
+			mysql_query(convertSQL($sqlc));
 		}
 		if ($ssoption == 3) {
 			$sql = "update sgm_divisas set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 4) {
 			$sql = "update sgm_divisas set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id<>".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$sql = "update sgm_divisas set ";
 			$sql = $sql."predefinido = 1";
 			$sql = $sql." WHERE id =".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 5) {
 			$sql = "update sgm_divisas set ";
 			$sql = $sql."predefinido = 0";
 			$sql = $sql." WHERE id =".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		echo "<strong>".$Divisas."</strong>";
 		echo "<br><br>";
@@ -4819,7 +4819,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "</form>";
 			echo "</tr>";
 			$sql = "select * from sgm_divisas where visible=1";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$color = "white";
 				if ($row["predefinido"] == 1) { $color = "#FF4500"; }
@@ -4875,10 +4875,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:left;width:100px\">".$Usuario."</td>";
 			echo "</tr>";
 			$sql = "select * from sgm_divisas_mod_canvi where id_divisa=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$sqlu = "select * from sgm_users where id=".$row["id_usuario"];
-				$resultu = mysql_query(convert_sql($sqlu));
+				$resultu = mysql_query(convertSQL($sqlu));
 				$rowu = mysql_fetch_array($resultu);
 				echo "<td style=\"text-align:left;width:100px\">".$row["fecha"]."</td>";
 				echo "<td style=\"text-align:left;width:100px\">".$row["canvi"]."</td>";
@@ -4927,7 +4927,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td style=\"width:150px;text-align:center;\">".$Forma." de ".$Pago."</td>";
 							echo "</tr>";
 							$sqltipos2 = "select * from sgm_factura_tipos where visible=1 and (v_recibos=1 or tpv=1) order by orden,descripcion";
-							$resulttipos2 = mysql_query(convert_sql($sqltipos2));
+							$resulttipos2 = mysql_query(convertSQL($sqltipos2));
 							while ($rowtipos2 = mysql_fetch_array($resulttipos2)) {
 								echo "<tr>";
 									echo "<td><strong>".$rowtipos2["tipo"]."</strong></td>";
@@ -4945,7 +4945,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td style=\"width:75px;text-align:center;\">".$Total."</td>";
 							echo "</tr>";
 							$sqltipos2 = "select * from sgm_tpv_tipos_pago order by tipo";
-							$resulttipos2 = mysql_query(convert_sql($sqltipos2));
+							$resulttipos2 = mysql_query(convertSQL($sqltipos2));
 							while ($rowtipos2 = mysql_fetch_array($resulttipos2)) {
 								echo "<tr>";
 								echo "<td><strong>".$rowtipos2["tipo"]."</strong></td>";
@@ -5040,14 +5040,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td>".$Ver."</td>";
 				echo "</tr>";
 				$sql = "select * from sgm_cuerpo where codigo like '%".$_POST["codigo"]."%' and nombre like '%".$_POST["nombre"]."%' order by fecha_prevision desc";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					$sqlc = "select * from sgm_cabezera where id=".$row["idfactura"]."";
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					$rowc = mysql_fetch_array($resultc);
 					if ($rowc["visible"] == 1) {
 						$sqlt = "select * from sgm_factura_tipos where id=".$rowc["tipo"];
-						$resultt = mysql_query(convert_sql($sqlt));
+						$resultt = mysql_query(convertSQL($sqlt));
 						$rowt = mysql_fetch_array($resultt);
 						echo "<tr>";
 							echo "<td>".$rowc["nombre"]."</td>";
@@ -5104,7 +5104,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$cabordenante = $A1.$A2.$B1.$B12.$B2.$B3.$C.$D.$E1.$E2.$E3.$F.$G1.$G2.$G3;
 		
 		$sqlcabezera = "select * from sgm_cabezera where id=".$_GET["id_factura"];
-		$resultcabezera = mysql_query(convert_sql($sqlcabezera));
+		$resultcabezera = mysql_query(convertSQL($sqlcabezera));
 		$rowcabezera = mysql_fetch_array($resultcabezera);
 		
 		$A1 = '56';
@@ -5118,7 +5118,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$espacios = 40-strlen($C);
 		for ($x = 1; $espacios >= $x; $x++) { $C = $C.' '; }
 		$sqlx = "select * from sgm_clients where id=".$rowcabezera["id_cliente"];
-		$resultx = mysql_query(convert_sql($sqlx));
+		$resultx = mysql_query(convertSQL($sqlx));
 		$rowx = mysql_fetch_array($resultx);
 		$D = $rowx["cuentabancaria"];
 		$E = $rowcabezera["total"]*100;
@@ -5186,29 +5186,29 @@ if (($option == 1003) AND ($autorizado == true)) {
 
 	if ($soption == 99999) {
 		$sqlr = "select * from sgm_cabezera where visible=1 and tipo=1";
-		$resultr = mysql_query(convert_sql($sqlr));
+		$resultr = mysql_query(convertSQL($sqlr));
 		while ($rowr = mysql_fetch_array($resultr)) {
 			## COMPRUEBA SI ESTAN LOS RECIBOS REALIZADOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$rowr["id"];
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $rowr["total"]) {
 				$sql = "update sgm_cabezera set recibos=1 WHERE id=".$rowr["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set recibos=0 WHERE id=".$rowr["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			## COMPRUEBA SI ESTA COBRADA O NO A PARTIR DE LOS RECIBOS
 			$sqlcalc = "select SUM(total) as total from sgm_recibos where visible=1 AND id_factura =".$rowr["id"]." and cobrada=1";
-			$resultcalc = mysql_query(convert_sql($sqlcalc));
+			$resultcalc = mysql_query(convertSQL($sqlcalc));
 			$rowcalc = mysql_fetch_array($resultcalc);
 			if ($rowcalc["total"] >= $rowr["total"]) {
 				$sql = "update sgm_cabezera set cobrada=1 WHERE id=".$rowr["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			} else {
 				$sql = "update sgm_cabezera set cobrada=0 WHERE id=".$rowr["id"]."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		}
 	}

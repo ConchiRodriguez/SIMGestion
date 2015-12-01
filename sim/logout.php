@@ -1,6 +1,6 @@
 <?php
-include ("../archivos_comunes/config.php");
-setcookie("username", "", time()+60*$cookiestime, "/", $domain);
-setcookie("password", "", time()+60*$cookiestime, "/", $domain);
+include ("config.php");
+setcookie("username", "", time()+60*$cookiestime, "/sim", $domain);
+setcookie("password", "", time()+60*$cookiestime, "/sim", $domain);
 header("Location: ".$urloriginal."");
 ?>

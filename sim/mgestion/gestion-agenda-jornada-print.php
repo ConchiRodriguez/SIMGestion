@@ -16,11 +16,11 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
@@ -36,7 +36,7 @@ else {
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -53,17 +53,17 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqli = "select * from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 		$rowpermiso = mysql_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
@@ -72,7 +72,7 @@ if ($autorizado == true) {
 	$dia = $_GET["dd"]; $mes = $_GET["mm"]; $any = $_GET["aa"];
 	$x=0;
 	$sqla = "select * from sgm_agendas_users where visible=1 and id_user=".$_GET["usuario"];
-	$resulta = mysql_query(convert_sql($sqla));
+	$resulta = mysql_query(convertSQL($sqla));
 	while ($rowa = mysql_fetch_array($resulta)) {
 		if ($x != 0){ $agenda .= ",";}
 		$agenda .= $rowa["id_agenda"];
@@ -95,15 +95,15 @@ if ($autorizado == true) {
 	$file=fopen($nombre_archivo,'w+');
 	if (is_writable($nombre_archivo)) {
 		$sql = "select * from sgm_logos where clase=4";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 			if (fwrite($file,$row["contenido"]) === FALSE) {
-				mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+				mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 				exit;
 			}
 			fclose($file);
 	} else {
-		mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+		mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 	}
 
 	define("FPDF_FONTPATH","C:/Archivos de programa/EasyPHP1-8/www/demo/font/");
@@ -164,13 +164,13 @@ if ($autorizado == true) {
 	$horafin = '23:59:59';
 	$hoy2 = $any."-".$mes."-".$dia." ".$horafin;
 	$sql = "select * from sgm_incidencias where data_prevision>'".$hoy1."' and data_prevision<'".$hoy2."' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") order by data_prevision";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	while ($row = mysql_fetch_array($result)){
 		$hora = date("H", strtotime($row["data_prevision"])); 
 		$minut = date("i", strtotime($row["data_prevision"]));
 		$segon = date("s", strtotime($row["data_prevision"]));
 		$sqlc = "select * from sgm_clients where id=".$row["id_cliente"];
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$estado_color = "White";
 		$estado_color_letras = "Black";
@@ -209,7 +209,7 @@ if ($autorizado == true) {
 	$pdf->Cell(50,5,"Incidencias :",0,1);
 	$y += 5;
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$hoy1."' and data_prevision<'".$hoy2."' and id_origen=0 and visible=1 and id_agenda in (".$agenda.") and tiempo=0 and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetFont('times','',10);
 		$pdf->Ln();
@@ -224,7 +224,7 @@ if ($autorizado == true) {
 	$pdf->Cell(50,5,"Notas :",0,1);
 	$y += 5;
 	$sqltotal = "select * from sgm_incidencias where data_prevision='0000-00-00 00:00:00' and id_origen=0 and visible=1 and id_agenda in (".$agenda.")";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetFont('times','',10);
 		$pdf->Ln();

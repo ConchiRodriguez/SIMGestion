@@ -52,7 +52,7 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 				if ($_POST["pass1"] == $_POST["pass2"]){
 					$contrasena = crypt($_POST["pass1"]);
 					$camposUpdate = array("usuario","mail","pass","id_tipus");
-					$datosUpdate = array($_POST["usuario"],$_POST["mail"],$contrasena,$_POST["id_tipus"]);
+					$datosUpdate = array($_POST["user"],$_POST["mail"],$contrasena,$_POST["id_tipus"]);
 				} else {
 					echo mensaje_error($PassIncorrecto);
 				}

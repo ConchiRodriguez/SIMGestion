@@ -120,7 +120,7 @@ class PDF extends FPDF
 	$ln = 0;
 	if ($_POST["id_classificacio"] != 0) {
 		$sqlc = "select * from sgm_clients_classificacio_tipus where id in (".$_POST["id_classificacio"].")";
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		while ($rowc = mysql_fetch_array($resultc)){
 			$id_classificacio .= "".$rowc["nom"]."  ";
 		}
@@ -130,7 +130,7 @@ class PDF extends FPDF
 	if ($ln == 2){$pdf->Ln(); $ln =0;}
 	if ($_POST["tipo"] != 0) {
 		$sqlt = "select * from sgm_clients_tipos where id in (".$_POST["tipo"].")";
-		$resultt = mysql_query(convert_sql($sqlt));
+		$resultt = mysql_query(convertSQL($sqlt));
 		while ($rowt = mysql_fetch_array($resultt)){
 			$tipo .= "".$rowt["tipo"]."  ";
 		}
@@ -140,7 +140,7 @@ class PDF extends FPDF
 	if ($ln == 2){$pdf->Ln(); $ln =0;}
 	if ($_POST["grupo"] != 0) {
 		$sqlg = "select * from sgm_clients_grupos where id in (".$_POST["grupo"].")";
-		$resultg = mysql_query(convert_sql($sqlg));
+		$resultg = mysql_query(convertSQL($sqlg));
 		while ($rowg = mysql_fetch_array($resultg)){
 			$grupo .= $rowg["grupo"]."  ";
 		}
@@ -150,7 +150,7 @@ class PDF extends FPDF
 	if ($ln == 2){$pdf->Ln(); $ln =0;}
 	if ($_POST["sector"] != 0) {
 		$sqls = "select * from sgm_clients_sectors where id in (".$_POST["sector"].")";
-		$results = mysql_query(convert_sql($sqls));
+		$results = mysql_query(convertSQL($sqls));
 		while ($rows = mysql_fetch_array($results)){
 			$sector .= $rows["sector"]."  ";
 		}
@@ -160,7 +160,7 @@ class PDF extends FPDF
 	if ($ln == 2){$pdf->Ln(); $ln =0;}
 	if ($_POST["ubicacion"] != 0) {
 		$sqlu = "select * from sgm_clients_ubicacion where id in (".$_POST["ubicacion"].")";
-		$resultu = mysql_query(convert_sql($sqlu));
+		$resultu = mysql_query(convertSQL($sqlu));
 		while ($rowu = mysql_fetch_array($resultu)){
 			$ubicacion .= $rowu["ubicacion"]."  ";
 		}
@@ -196,7 +196,7 @@ class PDF extends FPDF
 				$sql = $sql." and (nombre like '%".$_POST["likenombre"]."%' or cognom1 like '%".$_POST["likenombre"]."%' or cognom2 like '%".$_POST["likenombre"]."%')";
 			}
 			$sql =$sql." order by nombre,cognom1,cognom2,id_origen";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$ver = true;
 				#### NO MOSTRARA SI LA LETRA NO ESTA SELECCIONADA
@@ -211,21 +211,21 @@ class PDF extends FPDF
 						if ($_GET["id_classificacio"] != "") { $id_classificacio = $_GET["id_classificacio"]; }
 						if ($_POST["id_classificacio"] != "") { $id_classificacio = $_POST["id_classificacio"]; }
 						$sqlcxx = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus in (".$id_classificacio.")";
-						$resultcxx = mysql_query(convert_sql($sqlcxx));
+						$resultcxx = mysql_query(convertSQL($sqlcxx));
 						$rowcxx = mysql_fetch_array($resultcxx);
 						if ($rowcxx["total"] <= 0) { $ver = false; }
 						$sqlcxx2 = "select * from sgm_clients_classificacio_tipus where id_origen in (".$id_classificacio.")";
-						$resultcxx2 = mysql_query(convert_sql($sqlcxx2));
+						$resultcxx2 = mysql_query(convertSQL($sqlcxx2));
 						while ($rowcxx2 = mysql_fetch_array($resultcxx2)) {
 							$sqlcxx3 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx2["id"];
-							$resultcxx3 = mysql_query(convert_sql($sqlcxx3));
+							$resultcxx3 = mysql_query(convertSQL($sqlcxx3));
 							$rowcxx3 = mysql_fetch_array($resultcxx3);
 							if ($rowcxx3["total"] > 0) { $ver = true; }
 							$sqlcxx4 = "select * from sgm_clients_classificacio_tipus where id_origen=".$rowcxx2["id"];
-							$resultcxx4 = mysql_query(convert_sql($sqlcxx4));
+							$resultcxx4 = mysql_query(convertSQL($sqlcxx4));
 							while ($rowcxx4 = mysql_fetch_array($resultcxx4)) {
 								$sqlcxx5 = "select count(*) as total  from sgm_clients_classificacio where id_client=".$row["id"]." and visible=1 and id_clasificacio_tipus=".$rowcxx4["id"];
-								$resultcxx5 = mysql_query(convert_sql($sqlcxx5));
+								$resultcxx5 = mysql_query(convertSQL($sqlcxx5));
 								$rowcxx5 = mysql_fetch_array($resultcxx5);
 								if ($rowcxx5["total"] > 0) { $ver = true; }
 							}
@@ -238,23 +238,23 @@ class PDF extends FPDF
 					$pdf->SetTextColor("black");
 					$z++;
 					$sqlc = "select * from sgm_clients where id=".$row["id"];
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					$rowc = mysql_fetch_array($resultc);
 					if ($_POST["colorsi"] == true){
 						$sqlctt = "select * from sgm_clients_classificacio where visible=1 and id_clasificacio_tipus<>0 and id_client=".$row["id"]." and predeterminado=1";
-						$resultctt = mysql_query(convert_sql($sqlctt));
+						$resultctt = mysql_query(convertSQL($sqlctt));
 						$rowctt = mysql_fetch_array($resultctt);
 						if ($rowctt) {
 							$id_class_tipus = $rowctt["id_clasificacio_tipus"];
 						} else {
 							$sqlcc = "select * from sgm_clients_classificacio where id_client=".$row["id"];
-							$resultcc = mysql_query(convert_sql($sqlcc));
+							$resultcc = mysql_query(convertSQL($sqlcc));
 							$rowcc = mysql_fetch_array($resultcc);
 							$id_class_tipus = $rowcc["id_clasificacio_tipus"];
 						}
 						if ($id_class_tipus > 0){
 							$sqlct = "select * from sgm_clients_classificacio_tipus where id=".$id_class_tipus;
-							$resultct = mysql_query(convert_sql($sqlct));
+							$resultct = mysql_query(convertSQL($sqlct));
 							$rowct = mysql_fetch_array($resultct);
 							if ($rowct["color"] != ""){
 								$pdf->SetFillColor($rowct["color"]);
@@ -278,19 +278,19 @@ class PDF extends FPDF
 					}
 					if ($rowc["id_carrer"] > 0){
 						$sqld = "select * from sgm_clients_carrer_tipo where id=".$rowc["id_tipo_carrer"]." and visible=1";
-						$resultd = mysql_query(convert_sql($sqld));
+						$resultd = mysql_query(convertSQL($sqld));
 						$rowd = mysql_fetch_array($resultd);
 						$sqldd = "select * from sgm_clients_carrer where id=".$rowc["id_carrer"]." and visible=1";
-						$resultdd = mysql_query(convert_sql($sqldd));
+						$resultdd = mysql_query(convertSQL($sqldd));
 						$rowdd = mysql_fetch_array($resultdd);
 						$sqlddd = "select * from sgm_clients_sector_zf where id=".$rowc["id_sector_zf"]." and visible=1";
-						$resultddd = mysql_query(convert_sql($sqlddd));
+						$resultddd = mysql_query(convertSQL($sqlddd));
 						$rowddd = mysql_fetch_array($resultddd);
 						$pdf->Cell(0,5,"".$rowd["nombre"]." ".$rowdd["nombre"]." ".$rowc["numero"]." ".$rowddd["nombre"]." ".$rowc["poblacion"]." ".$rowc["cp"]." ".$rowc["provincia"]."",0,1,'L',$pinta);
 					}
 					if ($_POST["completa"] == true){
 						$sqlc1 = "select * from sgm_clients_contactos where id_client=".$rowc["id"];
-						$resultc1 = mysql_query(convert_sql($sqlc1));
+						$resultc1 = mysql_query(convertSQL($sqlc1));
 						while ($rowc1 = mysql_fetch_array($resultc1)){
 							$y = $pdf->GetY();
 							$x = $pdf->GetX();

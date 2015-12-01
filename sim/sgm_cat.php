@@ -227,6 +227,7 @@ $Empresa = "Empresa";
 $en_orden_alfabetico = " en ordre alfab&eacute;tic :";
 $Entidad = "Entitat";
 $Entrada = "Entrada";
+$Entrar = "Entrar";
 $Entrega = "Entrega";
 $envio = "enviament";
 $Enviar = "Enviar";
@@ -502,6 +503,7 @@ $Realizado = "Realitzat";
 $Recalcular = "Recalcular";
 $Recibo = "Rebut";
 $Recibos = "Rebuts";
+$Recuperar = "Recuperar";
 $Red = "Xarxa";
 $Referencias = "Referencies";
 $Registrada = "Registrada";
@@ -717,7 +719,6 @@ $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els di
 <br><strong>TPV</strong> - Terminal Punt de Venda. No Demana client, les impresions son en format tiquet.
 <br><strong>Caja</strong> - (Incluir en caixa) Els resultats de aquest grup es mostraran en els tancament de caixa.
 <br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
-<br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
 <br><strong>Dies</strong> - Dies que suma de forma autom&agrave;tica a la previsi&oacute;n. Data de previsi&oacute; = Data actual + D&iacute;as.
 <br><strong>V.Ven</strong> - (Visualitzar Vencimient) Visualitza en el llistat el vencimient de la factura. Data de vencimient = Data actual + Dies de la fitxa client.
 <br><strong>V.Ref</strong> - (Visualitzar Referencia del Cliente) Visualitza en el llistat n&uacute;mero de referencia del cliente y nombre de solicitante.
@@ -743,5 +744,16 @@ $pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta 
 $ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
 $ErrorEmpleadoCalendario = "Les dates no son correctas";
 $ErrorPuestoDasactivar = "No es pot desactivar un lloc de treball amb un empleat assignat";
+
+$ayudaLogin = "¿Has oblidat l'usuari i/o la contrasenya?";
+$asuntoMensajeRecuperacion = "Missatge de recuperaci&oacute; de contrasenya.";
+$textoMensajeRecuperacion1 = "Segueixi el link per restaurar la contrasenya";
+$textoMensajeRecuperacion2 = "No respongui aquest e-mail";
+$ayudaMensajeRecuperacion = "S'ha enviat un e-mail per la recuperaci&oacute; de l'usuari i la contrasenya a : ";
+$errorMensajeRecuperacion = "Aquesta direcci&oacute; d'e-mail no esta registrada";
+
+$ayudaPanelUserPass = "M&agrave;x. 10 car&agrave;cters";
+$ayudaPanelUserPass2 = "Si no pogues fer correctament el login de nou, esborri les cookies referents a solucions-im.com del seu navegador.";
+$errorPanelUserPass = "Error al introduir les contrasenyes.";
 
 ?>

@@ -16,11 +16,11 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
@@ -36,7 +36,7 @@ else {
 	$row = mysql_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
@@ -53,17 +53,17 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqli = "select * from sgm_incidencias where id=".$_GET["id"];
-		$resulti = mysql_query(convert_sql($sqli));
+		$resulti = mysql_query(convertSQL($sqli));
 		$rowi = mysql_fetch_array($resulti);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convert_sql($sqlsgm));
+		$resultsgm = mysql_query(convertSQL($sqlsgm));
 		$rowsgm = mysql_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convert_sql($sqlpermiso));
+		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
 		$rowpermiso = mysql_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
@@ -72,7 +72,7 @@ if ($autorizado == true) {
 	$dia = $_GET["dd"]; $mes = $_GET["mm"]; $any = $_GET["aa"];
 	$x=0;
 	$sqla = "select * from sgm_agendas_users where visible=1 and id_user=".$_GET["usuario"];
-	$resulta = mysql_query(convert_sql($sqla));
+	$resulta = mysql_query(convertSQL($sqla));
 	while ($rowa = mysql_fetch_array($resulta)) {
 		if ($rowa["propietario"] == 1){$agenda_user = $rowa["id_agenda"];}
 		if ($x != 0){ $agenda .= ",";}
@@ -96,15 +96,15 @@ if ($autorizado == true) {
 	$file=fopen($nombre_archivo,'w+');
 	if (is_writable($nombre_archivo)) {
 		$sql = "select * from sgm_logos where clase=4";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 			if (fwrite($file,$row["contenido"]) === FALSE) {
-				mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+				mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 				exit;
 			}
 			fclose($file);
 	} else {
-		mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+		mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 	}
 
 	define("FPDF_FONTPATH","C:/Archivos de programa/EasyPHP1-8/www/demo/font/");
@@ -313,7 +313,7 @@ if ($autorizado == true) {
 	$pdf->SetXY(10,50);
 	$pdf->Cell(90,7,$lunes,0,1,'',true);
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$lunes1." 00:00:00' and data_prevision<'".$lunes1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
 		$minut = date("i", strtotime($rowtotal["data_prevision"]));
@@ -323,7 +323,7 @@ if ($autorizado == true) {
 	$pdf->SetXY(10,120);
 	$pdf->Cell(90,7,$martes,0,1,'',true);
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$martes1." 00:00:00' and data_prevision<'".$martes1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
 		$minut = date("i", strtotime($rowtotal["data_prevision"]));
@@ -333,7 +333,7 @@ if ($autorizado == true) {
 	$pdf->SetXY(10,190);
 	$pdf->Cell(90,7,$miercoles,0,1,'',true);
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$miercoles1." 00:00:00' and data_prevision<'".$miercoles1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
 		$minut = date("i", strtotime($rowtotal["data_prevision"]));
@@ -345,7 +345,7 @@ if ($autorizado == true) {
 	$y = 60;
 	$pdf->Cell(90,7,$jueves,0,1,'',true);
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$jueves1." 00:00:00' and data_prevision<'".$jueves1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetXY(105,$y);
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
@@ -358,7 +358,7 @@ if ($autorizado == true) {
 	$pdf->Cell(90,7,$viernes,0,1,'',true);
 	$y = 130;
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$viernes1." 00:00:00' and data_prevision<'".$viernes1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetXY(105,$y);
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
@@ -371,7 +371,7 @@ if ($autorizado == true) {
 	$pdf->Cell(90,7,$sabado,0,1,'',true);
 	$y = 200;
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$sabado1." 00:00:00' and data_prevision<'".$sabado1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetXY(105,$y);
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 
@@ -384,7 +384,7 @@ if ($autorizado == true) {
 	$pdf->Cell(90,7,$domingo,0,1,'',true);
 	$y = 240;
 	$sqltotal = "select * from sgm_incidencias where data_prevision>'".$domingo1." 00:00:00' and data_prevision<'".$domingo1." 23:59:59' and visible=1 and tiempo > 0 and id_agenda in (".$agenda.") and privada=1 order by data_prevision";
-	$resulttotal = mysql_query(convert_sql($sqltotal));
+	$resulttotal = mysql_query(convertSQL($sqltotal));
 	while ($rowtotal = mysql_fetch_array($resulttotal)) {
 		$pdf->SetXY(105,$y);
 		$hora = date("H", strtotime($rowtotal["data_prevision"])); 

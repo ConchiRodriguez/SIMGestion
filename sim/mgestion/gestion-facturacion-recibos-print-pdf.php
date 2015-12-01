@@ -1,8 +1,12 @@
 <?php 
 	error_reporting(E_ALL);
 
-	include ("../../archivos_comunes/config.php");
-	include ("../../archivos_comunes/functions.php");
+	include ("../config.php");
+#	include ("../../archivos_comunes/functions.php");
+	foreach (glob("../auxiliar/*.php") as $filename)
+	{
+		include ($filename);
+	}
 	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
 	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
@@ -13,34 +17,34 @@
 	require('fpdf.php');
 
 	$pdf=new FPDF();
-	$pdf->AddFont('Verdana','','../../archivos_comunes/font/verdana.php');
-	$pdf->AddFont('Verdana-Bold','B','../../archivos_comunes/font/verdanab.php');
-	$pdf->AddFont('Verdana','B','../../archivos_comunes/font/verdanab.php');
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
 
 	$pdf->Image('../../archivos_comunes/images/logo1.jpg',5,5,50,11);
 
 	$pdf->SetXY(40,5);
-	$pdf->SetFont('Verdana','B',18);
+	$pdf->SetFont('Calibri','B',18);
 	$pdf->Cell(140,20,$recibo,0,1,'C');
 
-	$pdf->SetFont('Verdana','',8);
+	$pdf->SetFont('Calibri','',8);
 
 	$sqlr = "select * from sgm_recibos where id=".$_GET["id"];
-	$resultr = mysql_query(convert_sql($sqlr));
+	$resultr = mysql_query(convertSQL($sqlr));
 	$rowr = mysql_fetch_array($resultr);
 	$sqlf = "select * from sgm_cabezera where id=".$rowr["id_factura"];
-	$resultf = mysql_query(convert_sql($sqlf));
+	$resultf = mysql_query(convertSQL($sqlf));
 	$rowf = mysql_fetch_array($resultf);
 	$sqlele = "select * from sgm_dades_origen_factura";
-	$resultele = mysql_query(convert_sql($sqlele));
+	$resultele = mysql_query(convertSQL($sqlele));
 	$rowele = mysql_fetch_array($resultele);
 	$sqldi = "select * from sgm_divisas where id=".$rowf["id_divisa"];
-	$resultdi = mysql_query(convert_sql($sqldi));
+	$resultdi = mysql_query(convertSQL($sqldi));
 	$rowdi = mysql_fetch_array($resultdi);
 	$sqlxtp = "select * from sgm_tpv_tipos_pago where id=".$rowr["id_tipo_pago"];
-	$resultxtp = mysql_query(convert_sql($sqlxtp));
+	$resultxtp = mysql_query(convertSQL($sqlxtp));
 	$rowxtp = mysql_fetch_array($resultxtp);
 
 	$pdf->SetXY(5,20);
@@ -68,7 +72,7 @@
 	$pdf->MultiCell(150,5,$importe."\n".strtoupper(convertir_a_letras($rowr["total"]))." ".$rowdi["abrev"],1);
 
 	$pdf->SetXY(5,62);
-	$pdf->SetFont('Verdana','',6);
+	$pdf->SetFont('Calibri','',6);
 	$pdf->MultiCell(200,3,$texto_pdatos,0,'J');
 
 	$pdf->Output("../pdf/recibo.pdf");

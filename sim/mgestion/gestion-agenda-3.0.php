@@ -8,12 +8,12 @@ if (($option == 1017) AND ($autorizado == true)) {
 	if ($_GET["usuario"] == "") { $usuario = $userid; }
 	else {
 		$sql = "select * from sgm_users where id=".$_GET["usuario"];
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		$usuario = $row["id"];
 	}
 	$sql = "select * from sgm_users where id=".$usuario;
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$rowusuario = mysql_fetch_array($result);
 
 ### IDENTIFICACION DE LAS FECHAS
@@ -131,13 +131,13 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		$sql = "update sgm_tareas set ";
 		$sql = $sql."id_origen=".$_POST["id_origen"]."";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 	}
 	if ($ssoption == 2) {
 		$sql = "update sgm_tareas set ";
 		$sql = $sql."visible=0";
 		$sql = $sql." WHERE id=".$_GET["id"]."";
-		mysql_query(convert_sql($sql));
+		mysql_query(convertSQL($sql));
 	}
 	echo "<center>";
 	echo "<table style=\"width:100%\" cellpadding=\"2\" cellspacing=\"2\" >";
@@ -163,10 +163,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 						echo "<td><table><tr>";
 						$casilla = $_POST["casilla1"];
 						$sql = "select * from sgm_agendas_users where visible=1 and id_user=".$usuario;
-						$result = mysql_query(convert_sql($sql));
+						$result = mysql_query(convertSQL($sql));
 						while ($row = mysql_fetch_array($result)){
 							$sqlv = "select * from sgm_agendas where visible=1 and id=".$row["id_agenda"];
-							$resultv = mysql_query(convert_sql($sqlv));
+							$resultv = mysql_query(convertSQL($sqlv));
 							while ($rowv = mysql_fetch_array($resultv)){
 									echo "<td style=\"vertical-align:center;font-size:15px;font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;\"><input class=\"bigcheck\" type=\"checkbox\" name=\"casilla1[]\" value=\"".$rowv["id"]."\" onClick=\"limitarSeleccion()\">".$rowv["nombre"]."</td>";
 							}
@@ -196,18 +196,18 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					$sql = "update sgm_users set ";
 					$sql = $sql."id_agenda".$x."=".$id_agenda."";
 					$sql = $sql." WHERE id=".$usuario."";
-					mysql_query(convert_sql($sql));
+					mysql_query(convertSQL($sql));
 					$id_agenda = "";
 			}
 			if ($x == 1){
 				$sql = "update sgm_users set ";
 				$sql = $sql."id_agenda2=-1";
 				$sql = $sql." WHERE id=".$usuario."";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 		} else {
 			$sql = "select * from sgm_users where activo=1 and validado=1 and id=".$usuario;
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 				if ($row["id_agenda1"] > 0){echo ver_agenda($row["id_agenda1"],$dia,$any,$mes,$usuario);}
 				if ($row["id_agenda2"] > 0){echo ver_agenda($row["id_agenda2"],$dia,$any,$mes,$usuario);}
@@ -219,7 +219,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$hoy2 = $any."-".$mes."-".$dia." ".$horafin;
 			### DETERMINA SI HAY PERMISO DE EDICION
 			$sqlag = "select * from sgm_users where activo=1 and validado=1 and id=".$usuario;
-			$resultag = mysql_query(convert_sql($sqlag));
+			$resultag = mysql_query(convertSQL($sqlag));
 			$rowag = mysql_fetch_array($resultag);
 				if ($rowag["id_agenda1"] == $rowag["id_agenda2"]) {$agenda2 = "";} else { $agenda2 = $rowag["id_agenda2"];}
 				########INICI incidenciaS
@@ -272,16 +272,16 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = "select * from sgm_tareas where visible=1";
 			if ($ssoption == 4) { $sql = $sql." and (id_estado <> -2)"; }
 			if ($ssoption == 3) { $sql = $sql." and id_estado = -2"; }
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 
 				$sqlu = "select * from sgm_users where id=".$row["id_usuario_destino"];
-				$resultu = mysql_query(convert_sql($sqlu));
+				$resultu = mysql_query(convertSQL($sqlu));
 				$rowu = mysql_fetch_array($resultu);
 
 				if ($row["id_estado"] > 0) {
 					$sqle = "select * from sgm_tareas_estados where id=".$row["id_estado"];
-					$resulte = mysql_query(convert_sql($sqle));
+					$resulte = mysql_query(convertSQL($sqle));
 					$rowe = mysql_fetch_array($resulte);
 					$descripcion_estado = $rowe["estado"];
 					$estado_color = $rowe["color"];
@@ -299,12 +299,12 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					}
 				}
 				$sqlc = "select * from sgm_contratos_cliente where id=".$row["id_contratos_cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				echo "<tr style=\"background-color:".$estado_color.";\">";
 					echo "<td style=\"text-align:right;vertical-align:top;color:".$estado_color_letras."\">".$row["id"]."</td>";
 					$sqlti = "select count(*) as total from sgm_tareas where id_origen=".$row["id"]." and visible=1";
-					$resultti = mysql_query(convert_sql($sqlti));
+					$resultti = mysql_query(convertSQL($sqlti));
 					$rowti = mysql_fetch_array($resultti);
 					if ($rowti["total"] == 0) {
 						echo "<td style=\"text-align:center;vertical-align:top;\"><a href=\"index.php?op=1017&sop=21&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"><a></td>";
@@ -340,10 +340,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 						echo "<tr><td><strong>".$Seleccionar." ".$Agendas." :</strong></td></tr>";
 							echo "<td><table><tr>";
 							$sql = "select * from sgm_agendas_users where visible=1 and id_user=".$usuario;
-							$result = mysql_query(convert_sql($sql));
+							$result = mysql_query(convertSQL($sql));
 							while ($row = mysql_fetch_array($result)){
 								$sqlv = "select * from sgm_agendas where visible=1 and id=".$row["id_agenda"];
-								$resultv = mysql_query(convert_sql($sqlv));
+								$resultv = mysql_query(convertSQL($sqlv));
 								while ($rowv = mysql_fetch_array($resultv)){
 									echo "<tr><td><input type=\"checkbox\" name=\"casilla1[]\" value=\"".$rowv["id"]."\">".$rowv["nombre"]."</td></tr>";
 								}
@@ -366,7 +366,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 								$i++;
 							}
 							$sqla = "select * from sgm_agendas where visible=1 and id=".$id_agenda;
-							$resulta = mysql_query(convert_sql($sqla));
+							$resulta = mysql_query(convertSQL($sqla));
 							$rowa = mysql_fetch_array($resulta);
 							echo "<tr><td>".$rowa["nombre"]."</td></tr>";
 							$id_agenda = "";
@@ -389,7 +389,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		if ($ssoption == 1) {
 			$reinicia_estat = false;
 			$sqli = "select * from sgm_tareas where id=".$_GET["id"];
-			$resulti = mysql_query(convert_sql($sqli));
+			$resulti = mysql_query(convertSQL($sqli));
 			$rowi = mysql_fetch_array($resulti);
 			if (($rowi["id_agenda"] != $_POST["id_agenda"]) and ($_POST["id_agenda"] != 0)){
 				$sql = "insert into sgm_tareas_canvio_usuario (id_tarea, id_agenda, fecha, motivo) ";
@@ -403,7 +403,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				$sql = $sql.",'".$xfecha."'";
 				$sql = $sql.",'".comillas($_POST["motivo"])."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 				$reinicia_estat = true;
 			}
 			if ($_POST["notas_desarrollo"] != ""){
@@ -418,7 +418,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				$sql = $sql.",'".$xfecha."'";
 				$sql = $sql.",'".comillas($_POST["notas_desarrollo"])."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			$sql = "update sgm_tareas set ";
 			$sql = $sql."id_agenda=".$_POST["id_agenda"]."";
@@ -459,13 +459,13 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				$sql = $sql.",data_finalizacion='".$xfecha."'";
 			}
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if ($ssoption == 6) {
 			$sql = "update sgm_tareas set ";
 			$sql = $sql."id_origen=0";
 			$sql = $sql." WHERE id=".$_GET["id_tarea"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		if ($_GET["inc"] == 0) {echo "<strong>Edición de Tarea:</strong>";}
@@ -487,14 +487,14 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$usuario_con_permiso = true;
 		} else {
 			$sql = "select * from sgm_tareas where id=".$_GET["id"];
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$fecha_prevision = $row["data_registro"];
 			$fecha_margen = $row["data_margen"];
 			$fecha_reg = $row["data_insert"];
 
 			$sqlu = "select * from sgm_users where id=".$row["id_usuario"];
-			$resultu = mysql_query(convert_sql($sqlu));
+			$resultu = mysql_query(convertSQL($sqlu));
 			$rowu = mysql_fetch_array($resultu);
 
 			echo "&nbsp;&nbsp;".$Numero." : <strong>".$row["id"]."</strong>";
@@ -502,7 +502,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 
 			if ($row["id_estado"] == -2) {
 				$sqlu = "select * from sgm_users where id=".$row["id_usuario_finalizacion"];
-				$resultu = mysql_query(convert_sql($sqlu));
+				$resultu = mysql_query(convertSQL($sqlu));
 				$rowu = mysql_fetch_array($resultu);
 				echo "&nbsp;&nbsp; ".$Usuario." / ".$Fecha." ".$Finalizacion." : <strong>".$rowu["usuario"]." / ".$row["data_finalizacion"]."</strong>";
 			}
@@ -513,7 +513,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$usuario_con_permiso = false;
 			if ($row["id_agenda"] == 0){$usuario_con_permiso = true;}
 			$sqli = "select count(*) as total from sgm_agendas_users where escritura=1 and id_agenda=".$row["id_agenda"]." and id_user=".$userid;
-			$resulti = mysql_query(convert_sql($sqli));
+			$resulti = mysql_query(convertSQL($sqli));
 			$rowi = mysql_fetch_array($resulti);
 			if (($rowi["total"] == 1) or ($editando == false)) {
 				$usuario_con_permiso = true;
@@ -523,7 +523,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 
 		if ($editando == true) {
 				$sqlc = "select * from sgm_clients where id=".$row["id_cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 
 			if ($row["id_cliente"] <> 0) { echo " <a href=\"index.php?op=1008&sop=201&id=".$row["id_cliente"]."\">[ ".$Ficha." de  <strong>".$rowc["nombre"]."</strong> ]</a>"; }
@@ -548,7 +548,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<tr><td style=\"text-align:right;vertical-align:top;\">".$Origen." ".$tarea." :</td><td><select name=\"id_entrada\" class=\"px150\">";
 				echo "<option value=\"0\" selected>-</option>";
 				$sqle = "select * from sgm_incidencias_entrada order by entrada";
-				$resulte = mysql_query(convert_sql($sqle));
+				$resulte = mysql_query(convertSQL($sqle));
 				while ($rowe = mysql_fetch_array($resulte)) {
 					if ($rowe["id"] == $row["id_entrada"] ) {
 						echo "<option value=\"".$rowe["id"]."\" selected>".$rowe["entrada"]."</option>";
@@ -571,7 +571,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;vertical-align:top;\">".$Cliente." :</td><td><select name=\"id_cliente\" class=\"px300\">";
 				echo "<option value=\"0\" selected>-</option>";
 					$sqlc = "select * from sgm_clients where visible=1 order by nombre, id_agrupacio";
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					while ($rowc = mysql_fetch_array($resultc)) {
 						if ($rowc["id"] == $cliente) {
 							if ($rowc["id_agrupacio"] == 0 ){
@@ -591,7 +591,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "</td></tr>";
 
 			$sqlc = "select * from sgm_clients where visible=1 and id=".$cliente;
-			$resultc = mysql_query(convert_sql($sqlc));
+			$resultc = mysql_query(convertSQL($sqlc));
 			$rowc = mysql_fetch_array($resultc);
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;vertical-align:top;\">".$Telefono." :</td><td><input type=\"Text\" name=\"telefono\" value=\"".$rowc["telefono"]."\" class=\"px300\"></td></tr>";
 			echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;vertical-align:top;\">".$Contacto." :</td><td><input type=\"Text\" name=\"cliente_contacto\" value=\"".$row["cliente_contacto"]."\" class=\"px300\"></td></tr>";
@@ -609,7 +609,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<tr><td style=\"text-align:right;vertical-align:top;\">".$Servicio." :</td><td><select name=\"id_servicio\" class=\"px300\">";
 				echo "<option value=\"0\" selected>-</option>";
 					$sqlc = "select * from sgm_tareas_servicios where visible=1 order by servicio";
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					while ($rowc = mysql_fetch_array($resultc)) {
 						if ($rowc["id"] == $servicio) {
 							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["servicio"]."</option>";
@@ -623,14 +623,14 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<tr><td style=\"text-align:right;vertical-align:top;\">".$Tipo." :</td><td><select name=\"id_tipo\" class=\"px300\">";
 				echo "<option value=\"0\" selected>-</option>";
 				$sqlt = "select * from sgm_tareas_tipos_grupo where visible=1";
-				$resultt = mysql_query(convert_sql($sqlt));
+				$resultt = mysql_query(convertSQL($sqlt));
 				while ($rowt = mysql_fetch_array($resultt)) {
 					$sqltg = "select count(*) as total from sgm_tareas_tipos where visible=1 and id_tipo_grupo=".$rowt["id"];
-					$resulttg = mysql_query(convert_sql($sqltg));
+					$resulttg = mysql_query(convertSQL($sqltg));
 					$rowtg = mysql_fetch_array($resulttg);
 					if ($rowtg["total"] > 0){
 						$sqltt = "select * from sgm_tareas_tipos where visible=1 and id_tipo_grupo=".$rowt["id"];
-						$resulttt = mysql_query(convert_sql($sqltt));
+						$resulttt = mysql_query(convertSQL($sqltt));
 						$rowtt = mysql_fetch_array($resulttt);
 						if ($rowtt["id"] == $row["id_tipo"]) {
 							echo "<option value=\"".$rowtt["id"]."\" selected>".$rowt["grupo"]."-".$rowtt["tipo"]."</option>";
@@ -643,7 +643,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<tr><td style=\"text-align:right;vertical-align:top;\">".$Departamento." :</td><td><select name=\"id_departamento\" class=\"px300\">";
 			echo "<option value=\"0\" selected>-</option>";
 				$sqld = "select * from sgm_tareas_departamento where visible=1 order by nombre";
-				$resultd = mysql_query(convert_sql($sqld));
+				$resultd = mysql_query(convertSQL($sqld));
 				while ($rowd = mysql_fetch_array($resultd)) {
 					if ($rowd["id"] == $row["id_departamento"] ) {
 						echo "<option value=\"".$rowd["id"]."\" selected>".$rowd["nombre"]."</option>";
@@ -655,10 +655,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "</td></tr>";
 			echo "<tr style=\"background-color : Silver;\"><td></td><td>";
 					$sqlc = "select * from sgm_tareas_canvio_usuario where id_tarea=".$_GET["id"]." order by fecha";
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					while ($rowc = mysql_fetch_array($resultc)) {
 						$sqlu = "select * from sgm_users where id=".$rowc["id_usuario_origen"];
-						$resultu = mysql_query(convert_sql($sqlu));
+						$resultu = mysql_query(convertSQL($sqlu));
 						$rowu = mysql_fetch_array($resultu);
 						echo $rowu["usuario"]." <strong>".$rowc["fecha"]."</strong> <em>".$rowc["motivo"]."</em><br>";
 					}
@@ -675,7 +675,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "<tr style=\"background-color : Silver;\"><td style=\"text-align:right;vertical-align:top;\">".$Agenda." :</td><td><select name=\"id_agenda\" class=\"px300\">";
 		echo "<option value=\"0\" selected>-</option>";
 			$sqlu = "select * from sgm_agendas where visible=1";
-			$resultu = mysql_query(convert_sql($sqlu));
+			$resultu = mysql_query(convertSQL($sqlu));
 			while ($rowu = mysql_fetch_array($resultu)) {
 				if ($rowu["id"] == $agenda ) {
 					echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["nombre"]."</option>";
@@ -690,7 +690,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "<td><select name=\"id_agenda2\" class=\"px300\">";
 					echo "<option value=\"0\" selected>-</option>";
 						$sqlu = "select * from sgm_agendas where visible=1";
-						$resultu = mysql_query(convert_sql($sqlu));
+						$resultu = mysql_query(convertSQL($sqlu));
 						while ($rowu = mysql_fetch_array($resultu)) {
 							if ($rowu["id"] == $row["id_2"]){
 								echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["nombre"]."</option>";
@@ -705,7 +705,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					echo "<td></td><td><select name=\"id_agenda".$i."\" class=\"px300\">";
 						echo "<option value=\"0\" selected>-</option>";
 							$sqlu = "select * from sgm_agendas where visible=1";
-							$resultu = mysql_query(convert_sql($sqlu));
+							$resultu = mysql_query(convertSQL($sqlu));
 							while ($rowu = mysql_fetch_array($resultu)) {
 							if ($rowu["id"] == $row["id_".$i.""]){
 								echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["nombre"]."</option>";
@@ -733,7 +733,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				if (cerrable($row["id"])) { echo "<option value=\"-2\">".$Finalizada."</option>"; }
 			}
 			$sqls = "select * from sgm_tareas_estados where visible=1 order by estado";
-			$results = mysql_query(convert_sql($sqls));
+			$results = mysql_query(convertSQL($sqls));
 			while ($rows = mysql_fetch_array($results)) {
 				if ($rows["id"] == $row["id_estado"] ) {
 					echo "<option value=\"".$rows["id"]."\" selected>".$rows["estado"]."</option>";
@@ -846,10 +846,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		}
 
 		$sqlc = "select * from sgm_tareas_notas_desarrollo where id_tarea=".$_GET["id"]." order by fecha";
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		while ($rowc = mysql_fetch_array($resultc)) {
 			$sqlu = "select * from sgm_users where id=".$rowc["id_usuario_origen"];
-			$resultu = mysql_query(convert_sql($sqlu));
+			$resultu = mysql_query(convertSQL($sqlu));
 			$rowu = mysql_fetch_array($resultu);
 			echo "<tr><td style=\"text-align:right;vertical-align:top;\">";
 			echo $rowu["usuario"]."<br><strong>".$rowc["fecha"]."</strong>";
@@ -910,21 +910,21 @@ if (($soption == 0) and ($ssoption <= 2)) {
 						echo "<td style=\"width:100px;text-align:center;color:black;\"></td>";
 					echo "</tr>";
 					$sql2 = "select * from sgm_tareas_tipos_plantillas where id_tarea_tipo=".$row["id_tipo"];
-					$result2 = mysql_query(convert_sql($sql2));
+					$result2 = mysql_query(convertSQL($sql2));
 					while ($row2 = mysql_fetch_array($result2)) {	
 						$sqlv = "select * from sgm_ft_plantilla where id=".$row2["id_plantilla"];
-						$resultv = mysql_query(convert_sql($sqlv));
+						$resultv = mysql_query(convertSQL($sqlv));
 						$rowv = mysql_fetch_array($resultv);
 						echo "<tr>";
 							echo "<td style=\"text-align:right;\">".$rowv["plantilla"]."</td>";
 						$sqlt = "select count(*) as total from sgm_ft where  id_plantilla=".$rowv["id"]." and id_tarea=".$_GET["id"];
-						$resultt = mysql_query(convert_sql($sqlt));
+						$resultt = mysql_query(convertSQL($sqlt));
 						$rowt = mysql_fetch_array($resultt);
 						if ($rowt["total"] == 0) {
 							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=210&id_tarea=".$_GET["id"]."&id_plantilla=".$rowv["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white.png\" alt=\"Editar\" border=\"0\"> ".$Anadir." ".$Datos."</a></td>";
 						} else {
 							$sqlft = "select * from sgm_ft where  id_plantilla=".$rowv["id"]." and id_tarea=".$_GET["id"];
-							$resultft = mysql_query(convert_sql($sqlft));
+							$resultft = mysql_query(convertSQL($sqlft));
 							$rowft = mysql_fetch_array($resultft);
 							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=210&id_ft=".$rowft["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white.png\" alt=\"Editar\" border=\"0\"> ".$Editar." ".$Datos."</a></td>";
 						}
@@ -988,10 +988,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql.",'".comillas($_POST["asunto"])."'";
 			$sql = $sql.",".$_POST["privada"]."";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			if ($_POST["notas_desarrollo"] != ""){
 				$sqli = "select * from sgm_tareas where asunto='".$_POST["asunto"]."' order by id DESC";
-				$resulti = mysql_query(convert_sql($sqli));
+				$resulti = mysql_query(convertSQL($sqli));
 				$rowi = mysql_fetch_array($resulti);
 				$sql = "insert into sgm_tareas_notas_desarrollo (id_tarea, id_usuario_origen, fecha, notas) ";
 				$sql = $sql."values (";
@@ -1004,7 +1004,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				$sql = $sql.",'".$xfecha."'";
 				$sql = $sql.",'".comillas($_POST["notas_desarrollo"])."'";
 				$sql = $sql.")";
-				mysql_query(convert_sql($sql));
+				mysql_query(convertSQL($sql));
 			}
 			echo "<br><br>Operación realizada correctamente.";
 			echo "<br><br><a href=\"index.php?op=1017&sop=0\">[ Volver ]</a>";	
@@ -1090,19 +1090,19 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."values (";
 			$sql = $sql."'".$_POST["nombre"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_tareas_departamento set ";
 			$sql = $sql."nombre='".$_POST["nombre"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_tareas_departamento set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Departamentos."</strong>";
@@ -1129,7 +1129,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_tareas_departamento where visible=1";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 #				echo "<td><a href=\"index.php?op=1017&sop=103&id=".$row["id"]."\">[E]</a></td>";
@@ -1156,20 +1156,20 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."'".$_POST["estado"]."'";
 			$sql = $sql.",'".$_POST["color"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_tareas_estados set ";
 			$sql = $sql."estado='".$_POST["estado"]."'";
 			$sql = $sql.",color='".$_POST["color"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_tareas_estados set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Estados." de ".$Tareas."</strong>";
@@ -1200,7 +1200,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "</form>";
 			echo "</tr>";
 				$sql = "select * from sgm_tareas_estados where visible=1";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					echo "<tr style=\"background-color:".$row["color"].";\">";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=61&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -1233,39 +1233,39 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."'".$_POST["tipo"]."'";
 			$sql = $sql.",".$_POST["id_tipo_grupo"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_tareas_tipos set ";
 			$sql = $sql."tipo='".$_POST["tipo"]."'";
 			$sql = $sql.",id_tipo_grupo=".$_POST["id_tipo_grupo"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_tareas_tipos set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 4) and ($admin == true)) {	
 			$sql = "insert into sgm_tareas_tipos_grupo (grupo) ";
 			$sql = $sql."values (";
 			$sql = $sql."'".$_POST["grupo"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 5) and ($admin == true)) {
 			$sql = "update sgm_tareas_tipos_grupo set ";
 			$sql = $sql."grupo='".$_POST["grupo"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 6) and ($admin == true)) {
 			$sql = "update sgm_tareas_tipos_grupo set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Tipos." de ".$Tarea."</strong>";
@@ -1293,7 +1293,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_tareas_tipos_grupo where visible=1 order by grupo";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=72&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -1321,7 +1321,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<td><select name=\"id_tipo_grupo\" style=\"width:150px;\">";
 				echo "<option value=\"0\">-</option>";
 				$sqlg = "select * from sgm_tareas_tipos_grupo where visible=1 order by grupo";
-				$resultg = mysql_query(convert_sql($sqlg));
+				$resultg = mysql_query(convertSQL($sqlg));
 				while ($rowg = mysql_fetch_array($resultg)) {
 					echo "<option value=\"".$rowg["id"]."\">".$rowg["grupo"]."</option>";
 				}
@@ -1333,7 +1333,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_tareas_tipos where visible=1 order by tipo";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=71&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -1341,7 +1341,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "<td><select name=\"id_tipo_grupo\" style=\"width:150px;\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlg = "select * from sgm_tareas_tipos_grupo where visible=1 order by grupo";
-					$resultg = mysql_query(convert_sql($sqlg));
+					$resultg = mysql_query(convertSQL($sqlg));
 					while ($rowg = mysql_fetch_array($resultg)) {
 						if ($rowg["id"] == $row["id_tipo_grupo"]) { echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["grupo"]."</option>";  }
 						else { echo "<option value=\"".$rowg["id"]."\">".$rowg["grupo"]."</option>"; }
@@ -1351,7 +1351,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 				echo "</form>";
 					$sqlxx = "select count(*) as total from sgm_tareas_tipos_plantillas where id_tarea_tipo=".$row["id"];
-					$resultxx = mysql_query(convert_sql($sqlxx));
+					$resultxx = mysql_query(convertSQL($sqlxx));
 					$rowxx = mysql_fetch_array($resultxx);
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=110&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white.png\" alt=\"Plantillas\" border=\"0\"> ".$rowxx["total"]."</a></td>";
 				echo "</tr>";
@@ -1381,7 +1381,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql.",'".$_POST["codigo"]."'";
 			$sql = $sql.",".$_POST["id_origen"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios set ";
@@ -1389,25 +1389,25 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql.",codigo='".$_POST["codigo"]."'";
 			$sql = $sql.",id_origen=".$_POST["id_origen"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 4) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios set ";
 			$sql = $sql."titol=1";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 5) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios set ";
 			$sql = $sql."titol=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Servicios."</strong>";
@@ -1435,7 +1435,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<td><select name=\"id_origen\" style=\"width:200px\">";
 				echo "<option value=\"0\">-</option>";
 				$sqlser = "select * from sgm_tareas_servicios where visible=1 order by servicio";
-				$resultser = mysql_query(convert_sql($sqlser));
+				$resultser = mysql_query(convertSQL($sqlser));
 				while ($rowser = mysql_fetch_array($resultser)) {
 					echo "<option value=\"".$rowser["id"]."\">".$rowser["servicio"]."</option>";
 				}
@@ -1456,7 +1456,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "<td></td>";
 		echo "</tr>";
 			$sql = "select * from sgm_tareas_servicios where visible=1 order by codigo";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				$color = "white";
 				if ($row["titol"] == 1){ $color= "silver";} 
@@ -1472,7 +1472,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "<td><select name=\"id_origen\" style=\"width:200px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlser = "select * from sgm_tareas_servicios where visible=1 order by servicio";
-					$resultser = mysql_query(convert_sql($sqlser));
+					$resultser = mysql_query(convertSQL($sqlser));
 					while ($rowser = mysql_fetch_array($resultser)) {
 						if ($rowser["id"] != $row["id"])  { 
 							if ($rowser["id"] == $row["id_origen"])  { 
@@ -1506,19 +1506,19 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."values (";
 			$sql = $sql."'".$_POST["nombre"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios_estados set ";
 			$sql = $sql."nombre='".$_POST["nombre"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_tareas_servicios_estados set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Estado." de ".$Servicios."</strong>";
@@ -1545,7 +1545,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_tareas_servicios_estados where visible=1";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=91&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -1572,34 +1572,34 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql.",".$_POST["id_user"];
 			$sql = $sql.",".$_POST["escritura"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_agendas_users set ";
 			$sql = $sql."escritura=".$_POST["escritura"];
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "delete from sgm_agendas_users WHERE id=".$_GET["id"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 4) and ($admin == true)) {
 			$sql = "update sgm_agendas_users set ";
 			$sql = $sql."propietario = 0";
 			$sql = $sql." WHERE id_agenda=".$_GET["id"]." and id_user<>".$_GET["user"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 			$sql = "update sgm_agendas_users set ";
 			$sql = $sql."propietario = 1";
 			$sql = $sql.",escritura = 1";
 			$sql = $sql." WHERE id_agenda=".$_GET["id"]." and id_user=".$_GET["user"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 5) AND ($admin == true)) {
 			$sql = "update sgm_agendas_users set ";
 			$sql = $sql."propietario = 0";
 			$sql = $sql." WHERE id =".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Acceso." a las ".$Agendas." : </strong>";
@@ -1618,7 +1618,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "<td style=\"text-align:center;\">".$Permiso."</td>";
 			echo "</tr>";
 			$sqlv = "select * from sgm_agendas where visible=1";
-			$resultv = mysql_query(convert_sql($sqlv));
+			$resultv = mysql_query(convertSQL($sqlv));
 			while ($rowv = mysql_fetch_array($resultv)){
 				echo "<tr style=\"background-color : Silver;\">";
 					echo "<form action=\"index.php?op=1017&sop=100&ssop=1\" method=\"post\">";
@@ -1627,7 +1627,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					echo "<td></td>";
 					echo "<td><select name=\"id_user\" style=\"width:100px\">";
 						$sqlx = "select * from sgm_users where sgm=1 and activo=1 and validado=1 and id<>0";
-						$resultx = mysql_query(convert_sql($sqlx));
+						$resultx = mysql_query(convertSQL($sqlx));
 						while ($rowx = mysql_fetch_array($resultx)) {	
 							echo "<option value=\"".$rowx["id"]."\">".$rowx["usuario"]."</option>";
 						}
@@ -1642,11 +1642,11 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
 				$sql2 = "select * from sgm_agendas_users where visible=1 and id_agenda=".$rowv["id"];
-				$result2 = mysql_query(convert_sql($sql2));
+				$result2 = mysql_query(convertSQL($sql2));
 				while ($row2 = mysql_fetch_array($result2)) {
 					if ($row2["propietario"] == 1){ $color = "#FF8C00";} else {$color = "white";}
 					$sqlu = "select * from sgm_users where id=".$row2["id_user"];
-					$resultu = mysql_query(convert_sql($sqlu));
+					$resultu = mysql_query(convertSQL($sqlu));
 					$rowu = mysql_fetch_array($resultu);
 				echo "<tr style=\"background-color:".$color."\">";
 						echo "<form action=\"index.php?op=1017&sop=100&ssop=2&id=".$row2["id"]."\" method=\"post\">";
@@ -1697,11 +1697,11 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."".$_GET["id"];
 			$sql = $sql.",".$_POST["id_plantilla"];
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "delete from sgm_tareas_tipos_plantillas WHERE id=".$_GET["id_tarea_tipo"];
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Plantillas." ".$Asociadas." al ".$Tipo." de ".$Tarea." : </strong>";
@@ -1712,7 +1712,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "</td>";
 		echo "</tr></table>";
 		$sqluuxx = "select * from sgm_tareas_tipos where id=".$_GET["id"];
-		$resultuuxx = mysql_query(convert_sql($sqluuxx));
+		$resultuuxx = mysql_query(convertSQL($sqluuxx));
 		$rowuuxx = mysql_fetch_array($resultuuxx);
 		echo "<center>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\">";
@@ -1725,7 +1725,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 #				echo "<td></td>";
 				echo "<td><select name=\"id_plantilla\" style=\"width:100px\">";
 					$sqlx = "select * from sgm_ft_plantilla where visible=1";
-					$resultx = mysql_query(convert_sql($sqlx));
+					$resultx = mysql_query(convertSQL($sqlx));
 					while ($rowx = mysql_fetch_array($resultx)) {	
 						echo "<option value=\"".$rowx["id"]."\">".$rowx["plantilla"]."</option>";
 					}
@@ -1735,10 +1735,10 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql2 = "select * from sgm_tareas_tipos_plantillas where id_tarea_tipo=".$_GET["id"];
-			$result2 = mysql_query(convert_sql($sql2));
+			$result2 = mysql_query(convertSQL($sql2));
 			while ($row2 = mysql_fetch_array($result2)) {	
 				$sqlv = "select * from sgm_ft_plantilla where id=".$row2["id_plantilla"];
-				$resultv = mysql_query(convert_sql($sqlv));
+				$resultv = mysql_query(convertSQL($sqlv));
 				$rowv = mysql_fetch_array($resultv);
 				echo "<tr>";
 					echo "<td style=\"text-align:left;\">".$rowv["plantilla"]."</td>";
@@ -1763,20 +1763,20 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			$sql = $sql."'".$_POST["nombre"]."'";
 			$sql = $sql.",'".$_POST["descripcion"]."'";
 			$sql = $sql.")";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 2) and ($admin == true)) {
 			$sql = "update sgm_agendas set ";
 			$sql = $sql."nombre='".$_POST["nombre"]."'";
 			$sql = $sql.",descripcion='".$_POST["descripcion"]."'";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_agendas set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Agendas."</strong>";
@@ -1805,7 +1805,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_agendas where visible=1";
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=121&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
@@ -1842,7 +1842,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 				$tipo = $HTTP_POST_VARS["id_tipo"];
 			}
 			$sql = "select * from sgm_files_tipos where id=".$tipo;
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			$row = mysql_fetch_array($result);
 			$lim_tamano = $row["limite_kb"]*1000;
 			if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size<=$lim_tamano)){
@@ -1943,7 +1943,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 								if ($nom != "") {} else {list($cognom, $nom) = explode(" ", $user); }
 								if ($nom != "") {} else {list($cognom, $nom) = explode(",", $user); }
 								$sqlu = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom."'";
-								$resultu = mysql_query(convert_sql($sqlu));
+								$resultu = mysql_query(convertSQL($sqlu));
 								$rowu = mysql_fetch_array($resultu);
 
 								$convidats = str_replace(chr(34),"",$convidats);
@@ -1997,90 +1997,90 @@ if (($soption == 0) and ($ssoption <= 2)) {
 
 								if ($nom1 != ""){
 									$sql1 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom1."'";
-									$result1 = mysql_query(convert_sql($sql1));
+									$result1 = mysql_query(convertSQL($sql1));
 									$row1 = mysql_fetch_array($result1);
 									$sql1 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row1["id"];
-									$result1 = mysql_query(convert_sql($sql1));
+									$result1 = mysql_query(convertSQL($sql1));
 									$row1 = mysql_fetch_array($result1);
 									$nom1 = $row1["id_agenda"];
 								} else { $nom1 = 0;}
 
 								if ($nom2 != ""){
 									$sql2 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom2."'";
-									$result2 = mysql_query(convert_sql($sql2));
+									$result2 = mysql_query(convertSQL($sql2));
 									$row2 = mysql_fetch_array($result2);
 									$sql2 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row2["id"];
-									$result2 = mysql_query(convert_sql($sql2));
+									$result2 = mysql_query(convertSQL($sql2));
 									$row2 = mysql_fetch_array($result2);
 									$nom2 = $row2["id_agenda"];
 								} else { $nom2 = 0;}
 
 								if ($nom3 != ""){
 									$sql3 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom3."'";
-									$result3 = mysql_query(convert_sql($sql3));
+									$result3 = mysql_query(convertSQL($sql3));
 									$row3 = mysql_fetch_array($result3);
 									$sql3 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row3["id"];
-									$result3 = mysql_query(convert_sql($sql3));
+									$result3 = mysql_query(convertSQL($sql3));
 									$row3 = mysql_fetch_array($result3);
 									$nom3 = $row3["id_agenda"];
 								} else { $nom3 = 0;}
 
 								if ($nom4 != ""){
 									$sql4 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom4."'";
-									$result4 = mysql_query(convert_sql($sql4));
+									$result4 = mysql_query(convertSQL($sql4));
 									$row4 = mysql_fetch_array($result4);
 									$sql4 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row4["id"];
-									$result4 = mysql_query(convert_sql($sql4));
+									$result4 = mysql_query(convertSQL($sql4));
 									$row4 = mysql_fetch_array($result4);
 									$nom4 = $row4["id_agenda"];
 								} else { $nom4 = 0;}
 
 								if ($nom5 != ""){
 									$sql5 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom5."'";
-									$result5 = mysql_query(convert_sql($sql5));
+									$result5 = mysql_query(convertSQL($sql5));
 									$row5 = mysql_fetch_array($result5);
 									$sql5 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row5["id"];
-									$result5 = mysql_query(convert_sql($sql5));
+									$result5 = mysql_query(convertSQL($sql5));
 									$row5 = mysql_fetch_array($result5);
 									$nom5 = $row5["id_agenda"];
 								} else { $nom5 = 0;}
 
 								if ($nom6 != ""){
 									$sql6 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom6."'";
-									$result6 = mysql_query(convert_sql($sql6));
+									$result6 = mysql_query(convertSQL($sql6));
 									$row6 = mysql_fetch_array($result6);
 									$sql6 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row6["id"];
-									$result6 = mysql_query(convert_sql($sql6));
+									$result6 = mysql_query(convertSQL($sql6));
 									$row6 = mysql_fetch_array($result6);
 									$nom6 = $row6["id_agenda"];
 								} else { $nom6 = 0;}
 
 								if ($nom7 != ""){
 									$sql7 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom7."'";
-									$result7 = mysql_query(convert_sql($sql7));
+									$result7 = mysql_query(convertSQL($sql7));
 									$row7 = mysql_fetch_array($result7);
 									$sql7 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row7["id"];
-									$result7 = mysql_query(convert_sql($sql7));
+									$result7 = mysql_query(convertSQL($sql7));
 									$row7 = mysql_fetch_array($result7);
 									$nom7 = $row7["id_agenda"];
 								} else { $nom7 = 0;}
 
 								if ($nom8 != ""){
 									$sql8 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom8."'";
-									$result8 = mysql_query(convert_sql($sql8));
+									$result8 = mysql_query(convertSQL($sql8));
 									$row8 = mysql_fetch_array($result8);
 									$sql8 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row8["id"];
-									$result8 = mysql_query(convert_sql($sql8));
+									$result8 = mysql_query(convertSQL($sql8));
 									$row8 = mysql_fetch_array($result8);
 									$nom8 = $row8["id_agenda"];
 								} else { $nom8 = 0;}
 
 								if ($nom9 != ""){
 									$sql9 = "select * from sgm_users where activo=1 and validado=1 and usuario='".$nom9."'";
-									$result9 = mysql_query(convert_sql($sql9));
+									$result9 = mysql_query(convertSQL($sql9));
 									$row9 = mysql_fetch_array($result9);
 									$sql9 = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$row9["id"];
-									$result9 = mysql_query(convert_sql($sql9));
+									$result9 = mysql_query(convertSQL($sql9));
 									$row9 = mysql_fetch_array($result9);
 									$nom9 = $row9["id_agenda"];
 								} else { $nom9 = 0;}
@@ -2089,24 +2089,24 @@ if (($soption == 0) and ($ssoption <= 2)) {
 								$fecha1 = date("Y-m-d", mktime(0,0,0,$fecha["mon"] ,$fecha["mday"], $fecha["year"]))." ".date("H:i");
 
 								$sql = "select count(*) as total from sgm_tareas where visible=1 and data_margen='".$data_finalit."' and asunto='".$asunto."' and data_registro='".$data_insert."' and notas_registro=".$notas." and tiempo=".$time." and privada=".$privado;
-								$result = mysql_query(convert_sql($sql));
+								$result = mysql_query(convertSQL($sql));
 								$row = mysql_fetch_array($result);
 								if (($row["total"] == 0 ) and ($rowu["id"] > 0)){
 									$sqlau = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$rowu["id"];
-									$resultau = mysql_query(convert_sql($sqlau));
+									$resultau = mysql_query(convertSQL($sqlau));
 									while ($rowau = mysql_fetch_array($resultau)){
 										$sqla = "insert into sgm_tareas (asunto,data_registro,data_margen,notas_registro,privada,id_agenda,id_estado,data_insert,id_2,id_3,id_4,id_5,id_6,id_7,id_8,id_9,id_10,tiempo) ";
 										$sqla = $sqla."values ('".$asunto."','".$data_insert."','".$data_finalit."',".$notas.",".$privado.",".$rowau["id_agenda"].",-1,'".$fecha1."',".$nom1.",".$nom2.",".$nom3.",".$nom4.",".$nom5.",".$nom6.",".$nom7.",".$nom8.",".$nom9.",".$time.")";
-										mysql_query(convert_sql($sqla));
+										mysql_query(convertSQL($sqla));
 									}
 								}
 								if (($row["total"] == 0 ) and ($rowu["id"] <= 0)){
 									$sqlau = "select * from sgm_agendas_users where visible=1 and propietario=1 and id_user=".$userid;
-									$resultau = mysql_query(convert_sql($sqlau));
+									$resultau = mysql_query(convertSQL($sqlau));
 									while ($rowau = mysql_fetch_array($resultau)){
 										$sqla = "insert into sgm_tareas (asunto,data_registro,data_margen,notas_registro,privada,id_agenda,id_estado,data_insert,id_2,id_3,id_4,id_5,id_6,id_7,id_8,id_9,id_10,tiempo) ";
 										$sqla = $sqla."values ('".$asunto."','".$data_insert."','".$data_finalit."',".$notas.",".$privado.",".$rowau["id_agenda"].",-1,'".$fecha1."',".$nom1.",".$nom2.",".$nom3.",".$nom4.",".$nom5.",".$nom6.",".$nom7.",".$nom8.",".$nom9.",".$time.")";
-										mysql_query(convert_sql($sqla));
+										mysql_query(convertSQL($sqla));
 									}
 								}
 								$linea="";
@@ -2117,7 +2117,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					}
 
 					$sqld = "insert into sgm_tareas_reg (data_sincro) values ('".$fecha1."')";
-					mysql_query(convert_sql($sqld));
+					mysql_query(convertSQL($sqld));
 					fclose($ar);
 					if (!unlink("files/tareas/".$archivo_name)){
 						echo "no se pudo borrar el archivo :".$archivo_name;
@@ -2217,23 +2217,23 @@ if (($soption == 0) and ($ssoption <= 2)) {
 			fopen($nombre_archivo, 'w');
 			if (is_writable($nombre_archivo)) {
 				if (!$gestor = fopen($nombre_archivo, 'a')) {
-					mensaje_error("No se puede abrir el archivo (".$nombre_archivo.")");
+					mensageError("No se puede abrir el archivo (".$nombre_archivo.")");
 					exit;
 				}
 				if (fwrite($gestor, $principal) === FALSE) {
-					mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+					mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 					exit;
 				}
 				if (fwrite($gestor, "\r\n") === FALSE) {
-					mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+					mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 					exit;
 				}
 				$sql = "select * from sgm_tareas where visible=1 and data_registro>'".$desde."' and data_registro<'".$hasta."'";
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)){
 					if ($row["notas_registro"] != "") { $notas = "\"".$row["notas_registro"]."\""; } else { $notas = ""; }
 					$sqlu = "select u.usuario from sgm_users u JOIN sgm_agendas_users a ON u.id=a.id_user where validado=1 and activo=1";
-					$resultu = mysql_query(convert_sql($sqlu));
+					$resultu = mysql_query(convertSQL($sqlu));
 					$rowu = mysql_fetch_array($resultu);
 					if ($rowu["usuario"] != ""){ $usuari = "\"".$rowu["usuario"]."\""; } else { $usuari = ""; }
 					$x = "";
@@ -2249,36 +2249,36 @@ if (($soption == 0) and ($ssoption <= 2)) {
 					if ($row["privada"] == 0) {$privado = "Verdadero";} else {$privado = "Falso"; }
 					$contenido.= $row["asunto"]."	".$date."	".$hora."	".$date2."	".$hora2."	".$fals."	".$fals."	".$x."	".$x."	".$usuari."	".$x."	".$x."	".$x."	".$x."	".$notas."	".$x."	".$x."	".$privado."	Normal	1";
 					if (fwrite($gestor, $contenido) === FALSE) {
-						mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+						mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 						exit;
 					}
 					if (fwrite($gestor, "\r\n") === FALSE) {
-						mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+						mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 						exit;
 					}
 					$contenido = "";
 				}
 	 			fclose($gestor);
 			} else {
-				mensaje_error("No se puede escribir al archivo (".$nombre_archivo.")");
+				mensageError("No se puede escribir al archivo (".$nombre_archivo.")");
 			}
-		echo mensaje_error_c("<a href=\"temporal/incidencia.txt\" style=\"color:white\">click boton derecho y \"guardar como\"</a>","green");
+		echo mensageInfo("<a href=\"temporal/incidencia.txt\" style=\"color:white\">click boton derecho y \"guardar como\"</a>","green");
 		}
 		echo "</center>";
 		echo "<br><br><br>";
 
 		if ($ssoption == 1){
 			$sqls = "select * from sgm_tareas_reg where id=".$_GET["id"];
-			$results = mysql_query(convert_sql($sqls));
+			$results = mysql_query(convertSQL($sqls));
 			$rows = mysql_fetch_array($results);
 			$sql = "update sgm_tareas set ";
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE data_insert='".$rows["data_sincro"]."'";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 
 			$sql = "delete from sgm_tareas_reg";
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convert_sql($sql));
+			mysql_query(convertSQL($sql));
 		}
 
 		echo "<strong>".$Sincronizaciones." de ".$Tarea." :</strong>";
@@ -2286,7 +2286,7 @@ if (($soption == 0) and ($ssoption <= 2)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\">";
 		$x = 1;
 		$sqls = "select * from sgm_tareas_reg order by data_sincro desc";
-		$results = mysql_query(convert_sql($sqls));
+		$results = mysql_query(convertSQL($sqls));
 		while ($rows = mysql_fetch_array($results)) {
 			if ($x <= 5){
 				echo "<tr>";
@@ -2322,7 +2322,7 @@ function cerrable($id_tarea)
 	global $db;
 	$volver = true;
 	$sqlx = "select * from sgm_tareas where id_origen=".$id_tarea;
-	$resultx = mysql_query(convert_sql($sqlx));
+	$resultx = mysql_query(convertSQL($sqlx));
 	while ($rowx = mysql_fetch_array($resultx) and ($volver == true)) {
 		if (($rowx["id_estado"] != -2) and cerrable($rowx["id"])) {	$volver = false; }
 	}
@@ -2334,14 +2334,14 @@ function relacionable($id_tarea,$id_inici)
 	global $db;
 			$volver = false;
 			$sqlx = "select * from sgm_tareas where id=".$id_inici;
-			$resultx = mysql_query(convert_sql($sqlx));
+			$resultx = mysql_query(convertSQL($sqlx));
 			$rowx = mysql_fetch_array($resultx);
 			$id = $rowx["id"];
 			$id_origen = $rowx["id_origen"];
 
 			while (($id != $id_tarea) and ($id_origen != 0)) {
 				$sqlxx = "select * from sgm_tareas where id=".$id_origen;
-				$resultxx = mysql_query(convert_sql($sqlxx));
+				$resultxx = mysql_query(convertSQL($sqlxx));
 				$rowxx = mysql_fetch_array($resultxx);
 				$id = $rowxx["id"];
 				$id_origen = $rowxx["id_origen"];
@@ -2355,11 +2355,11 @@ function ver_agenda($id,$dia,$any,$mes,$usuario)
 {
 	global $db;
 		$sqlv = "select * from sgm_agendas where visible=1 and id=".$id;
-		$resultv = mysql_query(convert_sql($sqlv));
+		$resultv = mysql_query(convertSQL($sqlv));
 		$rowv = mysql_fetch_array($resultv);
 
 		$sqlau = "select * from sgm_agendas_users where visible=1 and id_agenda=".$id." and id_user=".$usuario;
-		$resultau = mysql_query(convert_sql($sqlau));
+		$resultau = mysql_query(convertSQL($sqlau));
 		$rowau = mysql_fetch_array($resultau);
 
 			echo "<td style=\"vertical-align:top;width:350px;text\">";
@@ -2408,7 +2408,7 @@ function ver_agenda($id,$dia,$any,$mes,$usuario)
 					$sql = "select * from sgm_tareas where visible=1 and tiempo > 0 and ((id_agenda=".$id.") or (id_2=".$id.") or (id_3=".$id.") or (id_4=".$id.") or (id_5=".$id.") or (id_6=".$id.") or (id_7=".$id.") or (id_8=".$id.") or (id_9=".$id."))";
 					if ($rowau["propietario"] == 0) { $sql.=" and privada=1"; }
 					$sql.= " order by data_registro";
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					while ($row = mysql_fetch_array($result)){
 						if (($row["data_registro"] >= $hoy1) and ($row["data_registro"] <= $hoy2)){
 							$hora = date("H", strtotime($row["data_registro"])); 
@@ -2416,12 +2416,12 @@ function ver_agenda($id,$dia,$any,$mes,$usuario)
 							$segon = date("s", strtotime($row["data_registro"]));
 							$posicion = (($hora*20)+($minut*0.333333333333333333));
 							$sqlc = "select * from sgm_clients where id=".$row["id_cliente"];
-							$resultc = mysql_query(convert_sql($sqlc));
+							$resultc = mysql_query(convertSQL($sqlc));
 							$rowc = mysql_fetch_array($resultc);
 							$estado_color = "White";
 							if ($row["id_estado"] > 0) {
 								$sqle = "select * from sgm_tareas_estados where id=".$row["id_estado"];
-								$resulte = mysql_query(convert_sql($sqle));
+								$resulte = mysql_query(convertSQL($sqle));
 								$rowe = mysql_fetch_array($resulte);
 								$estado_color = $rowe["color"];
 								$estado_color_letras = "Black";
@@ -2455,7 +2455,7 @@ function mostrar_incidencia($tipus,$hoy1,$hoy2,$agenda1,$agenda2,$usuario)
 	$agenda[1] = $agenda2;
 	for ($i = 0; $i < 2 ; $i++){
 		$sqlu = "select * from sgm_agendas_users where id_agenda=".$agenda[$i]." and id_user=".$usuario;
-		$resultu = mysql_query(convert_sql($sqlu));
+		$resultu = mysql_query(convertSQL($sqlu));
 		$rowu = mysql_fetch_array($resultu);
 		if ($rowu["propietario"] == 0){ $ver_privada = "and privada=1"; } else { $ver_privada = ""; }
 
@@ -2463,11 +2463,11 @@ function mostrar_incidencia($tipus,$hoy1,$hoy2,$agenda1,$agenda2,$usuario)
 		if ($tipus == 2){$sql = "select * from sgm_tareas where ((data_registro>'".$hoy2."') or (data_registro='".$hoy2."')) and visible=1 and ((id_agenda=".$agenda[$i].") or (id_2=".$agenda[$i].") or (id_3=".$agenda[$i].") or (id_4=".$agenda[$i].") or (id_5=".$agenda[$i].") or (id_6=".$agenda[$i].") or (id_7=".$agenda[$i].") or (id_8=".$agenda[$i].") or (id_9=".$agenda[$i].")) ".$ver_privada." order by data_registro";}
 		if ($tipus == 3){$sql = "select * from sgm_tareas where ((data_registro<'".$hoy1."') or (data_registro='".$hoy1."')) and data_registro<>'1900-01-01 00:00:00' and id_estado<>-2  and id_origen=0 and visible=1 and id_cliente<>0 and ((id_agenda=".$agenda[$i].") or (id_2=".$agenda[$i].") or (id_3=".$agenda[$i].") or (id_4=".$agenda[$i].") or (id_5=".$agenda[$i].") or (id_6=".$agenda[$i].") or (id_7=".$agenda[$i].") or (id_8=".$agenda[$i].") or (id_9=".$agenda[$i].")) ".$ver_privada." order by data_registro";}
 		if ($tipus == 4){$sql = "select * from sgm_tareas where id_estado<>-2 and ((data_registro is NULL) or (data_registro = '0000-00-00 00:00:00') or (data_registro = '1900-01-01 00:00:00'))and id_origen=0 and id_cliente=0 and visible=1 and ((id_agenda=".$agenda[$i].") or (id_2=".$agenda[$i].") or (id_3=".$agenda[$i].") or (id_4=".$agenda[$i].") or (id_5=".$agenda[$i].") or (id_6=".$agenda[$i].") or (id_7=".$agenda[$i].") or (id_8=".$agenda[$i].") or (id_9=".$agenda[$i].")) ".$ver_privada." order by data_registro";}
-				$result = mysql_query(convert_sql($sql));
+				$result = mysql_query(convertSQL($sql));
 				while ($row = mysql_fetch_array($result)) {
 					if ($row["id_estado"] > 0) {
 						$sqle = "select * from sgm_tareas_estados where id=".$row["id_estado"];
-						$resulte = mysql_query(convert_sql($sqle));
+						$resulte = mysql_query(convertSQL($sqle));
 						$rowe = mysql_fetch_array($resulte);
 						$descripcion_estado = $rowe["estado"];
 						$estado_color = $rowe["color"];
@@ -2485,12 +2485,12 @@ function mostrar_incidencia($tipus,$hoy1,$hoy2,$agenda1,$agenda2,$usuario)
 						}
 					}
 					$sqlc = "select * from sgm_clients where id=".$row["id_cliente"];
-					$resultc = mysql_query(convert_sql($sqlc));
+					$resultc = mysql_query(convertSQL($sqlc));
 					$rowc = mysql_fetch_array($resultc);
 					echo "<tr style=\"background-color:".$estado_color.";\">";
 						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:25px;text-align:right\">".$row["id"]."</td>";
 						$sqlti = "select count(*) as total from sgm_tareas where id_origen=".$row["id"]." and visible=1";
-						$resultti = mysql_query(convert_sql($sqlti));
+						$resultti = mysql_query(convertSQL($sqlti));
 						$rowti = mysql_fetch_array($resultti);
 						if (($rowti["total"] == 0) and ($rowu["escritura"] == 1)) {
 							echo "<td style=\"text-align:center;vertical-align:top;\"><a href=\"index.php?op=1017&sop=24&id=".$row["id"]."&usuario=".$usuario."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"><a></td>";
@@ -2536,7 +2536,7 @@ function mostrar_incidencia($tipus,$hoy1,$hoy2,$agenda1,$agenda2,$usuario)
 								echo "<select name=\"id_origen\" style=\"width:50px;\">";
 									echo "<option value=\"0\" selected>-</option>";
 									$sqlin = "select * from sgm_tareas where id<>".$row["id"]." and id_agenda=".$row["id_agenda"]." and id_estado<>-2 and visible=1 ";
-									$resultin = mysql_query(convert_sql($sqlin));
+									$resultin = mysql_query(convertSQL($sqlin));
 									while ($rowin = mysql_fetch_array($resultin)) {
 									if (relacionable($row["id"],$rowin["id"])) {
 										if ($rowin["id"] == $row["id_origen"]) {
@@ -2652,7 +2652,7 @@ function calendario_conjunto($dia_select,$year,$mes,$usuario,$ids_users) {
 			if ($date["mon"] < 10) { $y = "0".$date["mon"]; } else {$y = $date["mon"]; }
 			$hoy = $date["year"]."-".$y."-".$z;
 			$sqla = "select count(*) as total from agm_incidencias where fecha='".$fecha."' and id_usuario=".$usuario;
-			$resulta = mysql_query(convert_sql($sqla));
+			$resulta = mysql_query(convertSQL($sqla));
 			$rowa = mysql_fetch_array($resulta);
 			if (($fecha != $hoy) and ($rowa["total"] == 0)) { $color = 'white'; }
 			if (($fecha != $hoy) and ($rowa["total"] > 1)) { $color = 'silver'; }
@@ -2674,14 +2674,14 @@ function calendario_conjunto($dia_select,$year,$mes,$usuario,$ids_users) {
 					} else {
 						$sqlu = "select * from sgm_agendas_users where propietario=1 and id_user=".$_GET["usuario"];
 					}
-					$resultu = mysql_query(convert_sql($sqlu));
+					$resultu = mysql_query(convertSQL($sqlu));
 					$rowu = mysql_fetch_array($resultu);
 
 					$sql = "select * from sgm_tareas where data_registro>'".$a."-".$m."-".$dia." ".$horainici."' and data_registro< '".$a."-".$m."-".$dia." ".$horafin."' and visible=1";
 					$sql .= " and id_agenda=".$rowu["id_agenda"]."";
 					if ($rowu["propietario"] == 0) {$sql .=	" and privada=1";}
 					$sql .=" order by data_registro";
-					$result = mysql_query(convert_sql($sql));
+					$result = mysql_query(convertSQL($sql));
 					while ($row = mysql_fetch_array($result)){
 						if ($row["id_agenda"] )
 							$hora = date("H", strtotime($row["data_registro"])); 
@@ -2690,7 +2690,7 @@ function calendario_conjunto($dia_select,$year,$mes,$usuario,$ids_users) {
 							$estado_color = "White";
 							if ($row["id_estado"] > 0) {
 								$sqle = "select * from sgm_tareas_estados where id=".$row["id_estado"];
-								$resulte = mysql_query(convert_sql($sqle));
+								$resulte = mysql_query(convertSQL($sqle));
 								$rowe = mysql_fetch_array($resulte);
 								$estado_color = $rowe["color"];
 								$estado_color_letras = "Black";
@@ -2709,7 +2709,7 @@ function calendario_conjunto($dia_select,$year,$mes,$usuario,$ids_users) {
 							$mesok .= "<table cellspacing=\"0\" cellspacing=\"0\" style=\"border:1px solid black;width:100%;background-color : ".$estado_color.";color:".$estado_color_letras."\">";
 							$mesok .= "<tr><td><a href=\"index.php?op=1017&sop=20&id=".$row["id"]."\" style=\"color:".$estado_color_letras."\">".$hora.":".$minut." (".$row["tiempo"]." min.)</a></td></tr>";
 								$sqlusuario = "select * from sgm_agendas where id=".$row["id_agenda"];
-								$resultusuario = mysql_query(convert_sql($sqlusuario));
+								$resultusuario = mysql_query(convertSQL($sqlusuario));
 								$rowusuario = mysql_fetch_array($resultusuario);
 								$mesok .= "<tr><td style=\"color:".$estado_color_letras."\"><strong>".$rowusuario["nombre"]."</strong></td></tr>";
 							$mesok .= "<tr><td style=\"color:".$estado_color_letras."\"><strong>".$row["asunto"]."</strong></td></tr>";
@@ -2734,7 +2734,7 @@ function busca_tareas($id,$x)
 { 
 	global $db;
 			$sql = "select * from sgm_tareas where visible=1 and id_origen=".$id;
-			$result = mysql_query(convert_sql($sql));
+			$result = mysql_query(convertSQL($sql));
 			while ($row = mysql_fetch_array($result)){
 				echo "<tr>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1017&sop=22&id_tarea=".$row["id"]."&id=".$id."\"><img src=\"mgestion/pics/icons-mini/link_break.png\" alt=\"Desvincular\" border=\"0\"></a></td>";
