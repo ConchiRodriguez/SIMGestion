@@ -4,6 +4,11 @@ error_reporting(~E_ALL);
 	
 function resumEconomicContractes($id){
 	global $Enero,$Febrero,$Marzo,$Abril,$Mayo,$Junio,$Julio,$Agosto,$Septiembre,$Octubre,$Noviembre,$Ano,$Total,$meses;
+
+	$sqldiv = "select * from sgm_divisas where visible=1 and predefinido=1";
+	$resultdiv = mysql_query(convertSQL($sqldiv));
+	$rowdiv = mysql_fetch_array($resultdiv);
+
 		echo "<center><table cellspacing=\"0\" style=\"width:200px\">";
 			echo "<tr>";
 				if ($_GET["y"] == "") {
@@ -26,10 +31,10 @@ function resumEconomicContractes($id){
 				echo "<td></td>";
 				for ($x = 0; $x < 12; $x++) {
 					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." ".$rowdiv["abrev"]."</strong></td>";
 				}
 				echo "<td style=\"text-align:right;\"><strong>".$Total." ".$Ano." h.</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$Total." ".$Ano." €</strong></td>";
+				echo "<td style=\"text-align:right;\"><strong>".$Total." ".$Ano." ".$rowdiv["abrev"]."</strong></td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
@@ -69,13 +74,13 @@ function resumEconomicContractes($id){
 							echo $horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						$total_euros = $hora * $rows["precio_hora"];
-						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros,2,',','')." €</td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</td>";
 						$total_horas_mes[$x] += $rowind["total"];
 						$total_euros_mes[$x] += $total_euros;
 					}
 						$inicio_mes = date("U", mktime(0,0,0,1, 1, $yact));
 						$final_mes = date("U", mktime(23,59,59,13, 1-1,$yact));
-						echo "<td style=\"text-align:right;background-color:".$color."\">";
+						echo "<td style=\"text-align:right;\">";
 							$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
 							$resultind = mysql_query(convert_sql($sqlind));
 							$rowind = mysql_fetch_array($resultind);
@@ -85,7 +90,7 @@ function resumEconomicContractes($id){
 							echo $horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						$total_euros = $hora * $rows["precio_hora"];
-						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros,2,',','')." €</td>";
+						echo "<td style=\"text-align:right;\">".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</td>";
 						$total_horas_any += $rowind["total"];
 						$total_euros_any += $total_euros;
 					echo "</tr>";
@@ -97,7 +102,7 @@ function resumEconomicContractes($id){
 						$hora2 = $total_horas_mes[$x]/60;
 						$horas2 = explode(".",$hora2);
 						$minutos2 = $total_horas_mes[$x] % 60;
-						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong>".number_format ($total_euros_mes[$x],2,',','')." €</strong></td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong>".number_format ($total_euros_mes[$x],2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 					}
 						echo "<td style=\"text-align:right;\">";
 							$hora = $total_horas_any/60;
@@ -105,7 +110,7 @@ function resumEconomicContractes($id){
 							$minutos = $total_horas_any % 60;
 							echo $horas[0]." h. ".$minutos." m.";
 						echo "</td>";
-						echo "<td style=\"text-align:right;background-color:".$color."\">".number_format ($total_euros_any,2,',','')." €</td>";
+						echo "<td style=\"text-align:right;\">".number_format ($total_euros_any,2,',','')." ".$rowdiv["abrev"]."</td>";
 					echo "</tr>";
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
@@ -117,7 +122,7 @@ function resumEconomicContractes($id){
 				echo "<td></td>";
 				for ($x = 0; $x < 6; $x++) {
 					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." ".$rowdiv["abrev"]."</strong></td>";
 				}
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -149,7 +154,7 @@ function resumEconomicContractes($id){
 							echo "".$horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						$total_euros = $hora * $rows["precio_hora"];
-						echo "<td style=\"text-align:right;background-color:".$color."\"><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_serv=".$rows["id"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros,2,',','')." €</a></td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\"><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_serv=".$rows["id"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</a></td>";
 						$total_horas_mes[$x] += $rowind["total"];
 						$total_euros_mes[$x] += $total_euros;
 					}
@@ -162,7 +167,7 @@ function resumEconomicContractes($id){
 						$hora2 = $total_horas_mes[$x]/60;
 						$horas2 = explode(".",$hora2);
 						$minutos2 = $total_horas_mes[$x] % 60;
-						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros_mes[$x],2,',','')." €</a></strong></td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros_mes[$x],2,',','')." ".$rowdiv["abrev"]."</a></strong></td>";
 					}
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
@@ -172,7 +177,7 @@ function resumEconomicContractes($id){
 				echo "<td></td>";
 				for ($x = 6; $x < 12; $x++) {
 					echo "<td style=\"text-align:right;\"><strong>".$meses[$x]."</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".$Total." €</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".$Total." ".$rowdiv["abrev"]."</strong></td>";
 				}
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -207,7 +212,7 @@ function resumEconomicContractes($id){
 							echo "".$horas[0]." h. ".$minutos." m.";
 						echo "</td>";
 						$total_euros = $hora * $rows["precio_hora"];
-						echo "<td style=\"text-align:right;background-color:".$color."\"><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_serv=".$rows["id"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros,2,',','')." €</a></td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\"><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_serv=".$rows["id"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</a></td>";
 						$total_horas_mes[$x] += $rowind["total"];
 						$total_euros_mes[$x] += $total_euros;
 					}
@@ -220,7 +225,7 @@ function resumEconomicContractes($id){
 						$hora2 = $total_horas_mes[$x]/60;
 						$horas2 = explode(".",$hora2);
 						$minutos2 = $total_horas_mes[$x] % 60;
-						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros_mes[$x],2,',','')." €</a></strong></td>";
+						echo "<td style=\"text-align:right;background-color:".$color."\"><strong>".$horas2[0]." h. ".$minutos2." m.</strong></td><td style=\"text-align:right;background-color:".$color."\"><strong><a href=\"index.php?op=".$_GET["op"]."&sop=13&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&mes=".$x."&any=".$yact."\">".number_format ($total_euros_mes[$x],2,',','')." ".$rowdiv["abrev"]."</a></strong></td>";
 					}
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";

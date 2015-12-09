@@ -4,6 +4,12 @@ $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
 if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>";  }
 if (($option == 1011) AND ($autorizado == true)) {
+
+	$sqldiv = "select * from sgm_divisas where visible=1 and predefinido=1";
+	$resultdiv = mysql_query(convertSQL($sqldiv));
+	$rowdiv = mysql_fetch_array($resultdiv);
+
+
 	echo "<table class=\"principal\"><tr>";
 		echo "<td style=\"width:8%;vertical-align : middle;text-align:left;\">";
 			echo "<h4>".$Contratos."</h4>";
@@ -666,7 +672,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$minutos = $rowind["total"] % 60;
 						echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
 						$total_euros = $hora * $row["precio_hora"];
-						echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros,2,',','')." €</strong></td>";
+						echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 					echo "</tr>";
 					$total_horas_contracte += $rowind["total"];
 					$total_euros_contracte += $total_euros;
@@ -677,7 +683,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					$minutos = $rowind["total"] % 60;
 					echo "<td style=\"text-align:right;\" colspan=\"12\"><strong>".$Total."&nbsp;&nbsp;</strong></td>";
 					echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
-					echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros_contracte,2,',','')." €</strong></td>";
+					echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros_contracte,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 				echo "</tr>";
 			echo "</table></center>";
 			echo "<br><br>";

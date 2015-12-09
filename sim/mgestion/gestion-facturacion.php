@@ -2067,7 +2067,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					} else {
 						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
 					}
-					$sql = "select sum(subtotal) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_POST["id_tipo"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
+					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_POST["id_tipo"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
 					$result = mysql_query(convertSQL($sql));
 					$row = mysql_fetch_array($result);
 					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=490&tipo=6&hist=1&y=".$y."&m=".$m."&id_tipo=".$_POST["id_tipo"]."\" style=\"color:black;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></a></td>";
