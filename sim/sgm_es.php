@@ -738,6 +738,7 @@ $ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los dif
 $ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
 $ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 $ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
+$errorFacturaCrear = "Atenci&oacute;n : La fecha de la factura es superior a la fecha actual.";
 
 $ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
 $ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";

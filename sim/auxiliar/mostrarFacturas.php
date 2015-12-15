@@ -236,7 +236,7 @@ function mostrarFacturas($row){
 				$sqldi = "select id,abrev from sgm_divisas where id=".$row["id_divisa"];
 				$resultdi = mysql_query(convert_sql($sqldi));
 				$rowdi = mysql_fetch_array($resultdi);
-				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["subtotal"],2,",",".")." ".$rowdi["abrev"]."</td>";
+				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["subtotaldescuento"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["total"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				if ($rowtipos["v_recibos"] == 1)  {
 					$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
@@ -245,11 +245,11 @@ function mostrarFacturas($row){
 					echo "<td style=\"text-align:right;min-width:100px;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
 				}
 				if ($rowdiv["id"] == $rowdi["id"]){
-					$totalSenseIVA += $row["subtotal"];
+					$totalSenseIVA += $row["subtotaldescuento"];
 					$totalSensePagar += $row["total"];
 					$totalPagat += ($row["total"]-$rowr["total"]);
 				} else {
-					$totalSenseIVA += $row["subtotal"]*$row["div_canvi"];
+					$totalSenseIVA += $row["subtotaldescuento"]*$row["div_canvi"];
 					$totalSensePagar += $row["total"]*$row["div_canvi"];
 					$totalPagat += ($row["total"]-$rowr["total"])*$row["div_canvi"];
 				}

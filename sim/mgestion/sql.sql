@@ -711,6 +711,7 @@ ALTER TABLE `sgm_factura_tipos` ADD `calidad` tinyint(1) NOT NULL default '0' AF
 ALTER TABLE `sgm_factura_tipos` ADD `caja` tinyint(1) NOT NULL default '0' AFTER `calidad`;
 ALTER TABLE `sgm_factura_tipos` ADD `aprovado` tinyint(1) NOT NULL default '0' AFTER `caja`;
 ALTER TABLE `sgm_factura_tipos` ADD `v_rfq` tinyint(1) NOT NULL default '0' AFTER `aprovado`;
+ALTER TABLE `sgm_factura_tipos` ADD `contabilidad` int(11) NOT NULL default '0' AFTER `v_rfq`;
 
 CREATE TABLE `sgm_factura_tipos_idiomas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_factura_tipos_idiomas` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `id`;

@@ -735,6 +735,7 @@ $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els di
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
 $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 $ayudaFacturaCerrar = "Es tancar&agrave; la factura i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";
+$errorFacturaCrear = "Atenci&oacute; : La data de la factura es superior a la data actual.";
 
 $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
 $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";

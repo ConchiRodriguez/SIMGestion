@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function insertCabezera($datosInsert){
-	global $userid;
+	global $userid,$errorFacturaCrear;
 #	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
 		$sqltipo = "select * from sgm_factura_tipos where v_recibos=1";
@@ -15,10 +15,15 @@ function insertCabezera($datosInsert){
 		$numero = $rowxx["numero"] + 1;
 		$tipo = $rowtipo["id"];
 		$version = 0;
+		$v_recibos=$rowtipo["v_recibos"];
 	} else {
 		$numero = $datosInsert['numero'];
 		$tipo = $datosInsert['tipo'];
 		$version = $datosInsert['version'];
+		$sqltipo = "select * from sgm_factura_tipos where id=".$tipo;
+		$resulttipo = mysql_query(convert_sql($sqltipo));
+		$rowtipo = mysql_fetch_array($resulttipo);
+		$v_recibos=$rowtipo["v_recibos"];
 	}
 	$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and version=".$version." and tipo=".$tipo;
 	$resultcc = mysql_query(convert_sql($sqlcc));
@@ -83,6 +88,9 @@ function insertCabezera($datosInsert){
 		$camposInsert = "numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,eid_pais,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,cuenta,id_contrato,id_licencia,id_dades_origen_factura_iban,notas,total_forzado,recibos,confirmada,confirmada_cliente,descuento";
 		$datosInsert2 = array($numero,$row2["iva"],$version,$datosInsert["numero_rfq"],$datosInsert["numero_cliente"],$datosInsert["fecha"],$fecha_prevision,$fecha_entrega,$fecha_vencimiento,$tipo,$datosInsert['subtipo'],$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["id_pais"],$row["mail"],$row["telefono"],$edireccion,$epoblacion,$ecp,$eprovincia,$eid_pais,$row2["nombre"],$row2["nif"],$row2["direccion"],$row2["poblacion"],$row2["cp"],$row2["provincia"],$row2["mail"],$row2["telefono"],$datosInsert['id_cliente'],$userid,$rowd["id"],$rowd["canvi"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"],$row["cuentacontable"],$datosInsert['id_contrato'],$datosInsert['id_licencia'],$id_dades_origen_factura_iban,$datosInsert['notas'],$datosInsert['total_forzado'],$datosInsert['recibos'],$datosInsert['confirmada'],$datosInsert['confirmada_cliente'],$rowta["porcentage"]);
 		insertFunction ("sgm_cabezera",$camposInsert,$datosInsert2);
+		if (($v_recibos == 1) and ($datosInsert["fecha"] > date("Y-m-d"))){
+			echo mensageError($errorFacturaCrear);
+		}
 	}
 }
 
