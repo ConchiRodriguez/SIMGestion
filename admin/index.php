@@ -8,7 +8,9 @@ setTimeout ("redireccionar()", 600000);
 include ("../archivos_comunes/config.php");
 include ("../archivos_comunes/variables.php");
 include("../archivos_comunes/functions.php");
-include("../archivos_comunes/funciones.php");
+#include("../archivos_comunes/funciones.php");
+include("../sim/auxiliar/calendariEconomic.php");
+include("../sim/auxiliar/correoIncidencias.php");
 
 echo "<center><table cellspacing=\"10\" style=\"width:1000px;\">";
 	echo "<tr>";

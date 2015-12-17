@@ -42,7 +42,7 @@ function calendari_economic($rec){
 			$rowingre2 = mysql_fetch_array($resultingre2);
 		}
 
-		$sqlingre3 = "select sum(total) as total_ingre3 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=0) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1";
+		$sqlingre3 = "select sum(total) as total_ingre3 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=0) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
 		$resultingre3 = mysql_query($sqlingre3);
 		$rowingre3 = mysql_fetch_array($resultingre3);
 
@@ -54,7 +54,7 @@ function calendari_economic($rec){
 		$total_ingresos = ($rowingre1["total_ingre1"] + $rowingre2["total_ingre2"] + $rowingre3["total_ingre3"]);
 		$saldo_actual = $saldo_inicial - $total_gastos + $total_ingresos;
 		$pagos_externos = $pagos_externos + $rowex["total_externos"];
-#		echo date("Y-m-d", $dia_actual)."<br>Saldo : ".$saldo_inicial." - Ingresos :".($rowingre1["total_ingre1"] + $rowingre2["total_ingre2"] + $rowiv["total_ingreso_varios"])." - Gastos : ".$rowgasto["total_gasto"]." - Saldo Final:".$saldo_actual."<br>";
+#		echo date("Y-m-d", $dia_actual)."-----Saldo : ".$saldo_inicial." - Ingresos :".$total_ingresos."--".$rowingre1["total_ingre1"]."1--".$rowingre2["total_ingre2"]."2--".$rowingre3["total_ingre3"]."3-- Gastos : ".$total_gastos." - Saldo Final:".$saldo_actual."<br>";
 		$sql = "select * from sgm_factura_calendario where fecha='".$dia_actual."'";
 		$result = mysql_query($sql);
 		$row = mysql_fetch_array($result);
@@ -84,6 +84,11 @@ function calendari_economic($rec){
 		$proxim_mes = date("m",$dia_actual);
 		$proxim_dia = date("d",$dia_actual);
 		$dia_actual = date("U",mktime(0,0,0,$proxim_mes,$proxim_dia+1,$proxim_any));
+		$rowgasto["total_gasto"] = 0;
+		$rowingre1["total_ingre1"] = 0;
+		$rowingre2["total_ingre2"] = 0;
+		$rowingre3["total_ingre3"] = 0;
+		$rowex["total_externos"] = 0;
 	}
 }
 
