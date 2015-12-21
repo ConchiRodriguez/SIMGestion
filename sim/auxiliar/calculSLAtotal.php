@@ -5,7 +5,7 @@ error_reporting(~E_ALL);
 function calculSLAtotal(){
 	global $db;
 	$sql = "select * from sgm_incidencias where id_incidencia=0 and visible=1 and id_estado<>-2";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	while ($row = mysql_fetch_array($result)){
 #		echo $row["id"];
 		$pendent = calculSLA($row["id"],0);
@@ -22,19 +22,19 @@ function calculSLAtotal(){
 function calculSLA($id,$cierre){
 	global $db;
 	$sql = "select * from sgm_incidencias where id=".$id."";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 
 	$durada = 0;
 	$pausada = 0;
 
 	$sqlc = "select * from sgm_contratos_servicio where id=".$row["id_servicio"];
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 		$contador = 0;
 		$fecha_ant = 0;
 		$sqld = "select * from sgm_incidencias where id_incidencia=".$id." and visible=1 and fecha_inicio >= ".$row["fecha_inicio"]." order by fecha_inicio";
-		$resultd = mysql_query(convert_sql($sqld));
+		$resultd = mysql_query(convertSQL($sqld));
 		while ($rowd = mysql_fetch_array($resultd)){
 			if ($contador==0){$fecha_ant = $row["fecha_inicio"];}
 			if ($rowc["nbd"] == 1) {$tiempo = buscaFestivo($rowd["fecha_inicio"],$fecha_ant);}
@@ -61,7 +61,7 @@ function calculSLA($id,$cierre){
 		}
 
 	$sqlc = "select * from sgm_contratos_servicio where id=".$row["id_servicio"];
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 	$sla = ($rowc["temps_resposta"]*3600)-$durada;
 #	echo "ID:".$row["id"]."SLA:".($sla/3600)."Durada:".($durada/3600)."Temps Resposta:".$rowc["temps_resposta"]."<br>";
@@ -91,7 +91,7 @@ function buscaFestivo($fecha_act,$fecha_ant){
 	if (comprobar_festivo2($data_ant) == 0){
 		$diaSemana2 = date("N", ($data_ant));
 		$sqlch2 = "select * from sgm_calendario_horario where id=".$diaSemana2."";
-		$resultch2 = mysql_query(convert_sql($sqlch2));
+		$resultch2 = mysql_query(convertSQL($sqlch2));
 		$rowch2 = mysql_fetch_array($resultch2);
 		if ($fecha_ant < ($data_ant+$rowch2["hora_fin"])) {$y= $time_ant;}
 		if ($fecha_ant < ($data_ant+$rowch2["hora_inicio"])){$y= $rowch2["hora_inicio"];}
@@ -104,7 +104,7 @@ function buscaFestivo($fecha_act,$fecha_ant){
 	if (comprobar_festivo2($data_act) == 0){
 		$diaSemana = date("N", ($data_act));
 		$sqlch = "select * from sgm_calendario_horario where id=".$diaSemana."";
-		$resultch = mysql_query(convert_sql($sqlch));
+		$resultch = mysql_query(convertSQL($sqlch));
 		$rowch = mysql_fetch_array($resultch);
 		if ($fecha_act < ($data_act+$rowch["hora_fin"])) {$x = $time_act;}
 		if ($fecha_act < ($data_ant+$rowch["hora_inicio"])){$x= $rowch["hora_inicio"];}
@@ -127,7 +127,7 @@ function buscaFestivo($fecha_act,$fecha_ant){
 		if ($comprobar == 0){
 			$diaSemanaX = date("N", ($data_ant));
 			$sqlch = "select * from sgm_calendario_horario where id=".$diaSemanaX."";
-			$resultch = mysql_query(convert_sql($sqlch));
+			$resultch = mysql_query(convertSQL($sqlch));
 			$rowch = mysql_fetch_array($resultch);
 			$tiempo += (($data_ant+$rowch["hora_fin"]) - ($data_ant+$rowch["hora_inicio"]));
 #			echo "g".($tiempo/3600)."<br>";
@@ -143,7 +143,7 @@ function fecha_prevision($id_servicio, $data_ini)
 	global $db;
 
 	$sqlc = "select * from sgm_contratos_servicio where id=".$id_servicio;
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 	if ($rowc["temps_resposta"] > 0){
 		$temps_resposta = ($rowc["temps_resposta"]*3600);
@@ -163,14 +163,14 @@ function fecha_prevision($id_servicio, $data_ini)
 					$j++;
 					$dia_dema = date("N", sumaDies($data_ini,1));
 					$sqlch = "select * from sgm_calendario_horario where id=".$dia_dema;
-					$resultch = mysql_query(convert_sql($sqlch));
+					$resultch = mysql_query(convertSQL($sqlch));
 					$rowch = mysql_fetch_array($resultch);
 					$data_ini = date('U', mktime(($rowch["hora_inicio"]/3600), 0, 0, $mes, $dia+$j, $any));
 					$festivo = comprobar_festivo2($data_ini);
 				}
 				$dia2 = date("N", ($data_ini));
 				$sqlch = "select * from sgm_calendario_horario where id=".$dia2;
-				$resultch = mysql_query(convert_sql($sqlch));
+				$resultch = mysql_query(convertSQL($sqlch));
 				$rowch = mysql_fetch_array($resultch);
 				$inici_jornada = date('U', mktime(($rowch["hora_inicio"]/3600), 0, 0, $mes, $dia+$j, $any));
 				if ($data_ini >= $inici_jornada) {$data_ini=$data_ini;} else {$data_ini=$inici_jornada;}
@@ -183,7 +183,7 @@ function fecha_prevision($id_servicio, $data_ini)
 					$j++;
 					$dia_dema = date("N", sumaDies($data_ini,1));
 					$sqlch2 = "select * from sgm_calendario_horario where id=".$dia_dema;
-					$resultch2 = mysql_query(convert_sql($sqlch2));
+					$resultch2 = mysql_query(convertSQL($sqlch2));
 					$rowch2 = mysql_fetch_array($resultch2);
 					$data_ini = date('U', mktime(($rowch2["hora_inicio"]/3600), 0, 0, $mes, $dia+$j, $any));
 				}
@@ -212,7 +212,7 @@ function comprobar_festivo2($fecha)
 		$festivo=1;
 	}
 	$sqlc = "select * from sgm_calendario where dia=".date("j", ($fecha))." and mes=".date("n", ($fecha))."";
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 	if ($rowc){
 		$festivo=1;

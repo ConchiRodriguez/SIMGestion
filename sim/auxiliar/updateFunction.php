@@ -13,8 +13,8 @@ function updateFunction ($tabla,$id,$camposUpdate,$datosUpdate){
 		$sql = $sql.$camposUpdate[$i]."='".comillas($datosUpdate[$i])."'";
 	}
 	$sql = $sql." WHERE id=".$id."";
-	mysql_query(convert_sql($sql));
-	echo $sql;
+	mysql_query(convertSQL($sql));
+#	echo $sql;
 }
 
 ?>

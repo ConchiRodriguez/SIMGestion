@@ -40,14 +40,14 @@ function resumEconomicContractes($id){
 			$mes = date("n");
 			$sqltipos = "select id,id_cliente,num_contrato from sgm_contratos where activo=1 and renovado=0 and visible=1";
 			$sqltipos .= " order by id_cliente";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				unset($total_horas_mes);
 				unset($total_euros_mes);
 				$total_horas_any = 0;
 				$total_euros_any = 0;
 				$sqlc = "select id,nombre from sgm_clients where id=".$rowtipos["id_cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\">";
 					echo "<a href=\"index.php?op=1011&sop=100&id=".$rowtipos["id"]."\">".$rowtipos["num_contrato"]."</a>";
@@ -56,7 +56,7 @@ function resumEconomicContractes($id){
 					echo "<strong><a href=\"index.php?op=1008&sop=210&id=".$rowc["id"]."\">".$rowc["nombre"]."</a></strong>";
 				echo "</td></tr>";
 				$sqls = "select id,servicio,precio_hora from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
-				$results = mysql_query(convert_sql($sqls));
+				$results = mysql_query(convertSQL($sqls));
 				while ($rows = mysql_fetch_array($results)){
 					echo "<tr>";
 						echo "<td>".$rows["servicio"]."</td>";
@@ -66,7 +66,7 @@ function resumEconomicContractes($id){
 						$final_mes = date("U", mktime(23,59,59,$x+1, 1-1,$yact));
 						echo "<td style=\"text-align:right;background-color:".$color."\">";
 							$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
-							$resultind = mysql_query(convert_sql($sqlind));
+							$resultind = mysql_query(convertSQL($sqlind));
 							$rowind = mysql_fetch_array($resultind);
 							$hora = $rowind["total"]/60;
 							$horas = explode(".",$hora);
@@ -82,7 +82,7 @@ function resumEconomicContractes($id){
 						$final_mes = date("U", mktime(23,59,59,13, 1-1,$yact));
 						echo "<td style=\"text-align:right;\">";
 							$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
-							$resultind = mysql_query(convert_sql($sqlind));
+							$resultind = mysql_query(convertSQL($sqlind));
 							$rowind = mysql_fetch_array($resultind);
 							$hora = $rowind["total"]/60;
 							$horas = explode(".",$hora);
@@ -129,14 +129,14 @@ function resumEconomicContractes($id){
 			$mes = date("n");
 			$sqltipos = "select id,id_cliente from sgm_contratos where activo=1 and renovado=0 and visible=1 and id=".$id;
 			$sqltipos .= " order by id_cliente";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				unset($total_horas_mes);
 				unset($total_euros_mes);
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\"><strong>";
 				echo "</td></tr>";
 				$sqls = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
-				$results = mysql_query(convert_sql($sqls));
+				$results = mysql_query(convertSQL($sqls));
 				while ($rows = mysql_fetch_array($results)){
 					echo "<tr>";
 						echo "<td>".$rows["servicio"]."</td>";
@@ -146,7 +146,7 @@ function resumEconomicContractes($id){
 						$final_mes = date("U", mktime(23,59,59,$x+1, 1-1,$yact));
 						echo "<td style=\"text-align:right;background-color:".$color."\">";
 							$sqlind = "select sum(duracion) as total from sgm_incidencias where fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
-							$resultind = mysql_query(convert_sql($sqlind));
+							$resultind = mysql_query(convertSQL($sqlind));
 							$rowind = mysql_fetch_array($resultind);
 							$hora = $rowind["total"]/60;
 							$horas = explode(".",$hora);
@@ -184,17 +184,17 @@ function resumEconomicContractes($id){
 			$mes = date("n");
 			$sqltipos = "select * from sgm_contratos where activo=1 and renovado=0 and visible=1 and id=".$id;
 			$sqltipos .= " order by id_cliente";
-			$resulttipos = mysql_query(convert_sql($sqltipos));
+			$resulttipos = mysql_query(convertSQL($sqltipos));
 			while ($rowtipos = mysql_fetch_array($resulttipos)){
 				unset($total_horas_mes);
 				unset($total_euros_mes);
 				$sqlc = "select * from sgm_clients where id=".$rowtipos["id_cliente"];
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				$rowc = mysql_fetch_array($resultc);
 				echo "<tr><td style=\"vertical-align:top;\" colspan=\"14\"><strong>";
 				echo "</td></tr>";
 				$sqls = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowtipos["id"]." order by servicio";
-				$results = mysql_query(convert_sql($sqls));
+				$results = mysql_query(convertSQL($sqls));
 				while ($rows = mysql_fetch_array($results)){
 					echo "<tr>";
 						echo "<td>".$rows["servicio"]."</td>";
@@ -204,7 +204,7 @@ function resumEconomicContractes($id){
 						$final_mes = date("U", mktime(23,59,59,$x+1, 1-1,$yact));
 						echo "<td style=\"text-align:right;background-color:".$color."\">";
 							$sqlind = "select sum(duracion) as total from sgm_incidencias where fecha_inicio between ".$inicio_mes." and ".$final_mes." and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$rows["id"].")";
-							$resultind = mysql_query(convert_sql($sqlind));
+							$resultind = mysql_query(convertSQL($sqlind));
 							$rowind = mysql_fetch_array($resultind);
 							$hora = $rowind["total"]/60;
 							$horas = explode(".",$hora);

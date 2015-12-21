@@ -30,7 +30,7 @@ function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
 		$db3 = mysql_select_db($base, $dbhandle3) or die("Couldn't open database $myDB");
 
 		$sqlna = "select * from sim_nagios where id_servidor=".$rowcs2["servidor"]." order by time_register desc";
-		$resultna = mysql_query(convert_sql($sqlna,$dbhandle3));
+		$resultna = mysql_query(convertSQL($sqlna,$dbhandle3));
 		$rowna = mysql_fetch_array($resultna);
 
 		if ($rowna["nagios"] == 0){ $nagios = "OFF"; $colorn = "red"; $colorna = "white"; } else { $nagios = "ON"; $colorn = "Yellowgreen"; $colorna = "black"; }

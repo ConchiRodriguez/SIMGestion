@@ -23,7 +23,7 @@ function informesContratos(){
 			echo "<td><select name=\"id_cliente\" id=\"id_cliente\" style=\"width:300px\" onchange=\"desplegableCombinado5()\">";
 				echo "<option value=\"0\">Todos</option>";
 				$sqli = "select * from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
-				$resulti = mysql_query(convert_sql($sqli));
+				$resulti = mysql_query(convertSQL($sqli));
 				while ($rowi = mysql_fetch_array($resulti)) {
 					if ($_POST["id_cliente"] == $rowi["id"]){
 						echo "<option value=\"".$rowi["id"]."\" selected>".$rowi["nombre"]." ".$rowi["apellido1"]." ".$rowi["apellido2"]."</option>";
@@ -41,7 +41,7 @@ function informesContratos(){
 				}
 				if ($_GET["id"] > 0) { $id_cli = $_GET["id"]; } else {$id_cli = $_POST["id_cliente"]; }
 				$sqlc = "select id,descripcion from sgm_contratos where visible=1 and id_cliente=".$id_cli;
-				$resultc = mysql_query(convert_sql($sqlc));
+				$resultc = mysql_query(convertSQL($sqlc));
 				while ($rowc = mysql_fetch_array($resultc)) {
 					if ($_POST["id_contrato"] == $rowc["id"]){
 						echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["descripcion"]."</option>";
@@ -51,7 +51,7 @@ function informesContratos(){
 				}
 			echo "</select></td>";
 			$sqlco = "select * from sgm_contratos where id=".$_POST["id_contrato"]." order by fecha_ini";
-			$resultco = mysql_query(convert_sql($sqlco));
+			$resultco = mysql_query(convertSQL($sqlco));
 			$rowco = mysql_fetch_array($resultco);
 			if ($rowco){
 				$mes_ini = date("U",strtotime($rowco["fecha_ini"]));
@@ -62,7 +62,7 @@ function informesContratos(){
 				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1";
 				if ($_POST["id_cliente"] > 0) { $sqlco2.=" and id_cliente=".$_POST["id_cliente"]; }
 				$sqlco2.=" order by fecha_ini";
-				$resultco2 = mysql_query(convert_sql($sqlco2));
+				$resultco2 = mysql_query(convertSQL($sqlco2));
 				while ($rowco2 = mysql_fetch_array($resultco2)){
 					if ($count == 1) {
 						$mes_ini = date("U",strtotime($rowco2["fecha_ini"])); $mes_fin = date("U",strtotime($rowco2["fecha_fin"])); $count ++;
@@ -92,7 +92,7 @@ function informesContratos(){
 				}
 			echo "</select></td>";
 			$sqlco = "select * from sgm_contratos where id=".$_POST["id_contrato"]." order by fecha_ini";
-			$resultco = mysql_query(convert_sql($sqlco));
+			$resultco = mysql_query(convertSQL($sqlco));
 			$rowco = mysql_fetch_array($resultco);
 			if ($rowco){
 				$mes_fin = date("U",strtotime($rowco["fecha_fin"]));
@@ -102,7 +102,7 @@ function informesContratos(){
 				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1 and activo=1";
 				if ($_POST["id_cliente"] > 0) { $sqlco2.=" and id_cliente=".$_POST["id_cliente"]; }
 				$sqlco2.=" order by fecha_ini";
-				$resultco2 = mysql_query(convert_sql($sqlco2));
+				$resultco2 = mysql_query(convertSQL($sqlco2));
 				while ($rowco2 = mysql_fetch_array($resultco2)){
 					if ($count == 1) {
 						$mes_fin = date("U",strtotime($rowco2["fecha_fin"])); $count ++;
@@ -138,7 +138,7 @@ function informesContratos(){
 			echo "</select></td>";
 			echo "<td><select name=\"idioma\" id=\"idioma\" style=\"width:50px\">";
 				$sqlid = "select * from sgm_idiomas where visible=1 order by predefinido desc,idioma";
-				$resultid = mysql_query(convert_sql($sqlid));
+				$resultid = mysql_query(convertSQL($sqlid));
 				while ($rowid = mysql_fetch_array($resultid)) {
 					if ($_POST["idioma"] == $rowid["idioma"]){
 						echo "<option value=\"".$rowid["idioma"]."\" selected>".$rowid["idioma"]."</option>";

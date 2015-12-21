@@ -5,7 +5,7 @@ function mostrarFacturas($row){
 	global $soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones;
 	
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
-	$resulttipos = mysql_query(convert_sql($sqltipos));
+	$resulttipos = mysql_query(convertSQL($sqltipos));
 	$rowtipos = mysql_fetch_array($resulttipos);
 	#### OPCIONES DE VISUALIZACION SI SE MUESTRA O NO
 	$hoy = date("Y-m-d");
@@ -25,7 +25,7 @@ function mostrarFacturas($row){
 #Por Articulo
 	if (($soption == 200) and ($_POST["articulo"] != '')){
 		$sqlcc = "select id from sgm_cuerpo where idfactura=".$row["id"]." and ((codigo like '%".$_POST["articulo"]."%') or (nombre like '%".$_POST["articulo"]."%'))";
-		$resultcc = mysql_query(convert_sql($sqlcc));
+		$resultcc = mysql_query(convertSQL($sqlcc));
 		$rowcc = mysql_fetch_array($resultcc);
 		if ($rowcc){ $ver = 1;  } else { $ver = 0; }
 	}
@@ -57,7 +57,7 @@ function mostrarFacturas($row){
 			$color = "#FFFFFF";
 			$fecha_aviso2 = $fecha_aviso;
 			$sqlc = "select fecha_prevision from sgm_cuerpo where idfactura=".$row["id"]." and id_estado<>-1 and facturado<>1 order by  fecha_prevision";
-			$resultc = mysql_query(convert_sql($sqlc));
+			$resultc = mysql_query(convertSQL($sqlc));
 			$rowc = mysql_fetch_array($resultc);
 			$a = date("Y", strtotime($rowc["fecha_prevision"]));
 			$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -87,7 +87,7 @@ function mostrarFacturas($row){
 			$fecha_aviso1 = $fecha_aviso;
 			$fecha_aviso2 = $fecha_aviso;
 			$sqlc = "select fecha_prevision from sgm_cuerpo where idfactura=".$row["id"]."";
-			$resultc = mysql_query(convert_sql($sqlc));
+			$resultc = mysql_query(convertSQL($sqlc));
 			while ($rowc = mysql_fetch_array($resultc)){
 				$a = date("Y", strtotime($rowc["fecha_prevision"]));
 				$m = date("m", strtotime($rowc["fecha_prevision"]));
@@ -124,11 +124,11 @@ function mostrarFacturas($row){
 					$color = "#FF0000";
 				}
 				$sqld = "select count(*) as total from sgm_recibos where visible=1 and cobrada=0 and id_tipo_pago=4 AND id_factura =".$row["id"];
-				$resultd = mysql_query(convert_sql($sqld));
+				$resultd = mysql_query(convertSQL($sqld));
 				$rowd = mysql_fetch_array($resultd);
 				if ($rowd["total"] > 0) { $color = "#0000FF"; }
 				$sqlcalc = "select total from sgm_recibos where visible=1 and cobrada=1 AND id_factura=".$row["id"];
-				$resultcalc = mysql_query(convert_sql($sqlcalc));
+				$resultcalc = mysql_query(convertSQL($sqlcalc));
 				$rowcalc = mysql_fetch_array($resultcalc);
 				if ($rowcalc["total"]) { $color = "#FFFF00"; }
 			}
@@ -146,7 +146,7 @@ function mostrarFacturas($row){
 			echo "</form>";
 			if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
 				$sqlca = "select count(*) as total from sgm_files where id_elemento in (select id from sgm_cuerpo where idfactura=".$row["id"].")";
-				$resultca = mysql_query(convert_sql($sqlca));
+				$resultca = mysql_query(convertSQL($sqlca));
 				$rowca = mysql_fetch_array($resultca);
 				if ($rowca["total"] == 0) {$color_docs = "yellow";} else {$color_docs = "white";}
 				echo "<td style=\"background-color:".$color_docs.";\">(".$rowca["total"].")</td>";
@@ -164,7 +164,7 @@ function mostrarFacturas($row){
 					$fecha_proxima = $row["fecha"];
 					$multiplica = 0;
 					$sql00 = "select fecha from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-					$result00 = mysql_query(convert_sql($sql00));
+					$result00 = mysql_query(convertSQL($sql00));
 					while ($row00 = mysql_fetch_array($result00)) {
 						if ($fecha_proxima == $row00["fecha"]) {
 							$multiplica++;
@@ -221,7 +221,7 @@ function mostrarFacturas($row){
 						echo "<select style=\"width:100px\" name=\"subtipo\" disabled>";
 							echo "<option value=\"0\">-</option>";
 							$sqlsss = "select id,subtipo from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
-							$resultsss = mysql_query(convert_sql($sqlsss));
+							$resultsss = mysql_query(convertSQL($sqlsss));
 							while ($rowsss = mysql_fetch_array($resultsss)) {
 								if ($row["subtipo"] == $rowsss["id"]) {
 									echo "<option value=\"".$rowsss["id"]."\" selected>".$rowsss["subtipo"]."</option>";
@@ -234,22 +234,22 @@ function mostrarFacturas($row){
 					}
 				}
 				$sqldi = "select id,abrev from sgm_divisas where id=".$row["id_divisa"];
-				$resultdi = mysql_query(convert_sql($sqldi));
+				$resultdi = mysql_query(convertSQL($sqldi));
 				$rowdi = mysql_fetch_array($resultdi);
-				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["subtotaldescuento"],2,",",".")." ".$rowdi["abrev"]."</td>";
+				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["subtotal"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				echo "<td style=\"text-align:right;min-width:100px;\">".number_format($row["total"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				if ($rowtipos["v_recibos"] == 1)  {
 					$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
-					$resultr = mysql_query(convert_sql($sqlr));
+					$resultr = mysql_query(convertSQL($sqlr));
 					$rowr = mysql_fetch_array($resultr);
 					echo "<td style=\"text-align:right;min-width:100px;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
 				}
 				if ($rowdiv["id"] == $rowdi["id"]){
-					$totalSenseIVA += $row["subtotaldescuento"];
+					$totalSenseIVA += $row["subtotal"];
 					$totalSensePagar += $row["total"];
 					$totalPagat += ($row["total"]-$rowr["total"]);
 				} else {
-					$totalSenseIVA += $row["subtotaldescuento"]*$row["div_canvi"];
+					$totalSenseIVA += $row["subtotal"]*$row["div_canvi"];
 					$totalSensePagar += $row["total"]*$row["div_canvi"];
 					$totalPagat += ($row["total"]-$rowr["total"])*$row["div_canvi"];
 				}
@@ -315,7 +315,7 @@ function mostrarFacturas($row){
 			if ($_POST["data_desde2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision>='".cambiarFormatoFechaYMD($_POST["data_desde2"])."'"; }
 			if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
 			if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
-			$resultxx = mysql_query(convert_sql($sqlxx));
+			$resultxx = mysql_query(convertSQL($sqlxx));
 			$rowxx = mysql_fetch_array($resultxx);
 			if ($rowxx["total"] > 0){
 				echo "<tr><td>&nbsp;</td></tr>";
@@ -340,7 +340,7 @@ function mostrarFacturas($row){
 					if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
 					if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
 					$sqlxx = $sqlxx." order by linea";
-					$resultxx = mysql_query(convert_sql($sqlxx));
+					$resultxx = mysql_query(convertSQL($sqlxx));
 					while ($rowxx = mysql_fetch_array($resultxx)) {
 						$color = "white";
 						if ($row["tipo"] == 5) {
@@ -368,7 +368,7 @@ function mostrarFacturas($row){
 							echo "<td style=\"width:50px\">".$rowxx["unidades"]."</td>";
 							if ($row["pvd"] == 0){
 								$sqla = "select preu_cost from sgm_articles_costos where visible=1 and id_cuerpo=".$rowxx["id"]." and aprovat=1";
-								$resulta = mysql_query(convert_sql($sqla));
+								$resulta = mysql_query(convertSQL($sqla));
 								$rowa = mysql_fetch_array($resulta);
 								echo "<td style=\"width:60px\">".$rowa["preu_cost"]."</td>";
 							} else {

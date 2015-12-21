@@ -6,13 +6,13 @@ function mostrarContrasenya(){
 	global $db,$Contrasena,$Cliente,$Aplicacion,$Ver,$userid,$simclau;
 		?><script>setTimeout ("redireccionar()", 10000);</script><?php
 		$sqlc = "select id_contrato,id_aplicacion,pass from sgm_contrasenyes where id=".$_GET["id_con"];
-		$resultc = mysql_query(convert_sql($sqlc));
+		$resultc = mysql_query(convertSQL($sqlc));
 		$rowc = mysql_fetch_array($resultc);
 		$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
-		$resultcl = mysql_query(convert_sql($sqlcl));
+		$resultcl = mysql_query(convertSQL($sqlcl));
 		$rowcl = mysql_fetch_array($resultcl);
 		$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
-		$resultca = mysql_query(convert_sql($sqlca));
+		$resultca = mysql_query(convertSQL($sqlca));
 		$rowca = mysql_fetch_array($resultca);
 
 		echo "<h4>".$Ver." ".$Contrasena."</h4>";

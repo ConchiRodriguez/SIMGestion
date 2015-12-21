@@ -14,8 +14,8 @@ function insertFunction ($tabla,$camposInsert,$datosInsert){
 		$sql = $sql."'".comillas($datosInsert[$i])."'";
 	}
 	$sql = $sql.")";
-	mysql_query(convert_sql($sql));
-	echo $sql;
+	mysql_query(convertSQL($sql));
+#	echo $sql;
 }
 
 ?>

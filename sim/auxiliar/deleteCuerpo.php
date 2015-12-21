@@ -7,7 +7,7 @@ function deleteCuerpo($id,$idfactura){
 	refactura($idfactura);
 	$num = 1;
 	$sqll = "select * from sgm_cuerpo where idfactura=".$idfactura." order by linea";
-	$resultl = mysql_query(convert_sql($sqll));
+	$resultl = mysql_query(convertSQL($sqll));
 	while ($rowl = mysql_fetch_array($resultl)) {
 		if ($num == $rowl["linea"]) {
 			$num++;

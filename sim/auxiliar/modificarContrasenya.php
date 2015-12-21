@@ -7,7 +7,7 @@ function modificarContrasenya($url_volver){
 	if ($ssoption == 1) {
 		$cadena = encrypt($_POST["passold"],$simclau);
 		$sql = "select Count(*) AS total from sgm_contrasenyes WHERE id='".$_GET["id_con"]."' and pass='".$cadena."'";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		$row = mysql_fetch_array($result);
 		if (($_POST["pass1"] != $_POST["pass2"]) or ($_POST["pass1"] == "") or ($row["total"] <= 0)) { echo mensaje_error($PassIncorrecto);}
 		if (($row["total"] > 0) and ($_POST["pass1"] == $_POST["pass2"]) and ($_POST["pass1"] != "")){
@@ -24,13 +24,13 @@ function modificarContrasenya($url_volver){
 		}
 	}
 	$sqlc = "select id_contrato,id_aplicacion from sgm_contrasenyes where id=".$_GET["id_con"];
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 	$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
-	$resultcl = mysql_query(convert_sql($sqlcl));
+	$resultcl = mysql_query(convertSQL($sqlcl));
 	$rowcl = mysql_fetch_array($resultcl);
 	$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];
-	$resultca = mysql_query(convert_sql($sqlca));
+	$resultca = mysql_query(convertSQL($sqlca));
 	$rowca = mysql_fetch_array($resultca);
 
 	echo "<h4>".$Modificar." ".$Contrasena." </h4>";

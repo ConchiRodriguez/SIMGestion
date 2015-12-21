@@ -6,7 +6,7 @@ function calculDataVencimientFact($id_client,$fecha_factura)
 { 
 	global $db;
 	$sqlc = "select * from sgm_clients where id=".$id_client;
-	$resultc = mysql_query(convert_sql($sqlc));
+	$resultc = mysql_query(convertSQL($sqlc));
 	$rowc = mysql_fetch_array($resultc);
 
 	$a = date("Y", strtotime($fecha_factura));

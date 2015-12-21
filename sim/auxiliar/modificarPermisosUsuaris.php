@@ -6,17 +6,17 @@ function modificarPermisosUsuaris ($url_volver,$url){
 	global $db,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption,$Si,$No;
 	if ($ssoption == 1) {
 		$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre";
-		$result = mysql_query(convert_sql($sql));
+		$result = mysql_query(convertSQL($sql));
 		while ($row = mysql_fetch_array($result)) {
 			if ($_POST["permiso".$row["id"]] == 0) {
 				$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-				$resultt = mysql_query(convert_sql($sqlt));
+				$resultt = mysql_query(convertSQL($sqlt));
 				$rowt = mysql_fetch_array($resultt);
 				deleteFunction ("sgm_users_permisos",$rowt["id"]);
 			}
 			if ($_POST["permiso".$row["id"]] == 1) {
 				$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-				$resultt = mysql_query(convert_sql($sqlt));
+				$resultt = mysql_query(convertSQL($sqlt));
 				$rowt = mysql_fetch_array($resultt);
 				if (!$rowt){
 					$camposInsert = "id_user,id_modulo";
@@ -25,7 +25,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 				}
 			}
 			$sqlt = "select * from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-			$resultt = mysql_query(convert_sql($sqlt));
+			$resultt = mysql_query(convertSQL($sqlt));
 			$rowt = mysql_fetch_array($resultt);
 			$camposUpdate = array("admin");
 			$datosUpdate = array($_POST["admin".$row["id"]]);
@@ -34,7 +34,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 	}
 
 	$sql = "select usuario from sgm_users where id=".$_GET["id_user"];
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	$row = mysql_fetch_array($result);
 	echo "<h4>".$Administrar." ".$Permisos.": ".$row["usuario"]."</h4>";
 	echo boton(array($url_volver),array("&laquo; ".$Volver));
@@ -48,10 +48,10 @@ function modificarPermisosUsuaris ($url_volver,$url){
 	echo "<form action=\"index.php?".$url."&id_user=".$_GET["id_user"]."&ssop=1\" method=\"post\">";
 		echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
 	$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
-	$result = mysql_query(convert_sql($sql));
+	$result = mysql_query(convertSQL($sql));
 	while ($row = mysql_fetch_array($result)) {
 		$sqlt = "select count(*) as total from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
-		$resultt = mysql_query(convert_sql($sqlt));
+		$resultt = mysql_query(convertSQL($sqlt));
 		$rowt = mysql_fetch_array($resultt);
 		echo "<tr>";
 			echo "<td style=\"width:150px\"><strong>".$row["nombre"]."</strong></td>";
@@ -67,7 +67,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 				}
 			echo "</select></td>";
 			$sqlad = "select id,admin from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
-			$resultad = mysql_query(convert_sql($sqlad));
+			$resultad = mysql_query(convertSQL($sqlad));
 			$rowad = mysql_fetch_array($resultad);
 			echo "<td style=\"width:60px\"><select name=\"admin".$row["id"]."\" style=\"width:40px\">";
 				if ($rowad["admin"] == 1) {
