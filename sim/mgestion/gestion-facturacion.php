@@ -206,6 +206,18 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$datosInsert = array($row["id"],$row["linea"],$row["id_cuerpo"],$rowfac["id"],$row["id_estado"],$row["fecha_prevision"],$row["fecha_entrega"],$row["facturado"],$row["id_facturado"],$row["codigo"],$row["nombre"],$row["pvd"],$row["pvp"],$row["unidades"],$row["descuento"],$row["descuento_absoluto"],$row["subtotaldescuento"],$row["total"],$row["notes"],$row["bloqueado"],$row["id_article"],$row["stock"],$row["prioridad"],$row["controlcalidad"],$row["id_tarifa"],$row["tarifa"]);
 						insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 					}
+					if ($_POST["id_tipus"] != $rowa["tipo"]){
+						$sqlc = "select id from sgm_cuerpo order by id desc";
+						$resultc = mysql_query(convertSQL($sqlc));
+						$rowc = mysql_fetch_array($resultc);
+						$sqlf = "select * from sgm_files where id_elemento=".$row["id"];
+						$resultf = mysql_query(convertSQL($sqlf));
+						while ($rowf = mysql_fetch_array($resultf)){
+							$camposInsert = "id_tipo,name,type,size,tipo_id_elemento,id_elemento";
+							$datosInsert = array($rowf["id_tipo"],$rowf["name"],$rowf["type"],$rowf["size"],$rowf["tipo_id_elemento"],$rowc["id"]);
+							insertFunction ("sgm_files",$camposInsert,$datosInsert);
+						}
+					}
 				}
 				refactura($rowfac["id"]);
 			}
@@ -213,6 +225,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$camposUpdate = array("visible");
 				$datosUpdate = array("0");
 				updateFunction ("sgm_cabezera",$_GET["id_fact"],$camposUpdate,$datosUpdate);
+				$sqlc = "select id from sgm_cuerpo where idfactura=".$_GET["id_fact"];
+				$resultc = mysql_query(convertSQL($sqlc));
+				while ($rowc = mysql_fetch_array($resultc)){
+					$sql = "update sgm_files set ";
+					$sql = $sql."visible = 0";
+					$sql = $sql." WHERE id_elemento=".$rowc["id"]."";
+					mysql_query(convertSQL($sql));
+				}
 			}
 			if ($ssoption == 8) {
 				$camposUpdate = array("cerrada");
@@ -901,8 +921,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			refactura($_GET["id"]);
 		}
+#### ELIMINAR CUERPO
 		if ($ssoption == 6) {
 			deleteFunction ("sgm_cuerpo",$_GET["id_cuerpo"]);
+			$sql = "update sgm_files set ";
+			$sql = $sql."visible = 0";
+			$sql = $sql." WHERE id_elemento=".$_GET["id_cuerpo"]."";
+			mysql_query(convertSQL($sql));
 			refactura($_GET["idfactura"]);
 			$num = 1;
 			$sqll = "select linea,id from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea";
