@@ -75,8 +75,8 @@ echo "<center><table cellspacing=\"10\" style=\"width:1000px;\">";
 	echo "</tr>";
 echo "</table></center>";
 
-$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
-$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
+$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
+$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 echo calendari_economic(0);
 echo correo_incidencias();
 #echo calculSLAtotal();

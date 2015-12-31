@@ -7,8 +7,8 @@
 	{
 		include ($filename);
 	}
-	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
-	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
+	$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
+	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
 	$idioma = strtolower("es");
 	include ("lenguajes/factura-print-".$idioma.".php");
@@ -32,20 +32,20 @@
 	$pdf->SetFont('Calibri','',8);
 
 	$sqlr = "select * from sgm_recibos where id=".$_GET["id"];
-	$resultr = mysql_query(convertSQL($sqlr));
-	$rowr = mysql_fetch_array($resultr);
+	$resultr = mysqli_query($dbhandle,convertSQL($sqlr));
+	$rowr = mysqli_fetch_array($resultr);
 	$sqlf = "select * from sgm_cabezera where id=".$rowr["id_factura"];
-	$resultf = mysql_query(convertSQL($sqlf));
-	$rowf = mysql_fetch_array($resultf);
+	$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+	$rowf = mysqli_fetch_array($resultf);
 	$sqlele = "select * from sgm_dades_origen_factura";
-	$resultele = mysql_query(convertSQL($sqlele));
-	$rowele = mysql_fetch_array($resultele);
+	$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
+	$rowele = mysqli_fetch_array($resultele);
 	$sqldi = "select * from sgm_divisas where id=".$rowf["id_divisa"];
-	$resultdi = mysql_query(convertSQL($sqldi));
-	$rowdi = mysql_fetch_array($resultdi);
+	$resultdi = mysqli_query($dbhandle,convertSQL($sqldi));
+	$rowdi = mysqli_fetch_array($resultdi);
 	$sqlxtp = "select * from sgm_tpv_tipos_pago where id=".$rowr["id_tipo_pago"];
-	$resultxtp = mysql_query(convertSQL($sqlxtp));
-	$rowxtp = mysql_fetch_array($resultxtp);
+	$resultxtp = mysqli_query($dbhandle,convertSQL($sqlxtp));
+	$rowxtp = mysqli_fetch_array($resultxtp);
 
 	$pdf->SetXY(5,20);
 	$pdf->MultiCell(50,5,$numero."\n".$rowf["numero"]."/".$rowr["numero_serie"],1);

@@ -6,8 +6,8 @@
 	{
 		include ($filename);
 	}
-	$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
-	$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
+	$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
+	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
 	$idioma = strtolower($_POST["idioma"]);
 	include ("lenguajes/factura-print-".$idioma.".php");
@@ -73,29 +73,29 @@ class PDF extends FPDF
 	}
 
 	function factura_print($id,$tipo){
-		global $retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
+		global $db,$dbhandle,$retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
 		//Creación del objeto de la clase heredada
 	
 		$sqlele = "select * from sgm_dades_origen_factura";
-		$resultele = mysql_query(convertSQL($sqlele));
-		$rowele = mysql_fetch_array($resultele);
+		$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
+		$rowele = mysqli_fetch_array($resultele);
 
 	
 		$sqlcabezera = "select * from sgm_cabezera where id=".$id;
-		$resultcabezera = mysql_query(convertSQL($sqlcabezera));
-		$rowcabezera = mysql_fetch_array($resultcabezera);
+		$resultcabezera = mysqli_query($dbhandle,convertSQL($sqlcabezera));
+		$rowcabezera = mysqli_fetch_array($resultcabezera);
 	
 		$sqlele2 = "select * from sgm_dades_origen_factura_iban where id=".$rowcabezera["id_dades_origen_factura_iban"];
-		$resultele2 = mysql_query(convertSQL($sqlele2));
-		$rowele2 = mysql_fetch_array($resultele2);
+		$resultele2 = mysqli_query($dbhandle,convertSQL($sqlele2));
+		$rowele2 = mysqli_fetch_array($resultele2);
 
 		$sqldi = "select * from sgm_divisas where id=".$rowcabezera["id_divisa"];
-		$resultdi = mysql_query(convertSQL($sqldi));
-		$rowdi = mysql_fetch_array($resultdi);
+		$resultdi = mysqli_query($dbhandle,convertSQL($sqldi));
+		$rowdi = mysqli_fetch_array($resultdi);
 
 		$sqldiv = "select * from sgm_divisas_mod_canvi where id_divisa=".$rowdi["id"]." order by fecha desc";
-		$resultdiv = mysql_query(convertSQL($sqldiv));
-		$rowdiv = mysql_fetch_array($resultdiv);
+		$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
+		$rowdiv = mysqli_fetch_array($resultdiv);
 
 		if ($tipo == 1) {
 			#no sobre#
@@ -163,17 +163,17 @@ class PDF extends FPDF
 
 
 		$sqlx = "select * from sgm_factura_tipos where id=".$rowcabezera["tipo"];
-		$resultx = mysql_query(convertSQL($sqlx));
-		$rowx = mysql_fetch_array($resultx);
+		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+		$rowx = mysqli_fetch_array($resultx);
 		if ($idioma == "es"){
 			$fac_tipo = $rowx["tipo"];
 		} else {
 			$sqlid = "select * from sgm_idiomas where idioma='".$idioma."'";
-			$resultid = mysql_query(convertSQL($sqlid));
-			$rowid = mysql_fetch_array($resultid);
+			$resultid = mysqli_query($dbhandle,convertSQL($sqlid));
+			$rowid = mysqli_fetch_array($resultid);
 			$sqli = "select * from sgm_factura_tipos_idiomas where id_tipo=".$rowx["id"]." and id_idioma=".$rowid["id"];
-			$resulti = mysql_query(convertSQL($sqli));
-			$rowi = mysql_fetch_array($resulti);
+			$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+			$rowi = mysqli_fetch_array($resulti);
 			$fac_tipo = $rowi["tipo"];
 		}
 
@@ -191,8 +191,8 @@ class PDF extends FPDF
 		$unidades2 = 0;
 		$lineas = 0;
 		$sql = "select * from sgm_cuerpo where idfactura=".$id." order by linea";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			$data = date("d / m / y", strtotime($row["fecha_prevision"])); 
 			$X = $this->GetX();
 			$Y = $this->GetY();
@@ -256,8 +256,8 @@ class PDF extends FPDF
 		$this->Cell(25,5,number_format($rowcabezera["total"], 2, ',', '.').$rowdi["simbolo"],'LBR',1);
 	
 		$sqld = "select * from sgm_divisas where predefinido=1";
-		$resultd = mysql_query(convertSQL($sqld));
-		$rowd = mysql_fetch_array($resultd);
+		$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+		$rowd = mysqli_fetch_array($resultd);
 		
 		if ($rowcabezera["id_divisa"] != $rowd["id"]){
 			$this->Cell(15,5,$cambio.": 1".$rowd["simbolo"]."=".number_format($rowdi["canvi"], 2, ',', '.').$rowdi["simbolo"],'LTR',0);
@@ -306,8 +306,8 @@ class PDF extends FPDF
 		$pdf->factura_print($_GET["id"],$_POST["tipo"]);
 	} else {
 		$sql = "select * from sgm_cabezera where tipo=".$_POST["id_tipo"]." and fecha_prevision between '".cambiarFormatoFechaYMD($_POST["data_desde"])."' and '".cambiarFormatoFechaYMD($_POST["data_fins"])."' and visible=1";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)){
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)){
 			$pdf->AddPage();
 			$pdf->factura_print($row["id"],$_POST["tipo"]);
 		}

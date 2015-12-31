@@ -3,15 +3,15 @@ error_reporting(~E_ALL);
 
 
 function insertCabezera($datosInsert){
-	global $userid,$errorFacturaCrear;
+	global $db,$dbhandle,$userid,$errorFacturaCrear;
 #	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
 		$sqltipo = "select * from sgm_factura_tipos where v_recibos=1";
-		$resulttipo = mysql_query(convertSQL($sqltipo));
-		$rowtipo = mysql_fetch_array($resulttipo);
+		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+		$rowtipo = mysqli_fetch_array($resulttipo);
 		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
-		$resultxx = mysql_query(convertSQL($sqlxx));
-		$rowxx = mysql_fetch_array($resultxx);
+		$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+		$rowxx = mysqli_fetch_array($resultxx);
 		$numero = $rowxx["numero"] + 1;
 		$tipo = $rowtipo["id"];
 		$version = 0;
@@ -21,23 +21,23 @@ function insertCabezera($datosInsert){
 		$tipo = $datosInsert['tipo'];
 		$version = $datosInsert['version'];
 		$sqltipo = "select * from sgm_factura_tipos where id=".$tipo;
-		$resulttipo = mysql_query(convertSQL($sqltipo));
-		$rowtipo = mysql_fetch_array($resulttipo);
+		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+		$rowtipo = mysqli_fetch_array($resulttipo);
 		$v_recibos=$rowtipo["v_recibos"];
 	}
 	$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and version=".$version." and tipo=".$tipo;
-	$resultcc = mysql_query(convertSQL($sqlcc));
-	$rowcc = mysql_fetch_array($resultcc);
+	$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+	$rowcc = mysqli_fetch_array($resultcc);
 	if ($rowcc["total"] == 0){
 		$sql = "select * from sgm_clients where id=".$datosInsert['id_cliente'];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		$sqlta = "select * from sgm_tarifas where id=(select id_tarifa from sgm_tarifas_clients where id_cliente=".$row["id"]." and predeterminado=1)";
-		$resultta = mysql_query(convertSQL($sqlta));
-		$rowta = mysql_fetch_array($resultta);
+		$resultta = mysqli_query($dbhandle,convertSQL($sqlta));
+		$rowta = mysqli_fetch_array($resultta);
 		$sqltipos = "select * from sgm_factura_tipos where id=".$tipo;
-		$resulttipos = mysql_query(convertSQL($sqltipos));
-		$rowtipos = mysql_fetch_array($resulttipos);
+		$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+		$rowtipos = mysqli_fetch_array($resulttipos);
 		if (array_key_exists('fecha_prevision', $datosInsert)){
 			$fecha_prevision = $datosInsert['fecha_prevision'];
 			$fecha_entrega = $datosInsert['fecha_prevision'];
@@ -59,8 +59,8 @@ function insertCabezera($datosInsert){
 		}
 		if ($row["id_direccion_envio"] <> 0) {
 			$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
-			$result3 = mysql_query(convertSQL($sql3));
-			$row3 = mysql_fetch_array($result3);
+			$result3 = mysqli_query($dbhandle,convertSQL($sql3));
+			$row3 = mysqli_fetch_array($result3);
 			$edireccion = $row3["direccion"];
 			$epoblacion = $row3["poblacion"];
 			$ecp = $row3["cp"];
@@ -68,18 +68,18 @@ function insertCabezera($datosInsert){
 			$eid_pais = $row3["id_pais"];
 		}
 		$sql2 = "select * from sgm_dades_origen_factura";
-		$result2 = mysql_query(convertSQL($sql2));
-		$row2 = mysql_fetch_array($result2);
+		$result2 = mysqli_query($dbhandle,convertSQL($sql2));
+		$row2 = mysqli_fetch_array($result2);
 		$sqld = "select * from sgm_divisas where predefinido=1";
-		$resultd = mysql_query(convertSQL($sqld));
-		$rowd = mysql_fetch_array($resultd);
+		$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+		$rowd = mysqli_fetch_array($resultd);
 		$sqlc = "select * from sgm_clients_contactos where pred=1 and id_client=".$datosInsert['id_cliente'];
-		$resultc = mysql_query(convertSQL($sqlc));
-		$rowc = mysql_fetch_array($resultc);
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
 		if (!array_key_exists('id_dades_origen_factura_iban', $datosInsert)){
 			$sqldo = "select * from sgm_dades_origen_factura_iban where predefinido=1";
-			$resultdo = mysql_query(convertSQL($sqldo));
-			$rowdo = mysql_fetch_array($resultdo);
+			$resultdo = mysqli_query($dbhandle,convertSQL($sqldo));
+			$rowdo = mysqli_fetch_array($resultdo);
 			$id_dades_origen_factura_iban = $rowdo["id"];
 		} else {
 			$id_dades_origen_factura_iban = $datosInsert['id_dades_origen_factura_iban'];

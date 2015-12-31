@@ -24,8 +24,8 @@ if (($option == 1025) AND ($autorizado == true)) {
 	if ($soption == 0) {
 		echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:1200px;\">";
 			$sqlcl= "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id IN (select id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente in (select id_client from sgm_clients_servidors where visible=1)) order by nombre";
-			$resultcl = mysql_query($sqlcl,$dbhandle);
-			while ($rowcl = mysql_fetch_array($resultcl)){
+			$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+			while ($rowcl = mysqli_fetch_array($resultcl)){
 				echo "<tr><td colspan=\"5\"  style=\"background-color:silver;\"><strong>".$rowcl["nombre"].$rowcl["cognom1"].$rowcl["cognom2"]."</strong></td></tr>";
 
 				echo servidoresMonitorizados($rowcl["id"],5,10);
@@ -82,8 +82,8 @@ if (($option == 1025) AND ($autorizado == true)) {
 				echo "<th>".$Valor."</th>";
 			echo "</tr>";
 			$sql = "select * from sgm_clients_servidors_param";
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			echo "<form action=\"index.php?op=1025&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
 			echo "<tr><td>CPU</td><td><input name=\"cpu\" type=\"Text\" value=\"".$row["cpu"]."\" style=\"width:100px\"></td></tr>";
 			echo "<tr><td>Memoria</td><td><input name=\"mem\" type=\"Text\" value=\"".$row["mem"]."\" style=\"width:100px\"></td></tr>";
@@ -111,13 +111,13 @@ if (($option == 1025) AND ($autorizado == true)) {
 
 #	if ($soption == 1234) {
 #		$sql = "select * from sgm_clients_bases_dades";
-#		$result = mysql_query(convertSQL($sql));
-#		while ($row = mysql_fetch_array($result)) {
+#		$result = mysqli_query($dbhandle,convertSQL($sql));
+#		while ($row = mysqli_fetch_array($result)) {
 #			$cadena = encrypt($row["pass"], $simclau);
 #			$sql = "update sgm_clients_bases_dades set ";
 #			$sql = $sql."pass='".$cadena."'";
 #			$sql = $sql." WHERE id=".$row["id"]."";
-#			mysql_query(convertSQL($sql));
+#			mysqli_query($dbhandle,convertSQL($sql));
 #			echo $sql."<br>";
 #		}
 #	}

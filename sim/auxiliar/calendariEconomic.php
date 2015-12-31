@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function calendari_economic($rec){
-	global $db;
+	global $db,$dbhandle;
 	$mes = gmdate("n");
 	$mes_anterior = date("U", mktime(0,0,0,$mes-1, 1, date("Y")));
 	$mes_ultimo = date("U", mktime(0,0,0,$mes+12, 1-1, date("Y")));
@@ -12,8 +12,8 @@ function calendari_economic($rec){
 	if ($rec == 1) {$dia_actual=date("U", mktime(0,0,0,1,1,2012)); $dia_actual1=date("U", mktime(0,0,0,1,1-1,2012));}
 
 	$sql = "select * from sgm_factura_calendario where fecha='".$dia_actual1."'";
-	$result = mysql_query($sql);
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,$sql);
+	$row = mysqli_fetch_array($result);
 	if ($row){
 		$saldo_inicial = $row["liquido"];
 		$pagos_externos = $row["externos"];
@@ -27,28 +27,28 @@ function calendari_economic($rec){
 		$hoy = date("U", mktime(0,0,0,date("m"), date("d"), date("Y")));
 
 		$sqlgasto = "select sum(total) as total_gasto from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=-1) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1";
-		$resultgasto = mysql_query($sqlgasto);
-		$rowgasto = mysql_fetch_array($resultgasto);
+		$resultgasto = mysqli_query($dbhandle,$sqlgasto);
+		$rowgasto = mysqli_fetch_array($resultgasto);
 
 			
 		if ($hoy >= $dia_actual){
 			$sqlingre1 = "select sum(total) as total_ingre1 from sgm_recibos where id_factura IN (select id from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1) and id_pagador=1 and cerrada=0) and fecha='".$dia_actual2."' and visible=1";
-			$resultingre1 = mysql_query($sqlingre1);
-			$rowingre1 = mysql_fetch_array($resultingre1);
+			$resultingre1 = mysqli_query($dbhandle,$sqlingre1);
+			$rowingre1 = mysqli_fetch_array($resultingre1);
 		}
 		if ($hoy <= $dia_actual){
 			$sqlingre2 = "select sum(total) as total_ingre2 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
-			$resultingre2 = mysql_query($sqlingre2);
-			$rowingre2 = mysql_fetch_array($resultingre2);
+			$resultingre2 = mysqli_query($dbhandle,$sqlingre2);
+			$rowingre2 = mysqli_fetch_array($resultingre2);
 		}
 
 		$sqlingre3 = "select sum(total) as total_ingre3 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=0) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
-		$resultingre3 = mysql_query($sqlingre3);
-		$rowingre3 = mysql_fetch_array($resultingre3);
+		$resultingre3 = mysqli_query($dbhandle,$sqlingre3);
+		$rowingre3 = mysqli_fetch_array($resultingre3);
 
 		$sqlex = "select sum(total) as total_externos from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=-1) and fecha_vencimiento = '".$dia_actual2."' and id_pagador<>1";
-		$resultex = mysql_query($sqlex);
-		$rowex = mysql_fetch_array($resultex);
+		$resultex = mysqli_query($dbhandle,$sqlex);
+		$rowex = mysqli_fetch_array($resultex);
 
 		$total_gastos = $rowgasto["total_gasto"];
 		$total_ingresos = ($rowingre1["total_ingre1"] + $rowingre2["total_ingre2"] + $rowingre3["total_ingre3"]);
@@ -56,8 +56,8 @@ function calendari_economic($rec){
 		$pagos_externos = $pagos_externos + $rowex["total_externos"];
 #		echo date("Y-m-d", $dia_actual)."-----Saldo : ".$saldo_inicial." - Ingresos :".$total_ingresos."--".$rowingre1["total_ingre1"]."1--".$rowingre2["total_ingre2"]."2--".$rowingre3["total_ingre3"]."3-- Gastos : ".$total_gastos." - Saldo Final:".$saldo_actual."<br>";
 		$sql = "select * from sgm_factura_calendario where fecha='".$dia_actual."'";
-		$result = mysql_query($sql);
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,$sql);
+		$row = mysqli_fetch_array($result);
 		if (!$row){
 			$sql = "insert into sgm_factura_calendario (fecha,gastos,ingresos,externos,liquido) ";
 			$sql = $sql."values (";
@@ -67,7 +67,7 @@ function calendari_economic($rec){
 			$sql = $sql.",'".$pagos_externos."'";
 			$sql = $sql.",'".$saldo_actual."'";
 			$sql = $sql.")";
-			mysql_query($sql);
+			mysqli_query($dbhandle,$sql);
 #			echo $sql."in<br>";
 		} else {
 			$sql = "update sgm_factura_calendario set ";
@@ -76,7 +76,7 @@ function calendari_economic($rec){
 			$sql = $sql.",externos='".$pagos_externos."'";
 			$sql = $sql.",liquido='".$saldo_actual."'";
 			$sql = $sql." WHERE fecha=".$dia_actual."";
-			mysql_query($sql);
+			mysqli_query($dbhandle,$sql);
 #			echo $sql."<br>";
 		}
 		$saldo_inicial = $saldo_actual;

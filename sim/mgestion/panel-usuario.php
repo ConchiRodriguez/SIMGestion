@@ -5,12 +5,12 @@ if (($option == 200) and ($user == false)) {
 } else {
 
 	$sqluser = "select * from sgm_users WHERE id=".$userid;
-	$resultuser = mysql_query(convertSQL($sqluser));
-	$rowuser = mysql_fetch_array($resultuser);
+	$resultuser = mysqli_query($dbhandle,convertSQL($sqluser));
+	$rowuser = mysqli_fetch_array($resultuser);
 
 	$sqluserclient = "select count(*) as total from sgm_users_clients WHERE id_user=".$userid;
-	$resultuserclient = mysql_query(convertSQL($sqluserclient));
-	$rowuserclient = mysql_fetch_array($resultuserclient);
+	$resultuserclient = mysqli_query($dbhandle,convertSQL($sqluserclient));
+	$rowuserclient = mysqli_fetch_array($resultuserclient);
 	$nclientes = $rowuserclient["total"];
 
 	echo "<table  class=\"principal\"><tr>";
@@ -26,15 +26,15 @@ if (($option == 200) and ($user == false)) {
 						echo "<a href=\"index.php?op=200&sop=70&id=".$rowuser["id"]."\" style=\"color:white;\">".$Cambio." ".$Contrasena."</a>";
 					echo "</td>";
 #					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-#					$resultp = mysql_query(convertSQL($sqlp));
-#					$rowp = mysql_fetch_array($resultp);
+#					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+#					$rowp = mysqli_fetch_array($resultp);
 #					if ($rowp["total"] == 1) {
 #						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-#						$resultpe = mysql_query(convertSQL($sqlpe));
-#						$rowpe = mysql_fetch_array($resultpe);
+#						$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+#						$rowpe = mysqli_fetch_array($resultpe);
 #						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
-#						$resultp = mysql_query(convertSQL($sqlp));
-#						while ($rowp = mysql_fetch_array($resultp)){
+#						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+#						while ($rowp = mysqli_fetch_array($resultp)){
 #							if ($rowp["id_user"] == $rowuser["id"]){
 #										echo "<td class=menu>";
 #											echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
@@ -43,15 +43,15 @@ if (($option == 200) and ($user == false)) {
 #						}
 #					}
 #					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-#					$resultp = mysql_query(convertSQL($sqlp));
-#					$rowp = mysql_fetch_array($resultp);
+#					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+#					$rowp = mysqli_fetch_array($resultp);
 #					if ($rowp["total"] == 1) {
 #						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
-#						$resultpe = mysql_query(convertSQL($sqlpe));
-#						$rowpe = mysql_fetch_array($resultpe);
+#						$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+#						$rowpe = mysqli_fetch_array($resultpe);
 #						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1006";
-#						$resultp = mysql_query(convertSQL($sqlp));
-#						while ($rowp = mysql_fetch_array($resultp)){
+#						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+#						while ($rowp = mysqli_fetch_array($resultp)){
 #							if ($rowp["id_user"] == $rowuser["id"]){
 #								echo "<td class=menu>";
 #									echo "<a href=\"index.php?op=200&sop=40&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
@@ -67,8 +67,8 @@ if (($option == 200) and ($user == false)) {
 #			echo "<tr style=\"background-color:silver\">";
 #				echo "<td style=\"width:100px;text-align:left;\">".$Total."</td>";
 #				$sqli = "select sum(duracion) as duracion_total from sgm_incidencias where visible=1 and id_incidencia<>0 and id_usuario_registro=".$userid."";
-#				$resulti = mysql_query(convertSQL($sqli));
-#				$rowi = mysql_fetch_array($resulti);
+#				$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+#				$rowi = mysqli_fetch_array($resulti);
 #				$hora = $rowi["duracion_total"]/60;
 #				$horas = explode(".",$hora);
 #				$minutos = $rowi["duracion_total"] % 60;
@@ -108,8 +108,8 @@ if (($option == 200) and ($user == false)) {
 		echo "<tr><td>Sector</td><td><select class=\"px150\" name=\"sector\">";
 			echo "<option value=\"0\">Indeterminado</option>";
 			$sql = "select * from sgm_clients_sectors order by sector";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<option value=\"".$row["id"]."\">".$row["sector"]."</option>";
 			}
 		echo "</select></td></tr>";
@@ -167,11 +167,11 @@ if (($option == 200) and ($user == false)) {
 
 	if ($soption == 11) {
 		$sqlx = "select count(*) as total from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$userid;
-		$resultx = mysql_query(convertSQL($sqlx));
-		$rowx = mysql_fetch_array($resultx);
+		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+		$rowx = mysqli_fetch_array($resultx);
 		if ($rowx["total"] == 0) {
 			$sql = "update sgm_users set mail='".$_POST["mail"]."',msn='".$_POST["msn"]."',icq='".$_POST["icq"]."',url='".$_POST["url"]."',dateborn='".$_POST["dateborn"]."',public=".$_POST["public"]." WHERE id=".$userid;
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		else {
 			echo "No se a podido actualizar los datos por que la dirección de correo mail ya esta en uso.";
@@ -201,26 +201,26 @@ if (($option == 200) and ($user == false)) {
 		echo "<center>";
 		echo "<table cellspacing=\"0\" style=\"width:500px;\">";
 		$sql = "select * from sgm_users where id_origen=".$_GET["id_user"];
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			echo "<tr>";
 				echo "<td><strong>".$row["usuario"]."</strong></td>";
 			echo "</tr>";
 			$sqlu = "select * from sgm_users_clients where id_user=".$row["id"];
-			$resultu = mysql_query(convertSQL($sqlu));
-			while ($rowu = mysql_fetch_array($resultu)) {
+			$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+			while ($rowu = mysqli_fetch_array($resultu)) {
 				echo "<tr>";
 					$sqlc = "select * from sgm_clients where id=".$rowu["id_client"];
-					$resultc = mysql_query(convertSQL($sqlc));
-					$rowc = mysql_fetch_array($resultc);
+					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+					$rowc = mysqli_fetch_array($resultc);
 					if ($client != $rowu["id_client"]) {
 						echo "<td>".$rowc["nombre"]."</td>";
 						$sqlp = "select * from sgm_users_permisos_modulos where visible=1 and id_modulo in ('1014','1006','1004','1003','1002')";
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)) {
+						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+						while ($rowp = mysqli_fetch_array($resultp)) {
 							$sqlpm = "select count(*) as total from sgm_users_clients where id_modulo in ('".$rowp["id_modulo"]."','-1') and id_user=".$row["id"]." and id_client=".$rowu["id_client"];
-							$resultpm = mysql_query(convertSQL($sqlpm));
-							$rowpm = mysql_fetch_array($resultpm);
+							$resultpm = mysqli_query($dbhandle,convertSQL($sqlpm));
+							$rowpm = mysqli_fetch_array($resultpm);
 							if ($rowpm["total"] == 1) { $color = "#4B53AF"; $colorl = "white"; } else { $color = "silver"; $colorl = "black"; }
 							echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:".$color.";border:1px solid black;color:".$colorl."\">".$rowp["nombre"]."</td><td>&nbsp;</td>";
 						}
@@ -240,13 +240,13 @@ if (($option == 200) and ($user == false)) {
 #			echo "<center>";
 #			$registro = 1;
 #			$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."'";
-#			$result = mysql_query(convertSQL($sql));
-#			$row = mysql_fetch_array($result);
+#			$result = mysqli_query($dbhandle,convertSQL($sql));
+#			$row = mysqli_fetch_array($result);
 #			if ($row["total"] != 0) { echo "<br>Nombre de usuario ya registrado."; $registro = 0; }
 #			if ($_POST["user"] == "") { echo "<br>Valor en el campo nombre de usuario incorrecto."; $registro = 0; }
 #			$sql = "select Count(*) AS total from sgm_users WHERE mail='".$_POST["mail"]."'";
-#			$result = mysql_query(convertSQL($sql));
-#			$row = mysql_fetch_array($result);
+#			$result = mysqli_query($dbhandle,convertSQL($sql));
+#			$row = mysqli_fetch_array($result);
 #			if ($row["total"] != 0) { echo "<br>Direccion e-mail ya registrada."; $registro = 0; }
 #			if (comprobar_mail($_POST["mail"]) == false) { echo "<br>Valor en el campo e-mail incorrecto."; $registro = 0; }
 #			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") { echo "<br>Valor en los campos passwords incorrecto."; $registro = 0; }
@@ -262,21 +262,21 @@ if (($option == 200) and ($user == false)) {
 #				$sql = $sql.",'".$_POST["mail"]."'";
 #				$sql = $sql.",'".$_GET["id_user"]."'";
 #				$sql = $sql.")";
-#				mysql_query(convertSQL($sql));
+#				mysqli_query($dbhandle,convertSQL($sql));
 #			}
 #			echo "</center>";
 #		}
 #		if ($ssoption == 2) {
 #			$registro = 1;
 #			$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."'";
-#			$result = mysql_query(convertSQL($sql));
-#			$row = mysql_fetch_array($result);
+#			$result = mysqli_query($dbhandle,convertSQL($sql));
+#			$row = mysqli_fetch_array($result);
 #			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") { echo "<br>Valor en los campos passwords incorrecto."; $registro = 0; }
 #			if ($registro == 1 ) {
 #				$sql = "update sgm_users set ";
 #				$sql = $sql."pass='".$_POST["pass1"]."'";
 #				$sql = $sql." WHERE id=".$_GET["id"]."";
-#				mysql_query(convertSQL($sql));
+#				mysqli_query($dbhandle,convertSQL($sql));
 #			echo $sql;
 #			}
 #		}
@@ -284,7 +284,7 @@ if (($option == 200) and ($user == false)) {
 #			$sql = "update sgm_users set ";
 #			$sql = $sql."activo=0";
 #			$sql = $sql." WHERE id=".$_GET["id"]."";
-#			mysql_query(convertSQL($sql));
+#			mysqli_query($dbhandle,convertSQL($sql));
 #		}
 
 #		echo "<center>";
@@ -303,8 +303,8 @@ if (($option == 200) and ($user == false)) {
 #				echo "<td style=\"text-align:center;width:20px;\"><em>Permisos</em></td>";
 #			echo "</tr>";
 #			$sql = "select * from sgm_users where id_origen=".$_GET["id_user"];
-#			$result = mysql_query(convertSQL($sql));
-#			while ($row = mysql_fetch_array($result)) {
+#			$result = mysqli_query($dbhandle,convertSQL($sql));
+#			while ($row = mysqli_fetch_array($result)) {
 #				$color = "black";
 #				if ($row["id"] == $_GET["id"]){
 #					echo "<tr style=\"background-color:#4B53AF;\">";
@@ -316,8 +316,8 @@ if (($option == 200) and ($user == false)) {
 #						echo "<td style=\"color:".$color.";width:220px;\">".$row["usuario"]."</td>";
 #						echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=21&id=".$row["id"]."&id_user=".$_GET["id_user"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" style=\"border:0px\"></a></td>";
 #						$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$row["id"];
-#						$resultt = mysql_query(convertSQL($sqlt));
-#						$rowt = mysql_fetch_array($resultt);
+#						$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+#						$rowt = mysqli_fetch_array($resultt);
 #						if ($rowt["total"] > 0) {
 #							echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=23&id=".$row["id"]."&id_user=".$_GET["id_user"]."\"><img src=\"mgestion/pics/icons-mini/application_key.png\" style=\"border:0px;\"></a></td>";
 #						} else {
@@ -342,8 +342,8 @@ if (($option == 200) and ($user == false)) {
 #			echo "<tr>";
 #			echo "<td></td>";
 #			$sql = "select * from sgm_users where id=".$_GET["id"];
-#			$result = mysql_query(convertSQL($sql));
-#			$row = mysql_fetch_array($result);
+#			$result = mysqli_query($dbhandle,convertSQL($sql));
+#			$row = mysqli_fetch_array($result);
 #			if ($_GET["id"] == "") {
 #				echo "<form action=\"index.php?op=200&sop=21&ssop=1&id_user=".$_GET["id_user"]."\" method=\"post\">";
 #				echo "<tr><td><strong>*Nombre de usuario.</strong></td><td style=\"vertical-align : middle;\"><input type=\"Text\" name=\"user\" class=\"px100\" value=\"".$row["usuario"]."\">*</td></tr>";
@@ -382,37 +382,37 @@ if (($option == 200) and ($user == false)) {
 
 	if ($soption == 23) {
 		$sql = "select * from sgm_users where id=".$_GET["id"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<strong>Permisos de Usuario: </strong> ".$row["usuario"]."<br>";
 		echo boton_volver($Volver);
 		echo "<center>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\">";
 		$sqlc = "select * from sgm_users_clients where id_user=".$_GET["id_user"];
-		$resultc = mysql_query(convertSQL($sqlc));
-		while ($rowc = mysql_fetch_array($resultc)) {
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		while ($rowc = mysqli_fetch_array($resultc)) {
 			$sqlcl = "select * from sgm_clients where id=".$rowc["id_client"];
-			$resultcl = mysql_query(convertSQL($sqlcl));
-			$rowcl = mysql_fetch_array($resultcl);
+			$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+			$rowcl = mysqli_fetch_array($resultcl);
 			echo "<tr><td><strong>".$rowcl["nombre"]."</strong></td></tr>";
 			echo "<tr><td></td><td><strong>Acceso</strong></td><td></td><td><strong>Módulo</strong></td></tr>";
 			$sql = "select * from sgm_users_permisos_modulos where visible=1 and id_modulo in ('1014','1006','1004','1003','1002')";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$_GET["id"]." and id_client=".$rowc["id_client"]." and id_modulo=".$row["id_modulo"];
-				$resultt = mysql_query(convertSQL($sqlt));
-				$rowt = mysql_fetch_array($resultt);
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				$rowt = mysqli_fetch_array($resultt);
 				$sqlto = "select count(*) as total from sgm_users_clients where id_user=".$_GET["id_user"]." and id_client=".$rowc["id_client"]." and id_modulo in ('".$row["id_modulo"]."','-1')";
-				$resultto = mysql_query(convertSQL($sqlto));
-				$rowto = mysql_fetch_array($resultto);
+				$resultto = mysqli_query($dbhandle,convertSQL($sqlto));
+				$rowto = mysqli_fetch_array($resultto);
 				echo "<tr>";
 					echo "<form action=\"index.php?op=200&sop=24&id_user=".$_GET["id_user"]."\" method=\"post\">";
 					echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$_GET["id"]."\">";
 					echo "<input type=\"Hidden\" name=\"id_client\" value=\"".$rowc["id_client"]."\">";
 					echo "<input type=\"Hidden\" name=\"id_modulo\" value=\"".$row["id_modulo"]."\">";
 					$sqlm = "select count(*) as total from sgm_users_clients where id_user=".$_GET["id"]." and id_client=".$rowc["id_client"]." and id_modulo='-1'";
-					$resultm = mysql_query(convertSQL($sqlm));
-					$rowm = mysql_fetch_array($resultm);
+					$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+					$rowm = mysqli_fetch_array($resultm);
 					if ($rowm["total"] == 0) {
 						if ($rowto["total"] == 0){
 							echo "<td><select name=\"permiso\" style=\"width:40px\" disabled>";
@@ -440,14 +440,14 @@ if (($option == 200) and ($user == false)) {
 				echo "</tr>";
 			}
 			$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$_GET["id"]." and id_client=".$rowc["id_client"]." and id_modulo='-1'";
-			$resultt = mysql_query(convertSQL($sqlt));
-			$rowt = mysql_fetch_array($resultt);
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
 			$sqlto = "select count(*) as total from sgm_users_clients where id_user=".$_GET["id_user"]." and id_client=".$rowc["id_client"]." and id_modulo='-1'";
-			$resultto = mysql_query(convertSQL($sqlto));
-			$rowto = mysql_fetch_array($resultto);
+			$resultto = mysqli_query($dbhandle,convertSQL($sqlto));
+			$rowto = mysqli_fetch_array($resultto);
 			$sqlm = "select * from sgm_users_clients where id_user=".$_GET["id"]." and id_client=".$rowc["id_client"];
-			$resultm = mysql_query(convertSQL($sqlm));
-			$rowm = mysql_fetch_array($resultm);
+			$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+			$rowm = mysqli_fetch_array($resultm);
 			echo "<tr>";
 				echo "<form action=\"index.php?op=200&sop=24&id_user=".$_GET["id_user"]."\" method=\"post\">";
 				echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$_GET["id"]."\">";
@@ -481,7 +481,7 @@ if (($option == 200) and ($user == false)) {
 	if ($soption == 24) {
 		if ($_POST["permiso"] == 0) {
 			$sql = "delete from sgm_users_clients WHERE id_user=".$_POST["id_user"]." and id_client=".$_POST["id_client"]." and id_modulo=".$_POST["id_modulo"];
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		if ($_POST["permiso"] == 1) {
 			$sql = "insert into sgm_users_clients (id_user,id_client,id_modulo) ";
@@ -490,7 +490,7 @@ if (($option == 200) and ($user == false)) {
 			$sql = $sql.",".$_POST["id_client"]."";
 			$sql = $sql.",".$_POST["id_modulo"]."";
 			$sql = $sql.")";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		echo "<center>";
 		echo "Operación realizada correctamente.";
@@ -502,15 +502,15 @@ if (($option == 200) and ($user == false)) {
 		echo "<center>";
 		echo "<table cellpadding=\"0\" cellspacing=\"0\">";
 		$sqltipos = "select * from sgm_factura_tipos where ((id=1) OR (id=2)) order by id";
-		$resulttipos = mysql_query(convertSQL($sqltipos));
-		while ($rowtipos = mysql_fetch_array($resulttipos)) {
+		$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+		while ($rowtipos = mysqli_fetch_array($resulttipos)) {
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr><td></td><td></td><td><strong>".$rowtipos["tipo"]."</strong></td><td></td><td></td></tr>";
 			echo "<tr style=\"background-color:silver\"><td style=\"width:70px\"><em><center>Número</center></em></td><td style=\"width:85px\"><em><center>Fecha</center></em></td><td style=\"width:250px\"><em>Cliente</em></td><td style=\"text-align:right;\"><em>Total</em>&nbsp;&nbsp;</td><td></td><td>&nbsp;&nbsp;<em>Estado</em></td></tr>";
 			$sql = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipos["id"]." AND id_user=".$userid." order by numero desc,fecha desc";
-			$result = mysql_query(convertSQL($sql));
+			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$fechahoy = getdate();
-			while ($row = mysql_fetch_array($result)) {
+			while ($row = mysqli_fetch_array($result)) {
 					echo "<tr>";
 						echo "<td><center>".$row["numero"]."</center></td>";
 							$a = date("Y", strtotime($row["fecha"]));
@@ -524,8 +524,8 @@ if (($option == 200) and ($user == false)) {
 								$fecha_proxima = $row["fecha"];
 								$multiplica = 0;
 								$sql00 = "select * from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-								$result00 = mysql_query(convertSQL($sql00));
-								while ($row00 = mysql_fetch_array($result00)) {
+								$result00 = mysqli_query($dbhandle,convertSQL($sql00));
+								while ($row00 = mysqli_fetch_array($result00)) {
 									if ($fecha_proxima == $row00["fecha"]) {
 										$multiplica++;
 										$fecha_proxima = date("Y-m-d", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
@@ -574,8 +574,8 @@ if (($option == 200) and ($user == false)) {
 	if ($soption == 36) {
 		$autorizado = 0;
 		$sql = "select count(*) as total from sgm_users_clients WHERE (id_client=".$_GET["id"].") AND (id_user=".$userid.")";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		$autorizado = $row["total"];
 	
 		if ($autorizado == 0) {
@@ -583,17 +583,17 @@ if (($option == 200) and ($user == false)) {
 		}
 		else {
 		$sqltipos = "select * from sgm_factura_tipos where id=5 order by id";
-		$resulttipos = mysql_query(convertSQL($sqltipos));
+		$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
 		echo "<center>";
 		echo "<table cellpadding=\"0\" cellspacing=\"0\">";
-		while ($rowtipos = mysql_fetch_array($resulttipos)) {
+		while ($rowtipos = mysqli_fetch_array($resulttipos)) {
 			echo "<tr><td></td><td></td><td></td><td>&nbsp;</td><td></td><td></td></tr>";
 			echo "<tr><td></td><td></td><td></td><td><strong>".$rowtipos["tipo"]."</strong></td><td></td><td></td></tr>";
 			echo "<tr><td></td><td style=\"width:70px\"><em><center>Número</center></em></td><td><em><center>Ref. Cliente</center></em></td><td style=\"width:85px\"><em><center>Fecha</center></em></td><td><em>Cliente</em></td><td style=\"text-align:right;\"></td><td></td></tr>";
 			$sql = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipos["id"]." AND id_cliente=".$_GET["id"]." order by numero desc,fecha desc";
-			$result = mysql_query(convertSQL($sql));
+			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$fechahoy = getdate();
-			while ($row = mysql_fetch_array($result)) {
+			while ($row = mysqli_fetch_array($result)) {
 					echo "<tr>";
 						echo "<td><img src=\"pics/flexa.gif\" border=\"0\"></td>";
 						echo "<td><center>".$row["numero"]."</center></td>";
@@ -609,8 +609,8 @@ if (($option == 200) and ($user == false)) {
 								$fecha_proxima = $row["fecha"];
 								$multiplica = 0;
 								$sql00 = "select * from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-								$result00 = mysql_query(convertSQL($sql00));
-								while ($row00 = mysql_fetch_array($result00)) {
+								$result00 = mysqli_query($dbhandle,convertSQL($sql00));
+								while ($row00 = mysqli_fetch_array($result00)) {
 									if ($fecha_proxima == $row00["fecha"]) {
 										$multiplica++;
 										$fecha_proxima = date("Y-m-d", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
@@ -640,19 +640,19 @@ if (($option == 200) and ($user == false)) {
 		$autorizado = false;
 		if ($user == true) {
 				$sqlcabezera = "select * from sgm_cabezera where id=".$_GET["id"];
-				$resultcabezera = mysql_query(convertSQL($sqlcabezera));
-				$rowcabezera = mysql_fetch_array($resultcabezera);
+				$resultcabezera = mysqli_query($dbhandle,convertSQL($sqlcabezera));
+				$rowcabezera = mysqli_fetch_array($resultcabezera);
 				$sql = "update sgm_cabezera set ";
 				$sql = $sql."print=".($rowcabezera["print"]+1);
 				$sql = $sql." WHERE id=".$rowcabezera["id"]."";
-				mysql_query(convertSQL($sql));
+				mysqli_query($dbhandle,convertSQL($sql));
 				$sqlsgm = "select * from sgm_users where id=".$userid;
-				$resultsgm = mysql_query(convertSQL($sqlsgm));
-				$rowsgm = mysql_fetch_array($resultsgm);
+				$resultsgm = mysqli_query($dbhandle,convertSQL($sqlsgm));
+				$rowsgm = mysqli_fetch_array($resultsgm);
 				if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 				$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowcabezera["id_cliente"]." and id_user=".$userid;
-				$resultpermiso = mysql_query(convertSQL($sqlpermiso));
-				$rowpermiso = mysql_fetch_array($resultpermiso);
+				$resultpermiso = mysqli_query($dbhandle,convertSQL($sqlpermiso));
+				$rowpermiso = mysqli_fetch_array($resultpermiso);
 				if ($rowpermiso["total"] >= 1) { $autorizado = true; }
 		}
 		if ($autorizado == false) {
@@ -661,8 +661,8 @@ if (($option == 200) and ($user == false)) {
 		else {
 
 		$sql = "select * from sgm_cabezera where id=".$_GET["id"]." ORDER BY id";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<center>";
 		echo "<table><tr><td style=\"width:400px;vertical-align:top;\">";
 				echo "<table>";
@@ -685,11 +685,11 @@ if (($option == 200) and ($user == false)) {
 		echo "<br><br>";
 		echo "<table cellspacing=\"0\">";
 		$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by id";
-		$result = mysql_query(convertSQL($sql));
+		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$x = 1;
 
 		echo "<tr><td></td><td></td><td><em>Fecha Prevision</em></td><td><em>Código</em></td><td><em>Nombre</em></td><td><em>Unidades</em></td><td></td><td></td><td><center>M</center></td><td><center>A</center></td></tr>";
-		while ($row = mysql_fetch_array($result)) {
+		while ($row = mysqli_fetch_array($result)) {
 			$color = "white";
 			if ($row["facturado"] == 1) {
 				$color = "blue";
@@ -709,16 +709,16 @@ if (($option == 200) and ($user == false)) {
 				echo "<td>".$row["linea"]."</td>";
 				echo "<td>";
 					$sqles = "select * from sgm_cuerpo_estados where id=".$row["id_estado"];
-					$resultes = mysql_query(convertSQL($sqles));
-					$rowes = mysql_fetch_array($resultes);
+					$resultes = mysqli_query($dbhandle,convertSQL($sqles));
+					$rowes = mysqli_fetch_array($resultes);
 					echo "<select style=\"background-color : ".$rowes["color"].";width:125px\" name=\"id_estado".$x."\" disabled>";
 						if ($row["id_estado"] == 0) { echo "<option value=\"0\" selected>Sin Iniciar</option>"; }
 						else { echo "<option value=\"0\">Sin Iniciar</option>"; }
 						if ($row["id_estado"] == -1) { echo "<option value=\"-1\" selected>Finalizado</option>"; }
 						else { echo "<option value=\"-1\">Finalizado</option>"; }
 						$sqles = "select * from sgm_cuerpo_estados order by estado";
-						$resultes = mysql_query(convertSQL($sqles));
-						while ($rowes = mysql_fetch_array($resultes)) {
+						$resultes = mysqli_query($dbhandle,convertSQL($sqles));
+						while ($rowes = mysqli_fetch_array($resultes)) {
 							if ($rowes["id"] == $row["id_estado"]) { echo "<option value=\"".$rowes["id"]."\" selected>".$rowes["estado"]."</option>"; }
 							else { echo "<option value=\"".$rowes["id"]."\">".$rowes["estado"]."</option>"; }
 						}
@@ -732,12 +732,12 @@ if (($option == 200) and ($user == false)) {
 #				echo "<td><a href=\"index.php?op=1014&sop=1&id=".$row["id"]."\"><strong>[Producción]</strong></a></td>";
 #				echo "<td><a href=\"index.php?op=1014&sop=11&id=".$row["id"]."\"><strong>[OT]</strong></a></td>";
 					$sqlxx = "select count(*) as total from sgm_cuerpo where id_cuerpo=".$row["id"];
-					$resultxx = mysql_query(convertSQL($sqlxx));
-					$rowxx = mysql_fetch_array($resultxx);
+					$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+					$rowxx = mysqli_fetch_array($resultxx);
 #				echo "<td><a href=\"index.php?op=1014&sop=60&id=".$row["id"]."\"><strong>[".$rowxx["total"]."]</strong></a></td>";
 					$sqlxx = "select count(*) as total from sgm_cuerpo_archivos where id_cuerpo=".$row["id"];
-					$resultxx = mysql_query(convertSQL($sqlxx));
-					$rowxx = mysql_fetch_array($resultxx);
+					$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+					$rowxx = mysqli_fetch_array($resultxx);
 #				echo "<td><a href=\"index.php?op=1014&sop=50&id=".$row["id"]."\"><strong>[".$rowxx["total"]."]</strong></a></td>";
 		echo "</tr>";
 		$x++;
@@ -762,12 +762,12 @@ if (($option == 200) and ($user == false)) {
 			echo "<br><br>";
 			echo "Si desea crear una nueva cuenta de cliente haga <a href=\"index.php?op=200&sop=34\">click aquí</a>.";
 			$sql = "select * from sgm_users_clients WHERE id_user=".$userid;
-			$result = mysql_query(convertSQL($sql));
+			$result = mysqli_query($dbhandle,convertSQL($sql));
 			echo "<br><center><table><tr><td style=\"width:150px;\"><strong>Empresa</strong></td><td></td><td></td></tr>";
-			while ($row = mysql_fetch_array($result)) {
+			while ($row = mysqli_fetch_array($result)) {
 				$sql1 = "select * from sgm_clients WHERE id=".$row["id_client"];
-				$result1 = mysql_query(convertSQL($sql1));
-				$row1 = mysql_fetch_array($result1);
+				$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+				$row1 = mysqli_fetch_array($result1);
 				echo "<tr>";
 				echo "<td>".$row1["nombre"]."</td>";
 #				echo "<td><a href=\"index.php?op=200&sop=32&id=".$row1["id"]."\" class=\"gris\">[ Datos Facturación ]</a></td>";
@@ -792,25 +792,25 @@ if (($option == 200) and ($user == false)) {
 			echo "<br><br>";
 			echo "Si desea crear una nueva cuenta de cliente haga <a href=\"index.php?op=200&sop=34\">click aquí</a>.<br>";
 			$sql = "select * from sgm_users_clients WHERE id_user=".$userid;
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$sql1 = "select * from sgm_clients WHERE id=".$row["id_client"];
-				$result1 = mysql_query(convertSQL($sql1));
-				$row1 = mysql_fetch_array($result1);
+				$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+				$row1 = mysqli_fetch_array($result1);
 				echo "<br><center><table><tr><td style=\"text-align:right;\"><em>Código</em></td><td style=\"text-align:right;\">Ref. Cliente</td><td style=\"width:150px;\">&nbsp;<strong>Empresa : ".$row1["nombre"]."</strong></td><td style=\"text-align:right;\"><em>Stock</em></td></tr>";
 					$sqlxx = "select * from sgm_articles_rel_clientes WHERE id_cliente=".$row1["id"];
-					$resultxx = mysql_query(convertSQL($sqlxx));
-					while ($rowxx = mysql_fetch_array($resultxx)) {
+					$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+					while ($rowxx = mysqli_fetch_array($resultxx)) {
 						$sql11 = "select * from sgm_articles WHERE id=".$rowxx["id_articulo"];
-						$result11 = mysql_query(convertSQL($sql11));
-						$row11 = mysql_fetch_array($result11);
+						$result11 = mysqli_query($dbhandle,convertSQL($sql11));
+						$row11 = mysqli_fetch_array($result11);
 						echo "<tr>";
 							echo "<td style=\"text-align:right;width:100px\">".$row11["codigo"]."</td>";
 							echo "<td style=\"text-align:right;width:100px\">".$row11["codigo2"]."</td>";
 							echo "<td style=\"text-align:left;width:300px\">&nbsp;".$row11["nombre"]."</td>";
 								$sqls = "select sum(unidades) as total from sgm_stock where id_article=".$rowxx["id_articulo"];
-								$results = mysql_query(convertSQL($sqls));
-								$rows = mysql_fetch_array($results);
+								$results = mysqli_query($dbhandle,convertSQL($sqls));
+								$rows = mysqli_fetch_array($results);
 							echo "<td style=\"text-align:right;width:100px\"><strong>".$rows["total"]."</strong></td>";
 						echo "</tr>";
 					}
@@ -834,12 +834,12 @@ if (($option == 200) and ($user == false)) {
 			echo "<td style=\"text-align:center\">Notas de registro</td>";
 		echo "</tr>";
 		$sql = "select * from sgm_incidencias WHERE id_usuario=".$userid." AND id_estado <> -2 order by data_prevision";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			echo "<tr>";
 				$sqlx = "select * from sgm_incidencias_estados WHERE id=".$row["id_estado"];
-				$resultx = mysql_query(convertSQL($sqlx));
-				$rowx = mysql_fetch_array($resultx);
+				$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+				$rowx = mysqli_fetch_array($resultx);
 				$estado = $rowx["estado"];
 				if ($row["id_estado"] == -1) { $estado = "Registrada";}
 				echo "<td>".$estado."</td>";
@@ -857,8 +857,8 @@ if (($option == 200) and ($user == false)) {
 	if ($soption == 42) {
 		$autorizado = 0;
 		$sql = "select count(*) as total from sgm_users_clients WHERE (id_client=".$_GET["id"].") AND (id_user=".$userid.")";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		$autorizado = $row["total"];
 		if ($autorizado == 0) {
 			echo "<br><strong>Este usuario no autorizado con el cliente seleccionado.</strong><br><br>";
@@ -875,12 +875,12 @@ if (($option == 200) and ($user == false)) {
 				echo "<td style=\"text-align:center\"><em>Imprimir</em></td>";
 			echo "</tr>";
 			$sql = "select * from sgm_ft WHERE id_client=".$_GET["id"]."";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
 					$sqlx = "select * from sgm_ft_plantilla WHERE id=".$row["id_plantilla"];
-					$resultx = mysql_query(convertSQL($sqlx));
-					$rowx = mysql_fetch_array($resultx);
+					$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+					$rowx = mysqli_fetch_array($resultx);
 					echo "<td>".$rowx["id"]."</td>";
 					echo "<td>".$rowx["plantilla"]."</td>";
 					echo "<td>".$rowx["descripcion"]."</td>";
@@ -910,7 +910,7 @@ if (($option == 200) and ($user == false)) {
 			$sql = "update sgm_users set ";
 			$sql = $sql."pass='".$contrasena."'";
 			$sql = $sql." WHERE id=".$userid."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 			echo "<center>";
 			echo "<br><br>".$ayudaPanelUserPass2;
 			echo boton(array("op=0&sop=666"),array($Salir));
@@ -935,7 +935,7 @@ if (($option == 200) and ($user == false)) {
 		$sql = $sql."firma=".$_POST["firma"]."";
 		$sql = $sql.",textfirma='".$_POST["textfirma"]."'";
 		$sql = $sql." WHERE id=".$_POST["id_user"]."";
-		mysql_query(convertSQL($sql));
+		mysqli_query($dbhandle,convertSQL($sql));
 		echo "<br><br>Operación realizada correctamente.";
 		echo "<br><br><a href=\"index.php?op=200\">[ Volver ]</a>";
 	}
@@ -952,15 +952,15 @@ function busca_usuarios($id,$x)
 { 
 	global $db;
 			$sql = "select * from sgm_users where id_origen=".$id;
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr>";
 						echo "<td style=\"text-align:center;width:40;\"><a href=\"index.php?op=200&sop=21&id=".$row["id"]."&id_user=".$_GET["id_user"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 						echo "<td style=\"padding-left: ".$x."px;color:".$color.";width:120;\">".$row["usuario"]."</td>";
 						echo "<td style=\"text-align:center;width:40;\"><a href=\"index.php?op=200&sop=21&id=".$row["id"]."&id_user=".$_GET["id_user"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" style=\"border:0px\"></a></td>";
 						$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$row["id"];
-						$resultt = mysql_query(convertSQL($sqlt));
-						$rowt = mysql_fetch_array($resultt);
+						$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+						$rowt = mysqli_fetch_array($resultt);
 						if ($rowt["total"] > 0) {
 							echo "<td style=\"text-align:center\"><a href=\"index.php?op=200&sop=23&id=".$row["id"]."&id_user=".$_GET["id_user"]."\"><img src=\"mgestion/pics/icons-mini/application_key.png\" style=\"border:0px;\"></a></td>";
 						} else {
@@ -973,46 +973,45 @@ function busca_usuarios($id,$x)
 
 function busca_usuarios2($id)
 { 
-	global $db;
-		$sql = "select * from sgm_users where id_origen=".$id;
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+	global $db,$dbhandle;
+	$sql = "select * from sgm_users where id_origen=".$id;
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	while ($row = mysqli_fetch_array($result)) {
+		echo "<tr>";
+			echo "<td><strong>".$row["usuario"]."</strong></td>";
+		echo "</tr>";
+		$sqlu = "select * from sgm_users_clients where id_user=".$row["id"];
+		$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+		while ($rowu = mysqli_fetch_array($resultu)) {
 			echo "<tr>";
-				echo "<td><strong>".$row["usuario"]."</strong></td>";
-			echo "</tr>";
-			$sqlu = "select * from sgm_users_clients where id_user=".$row["id"];
-			$resultu = mysql_query(convertSQL($sqlu));
-			while ($rowu = mysql_fetch_array($resultu)) {
-				echo "<tr>";
-					$sqlc = "select * from sgm_clients where id=".$rowu["id_client"];
-					$resultc = mysql_query(convertSQL($sqlc));
-					$rowc = mysql_fetch_array($resultc);
-					if ($client != $rowu["id_client"]) {
-						echo "<td>".$rowc["nombre"]."</td>";
-						$sqlp = "select * from sgm_users_permisos_modulos where visible=1 and id_modulo in ('1014','1006','1004','1003','1002')";
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)) {
-							$sqlpm = "select count(*) as total from sgm_users_clients where id_modulo in ('".$rowp["id_modulo"]."','-1') and id_client=".$rowu["id_client"];
-							$resultpm = mysql_query(convertSQL($sqlpm));
-							$rowpm = mysql_fetch_array($resultpm);
-							if ($rowpm["total"] == 1) { $color = "#4B53AF"; $colorl = "white"; } else { $color = "silver"; $colorl = "black"; }
-							echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:".$color.";border:1px solid black;color:".$colorl."\">".$rowp["nombre"]."</td><td>&nbsp;</td>";
-						}
-					echo "</tr>";
-					$client = $rowu["id_client"];
-					echo "<tr><td></td></tr>";
-					}
+			$sqlc = "select * from sgm_clients where id=".$rowu["id_client"];
+			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+			$rowc = mysqli_fetch_array($resultc);
+			if ($client != $rowu["id_client"]) {
+				echo "<td>".$rowc["nombre"]."</td>";
+				$sqlp = "select * from sgm_users_permisos_modulos where visible=1 and id_modulo in ('1014','1006','1004','1003','1002')";
+				$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+				while ($rowp = mysqli_fetch_array($resultp)) {
+					$sqlpm = "select count(*) as total from sgm_users_clients where id_modulo in ('".$rowp["id_modulo"]."','-1') and id_client=".$rowu["id_client"];
+					$resultpm = mysqli_query($dbhandle,convertSQL($sqlpm));
+					$rowpm = mysqli_fetch_array($resultpm);
+					if ($rowpm["total"] == 1) { $color = "#4B53AF"; $colorl = "white"; } else { $color = "silver"; $colorl = "black"; }
+					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:".$color.";border:1px solid black;color:".$colorl."\">".$rowp["nombre"]."</td><td>&nbsp;</td>";
+				}
+				echo "</tr>";
+				$client = $rowu["id_client"];
+				echo "<tr><td></td></tr>";
 			}
-			echo "<tr><td></td></tr>";
-			echo "<tr><td></td></tr>";
-			busca_usuarios2($row["id"]);
-			}
-
+		}
+		echo "<tr><td></td></tr>";
+		echo "<tr><td></td></tr>";
+		busca_usuarios2($row["id"]);
+	}
 }
 
 function comprobar_festivo($fecha)
 {
-	global $db;
+	global $db,$dbhandle;
 	$festivo=0;
 #Extreiem l'hora a la que acabaria la peça
 	$dia_sem = date("w", ($fecha));
@@ -1023,8 +1022,8 @@ function comprobar_festivo($fecha)
 		$festivo=1;
 	}
 	$sqlc = "select * from sgm_calendario where dia=".date("j", ($fecha))." and mes=".date("n", ($fecha))."";
-	$resultc = mysql_query(convertSQL($sqlc));
-	$rowc = mysql_fetch_array($resultc);
+	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+	$rowc = mysqli_fetch_array($resultc);
 	if ($rowc){
 		$festivo=1;
 	}

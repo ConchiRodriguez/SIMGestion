@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
-	global $db,$Usuario,$Gestion,$Validado,$Activo,$Ultima,$Conexion,$Modificar,$ssoption,$Permisos,$Clientes,$UsuarioYaReg,$NombreIncorrecto,$MailYaReg,$MailIncorrecto,$PassIncorrecto,$CompletaCorrect,$Si,$No;
+	global $db,$dbhandle,$Usuario,$Gestion,$Validado,$Activo,$Ultima,$Conexion,$Modificar,$ssoption,$Permisos,$Clientes,$UsuarioYaReg,$NombreIncorrecto,$MailYaReg,$MailIncorrecto,$PassIncorrecto,$CompletaCorrect,$Si,$No;
 	if ($ssoption == 1) {
 		$camposUpdate = array("sgm","activo","validado");
 		$datosUpdate = array($_POST["sgm"],$_POST["activo"],$_POST["validado"]);
@@ -12,13 +12,13 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 	if ($ssoption == 2) {
 		$registro = 1;
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."'";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] != 0) { echo mensageError($UsuarioYaReg); $registro = 0; }
 		if ($_POST["user"] == "") { echo mensageError($NombreIncorrecto); $registro = 0; }
 		$sql = "select Count(*) AS total from sgm_users WHERE mail='".$_POST["mail"]."'";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] != 0) { echo mensageError($MailYaReg); $registro = 0; }
 		if (comprobarMail($_POST["mail"]) == false) { echo mensageError($MailIncorrecto); $registro = 0; }
 		if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") { echo mensageError($PassIncorrecto); $registro = 0; }
@@ -28,11 +28,11 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 			$datosInsert = array($_POST["user"],$contrasena,$_POST["mail"],date("Y-m-d"),$_POST["id_tipus"]);
 			insertFunction ("sgm_users","usuario,pass,mail,datejoin,id_tipus",$datosInsert);
 			$sqlu = "select id from sgm_users where usuario='".$_POST["user"]."'";
-			$resultu = mysql_query(convertSQL($sqlu));
-			$rowu = mysql_fetch_array($resultu);
+			$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+			$rowu = mysqli_fetch_array($resultu);
 			$sql = "select id_modulo,admin from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$datosInsert = array($rowu["id"],$row["id_modulo"],$row["admin"]);
 				insertFunction ("sgm_users_permisos","id_user,id_modulo,admin",$datosInsert);
 			}
@@ -45,8 +45,8 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 	}
 	if ($ssoption == 3) {
 		$sqlx = "select id_tipus from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$_GET["id_user"];
-		$resultx = mysql_query(convertSQL($sqlx));
-		$rowx = mysql_fetch_array($resultx);
+		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+		$rowx = mysqli_fetch_array($resultx);
 		if (!$rowx){
 			if ($_POST["pass1"] != "") {
 				if ($_POST["pass1"] == $_POST["pass2"]){
@@ -63,13 +63,13 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 			updateFunction ("sgm_users",$_GET["id_user"],$camposUpdate,$datosUpdate);
 			if ($rowx["id_tipus"] != $_POST["id_tipus"]){
 				$sqlt = "select id from sgm_users_permisos where id_user=".$_GET["id_user"];
-				$resultt = mysql_query(convertSQL($sqlt));
-				while ($rowt = mysql_fetch_array($resultt)){
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				while ($rowt = mysqli_fetch_array($resultt)){
 					deleteFunction ("sgm_users_permisos",$rowt["id"]);
 				}
 				$sql = "select id_modulo,admin from sgm_users_permisos where id_tipus=".$_POST["id_tipus"];
-				$result = mysql_query(convertSQL($sql));
-				while ($row = mysql_fetch_array($result)) {
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				while ($row = mysqli_fetch_array($result)) {
 					$datosInsert = array($_GET["id_user"],$row["id_modulo"],$row["admin"]);
 					insertFunction ("sgm_users_permisos","id_user,id_modulo,admin",$datosInsert);
 				}
@@ -93,8 +93,8 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 		}
 		echo "</tr>";
 	$sql = $sql_usuaris;
-	$result = mysql_query(convertSQL($sql));
-	while ($row = mysql_fetch_array($result)) {
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	while ($row = mysqli_fetch_array($result)) {
 		echo "<tr>";
 			echo "<td style=\"text-align:center;\">".$row["id"]."</td>";
 			echo "<td style=\"text-align:center;\">".$row["id_origen"]."</td>";
@@ -138,19 +138,19 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 			echo "<td style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 			echo "</form>";
 			$sqlt = "select count(*) as total from sgm_users_permisos where id_user=".$row["id"];
-			$resultt = mysql_query(convertSQL($sqlt));
-			$rowt = mysql_fetch_array($resultt);
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
 			if ($rowt["total"] > 0) { $imagen = "application_key.png"; } else { $imagen = "application.png"; }
 			echo "<td style=\"text-align:center\"><a href=\"index.php?op=".$_GET["op"]."&sop=".$link_permisos."&id_user=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/".$imagen."\" style=\"border:0px;\"></a></td>";
 			## SI MODULO FACTURAS MUESTRO CLIENTES RELACIONADOS
 		if ($_GET["id"] <= 0){
 			$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003";
-			$resultp = mysql_query(convertSQL($sqlp));
-			$rowp = mysql_fetch_array($resultp);
+			$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+			$rowp = mysqli_fetch_array($resultp);
 			if ($rowp["total"] == 1) {
 				$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$row["id"];
-				$resultt = mysql_query(convertSQL($sqlt));
-				$rowt = mysql_fetch_array($resultt);
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				$rowt = mysqli_fetch_array($resultt);
 				if ($rowt["total"] > 0) { $imagen2 = "report_user.png"; } else { $imagen2 = "report.png"; }
 				echo "<td style=\"text-align:center\"><a href=\"index.php?op=".$_GET["op"]."&sop=".$link_clientes."&id_user=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/".$imagen2."\" style=\"border:0px;\"></a></td>";
 			}

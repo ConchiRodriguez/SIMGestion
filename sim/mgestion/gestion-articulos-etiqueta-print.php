@@ -22,12 +22,12 @@ if ($soption == 666) {
 if ($_COOKIE["username"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("username", $_POST["user"], time()+86400*$cookiestime, "/", $domain);
 				setcookie("password", md5( $row["pass"] ), time()+86400*$cookiestime, "/", $domain);
@@ -38,12 +38,12 @@ if ($_COOKIE["username"] == "") {
 }
 else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-	$result = mysql_query(convertSQL($sql));
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["username"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ( md5( $row["pass"] ) == $_COOKIE["password"] ) {
 			$user = true;
 			$username = $row["usuario"];
@@ -84,17 +84,17 @@ if 	(ereg("MSIE", $_SERVER['HTTP_USER_AGENT'])) {
 $autorizado = false;
 if ($user == true) {
 		$sqlcabezera = "select * from sgm_cabezera where id=".$_GET["id"];
-		$resultcabezera = mysql_query(convertSQL($sqlcabezera));
-		$rowcabezera = mysql_fetch_array($resultcabezera);
+		$resultcabezera = mysqli_query($dbhandle,convertSQL($sqlcabezera));
+		$rowcabezera = mysqli_fetch_array($resultcabezera);
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convertSQL($sqlsgm));
-		$rowsgm = mysql_fetch_array($resultsgm);
+		$resultsgm = mysqli_query($dbhandle,convertSQL($sqlsgm));
+		$rowsgm = mysqli_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowcabezera["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
-		$rowpermiso = mysql_fetch_array($resultpermiso);
+		$resultpermiso = mysqli_query($dbhandle,convertSQL($sqlpermiso));
+		$rowpermiso = mysqli_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] >= 1) { $autorizado = true; }
 
 }
@@ -103,16 +103,16 @@ $autorizado = true;
 if ($autorizado == true) {
 	if ($_POST["codigo"] > 0){
 		$sqli = "select * from sgm_tamany_paper where visible=1 and id=".$_POST["tamany"];
-		$resulti = mysql_query(convertSQL($sqli));
-		$rowi = mysql_fetch_array($resulti);
+		$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+		$rowi = mysqli_fetch_array($resulti);
 
 		$sqlf = "select * from sgm_articles where codigo=".$_POST["codigo"];
-		$resultf = mysql_query(convertSQL($sqlf));
-		$rowf = mysql_fetch_array($resultf);
+		$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+		$rowf = mysqli_fetch_array($resultf);
 
 		$sqls = "select * from sgm_stock where vigente=1 and id_article=".$rowf["id"];
-		$results = mysql_query(convertSQL($sqls));
-		$rows = mysql_fetch_array($results);
+		$results = mysqli_query($dbhandle,convertSQL($sqls));
+		$rows = mysqli_fetch_array($results);
 
 		echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:".$rowi["x"]."cm;height:".$rowi["y"]."cm;border:0px black solid;\">";
 			echo "<tr>";

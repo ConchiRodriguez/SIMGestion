@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function correo_incidencias(){
-	global $db,$buzon_correo,$buzon_usuario,$buzon_pass;
+	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
 
 #	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
 	$imap = imap_open ("{mail.solucions-im.com:143/imap/notls}INBOX", "soporte@solucions-im.com", "Multi12") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
@@ -22,7 +22,7 @@ function correo_incidencias(){
 		$uid = $detalles->uid;
 		$sqli = "select * from sgm_incidencias_correos";
 		$resulti = mysql_query($sqli);
-		$rowi = mysql_fetch_array($resulti);
+		$rowi = mysqli_fetch_array($resulti);
 		if ($rowi["uid"]<$uid) {
 			$sql = "update sgm_incidencias_correos set ";
 			$sql = $sql."uid=".$uid;
@@ -97,28 +97,28 @@ function correo_incidencias(){
 
 			$sqlum = "select * from sgm_users where mail='".$correo_remitente."'";
 			$resultum = mysql_query($sqlum);
-			$rowum = mysql_fetch_array($resultum);
+			$rowum = mysqli_fetch_array($resultum);
 			if ($rowum){
 				$sqluc = "select * from sgm_users_clients where id_user=".$rowum["id"];
 				$resultuc = mysql_query($sqluc);
-				$rowuc = mysql_fetch_array($resultuc);
+				$rowuc = mysqli_fetch_array($resultuc);
 				$id_cliente = $rowuc["id_client"];
 				$id_usuario = $rowum["id"];
 			} else {
 				$sqlcc = "select * from sgm_clients_contactos where mail='".$correo_remitente."'";
 				$resultcc = mysql_query($sqlcc);
-				$rowcc = mysql_fetch_array($resultcc);
+				$rowcc = mysqli_fetch_array($resultcc);
 				if ($rowcc){
 					$id_cliente = $rowcc["id_client"];
 					$id_usuario = 0;
 				} else {
 					$sqlumh = "select * from sgm_users where mail like '%@".$correo_remite->host."'";
 					$resultumh = mysql_query($sqlumh);
-					$rowumh = mysql_fetch_array($resultumh);
+					$rowumh = mysqli_fetch_array($resultumh);
 					if ($rowumh){
 						$sqluch = "select * from sgm_users_clients where id_user=".$rowumh["id"];
 						$resultuch = mysql_query($sqluch);
-						$rowuch = mysql_fetch_array($resultuch);
+						$rowuch = mysqli_fetch_array($resultuch);
 						$id_cliente = $rowuch["id_client"];
 						$id_usuario = 0;
 					}
@@ -148,7 +148,7 @@ function correo_incidencias(){
 				if ($filename){
 					$sqlin = "select * from sgm_incidencias where fecha_registro_inicio=".$data." and fecha_inicio=".$data_missatge." and asunto='".comillas($asunto)."'";
 					$resultin = mysql_query($sqlin);
-					$rowin = mysql_fetch_array($resultin);
+					$rowin = mysqli_fetch_array($resultin);
 					$sql2 = "insert into sgm_files (id_tipo,name,type,size,id_incidencia)";
 					$sql2 = $sql2."values (";
 					$sql2 = $sql2."1";

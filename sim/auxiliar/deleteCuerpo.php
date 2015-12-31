@@ -3,12 +3,13 @@ error_reporting(~E_ALL);
 
 
 function deleteCuerpo($id,$idfactura){
+	global $db,$dbhandle;
 	deleteFunction ("sgm_cuerpo",$id);
 	refactura($idfactura);
 	$num = 1;
 	$sqll = "select * from sgm_cuerpo where idfactura=".$idfactura." order by linea";
-	$resultl = mysql_query(convertSQL($sqll));
-	while ($rowl = mysql_fetch_array($resultl)) {
+	$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+	while ($rowl = mysqli_fetch_array($resultl)) {
 		if ($num == $rowl["linea"]) {
 			$num++;
 		} else {

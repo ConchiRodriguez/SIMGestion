@@ -7,31 +7,34 @@ function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
 	echo "<tr>";
 	$i = 1;
 	$sqlcs2 = "select * from sgm_clients_servidors where id_client in (".$id_cliente.") and visible=1";
-	$resultcs2 = mysql_query($sqlcs2,$dbhandle);
-	while ($rowcs2 = mysql_fetch_array($resultcs2)){
+	$resultcs2 = mysqli_query($dbhandle,$sqlcs2);
+	while ($rowcs2 = mysqli_fetch_array($resultcs2)){
 		if ($i > $serv_linea) { echo "</tr><tr>"; }
 		$sqlcbd = "select * from sgm_clients_bases_dades where visible=1 and id_client in (".$id_cliente.")";
-		$resultcbd = mysql_query($sqlcbd,$dbhandle);
-		$rowcbd = mysql_fetch_array($resultcbd);
+		$resultcbd = mysqli_query($dbhandle,$sqlcbd);
+		$rowcbd = mysqli_fetch_array($resultcbd);
 		$ip = $rowcbd["ip"];
 		$usuario = $rowcbd["usuario"];
 		$pass = decrypt($rowcbd["pass"],$simclau);
 		$base = $rowcbd["base"];
 
 		$sqlcsa = "select * from sgm_clients_servidors_param";
-		$resultcsa = mysql_query($sqlcsa,$dbhandle);
-		$rowcsa = mysql_fetch_array($resultcsa);
+		$resultcsa = mysqli_query($dbhandle,$sqlcsa);
+		$rowcsa = mysqli_fetch_array($resultcsa);
 		$cpu = $rowcsa["cpu"];
 		$mem = $rowcsa["mem"];
 		$memswap = $rowcsa["memswap"];
 		$hhdd = $rowcsa["hd"];
 
-		$dbhandle3 = mysql_connect($ip, $usuario, $pass, true) or die("Couldn't connect to SQL Server on $dbhost");
-		$db3 = mysql_select_db($base, $dbhandle3) or die("Couldn't open database $myDB");
+#		$dbhandle3 = mysql_connect($ip, $usuario, $pass, true) or die("Couldn't connect to SQL Server on $dbhost");
+#		$db3 = mysql_select_db($base, $dbhandle3) or die("Couldn't open database $myDB");
+		$dbhandle3 = new mysqli($ip,$usuario,$pass,$base);
+		$db3 = mysqli_select_db($dbhandle3,$base) or die("Couldn't open database");
+
 
 		$sqlna = "select * from sim_nagios where id_servidor=".$rowcs2["servidor"]." order by time_register desc";
-		$resultna = mysql_query(convertSQL($sqlna,$dbhandle3));
-		$rowna = mysql_fetch_array($resultna);
+		$resultna = mysqli_query($dbhandle3,convertSQL($sqlna));
+		$rowna = mysqli_fetch_array($resultna);
 
 		if ($rowna["nagios"] == 0){ $nagios = "OFF"; $colorn = "red"; $colorna = "white"; } else { $nagios = "ON"; $colorn = "Yellowgreen"; $colorna = "black"; }
 		if ($rowna["httpd"] == 0){ $httpd = "OFF"; $colorh = "red"; $colorht = "white"; } else { $httpd = "ON"; $colorh = "Yellowgreen"; $colorht = "black"; }

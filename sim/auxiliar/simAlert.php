@@ -9,7 +9,7 @@ function simAlert(){
 
 	$sqlcsa = "select * from sgm_clients_servidors_param";
 	$resultcsa = mysql_query($sqlcsa,$dbhandle);
-	$rowcsa = mysql_fetch_array($resultcsa);
+	$rowcsa = mysqli_fetch_array($resultcsa);
 	$cpu = $rowcsa["cpu"];
 	$mem = $rowcsa["mem"];
 	$memswap = $rowcsa["memswap"];
@@ -17,7 +17,7 @@ function simAlert(){
 
 	$sqlcbd = "select * from sgm_clients_bases_dades where visible=1";
 	$resultcbd = mysql_query($sqlcbd,$dbhandle);
-	while ($rowcbd = mysql_fetch_array($resultcbd)){
+	while ($rowcbd = mysqli_fetch_array($resultcbd)){
 		$ip = $rowcbd["ip"];
 		$usuario = $rowcbd["usuario"];
 		$pass = $rowcbd["pass"];
@@ -26,7 +26,7 @@ function simAlert(){
 
 		$sqlcsi = "select * from sgm_clients_servidors where id_client=".$id_cliente." and visible=1";
 		$resultcsi= mysql_query($sqlcsi,$dbhandle);
-		while ($rowcsi = mysql_fetch_array($resultcsi)){
+		while ($rowcsi = mysqli_fetch_array($resultcsi)){
 			$nagiosServ = 0;
 			$httpdServ = 0;
 			$mysqldServ = 0;
@@ -42,14 +42,14 @@ function simAlert(){
 			if ($rowcsi["indice"] > 0){ $sqlnac .= " and id >= ".$rowcsi["indice"]; }
 			$sqlnac .=" order by time_register";
 			$resultnac = mysql_query($sqlnac,$dbhandle3);
-			$rownac = mysql_fetch_array($resultnac);
+			$rownac = mysqli_fetch_array($resultnac);
 			$i = $rownac["total"];
 
 			$sqlna = "select * from sim_nagios where id_servidor=".$rowcsi["servidor"]."";
 			if ($rowcsi["indice"] > 0){ $sqlna .= " and id >= ".$rowcsi["indice"]; }
 			$sqlna .=" order by time_register";
 			$resultna = mysql_query($sqlna,$dbhandle3);
-			while ($rowna = mysql_fetch_array($resultna)){
+			while ($rowna = mysqli_fetch_array($resultna)){
 
 				$text= $id_cliente." - ".$rowcsi["servidor"]." - ".date("Y-m-d H:i:s", $rowna["time_register"])."<br>";
 
@@ -168,10 +168,10 @@ function simAlert(){
 
 function insertar_alerta($id_cliente, $servidors, $fechaant, $fechaact, $id, $error)
 {
-	global $db;
+	global $db,$dbhandle;
 	$sqlcsa = "select * from sgm_clients_servidors_alertes where servidor=".$servidors." and id_cliente=".$id_cliente." and fecha_caida=".$fechaant;
 	$resultcsa= mysql_query($sqlcsa,$dbhandle);
-	$rowcsa = mysql_fetch_array($resultcsa);
+	$rowcsa = mysqli_fetch_array($resultcsa);
 	if (($fechaant != 0) and (!$rowcsa)){
 		$sql = "insert into sgm_clients_servidors_alertes (servidor, id_cliente, fecha_caida, caido, error) ";
 		$sql = $sql."values (";
@@ -186,13 +186,13 @@ function insertar_alerta($id_cliente, $servidors, $fechaant, $fechaact, $id, $er
 
 		$sqlc = "select * from sgm_clients where id=".$id_cliente."";
 		$resultc= mysql_query($sqlc,$dbhandle);
-		$rowc = mysql_fetch_array($resultc);
+		$rowc = mysqli_fetch_array($resultc);
 		$sqlcos = "select * from sgm_contratos_servicio where servicio like '%inci%' and id_contrato in (select id from sgm_contratos where id_cliente=".$id_cliente." and activo=1 and id_contrato_tipo between 1 and 2)";
 		$resultcos= mysql_query($sqlcos,$dbhandle);
-		$rowcos = mysql_fetch_array($resultcos);
+		$rowcos = mysqli_fetch_array($resultcos);
 		$sqlcsi = "select * from sgm_clients_servidors where id_client=".$id_cliente." and id=".$servidors;
 		$resultcsi= mysql_query($sqlcsi);
-		$rowcsi = mysql_fetch_array($resultcsi);
+		$rowcsi = mysqli_fetch_array($resultcsi);
 		$sql = "insert into sgm_incidencias (id_usuario_destino,id_usuario_origen,id_servicio,fecha_inicio,fecha_registro_inicio,fecha_prevision,id_estado,id_entrada,notas_registro,asunto)";
 		$sql = $sql."values (";
 		$sql = $sql."28";
@@ -227,7 +227,7 @@ function insertar_alerta($id_cliente, $servidors, $fechaant, $fechaact, $id, $er
 	if ($fechaact != 0) {
 		$sqlcsa = "select * from sgm_clients_servidors_alertes where servidor=".$servidors." and id_cliente=".$id_cliente." and error=".$error." and caido=0 order by id desc";
 		$resultcsa= mysql_query($sqlcsa,$dbhandle);
-		$rowcsa = mysql_fetch_array($resultcsa);
+		$rowcsa = mysqli_fetch_array($resultcsa);
 		if ($rowcsa){
 			$tiempo = $fechaact - $rowcsa["fecha_caida"];
 			$sql = "update sgm_clients_servidors_alertes set ";

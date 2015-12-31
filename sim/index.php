@@ -23,8 +23,12 @@ foreach (glob("auxiliar/*.php") as $filename)
 }
 
 ### CONEXION
-$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass) or die("Couldn't connect to SQL Server on $dbhost");
-$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
+#$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass ) or die("Couldn't connect to SQL Server on $dbhost");
+#$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
+
+$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
+$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
+
 
 if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 if ($_GET['sop'] != "") { $soption = $_GET['sop']; } else { $soption = 0; }
@@ -62,12 +66,12 @@ if ($idioma == "cat"){ include ("sgm_cat.php");}
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='".$_POST["user"]."'";
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			if (crypt($_POST["pass"], $row["pass"]) == $row["pass"]){
 				$user = true;
 				$username = $row["usuario"];
@@ -81,8 +85,8 @@ if ($_COOKIE["musername"] == "") {
 	}
 	if ($_GET["idp"] != "") {
 		$sql = "select * from sgm_users WHERE validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)){
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)){
 			if ($_GET["idp"] == $row["pass"]){
 				$user = true;
 				$username = $row["usuario"];
@@ -96,12 +100,12 @@ if ($_COOKIE["musername"] == "") {
 	}
 } else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-	$result = mysql_query($sql);
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
 			$username = $row["usuario"];
@@ -192,8 +196,8 @@ if (($option == 900) or ($option == 600)) {
 
 				if ($option <> 0) {
 					$sqlmodulo = "select * from sgm_users_permisos_modulos where id_modulo=".$option;
-					$resultmodulo = mysql_query(convertSQL($sqlmodulo));
-					$rowmodulo = mysql_fetch_array($resultmodulo);
+					$resultmodulo = mysqli_query($dbhandle,convertSQL($sqlmodulo));
+					$rowmodulo = mysqli_fetch_array($resultmodulo);
 					$id_grupo = $rowmodulo["id_grupo"];
 				} else {
 					$id_grupo = $_GET["id_grupo"];
@@ -203,12 +207,12 @@ if (($option == 900) or ($option == 600)) {
 					if ($option == 200) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_usuario."</a></td>";
 					$sqlu = "select * from sgm_users where id=".$userid;
-					$resultu = mysql_query(convertSQL($sqlu));
-					$rowu = mysql_fetch_array($resultu);
+					$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+					$rowu = mysqli_fetch_array($resultu);
 						if ($rowu["sgm"] == 1) {
 							$sqlm = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
-							$resultm = mysql_query(convertSQL($sqlm));
-							while ($rowm = mysql_fetch_array($resultm)) {
+							$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+							while ($rowm = mysqli_fetch_array($resultm)) {
 								if ($rowm["id"] == $id_grupo) {$class = "menu_select";} else {$class = "menu";}
 								echo "<td class=".$class."><a href=\"index.php?id_grupo=".$rowm["id"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
 							}
@@ -218,8 +222,8 @@ if (($option == 900) or ($option == 600)) {
 	##			if ($option == 0) {
 					echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
 						$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$id_grupo." order by nombre";
-						$resultm = mysql_query(convertSQL($sqlm));
-						while ($rowm = mysql_fetch_array($resultm)) {
+						$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+						while ($rowm = mysqli_fetch_array($resultm)) {
 								if ($rowm["id_modulo"] == $option) {$class = "menu_select";} else {$class = "menu";}
 							echo "<td class=".$class."><a href=\"index.php?op=".$rowm["id_modulo"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
 						}

@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,$id_tipo,$id) {
-	global $db,$errorSubirArchivoDuplicado,$errorSubirArchivoTamany;
+	global $db,$dbhandle,$errorSubirArchivoDuplicado,$errorSubirArchivoTamany;
 	
 	if ($id_tipo == 0) {$adress = "facturas/";}
 	if ($id_tipo == 1) {$adress = "articulos/";}
@@ -13,12 +13,12 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 	if ($id_tipo == 6) {$adress = "empleados/";}
 
 	$sql = "select * from sgm_files_tipos where id=".$tipo;
-	$result = mysql_query(convertSQL($sql));
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	$lim_tamano = $row["limite_kb"]*1000;
 	$sqlt = "select count(*) as total from sgm_files where visible=1 and name='".$archivo_name."'";
-	$resultt = mysql_query(convertSQL($sqlt));
-	$rowt = mysql_fetch_array($resultt);
+	$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+	$rowt = mysqli_fetch_array($resultt);
 	if ($rowt["total"] != 0) {
 		echo mensageError($errorSubirArchivoDuplicado);
 	} else {

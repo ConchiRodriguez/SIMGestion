@@ -38,11 +38,11 @@ if (($option == 1024) AND ($autorizado == true)) {
 				echo "<td><select style=\"width:700px\" name=\"id_contrato\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlc = "select * from sgm_clients where visible=1 order by nombre";
-					$resultc = mysql_query(convertSQL($sqlc));
-					while ($rowc = mysql_fetch_array($resultc)) {
+					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+					while ($rowc = mysqli_fetch_array($resultc)) {
 						$sql = "select * from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)){
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)){
 							if ($row){
 								if($row["id"] == $id_contrato){
 									echo "<option value=\"".$row["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
@@ -56,8 +56,8 @@ if (($option == 1024) AND ($autorizado == true)) {
 				echo "<td><select style=\"width:200px\" name=\"id_aplicacion\">";
 					echo "<option value=\"0\">-</option>";
 					$sql = "select * from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)) {
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
 						if ($id_aplicacion == $row["id"]){
 							echo "<option value=\"".$row["id"]."\" selected>".$row["aplicacion"]."</option>";
 						} else {
@@ -74,8 +74,8 @@ if (($option == 1024) AND ($autorizado == true)) {
 
 	if ($soption == 1) {
 		$sqlc = "select * from sgm_contrasenyes where id=".$_GET["id_con"];
-		$resultc = mysql_query(convertSQL($sqlc));
-		$rowc = mysql_fetch_array($resultc);
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1024&sop=0&ssop=3&id_con=".$_GET["id_con"]."&id_contrato=".$rowc["id_contrato"],"op=1024&sop=0&id_contrato=".$rowc["id_contrato"]),array($Si,$No));
@@ -115,8 +115,8 @@ if (($option == 1024) AND ($autorizado == true)) {
 		}
 		if (($ssoption == 3) AND ($admin == true)){
 			$sqlc = "select count(*) as total from sgm_contrasenyes where visible=1 and id_aplicacion=".$_GET["id"];
-			$resultc = mysql_query(convertSQL($sqlc));
-			$rowc = mysql_fetch_array($resultc);
+			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+			$rowc = mysqli_fetch_array($resultc);
 			if ($rowc["total"] > 0){
 				mensageError($ContrasenyaAppErrorEliminar);
 			} else {
@@ -144,8 +144,8 @@ if (($option == 1024) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1024&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1024&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
@@ -167,13 +167,13 @@ if (($option == 1024) AND ($autorizado == true)) {
 
 #	if ($soption == 1234) {
 #		$sql = "select * from sgm_contrasenyes";
-#		$result = mysql_query(convertSQL($sql));
-#		while ($row = mysql_fetch_array($result)) {
+#		$result = mysqli_query($dbhandle,convertSQL($sql));
+#		while ($row = mysqli_fetch_array($result)) {
 #			$cadena = encrypt($row["pass"], $simclau);
 #			$sql = "update sgm_contrasenyes set ";
 #			$sql = $sql."pass='".$cadena."'";
 #			$sql = $sql." WHERE id=".$row["id"]."";
-#			mysql_query(convertSQL($sql));
+#			mysqli_query($dbhandle,convertSQL($sql));
 #			echo $sql."<br>";
 #		}
 #	}

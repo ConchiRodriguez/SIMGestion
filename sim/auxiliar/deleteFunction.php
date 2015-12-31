@@ -3,8 +3,9 @@ error_reporting(~E_ALL);
 
 
 function deleteFunction ($tabla,$id){
+	global $dbhandle;
 	$sql = "delete from ".$tabla." WHERE id=".$id;
-	mysql_query(convertSQL($sql));
+	mysqli_query($dbhandle,convertSQL($sql));
 #	echo $sql;
 }
 

@@ -3,26 +3,26 @@ error_reporting(~E_ALL);
 
 
 function detalleServidoresMonitorizados ($id_cliente,$id_serv,$color){
-	global $db,$dbhandle,$Volver,$Dia,$Mes,$Any,$Ultimos,$Estados,$Buscar,$Fecha,$Registro,$Servidor,$Uso,$Memoria,$Espacio,$simclau;
+	global $db,$dbhandle,$dbhandle,$Volver,$Dia,$Mes,$Any,$Ultimos,$Estados,$Buscar,$Fecha,$Registro,$Servidor,$Uso,$Memoria,$Espacio,$simclau;
 		$sqlcbd = "select * from sgm_clients_bases_dades where visible=1 and id_client in (".$id_cliente.")";
-		$resultcbd = mysql_query(convertSQL($sqlcbd));
-		$rowcbd = mysql_fetch_array($resultcbd);
+		$resultcbd = mysqli_query($dbhandle,convertSQL($sqlcbd));
+		$rowcbd = mysqli_fetch_array($resultcbd);
 		$ip = $rowcbd["ip"];
 		$usuario = $rowcbd["usuario"];
 		$pass = decrypt($rowcbd["pass"],$simclau);
 		$base = $rowcbd["base"];
 
 		$sqlcsa = "select * from sgm_clients_servidors_param";
-		$resultcsa = mysql_query(convertSQL($sqlcsa));
-		$rowcsa = mysql_fetch_array($resultcsa);
+		$resultcsa = mysqli_query($dbhandle,convertSQL($sqlcsa));
+		$rowcsa = mysqli_fetch_array($resultcsa);
 		$cpu = $rowcsa["cpu"];
 		$mem = $rowcsa["mem"];
 		$memswap = $rowcsa["memswap"];
 		$hhdd = $rowcsa["hd"];
 
 		$sqlcs = "select * from sgm_clients_servidors where servidor=".$id_serv." and id_client in (".$id_cliente.") and visible=1";
-		$resultcs = mysql_query(convertSQL($sqlcs,$dbhandle));
-		$rowcs = mysql_fetch_array($resultcs);
+		$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs,$dbhandle));
+		$rowcs = mysqli_fetch_array($resultcs);
 		
 		echo "<strong>".$Ultimos." ".$Estados." :</strong> ".$rowcs["descripcion"]."";
 		echo "<br>";
@@ -99,8 +99,8 @@ function detalleServidoresMonitorizados ($id_cliente,$id_serv,$color){
 			$data_fin = (date(U, mktime (23,59,59,date("n"),date("j"),date("Y"))));
 		}
 			$sqlna = "select * from sim_nagios where id_servidor=".$_GET["id_serv"]." and time_register between ".$data_ini." and ".$data_fin." order by time_register desc";
-			$resultna = mysql_query(convertSQL($sqlna,$dbhandle2));
-			while ($rowna = mysql_fetch_array($resultna)){
+			$resultna = mysqli_query($dbhandle,convertSQL($sqlna,$dbhandle2));
+			while ($rowna = mysqli_fetch_array($resultna)){
 				if ($rowna["nagios"] == 0){ $nagios = "OFF"; $colorn = "red"; $colorna = "white"; } else { $nagios = "ON"; $colorn = "white"; $colorna = "black"; }
 				if ($rowna["httpd"] == 0){ $httpd = "OFF"; $colorh = "red"; $colorht = "white"; } else { $httpd = "ON"; $colorh = "white"; $colorht = "black"; }
 				if ($rowna["mysqld"] == 0){ $mysqld = "OFF"; $colors = "red"; $colormy = "white"; } else { $mysqld = "ON"; $colors = "white"; $colormy = "black"; }

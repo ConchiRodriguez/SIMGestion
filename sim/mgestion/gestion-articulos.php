@@ -28,8 +28,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 	if (($soption == 0) or ($soption == 200)) {
 		if ($ssoption == 1) {
 			$sql = "select count(*) as total from sgm_articles where codigo='".$_POST["codigo"]."' or nombre='".$_POST["nombre"]."'";
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			if ($row["total"] == 0) {
 				$camposInsert = "codigo,nombre,id_subgrupo";
 				$datosInsert = array($_POST["codigo"],$_POST["nombre"],$_POST["id_subgrupo"]);
@@ -81,11 +81,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_subgrupo\" style=\"width:300px\">";
 						echo "<option value=\"-1\">".$Todas."</option>";
 						$sqli = "select id,grupo from sgm_articles_grupos";
-						$resulti = mysql_query(convertSQL($sqli));
-						while ($rowi = mysql_fetch_array($resulti)) {
+						$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+						while ($rowi = mysqli_fetch_array($resulti)) {
 							$sqls = "select id,subgrupo from sgm_articles_subgrupos where id_grupo=".$rowi["id"];
-							$results = mysql_query(convertSQL($sqls));
-							while ($rows = mysql_fetch_array($results)) {
+							$results = mysqli_query($dbhandle,convertSQL($sqls));
+							while ($rows = mysqli_fetch_array($results)) {
 								if ($rows["id"] == $_POST["id_subgrupo"]){
 									echo "<option value=\"".$rows["id"]."\" selected>".$rowi["grupo"]."-".$rows["subgrupo"]."</option>";
 								} else {
@@ -118,11 +118,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_subgrupo\" style=\"width:300px\">";
 						echo "<option value=\"0\">".$Sin." ".$Clasificar."</option>";
 						$sqlg1 = "select id,grupo from sgm_articles_grupos order by grupo";
-						$resultg1 = mysql_query(convertSQL($sqlg1));
-						while ($rowg1 = mysql_fetch_array($resultg1)) {
+						$resultg1 = mysqli_query($dbhandle,convertSQL($sqlg1));
+						while ($rowg1 = mysqli_fetch_array($resultg1)) {
 							$sqlsg1 = "select id,subgrupo from sgm_articles_subgrupos where id_grupo=".$rowg1["id"]." order by subgrupo";
-							$resultsg1 = mysql_query(convertSQL($sqlsg1));
-							while ($rowsg1 = mysql_fetch_array($resultsg1)) {
+							$resultsg1 = mysqli_query($dbhandle,convertSQL($sqlsg1));
+							while ($rowsg1 = mysqli_fetch_array($resultsg1)) {
 								echo "<option value=\"".$rowsg1["id"]."\">".$rowg1["grupo"]." - ".$rowsg1["subgrupo"]."</option>";
 							}
 						}
@@ -156,17 +156,17 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 			$sql .= " order by id_subgrupo,nombre";
 #			echo $sql;
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$sqlsg = "select id,id_grupo,subgrupo from sgm_articles_subgrupos where id=".$row["id_subgrupo"]." order by subgrupo";
-				$resultsg = mysql_query(convertSQL($sqlsg));
-				$rowsg = mysql_fetch_array($resultsg);
+				$resultsg = mysqli_query($dbhandle,convertSQL($sqlsg));
+				$rowsg = mysqli_fetch_array($resultsg);
 				$sqlg = "select id,grupo from sgm_articles_grupos where id=".$rowsg["id_grupo"]." order by grupo";
-				$resultg = mysql_query(convertSQL($sqlg));
-				$rowg = mysql_fetch_array($resultg);
+				$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+				$rowg = mysqli_fetch_array($resultg);
 				$sqlst = "select pvd,pvp,id_divisa_pvd,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$row["id"]."";
-				$resultst = mysql_query(convertSQL($sqlst));
-				$rowst = mysql_fetch_array($resultst);
+				$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+				$rowst = mysqli_fetch_array($resultst);
 				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"3\"></th></tr>"; $subgrupo = 0;}
 				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"3\"></th></tr>";}
 				$subgrupo = $rowsg["id"];
@@ -177,19 +177,19 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td>".$row["codigo"]."</td>";
 					echo "<td>".$row["nombre"]."</td>";
 					$sqlsg1 = "select id_grupo,subgrupo from sgm_articles_subgrupos where id=".$row["id_subgrupo"];
-					$resultsg1 = mysql_query(convertSQL($sqlsg1));
-					$rowsg1 = mysql_fetch_array($resultsg1);
+					$resultsg1 = mysqli_query($dbhandle,convertSQL($sqlsg1));
+					$rowsg1 = mysqli_fetch_array($resultsg1);
 					$sqlg1 = "select grupo from sgm_articles_grupos where id=".$rowsg1["id_grupo"];
-					$resultg1 = mysql_query(convertSQL($sqlg1));
-					$rowg1 = mysql_fetch_array($resultg1);
+					$resultg1 = mysqli_query($dbhandle,convertSQL($sqlg1));
+					$rowg1 = mysqli_fetch_array($resultg1);
 					echo "<td>".$rowg1["grupo"]." - ".$rowsg1["subgrupo"]."</td>";
 					$sqld = "select id,abrev from sgm_divisas where visible=1 and id=".$rowst["id_divisa_pvd"];
-					$resultd = mysql_query(convertSQL($sqld));
-					$rowd = mysql_fetch_array($resultd);
+					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+					$rowd = mysqli_fetch_array($resultd);
 					echo "<td style=\"text-align:right;\">".$rowst["pvd"]." ".$rowd["abrev"]."</td>";
 					$sqld = "select id,abrev from sgm_divisas where visible=1 and id=".$rowst["id_divisa_pvp"];
-					$resultd = mysql_query(convertSQL($sqld));
-					$rowd = mysql_fetch_array($resultd);
+					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+					$rowd = mysqli_fetch_array($resultd);
 					echo "<td style=\"text-align:right;\">".$rowst["pvp"]." ".$rowd["abrev"]."</td>";
 					echo "<td><a href=\"index.php?op=1004&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
 				echo "</tr>";
@@ -212,11 +212,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 			updateFunction ("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		$sqld = "select abrev from sgm_divisas where predefinido=1";
-		$resultd = mysql_query(convertSQL($sqld));
-		$rowd = mysql_fetch_array($resultd);
+		$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+		$rowd = mysqli_fetch_array($resultd);
 		$sql = "select id,codigo,nombre,id_subgrupo,escandall from sgm_articles where id=".$_GET["id"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"vertical-align:top\">";
@@ -242,14 +242,14 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<strong style=\"font : bold normal normal 20px/normal Verdana, Geneva, Arial, Helvetica, sans-serif;\">".$row["codigo"]."&nbsp;".$row["nombre"]."&nbsp;&nbsp;</strong>";
 					if ($row["escandall"]==1) {echo "(".$escandallo.")";}
 					$sqls = "select id_grupo,subgrupo from sgm_articles_subgrupos where id=".$row["id_subgrupo"];
-					$results = mysql_query(convertSQL($sqls));
-					$rows = mysql_fetch_array($results);
+					$results = mysqli_query($dbhandle,convertSQL($sqls));
+					$rows = mysqli_fetch_array($results);
 					$sqlg = "select grupo from sgm_articles_grupos where id=".$rows["id_grupo"];
-					$resultg = mysql_query(convertSQL($sqlg));
-					$rowg = mysql_fetch_array($resultg);
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					$rowg = mysqli_fetch_array($resultg);
 					$sqlst = "select pvd,pvp from sgm_stock where vigente=1 and id_article=".$row["id"]."";
-					$resultst = mysql_query(convertSQL($sqlst));
-					$rowst = mysql_fetch_array($resultst);
+					$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+					$rowst = mysqli_fetch_array($resultst);
 					echo "<br>".$Familia.":".$rowg["grupo"];
 					echo "<br>".$Subfamilia.":".$rows["subgrupo"];
 					echo "<br>".$PVD.":".$rowst["pvd"]." ".$rowd["abrev"];
@@ -286,8 +286,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 6) {
 			$sqlv = "select id from sgm_articles_rel_caracteristicas where id_articulo=".$_GET["id"];
-			$resultv = mysql_query(convertSQL($sqlv));
-			while ($rowv = mysql_fetch_array($resultv)) {
+			$resultv = mysqli_query($dbhandle,convertSQL($sqlv));
+			while ($rowv = mysqli_fetch_array($resultv)) {
 				$camposUpdate = array("valor");
 				$datosUpdate = array($_POST["valor".$rowv["id"]]);
 				updateFunction ("sgm_articles_rel_caracteristicas",$rowv["id"],$camposUpdate,$datosUpdate);
@@ -295,8 +295,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 
 		$sqla = "select id,id_subgrupo,nombre,notas,codigo from sgm_articles where id=".$_GET["id"];
-		$resulta = mysql_query(convertSQL($sqla));
-		$rowa = mysql_fetch_array($resulta);
+		$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+		$rowa = mysqli_fetch_array($resulta);
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"vertical-align:top;\">";
@@ -307,21 +307,21 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "</tr>";
 						echo "<form action=\"index.php?op=1004&sop=100&ssop=2&id=".$rowa["id"]."\" method=\"post\">";
 						$sqlsg1 = "select id_grupo,codigo from sgm_articles_subgrupos where id=".$rowa["id_subgrupo"];
-						$resultsg1 = mysql_query(convertSQL($sqlsg1));
-						$rowsg1 = mysql_fetch_array($resultsg1);
+						$resultsg1 = mysqli_query($dbhandle,convertSQL($sqlsg1));
+						$rowsg1 = mysqli_fetch_array($resultsg1);
 						$sqlg1 = "select codigo from sgm_articles_grupos where id=".$rowsg1["id_grupo"];
-						$resultg1 = mysql_query(convertSQL($sqlg1));
-						$rowg1 = mysql_fetch_array($resultg1);
+						$resultg1 = mysqli_query($dbhandle,convertSQL($sqlg1));
+						$rowg1 = mysqli_fetch_array($resultg1);
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Codigo."</th><td><input type=\"Text\" value=\"".$rowg1["codigo"]."".$rowsg1["codigo"]."\" disabled style=\"width:50px\"><input type=\"Text\" name=\"codigo\" style=\"width:250px\" value=\"".$rowa["codigo"]."\" required></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Nombre."</th><td><input type=\"Text\" name=\"nombre\" style=\"width:300px\" value=\"".$rowa["nombre"]."\" required></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Familia."</th><td><select name=\"id_subgrupo\" style=\"width:300px\">";
 							echo "<option value=\"0\">".$Sin." ".$Clasificar."</option>";
 							$sqlg2 = "select id,grupo from sgm_articles_grupos order by grupo";
-							$resultg2 = mysql_query(convertSQL($sqlg2));
-							while ($rowg2 = mysql_fetch_array($resultg2)) {
+							$resultg2 = mysqli_query($dbhandle,convertSQL($sqlg2));
+							while ($rowg2 = mysqli_fetch_array($resultg2)) {
 								$sqlsg2 = "select id,subgrupo from sgm_articles_subgrupos where id_grupo=".$rowg2["id"]." order by subgrupo";
-								$resultsg2 = mysql_query(convertSQL($sqlsg2));
-								while ($rowsg2 = mysql_fetch_array($resultsg2)) {
+								$resultsg2 = mysqli_query($dbhandle,convertSQL($sqlsg2));
+								while ($rowsg2 = mysqli_fetch_array($resultsg2)) {
 									if ($rowsg2["id"] == $rowa["id_subgrupo"]) { echo "<option value=\"".$rowsg2["id"]."\" selected>".$rowg2["grupo"]." - ".$rowsg2["subgrupo"]."</option>"; }
 									else { echo "<option value=\"".$rowsg2["id"]."\">".$rowg2["grupo"]." - ".$rowsg2["subgrupo"]."</option>"; }
 								}
@@ -347,8 +347,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 							echo "<td><input type=\"Text\" name=\"codigo_proveedor\" style=\"width:100px\"></td>";
 							echo "<td><select name=\"id_proveedor\" style=\"width:300px\">";
 								$sqlg1 = "select id,nombre from sgm_clients where visible=1 order by nombre";
-								$resultg1 = mysql_query(convertSQL($sqlg1));
-								while ($rowg1 = mysql_fetch_array($resultg1)) {
+								$resultg1 = mysqli_query($dbhandle,convertSQL($sqlg1));
+								while ($rowg1 = mysqli_fetch_array($resultg1)) {
 									echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>";
 								}
 							echo "</select></td>";
@@ -357,16 +357,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "</form>";
 						echo "<tr><td>&nbsp;</td></tr>";
 						$sqlp = "select id,codigo_proveedor,id_proveedor from sgm_articles_rel_proveedores where id_articulo=".$_GET["id"]." and visible=1";
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)) {
+						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+						while ($rowp = mysqli_fetch_array($resultp)) {
 							echo "<form action=\"index.php?op=1004&sop=100&ssop=4&id=".$rowa["id"]."&id_prov=".$rowp["id"]."\" method=\"post\">";
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1004&sop=102&id=".$rowa["id"]."&id_prov=".$rowp["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 								echo "<td><input type=\"Text\" name=\"codigo_proveedor\" value=\"".$rowp["codigo_proveedor"]."\" style=\"width:100px\"></td>";
 								echo "<td><select name=\"id_proveedor\" style=\"width:300px\">";
 									$sqlg1 = "select id,nombre from sgm_clients where visible=1 order by nombre";
-									$resultg1 = mysql_query(convertSQL($sqlg1));
-									while ($rowg1 = mysql_fetch_array($resultg1)) {
+									$resultg1 = mysqli_query($dbhandle,convertSQL($sqlg1));
+									while ($rowg1 = mysqli_fetch_array($resultg1)) {
 										if ($rowg1["id"] == $rowp["id_proveedor"]) { echo "<option value=\"".$rowg1["id"]."\" selected>".$rowg1["nombre"]."</option>"; }
 										else { echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>"; }
 									}
@@ -385,34 +385,34 @@ if (($option == 1004) AND ($autorizado == true)) {
 							echo "<th style=\"width:125px\">".$Unidad." (".$abreviatura.")</th>";
 						echo "</tr>";
 						$sqlf = "select id_caracteristica from sgm_articles_subgrupos_caracteristicas where id_subgrupo=".$rowa["id_subgrupo"]."";
-						$resultf = mysql_query(convertSQL($sqlf));
-						while ($rowf = mysql_fetch_array($resultf)) {
+						$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+						while ($rowf = mysqli_fetch_array($resultf)) {
 							$sqlc = "select id,nombre,valor,unidad,unidad_abr from sgm_articles_caracteristicas where id_caracteristica=0 and id=".$rowf["id_caracteristica"]." and visible=1 order by nombre";
-							$resultc = mysql_query(convertSQL($sqlc));
-							while ($rowc = mysql_fetch_array($resultc)) {
+							$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+							while ($rowc = mysqli_fetch_array($resultc)) {
 							## CARACTERISTICAS
 								echo "<tr style=\"background-color : Silver;\">";
 									echo "<td colspan=\"2\"><strong>".$rowc["nombre"]."</strong></td>";
 										### RECUPERO EL VALOR O PONGO EL PREDEFINIDO
 										$valor_inicial = false;
 										$sqlvt = "select count(*) as total from sgm_articles_rel_caracteristicas where id_articulo=".$rowa["id"]." and id_valor=".$rowc["id"];
-										$resultvt = mysql_query(convertSQL($sqlvt));
-										$rowvt = mysql_fetch_array($resultvt);
+										$resultvt = mysqli_query($dbhandle,convertSQL($sqlvt));
+										$rowvt = mysqli_fetch_array($resultvt);
 										if ($rowvt["total"] == 0) {
 											$sql = "insert into sgm_articles_rel_caracteristicas (id_articulo,id_valor,valor) values (".$rowa["id"].",".$rowc["id"].",'".$rowc["valor"]."')";
-											mysql_query(convertSQL($sql));
+											mysqli_query($dbhandle,convertSQL($sql));
 											$valor_inicial = true;
 										}
 										$sqlv = "select id,valor from sgm_articles_rel_caracteristicas where id_articulo=".$rowa["id"]." and id_valor=".$rowc["id"];
-										$resultv = mysql_query(convertSQL($sqlv));
-										$rowv = mysql_fetch_array($resultv);
+										$resultv = mysqli_query($dbhandle,convertSQL($sqlv));
+										$rowv = mysqli_fetch_array($resultv);
 										$valor = $rowv["valor"];
 										if (($valor == "") and ($valor_inicial == true)) { $valor = $rowc["valor"]; }
 										### COMPROBACION DE TABLA SI / NO
 										$tabla = false;
 										$sqlvt = "select count(*) as total from sgm_articles_caracteristicas_tablas where visible=1 and  id_caracteristica=".$rowc["id"];
-										$resultvt = mysql_query(convertSQL($sqlvt));
-										$rowvt = mysql_fetch_array($resultvt);
+										$resultvt = mysqli_query($dbhandle,convertSQL($sqlvt));
+										$rowvt = mysqli_fetch_array($resultvt);
 										if ($rowvt["total"] >= 1) { $tabla = true; } else { $tabla = false; }
 										### ECHO EN FUNCION DE TABLA SI / NO
 									if ($tabla == false) {	echo "<td><input type=\"Text\" name=\"valor".$rowv["id"]."\" value=\"".$valor."\" style=\"width:300px\"></td>"; }
@@ -420,8 +420,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 										echo "<td><select name=\"valor".$rowv["id"]."\" style=\"width:300px\">";
 										 echo "<option value=\"0\">-</option>";
 										$sqlvta = "select id,valor from sgm_articles_caracteristicas_tablas where visible=1 and  id_caracteristica=".$rowc["id"];
-										$resultvta = mysql_query(convertSQL($sqlvta));
-										while ($rowvta = mysql_fetch_array($resultvta)) {
+										$resultvta = mysqli_query($dbhandle,convertSQL($sqlvta));
+										while ($rowvta = mysqli_fetch_array($resultvta)) {
 											if ($rowvta["id"] == $valor) { echo "<option value=\"".$rowvta["id"]."\" selected>".$rowvta["valor"]."</option>"; }
 												else { echo "<option value=\"".$rowvta["id"]."\">".$rowvta["valor"]."</option>"; }
 										}
@@ -433,39 +433,39 @@ if (($option == 1004) AND ($autorizado == true)) {
 								echo "</tr>";
 								###################################### SUB
 								$sqlsc = "select id,nombre,valor,unidad,unidad_abr from sgm_articles_caracteristicas where id_caracteristica=".$rowc["id"]." and visible=1 order by nombre";
-								$resultsc = mysql_query(convertSQL($sqlsc));
-								while ($rowsc = mysql_fetch_array($resultsc)) {
+								$resultsc = mysqli_query($dbhandle,convertSQL($sqlsc));
+								while ($rowsc = mysqli_fetch_array($resultsc)) {
 								## CARACTERISTICAS
 									echo "<tr style=\"background-color : white;\">";
 										echo "<td colspan=\"2\"><strong>".$rowsc["nombre"]."</strong></td>";
 											### RECUPERO EL VALOR O PONGO EL PREDEFINIDO
 											$valor_inicial = false;
 											$sqlvt = "select count(*) as total from sgm_articles_rel_caracteristicas where id_articulo=".$rowa["id"]." and id_valor=".$rowsc["id"];
-											$resultvt = mysql_query(convertSQL($sqlvt));
-											$rowvt = mysql_fetch_array($resultvt);
+											$resultvt = mysqli_query($dbhandle,convertSQL($sqlvt));
+											$rowvt = mysqli_fetch_array($resultvt);
 											if ($rowvt["total"] == 0) {
 												$sql = "insert into sgm_articles_rel_caracteristicas (id_articulo,id_valor,valor) values (".$rowa["id"].",".$rowsc["id"].",'".$rowsc["valor"]."')";
-												mysql_query(convertSQL($sql));
+												mysqli_query($dbhandle,convertSQL($sql));
 												$valor_inicial = true;
 											}
 											$sqlv = "select id,valor from sgm_articles_rel_caracteristicas where id_articulo=".$rowa["id"]." and id_valor=".$rowsc["id"];
-											$resultv = mysql_query(convertSQL($sqlv));
-											$rowv = mysql_fetch_array($resultv);
+											$resultv = mysqli_query($dbhandle,convertSQL($sqlv));
+											$rowv = mysqli_fetch_array($resultv);
 											$valor = $rowv["valor"];
 											if (($valor == "") and ($valor_inicial == true)) { $valor = $rowsc["valor"]; }
 											### COMPROBACION DE TABLA SI / NO
 											$tabla = false;
 											$sqlvt = "select count(*) as total from sgm_articles_caracteristicas_tablas where visible=1 and  id_caracteristica=".$rowsc["id"];
-											$resultvt = mysql_query(convertSQL($sqlvt));
-											$rowvt = mysql_fetch_array($resultvt);
+											$resultvt = mysqli_query($dbhandle,convertSQL($sqlvt));
+											$rowvt = mysqli_fetch_array($resultvt);
 											if ($rowvt["total"] >= 1) { $tabla = true;} else { $tabla = false; }
 											### ECHO EN FUNCION DE TABLA SI / NO
 										if ($tabla == false) {	echo "<td><input type=\"Text\" name=\"valor".$rowv["id"]."\" value=\"".$valor."\" style=\"width:300px\"></td>"; }
 										else {
 											echo "<td><select name=\"valor".$rowv["id"]."\" style=\"width:300px\">";
 											$sqlvta = "select id,valor from sgm_articles_caracteristicas_tablas where visible=1 and  id_caracteristica=".$rowsc["id"];
-											$resultvta = mysql_query(convertSQL($sqlvta));
-											while ($rowvta = mysql_fetch_array($resultvta)) {
+											$resultvta = mysqli_query($dbhandle,convertSQL($sqlvta));
+											while ($rowvta = mysqli_fetch_array($resultvta)) {
 												if ($rowvta["id"] == $valor) { echo "<option value=\"".$rowvta["id"]."\" selected>".$rowvta["valor"]."</option>"; }
 													else { echo "<option value=\"".$rowvta["id"]."\">".$rowvta["valor"]."</option>"; }
 											}
@@ -540,8 +540,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</td>";
 				echo "<td style=\"vertical-align:top;Width:33%;text-align:center;background-color:silver;\">";
 					$sql = "select descatalogat from sgm_articles where id=".$_GET["id"];
-					$result = mysql_query(convertSQL($sql));
-					$row = mysql_fetch_array($result);
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
 					if ($row["descatalogat"] == 0){
 					echo "<table style=\"text-align:left;vertical-align:top;\" class=\"lista\"><tr>";
 						echo "<th style=\"width:400px\">".$Descatalogar." ".$Articulo."</th>";
@@ -573,11 +573,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 
 	if ($soption == 106) {
 		$sql = "select * from sgm_articles where id=".$_GET["id"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		$sqlgc = "select codigo from sgm_articles where codigo<>'' order by codigo desc";
-		$resultgc = mysql_query(convertSQL($sqlgc));
-		$rowgc = mysql_fetch_array($resultgc);
+		$resultgc = mysqli_query($dbhandle,convertSQL($sqlgc));
+		$rowgc = mysqli_fetch_array($resultgc);
 		$codigo = $rowgc["codigo"]+1;
 		if ($codigo < 10) { $codigo = "00000".$codigo; }
 		if (($codigo < 100) and ($codigo > 9)) { $codigo = "0000".$codigo; }
@@ -591,62 +591,62 @@ if (($option == 1004) AND ($autorizado == true)) {
 		insertFunction ("sgm_articles",$camposInsert,$datosInsert);
 
 		$sqlart = "select id from sgm_articles where visible=1 order by id desc";
-		$resultart = mysql_query(convertSQL($sqlart));
-		$rowart = mysql_fetch_array($resultart);
+		$resultart = mysqli_query($dbhandle,convertSQL($sqlart));
+		$rowart = mysqli_fetch_array($resultart);
 
 		$sqles = "select id_article,unitats,visible from sgm_articles_escandall where visible=1 and id_escandall=".$_GET["id"];
-		$resultes = mysql_query(convertSQL($sqles));
-		while ($rowes = mysql_fetch_array($resultes)) {
+		$resultes = mysqli_query($dbhandle,convertSQL($sqles));
+		while ($rowes = mysqli_fetch_array($resultes)) {
 			$camposInsert = "id_escandall,id_article,unitats,visible";
 			$datosInsert = array($rowart["id"],$rowes["id_article"],$rowes["unitats"],$rowes["visible"]);
 			insertFunction ("sgm_articles_escandall",$camposInsert,$datosInsert);
 		}
 
 		$sqlcl = "select id_client,stock_max,stock_min from sgm_articles_clients where id_article=".$_GET["id"];
-		$resultcl = mysql_query(convertSQL($sqlcl));
-		while ($rowcl = mysql_fetch_array($resultcl)) {
+		$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+		while ($rowcl = mysqli_fetch_array($resultcl)) {
 			$camposInsert = "id_client,id_article,stock_max,stock_min";
 			$datosInsert = array($rowcl["id_client"],$rowart["id"],$rowcl["stock_max"],$rowcl["stock_min"]);
 			insertFunction ("sgm_articles_clients",$camposInsert,$datosInsert);
 		}
 
 		$sqlco = "select * from sgm_articles_costos where visible=1 and id_article=".$_GET["id"];
-		$resultco = mysql_query(convertSQL($sqlco));
-		while ($rowco = mysql_fetch_array($resultco)) {
+		$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
+		while ($rowco = mysqli_fetch_array($resultco)) {
 			$camposInsert = "id_article,preu_cost,pes_cost,visible,descripcio,temps,fecha,id_cuerpo,aprovat";
 			$datosInsert = array($rowart["id"],$rowco["preu_cost"],$rowco["pes_cost"],$rowco["visible"],$rowco["descripcio"],$rowco["temps"],$rowco["fecha"],$rowco["id_cuerpo"],$rowco["aprovat"]);
 			insertFunction ("sgm_articles_costos",$camposInsert,$datosInsert);
 
 			$sqlcost = "select id from sgm_articles_costos order by id desc";
-			$resultcost = mysql_query(convertSQL($sqlcost));
-			$rowcost = mysql_fetch_array($resultcost);
+			$resultcost = mysqli_query($dbhandle,convertSQL($sqlcost));
+			$rowcost = mysqli_fetch_array($resultcost);
 
 
 			$sqlfr = "select * from sgm_articles_fases_recursos where visible=1 and id_coste=".$rowco["id"];
-			$resultfr = mysql_query(convertSQL($sqlfr));
-			while ($rowfr = mysql_fetch_array($resultfr)) {
+			$resultfr = mysqli_query($dbhandle,convertSQL($sqlfr));
+			while ($rowfr = mysqli_fetch_array($resultfr)) {
 				$camposInsert = "id_fase,id_recurso,id_coste,temps,ordre,visible,preu_fases,calc_temps";
 				$datosInsert = array($rowfr["id_fase"],$rowfr["id_recurso"],$rowcost["id"],$rowfr["temps"],$rowfr["ordre"],$rowfr["visible"],$rowfr["preu_fases"],$rowfr["calc_temps"]);
 				insertFunction ("sgm_articles_fases_recursos",$camposInsert,$datosInsert);
 
 				$sqlfare = "select id from sgm_articles_fases_recursos order by id desc";
-				$resultfare = mysql_query(convertSQL($sqlfare));
-				$rowfare = mysql_fetch_array($resultfare);
+				$resultfare = mysqli_query($dbhandle,convertSQL($sqlfare));
+				$rowfare = mysqli_fetch_array($resultfare);
 
 				$sqlest = "select orden,descripcio,visible from sgm_articles_estacada where visible=1 and id_fase_recurso=".$rowfr["id"];
-				$resultest = mysql_query(convertSQL($sqlest));
-				while ($rowest = mysql_fetch_array($resultest)) {
+				$resultest = mysqli_query($dbhandle,convertSQL($sqlest));
+				while ($rowest = mysqli_fetch_array($resultest)) {
 					$camposInsert = "id_fase_recurso,orden,descripcio,visible";
 					$datosInsert = array($rowfare["id"],$rowest["orden"],$rowest["descripcio"],$rowest["visible"]);
 					insertFunction ("sgm_articles_estacada",$camposInsert,$datosInsert);
 
 					$sqlesta = "select id from sgm_articles_estacada order by id desc";
-					$resultesta = mysql_query(convertSQL($sqlesta));
-					$rowesta = mysql_fetch_array($resultesta);
+					$resultesta = mysqli_query($dbhandle,convertSQL($sqlesta));
+					$rowesta = mysqli_fetch_array($resultesta);
 
 					$sqlop = "select * from sgm_articles_operaciones visible=1 and where id_estacada=".$rowest["id"];
-					$resultop = mysql_query(convertSQL($sqlop));
-					while ($rowop = mysql_fetch_array($resultop)) {
+					$resultop = mysqli_query($dbhandle,convertSQL($sqlop));
+					while ($rowop = mysqli_fetch_array($resultop)) {
 						$camposInsert = "id_operacion,id_estacada,temps,descripcio,visible";
 						$datosInsert = array($rowop["id_operacion"],$rowesta["id"],$rowop["temps"],$rowop["descripcio"],$rowop["visible"]);
 						insertFunction ("sgm_articles_operaciones",$camposInsert,$datosInsert);
@@ -656,32 +656,32 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 
 		$sqlse = "select * from sgm_articles_seccions where visible=1 and id_article=".$_GET["id"];
-		$resultse = mysql_query(convertSQL($sqlse));
-		while ($rowse = mysql_fetch_array($resultse)) {
+		$resultse = mysqli_query($dbhandle,convertSQL($sqlse));
+		while ($rowse = mysqli_fetch_array($resultse)) {
 			$camposInsert = "id_article,id_seccion,id_estanteria,id_pasillo,id_almacen,visible";
 			$datosInsert = array($rowse["id_article"],$rowse["id_seccion"],$rowse["id_estanteria"],$rowse["id_pasillo"],$rowse["id_almacen"],$rowse["visible"]);
 			insertFunction ("sgm_articles_seccions",$camposInsert,$datosInsert);
 		}
 
 		$sqlca = "select id_valor,valor from sgm_articles_rel_caracteristicas where id_articulo=".$_GET["id"];
-		$resultca = mysql_query(convertSQL($sqlca));
-		while ($rowca = mysql_fetch_array($resultca)) {
+		$resultca = mysqli_query($dbhandle,convertSQL($sqlca));
+		while ($rowca = mysqli_fetch_array($resultca)) {
 			$camposInsert = "id_articulo,id_valor,valor";
 			$datosInsert = array($rowart["id"],$rowca["id_valor"],$rowca["valor"]);
 			insertFunction ("sgm_articles_rel_caracteristicas",$camposInsert,$datosInsert);
 		}
 
 		$sqlpr = "select * from sgm_articles_rel_proveedores where visible=1 and id_articulo=".$_GET["id"];
-		$resultpr = mysql_query(convertSQL($sqlpr));
-		while ($rowpr = mysql_fetch_array($resultpr)) {
+		$resultpr = mysqli_query($dbhandle,convertSQL($sqlpr));
+		while ($rowpr = mysqli_fetch_array($resultpr)) {
 			$camposInsert = "id_articulo,id_proveedor,codigo_proveedor,visible";
 			$datosInsert = array($rowart["id"],$rowpr["id_proveedor"],$rowpr["codigo_proveedor"],$rowpr["visible"]);
 			insertFunction ("sgm_articles_rel_proveedores",$camposInsert,$datosInsert);
 		}
 
 		$sqlst = "select * from sgm_stock where id_article=".$_GET["id"];
-		$resultst = mysql_query(convertSQL($sqlst));
-		while ($rowst = mysql_fetch_array($resultst)) {
+		$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+		while ($rowst = mysqli_fetch_array($resultst)) {
 			$camposInsert = "id_article,id_almacen,unidades,pvd,pvp,web,vigente,fecha,id_user,id_compte_entradas";
 			$datosInsert = array($rowart["id"],$rowst["id_almacen"],$rowst["unidades"],$rowst["pvd"],$rowst["pvp"],$rowst["web"],$rowst["vigente"],$rowst["fecha"],$rowst["id_user"],$rowst["id_compte_entradas"]);
 			insertFunction ("sgm_stock",$camposInsert,$datosInsert);
@@ -711,8 +711,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 2) {
 			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysql_query(convertSQL($sqlf));
-			$rowf = mysql_fetch_array($resultf);
+			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+			$rowf = mysqli_fetch_array($resultf);
 			deleteFunction ("sgm_files",$_GET["id_archivo"]);
 			$filepath = "archivos/articulos/".$rowf["name"];
 			unlink($filepath);
@@ -724,11 +724,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<h4>".$Archivos." :</h4>";
 						echo "<table>";
 						$sql = "select id,nombre from sgm_files_tipos order by nombre";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
 							$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=1 and id_elemento=".$_GET["id"];
-							$resultele = mysql_query(convertSQL($sqlele));
-							while ($rowele = mysql_fetch_array($resultele)) {
+							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
+							while ($rowele = mysqli_fetch_array($resultele)) {
 								echo "<tr>";
 									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1004&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
@@ -744,8 +744,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<center>";
 					echo "<select name=\"id_tipo\" style=\"width:200px\">";
 						$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
 							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
 						}
 					echo "</select>";
@@ -784,8 +784,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 			$lim_tamano = 200*1000;
 			$sqlt = "select count(*) as total from sgm_articles where img1='".$archivo_name."' or img2='".$archivo_name."' or img3='".$archivo_name."'";
-			$resultt = mysql_query(convertSQL($sqlt));
-			$rowt = mysql_fetch_array($resultt);
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
 			if ($rowt["total"] != 0) {
 				echo mensageError($errorSubirArchivoDuplicado);
 			} else {
@@ -796,7 +796,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						if ($id_imagen == 2) { $sql = $sql."img2='".$archivo_name."'"; }
 						if ($id_imagen == 3) { $sql = $sql."img3='".$archivo_name."'"; }
 						$sql = $sql." WHERE id=".$id_articulo."";
-						mysql_query(convertSQL($sql));
+						mysqli_query($dbhandle,convertSQL($sql));
 					}else{
 						echo mensageError($errorSubirArchivo);
 					}
@@ -807,8 +807,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 3) {
 			$sql = "select * from sgm_articles where id=".$_GET["id"];
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			unlink ( "archivos/articulos/".$row["img".$_GET["id_imagen"].""]);
 
 			$sql = "update sgm_articles set ";
@@ -816,12 +816,12 @@ if (($option == 1004) AND ($autorizado == true)) {
 			if ($_GET["id_imagen"] == 2) { $sql = $sql."img2=''"; }
 			if ($_GET["id_imagen"] == 3) { $sql = $sql."img3=''"; }
 			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 
 		$sqla = "select id,img1,img2,img3 from sgm_articles where id=".$_GET["id"];
-		$resulta = mysql_query(convertSQL($sqla));
-		$rowa = mysql_fetch_array($resulta);
+		$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+		$rowa = mysqli_fetch_array($resulta);
 		$id_articulo = $rowa["id"];
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr><td style=\"width:33%\"></td><th style=\"width:67%\">".$Imagen."</th></tr>";
@@ -882,12 +882,12 @@ if (($option == 1004) AND ($autorizado == true)) {
 			$sql = "update sgm_stock set ";
 			$sql = $sql."vigente=0";
 			$sql = $sql." WHERE id_article=".$_GET["id"]."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 
 			$sql = "update sgm_stock set ";
 			$sql = $sql."vigente=1";
 			$sql = $sql." WHERE id=".$_GET["id_stock"]."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		if ($ssoption == 3) {
 			$camposUpdate = array("unidades","pvd","pvp","id_divisa_pvd","id_divisa_pvp","fecha");
@@ -914,11 +914,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "</table>";
 		echo "<br><br>";
 		$sqlt = "select count(*) as total from sgm_stock where id_article=".$_GET["id"];
-		$resultt = mysql_query(convertSQL($sqlt));
-		$rowt = mysql_fetch_array($resultt);
+		$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+		$rowt = mysqli_fetch_array($resultt);
 		$sqlst = "select count(*) as total from sgm_stock where id_article=".$_GET["id"]." and vigente=1";
-		$resultst = mysql_query(convertSQL($sqlst));
-		$rowst = mysql_fetch_array($resultst);
+		$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+		$rowst = mysqli_fetch_array($resultst);
 		$vigente = 1;
 		if ($rowst["total"] > 0) { $vigente=0; }
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -942,8 +942,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><select name=\"id_divisa_pvd\" type=\"Text\" style=\"width:100px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlp= "select id,divisa from sgm_divisas";
-					$resultp = mysql_query(convertSQL($sqlp));
-					while ($rowp = mysql_fetch_array($resultp)){
+					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+					while ($rowp = mysqli_fetch_array($resultp)){
 						echo "<option value=\"".$rowp["id"]."\">".$rowp["divisa"]."</option>";
 					}
 				echo "</select></td>";
@@ -951,8 +951,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><select name=\"id_divisa_pvp\" type=\"Text\" style=\"width:100px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlp= "select id,divisa from sgm_divisas";
-					$resultp = mysql_query(convertSQL($sqlp));
-					while ($rowp = mysql_fetch_array($resultp)){
+					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+					while ($rowp = mysqli_fetch_array($resultp)){
 						echo "<option value=\"".$rowp["id"]."\">".$rowp["divisa"]."</option>";
 					}
 				echo "</select></td>";
@@ -964,8 +964,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			$totalpvd = 0;
 			$totalpvp = 0;
 			$sqls = "select * from sgm_stock where id_article=".$_GET["id"]." order by fecha desc, id asc";
-			$results = mysql_query(convertSQL($sqls));
-			while ($rows = mysql_fetch_array($results)) {
+			$results = mysqli_query($dbhandle,convertSQL($sqls));
+			while ($rows = mysqli_fetch_array($results)) {
 				$color = "white";
 				if ($rows["vigente"] == 1) { $color = "#FF4500"; }
 				echo "<tr style=\"background-color : ".$color."\">";
@@ -980,8 +980,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_divisa_pvd\" type=\"Text\" style=\"width:100px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlp= "select id,divisa from sgm_divisas";
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)){
+						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+						while ($rowp = mysqli_fetch_array($resultp)){
 							if ($rows["id_divisa_pvd"] == $rowp["id"]){
 								echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["divisa"]."</option>";
 							}else{
@@ -993,8 +993,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><select name=\"id_divisa_pvp\" type=\"Text\" style=\"width:100px\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlp= "select id,divisa from sgm_divisas";
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)){
+						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+						while ($rowp = mysqli_fetch_array($resultp)){
 							if ($rows["id_divisa_pvp"] == $rowp["id"]){
 								echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["divisa"]."</option>";
 							}else{
@@ -1055,8 +1055,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><select name=\"id_client\" type=\"Text\" style=\"width:400px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlp= "select id,nombre from sgm_clients";
-					$resultp = mysql_query(convertSQL($sqlp));
-					while ($rowp = mysql_fetch_array($resultp)){
+					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+					while ($rowp = mysqli_fetch_array($resultp)){
 						echo "<option value=\"".$rowp["id"]."\">".$rowp["nombre"]."</option>";
 					}
 				echo "</select></td>";
@@ -1068,16 +1068,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql= "select id,id_client,stock_min,stock_max from sgm_articles_clients";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr>";
 				echo "<td><a href=\"index.php?op=1004&sop=136&id_stock=".$row["id"]."&id=".$_GET["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 				echo "<form action=\"index.php?op=1004&sop=135&ssop=2&id_stock=".$row["id"]."&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td><select name=\"id_client\" type=\"Text\" style=\"width:400px\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlp= "select  id,nombre from sgm_clients";
-					$resultp = mysql_query(convertSQL($sqlp));
-					while ($rowp = mysql_fetch_array($resultp)){
+					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+					while ($rowp = mysqli_fetch_array($resultp)){
 						if ($row["id_client"] == $rowp["id"]){
 							echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["nombre"]."</option>";
 						}else{
@@ -1104,17 +1104,17 @@ if (($option == 1004) AND ($autorizado == true)) {
 	if ($soption == 140) {
 		if ($ssoption == 1) {
 			$sqls = "select id_estanteria,id from sgm_stock_almacenes_pasillo_estanteria_seccion where id=".$_POST["id_seccion"];
-			$results = mysql_query(convertSQL($sqls));
-			$rows = mysql_fetch_array($results);
+			$results = mysqli_query($dbhandle,convertSQL($sqls));
+			$rows = mysqli_fetch_array($results);
 			$sqle = "select id_pasillo,id from sgm_stock_almacenes_pasillo_estanteria where id=".$rows["id_estanteria"];
-			$resulte = mysql_query(convertSQL($sqle));
-			$rowe = mysql_fetch_array($resulte);
+			$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+			$rowe = mysqli_fetch_array($resulte);
 			$sqlp = "select id_almacen,id from sgm_stock_almacenes_pasillo where id=".$rowe["id_pasillo"];
-			$resultp = mysql_query(convertSQL($sqlp));
-			$rowp = mysql_fetch_array($resultp);
+			$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+			$rowp = mysqli_fetch_array($resultp);
 			$sqla = "select id from sgm_stock_almacenes where id=".$rowp["id_almacen"];
-			$resulta = mysql_query(convertSQL($sqla));
-			$rowa = mysql_fetch_array($resulta);
+			$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+			$rowa = mysqli_fetch_array($resulta);
 			$camposUpdate = "id_article,id_seccion,id_estanteria,id_pasillo,id_almacen";
 			$datosInsert = array($_GET["id"],$rows["id"],$rowe["id"],$rowp["id"],$rowa["id"]);
 			insertFunction ("sgm_articles_seccions",$camposUpdate,$datosInsert);
@@ -1134,17 +1134,17 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=140&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td><select name=\"id_seccion\" style=\"width:300px\">";
 				$sqla = "select id,nombre from sgm_stock_almacenes order by nombre";
-				$resulta = mysql_query(convertSQL($sqla));
-				while ($rowa = mysql_fetch_array($resulta)) {
+				$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+				while ($rowa = mysqli_fetch_array($resulta)) {
 					$sqlp = "select id,nombre from sgm_stock_almacenes_pasillo where visible=1 and id_almacen=".$rowa["id"]." order by orden";
-					$resultp = mysql_query(convertSQL($sqlp));
-					while ($rowp = mysql_fetch_array($resultp)) {
+					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+					while ($rowp = mysqli_fetch_array($resultp)) {
 						$sqle = "select id,nombre from sgm_stock_almacenes_pasillo_estanteria where visible=1 and id_pasillo=".$rowp["id"]." order by orden";
-						$resulte = mysql_query(convertSQL($sqle));
-						while ($rowe = mysql_fetch_array($resulte)) {
+						$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+						while ($rowe = mysqli_fetch_array($resulte)) {
 							$sqls = "select id,nombre from sgm_stock_almacenes_pasillo_estanteria_seccion where visible=1 and id_estanteria=".$rowe["id"]." order by orden";
-							$results = mysql_query(convertSQL($sqls));
-							while ($rows = mysql_fetch_array($results)) {
+							$results = mysqli_query($dbhandle,convertSQL($sqls));
+							while ($rows = mysqli_fetch_array($results)) {
 								echo "<option value=\"".$rows["id"]."\">".$rowa["nombre"]."-".$rowp["nombre"]."-".$rowe["nombre"]."-".$rows["nombre"]."</option>";
 							}
 						}
@@ -1158,20 +1158,20 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "<br><br><br>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			$sqlas = "select id_seccion,id_almacen,id from sgm_articles_seccions where id_article=".$_GET["id"]." and visible=1";
-			$resultas = mysql_query(convertSQL($sqlas));
-			while ($rowas = mysql_fetch_array($resultas)) {
+			$resultas = mysqli_query($dbhandle,convertSQL($sqlas));
+			while ($rowas = mysqli_fetch_array($resultas)) {
 				$sqls = "select id_estanteria,nombre from sgm_stock_almacenes_pasillo_estanteria_seccion where id=".$rowas["id_seccion"];
-				$results = mysql_query(convertSQL($sqls));
-				$rows = mysql_fetch_array($results);
+				$results = mysqli_query($dbhandle,convertSQL($sqls));
+				$rows = mysqli_fetch_array($results);
 				$sqle = "select id_pasillo,nombre from sgm_stock_almacenes_pasillo_estanteria where id=".$rows["id_estanteria"];
-				$resulte = mysql_query(convertSQL($sqle));
-				$rowe = mysql_fetch_array($resulte);
+				$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+				$rowe = mysqli_fetch_array($resulte);
 				$sqlp = "select id_almacen,nombre,id from sgm_stock_almacenes_pasillo where id=".$rowe["id_pasillo"];
-				$resultp = mysql_query(convertSQL($sqlp));
-				$rowp = mysql_fetch_array($resultp);
+				$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+				$rowp = mysqli_fetch_array($resultp);
 				$sqla = "select nombre from sgm_stock_almacenes where id=".$rowp["id_almacen"];
-				$resulta = mysql_query(convertSQL($sqla));
-				$rowa = mysql_fetch_array($resulta);
+				$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+				$rowa = mysqli_fetch_array($resulta);
 				echo "<tr style=\"background-color:silver;\">";
 					echo "<th>".$Eliminar."</th>";
 					echo "<th style=\"text-align:center;\">".$Localizacion."</th>";
@@ -1187,31 +1187,31 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td></td>";
 					echo "<td>";
 						$sqlp = "select id,nombre from sgm_stock_almacenes_pasillo where id=".$rowp["id"];
-						$resultp = mysql_query(convertSQL($sqlp));
-						while ($rowp = mysql_fetch_array($resultp)) {
+						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+						while ($rowp = mysqli_fetch_array($resultp)) {
 							echo "Pasillo : <strong>".$rowp["nombre"]."</strong><br><br>";
 							echo "<table cellpadding=\"0\" cellspacing=\"0\">";
 							$sqlet = "select count(*) as total from sgm_stock_almacenes_pasillo_estanteria where id_pasillo=".$rowp["id"]." and visible=1 order by orden";
-							$resultet = mysql_query(convertSQL($sqlet));
-							$rowet = mysql_fetch_array($resultet);
+							$resultet = mysqli_query($dbhandle,convertSQL($sqlet));
+							$rowet = mysqli_fetch_array($resultet);
 							if ($rowet["total"] == 0) {
 								echo "<tr><td style=\"width:100px;text-align:right;vertical-align:top;\">Sin estanterias&nbsp;&nbsp;</td><td><table style=\"width:520px;height:50px;background-color: Black;\"><tr>";
 								echo "<td style=\"width:100%;\">&nbsp;</td>";
 								echo "</tr></table></td></tr>";
 							} else {
 								$sqle = "select id,nombre from sgm_stock_almacenes_pasillo_estanteria where id_pasillo=".$rowp["id"]." and visible=1 order by orden";
-								$resulte = mysql_query(convertSQL($sqle));
-								while ($rowe = mysql_fetch_array($resulte)) {
+								$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+								while ($rowe = mysqli_fetch_array($resulte)) {
 									echo "<tr><td style=\"width:100px;text-align:right;vertical-align:top;\">".$rowe["nombre"]."&nbsp;&nbsp;</td><td><table style=\"width:520px;border-left: 1px solid Black;border-top: 1px solid Black;\" cellpadding=\"0\" cellspacing=\"0\"><tr>";
 									$sqlst = "select count(*) as total from sgm_stock_almacenes_pasillo_estanteria_seccion where id_estanteria=".$rowe["id"]." and visible=1 order by orden";
-									$resultst = mysql_query(convertSQL($sqlst));
-									$rowst = mysql_fetch_array($resultst);
+									$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+									$rowst = mysqli_fetch_array($resultst);
 									if ($rowst["total"] == 0) {
 										echo "<td style=\"width:100%;background-color: Black;height:25px\">&nbsp;</td>";
 									} else {
 										$sqls = "select id,porcentage from sgm_stock_almacenes_pasillo_estanteria_seccion where id_estanteria=".$rowe["id"]." and visible=1 order by orden";
-										$results = mysql_query(convertSQL($sqls));
-										while ($rows = mysql_fetch_array($results)) {
+										$results = mysqli_query($dbhandle,convertSQL($sqls));
+										while ($rows = mysqli_fetch_array($results)) {
 											if ($rows["id"] == $rowas["id_seccion"]) {
 												echo "<td style=\"background-color: Red;width:".$rows["porcentage"]."%;height:25px;border-right: 1px solid Black;\">&nbsp;</td>";
 											} else {
@@ -1250,8 +1250,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 
 	if ($soption == 145) {
 		$sql = "select id,nombre from sgm_stock_almacenes where id=".$_GET["id_almacen"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<h4>".$row["nombre"]."</h4>";
 		echo boton(array("op=1004&sop=140&id=".$_GET["id"]),array("&laquo; ".$Volver));
 		echo mostrarAlmacen($row["id"],$_GET["id_seccion"]);
@@ -1259,12 +1259,12 @@ if (($option == 1004) AND ($autorizado == true)) {
 
 	if ($soption == 150) {
 		$sql= "select id from sgm_articles where codigo='".$_POST["codigo"]."'";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($ssoption == 1) {
 			$sqls= "select pvd,pvp from sgm_stock where id_article=".$row["id"]." and vigente=1";
-			$results = mysql_query(convertSQL($sqls));
-			$rows = mysql_fetch_array($results);
+			$results = mysqli_query($dbhandle,convertSQL($sqls));
+			$rows = mysqli_fetch_array($results);
 			if ($_GET["id"] != $row["id"]){
 				$camposUpdate = "id_escandall,id_article,unitats,pvd_forzat,pvp_forzat";
 				if ($rows["pvd"] != 0){ $pvd = $rows["pvd"]; } else { $pvd = 0; }
@@ -1294,8 +1294,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			updateFunction ("sgm_articles_escandall",$_GET["id_escandall"],$camposUpdate,$datosUpdate);
 
 			$sqle= "select count(*) as total from sgm_articles where id=".$_GET["id"]." and escandall=1";
-			$resulte = mysql_query(convertSQL($sqle));
-			$rowe = mysql_fetch_array($resulte);
+			$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+			$rowe = mysqli_fetch_array($resulte);
 			if ($rowe["total"]==0){
 				$camposUpdate = array("escandall");
 				$datosUpdate = array("0");
@@ -1312,8 +1312,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td>".$Recalcular." ".$Precio.": </td>";
 				$sql = "select recalc_escandall from sgm_articles where id=".$_GET["id"];
-				$result = mysql_query(convertSQL($sql));
-				$row = mysql_fetch_array($result);
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				$row = mysqli_fetch_array($result);
 				echo "<form action=\"index.php?op=1004&sop=150&ssop=5&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td><select name=\"recalc\" style=\"width:50px\">";
 					if ($row["recalc_escandall"] == 0){
@@ -1356,20 +1356,20 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<tr><td>&nbsp;</td></tr>";
 			$total=0;
 			$sqle= "select * from sgm_articles_escandall where id_escandall=".$_GET["id"]." and visible=1";
-			$resulte = mysql_query(convertSQL($sqle));
-			while ($rowe = mysql_fetch_array($resulte)){
+			$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+			while ($rowe = mysqli_fetch_array($resulte)){
 				echo "<tr>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1004&sop=151&id_escandall=".$rowe["id"]."&id=".$_GET["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					$sql= "select id,nombre,codigo from sgm_articles where id=".$rowe["id_article"]."";
-					$result = mysql_query(convertSQL($sql));
-					$row = mysql_fetch_array($result);
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1004&sop=100&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
 					echo "<form action=\"index.php?op=1004&sop=150&ssop=2&id_escandall=".$rowe["id"]."&id=".$_GET["id"]."\" method=\"post\">";
 					echo "<td><input name=\"codigo\" type=\"Text\" value=\"".$row["codigo"]."\" style=\"width:70px;text-align:right;\"></td>";
 					echo "<td><input name=\"unitats\" type=\"Text\" value=\"".$rowe["unitats"]."\" style=\"width:70px;text-align:right;\"></td>";
 					$sqls= "select pvd,pvp from sgm_stock where id_article=".$row["id"]." and vigente=1";
-					$results = mysql_query(convertSQL($sqls));
-					$rows = mysql_fetch_array($results);
+					$results = mysqli_query($dbhandle,convertSQL($sqls));
+					$rows = mysqli_fetch_array($results);
 					echo "<td style=\"text-align:right;width:70px;\">".$rows["pvd"]."</td>";
 					echo "<td style=\"text-align:right;width:70px;\">".$rows["pvp"]."</td>";
 					echo "<td><input name=\"pvd_forzat\" type=\"Text\" value=\"".$rowe["pvd_forzat"]."\" style=\"width:70px;text-align:right;\"></td>";
@@ -1409,11 +1409,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 							echo "<td><select name=\"subfamilia\" style=\"width:150px\">";
 								echo "<option value=\"0\">".$Todas."</option>";
 								$sqli = "select id,grupo from sgm_articles_grupos";
-								$resulti = mysql_query(convertSQL($sqli));
-								while ($rowi = mysql_fetch_array($resulti)) {
+								$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+								while ($rowi = mysqli_fetch_array($resulti)) {
 									$sqls = "select id,subgrupo from sgm_articles_subgrupos where id_grupo=".$rowi["id"];
-									$results = mysql_query(convertSQL($sqls));
-									while ($rows = mysql_fetch_array($results)) {
+									$results = mysqli_query($dbhandle,convertSQL($sqls));
+									while ($rows = mysqli_fetch_array($results)) {
 										echo "<option value=\"".$rows["id"]."\">".$rowi["grupo"]."-".$rows["subgrupo"]."</option>";
 									}
 								}
@@ -1444,16 +1444,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 2){
 			$sqlg = "select id from sgm_articles_grupos order by codigo";
-			$resultg = mysql_query(convertSQL($sqlg));
-			while ($rowg = mysql_fetch_array($resultg)) {
+			$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+			while ($rowg = mysqli_fetch_array($resultg)) {
 				#actualizar familia
 				$camposUpdate = array("grupo","codigo");
 				$datosUpdate = array($_POST["fgrupo".$rowg["id"]],$_POST["fcodigo".$rowg["id"]]);
 				updateFunction ("sgm_articles_grupos",$rowg["id"],$camposUpdate,$datosUpdate);
 				#actualizar todas las sufamilias
 				$sqls = "select id from sgm_articles_subgrupos where id_grupo=".$rowg["id"]." order by codigo";
-				$results = mysql_query(convertSQL($sqls));
-				while ($rows = mysql_fetch_array($results)) {
+				$results = mysqli_query($dbhandle,convertSQL($sqls));
+				while ($rows = mysqli_fetch_array($results)) {
 					$camposUpdate = array("subgrupo","codigo","id_grupo");
 					$datosUpdate = array($_POST["sfsubgrupo".$rows["id"]],$_POST["sfcodigo".$rows["id"]],$_POST["sfid_grupo".$rows["id"]]);
 					updateFunction ("sgm_articles_subgrupos",$rows["id"],$camposUpdate,$datosUpdate);
@@ -1468,29 +1468,29 @@ if (($option == 1004) AND ($autorizado == true)) {
 		if ($ssoption == 4) {
 			### Pone a 0 el valor de todos articulos de las subfamilias afectadas
 			$sqls = "select id from sgm_articles_subgrupos where id_grupo=".$_GET["id"];
-			$results = mysql_query(convertSQL($sqls));
-			while ($rows = mysql_fetch_array($results)) {
+			$results = mysqli_query($dbhandle,convertSQL($sqls));
+			while ($rows = mysqli_fetch_array($results)) {
 				$sql = "update sgm_articles set ";
 				$sql = $sql."id_subgrupo=0";
 				$sql = $sql." WHERE id_subgrupo=".$rows["id"]."";
-				mysql_query(convertSQL($sql));
+				mysqli_query($dbhandle,convertSQL($sql));
 			}
 			#### Elimina las subfamilias
 			$sql = "delete from sgm_articles_subgrupos WHERE id_grupo=".$_GET["id"];
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 			#### ELimina las familias
 			$sql = "delete from sgm_articles_grupos WHERE id=".$_GET["id"];
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		if ($ssoption == 5) {
 			### Pone a 0 el valor de todos articulos de las subfamilias afectadas
 			$sql = "update sgm_articles set ";
 			$sql = $sql."id_subgrupo=0";
 			$sql = $sql." WHERE id_subgrupo=".$_GET["id"]."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 			#### Elimina las subfamilias
 			$sql = "delete from sgm_articles_subgrupos WHERE id=".$_GET["id"];
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 
 		echo "<h4>".$Familias." / ".$Subfamilias." : </h4>";
@@ -1515,8 +1515,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=510&ssop=3\" method=\"post\">";
 				echo "<th><select name=\"id_grupo\" style=\"width:150px\">";
 					$sqlg = "select id,grupo from sgm_articles_grupos order by grupo";
-					$resultg = mysql_query(convertSQL($sqlg));
-					while ($rowg = mysql_fetch_array($resultg)) {
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					while ($rowg = mysqli_fetch_array($resultg)) {
 						echo "<option value=\"".$rowg["id"]."\">".$rowg["grupo"]."</option>";
 					}
 				echo "</select></th>";
@@ -1532,8 +1532,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<form action=\"index.php?op=1004&sop=510&ssop=2\" method=\"post\">";
 			echo "<tr><td colspan=\"8\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:300px\"></td></tr>";
 			$sql = "select id,codigo,grupo from sgm_articles_grupos order by codigo";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr style=\"background-color:silver;border:1px solid Silver;\">";
 					echo "<td style=\"vertical-align:top\"><a href=\"index.php?op=1004&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<td style=\"vertical-align:top\"><input type=\"Text\" name=\"fcodigo".$row["id"]."\" style=\"width:25px\" maxlength=\"5\" value=\"".$row["codigo"]."\"></td>";
@@ -1544,15 +1544,15 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<th>".$Subfamilia."</th>";
 				echo "</tr>";
 				$sqls = "select id,codigo,subgrupo,id_grupo from sgm_articles_subgrupos where id_grupo=".$row["id"]." order by codigo";
-				$results = mysql_query(convertSQL($sqls));
-				while ($rows = mysql_fetch_array($results)) {
+				$results = mysqli_query($dbhandle,convertSQL($sqls));
+				while ($rows = mysqli_fetch_array($results)) {
 					echo "<tr>";
 						echo "<td colspan=\"3\"></td>";
 						echo "<td><a href=\"index.php?op=1004&sop=512&id=".$rows["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 						echo "<td><select name=\"sfid_grupo".$rows["id"]."\" style=\"width:150px\">";
 							$sqlg = "select id,grupo from sgm_articles_grupos order by grupo";
-							$resultg = mysql_query(convertSQL($sqlg));
-							while ($rowg = mysql_fetch_array($resultg)) {
+							$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+							while ($rowg = mysqli_fetch_array($resultg)) {
 								if ($rows["id_grupo"] == $rowg["id"]) {
 									echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["grupo"]."</option>";
 								} else {
@@ -1595,7 +1595,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 2) {
 			$sql = "delete from sgm_articles_subgrupos_caracteristicas WHERE id_subgrupo=".$_GET["id"]." and id_caracteristica=".$_GET["id_car"]."";
-			mysql_query(convertSQL($sql));
+			mysqli_query($dbhandle,convertSQL($sql));
 		}
 
 		echo "<h4>".$Caracteristicas." : </h4>";
@@ -1612,8 +1612,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=515&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td><select name=\"id_caracteristica\" style=\"width:150px\">";
 					$sqlg = "select id,nombre from sgm_articles_caracteristicas where visible=1 order by nombre";
-					$resultg = mysql_query(convertSQL($sqlg));
-					while ($rowg = mysql_fetch_array($resultg)) {
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					while ($rowg = mysqli_fetch_array($resultg)) {
 						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
 					}
 				echo "</select></td>";
@@ -1622,11 +1622,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select id_caracteristica from sgm_articles_subgrupos_caracteristicas where id_subgrupo=".$_GET["id"]."";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$sqls = "select id,nombre from sgm_articles_caracteristicas where id=".$row["id_caracteristica"]." order by nombre";
-				$results = mysql_query(convertSQL($sqls));
-				while ($rows = mysql_fetch_array($results)) {
+				$results = mysqli_query($dbhandle,convertSQL($sqls));
+				while ($rows = mysqli_fetch_array($results)) {
 					echo "<tr>";
 						echo "<td><a href=\"index.php?op=1004&sop=516&id=".$_GET["id"]."&id_car=".$rows["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 						echo "<td>".$rows["nombre"]."</td>";
@@ -1680,8 +1680,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<td><select name=\"id_caracteristica\">";
 				echo "<option value=\"0\">".$Sin_dependencias."</option>";
 				$sqlg = "select id,nombre from sgm_articles_caracteristicas where id_caracteristica=0 and visible=1 order by nombre";
-				$resultg = mysql_query(convertSQL($sqlg));
-				while ($rowg = mysql_fetch_array($resultg)) {
+				$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+				while ($rowg = mysqli_fetch_array($resultg)) {
 					echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
 				}
 			echo "</select></td>";
@@ -1694,16 +1694,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
 		$sql = "select * from sgm_articles_caracteristicas where id_caracteristica=0 and visible=1 order by nombre";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			echo "<tr>";
 				echo "<td><a href=\"index.php?op=1004&sop=131&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 				echo "<form action=\"index.php?op=1004&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
 				echo "<td><select name=\"id_caracteristica\">";
 					echo "<option value=\"0\">".$Sin_dependencias."</option>";
 					$sqlg = "select id,nombre from sgm_articles_caracteristicas where id_caracteristica=0 and visible=1 and id<>".$row["id"]." order by nombre";
-					$resultg = mysql_query(convertSQL($sqlg));
-					while ($rowg = mysql_fetch_array($resultg)) {
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					while ($rowg = mysqli_fetch_array($resultg)) {
 						if ($rows["id_caracteristica"] == $rowg["id"]) {
 							echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["nombre"]."</option>";
 						} else {
@@ -1719,8 +1719,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</form>";
 				if ($row["valor"] == "") {
 					$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row["id"]." and visible=1";
-					$resultg = mysql_query(convertSQL($sqlg));
-					$rowg = mysql_fetch_array($resultg);
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					$rowg = mysqli_fetch_array($resultg);
 					if ($rowg["total"] == 0) {
 							echo "<td style=\"width:100px;height:5px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
 								echo "<a href=\"index.php?op=1004&sop=522&id_caracteristica=".$row["id"]."\" style=\"color:white;\">".$Crear." ".$Tabla."</a>";
@@ -1735,16 +1735,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</tr>";
 			##### recorrido de todas las caracteristicas secundarias
 			$sql1 = "select * from sgm_articles_caracteristicas where id_caracteristica=".$row["id"]." and visible=1 order by nombre";
-			$result1 = mysql_query(convertSQL($sql1));
-			while ($row1 = mysql_fetch_array($result1)) {
+			$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+			while ($row1 = mysqli_fetch_array($result1)) {
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1004&sop=521&id=".$row1["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1004&sop=520&ssop=2&id=".$row1["id"]."\" method=\"post\">";
 					echo "<td><select name=\"id_caracteristica\">";
 						echo "<option value=\"0\">".$Sin_dependencias."</option>";
 						$sqlg = "select id,nombre from sgm_articles_caracteristicas where id_caracteristica=0 and visible=1 order by nombre";
-						$resultg = mysql_query(convertSQL($sqlg));
-						while ($rowg = mysql_fetch_array($resultg)) {
+						$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+						while ($rowg = mysqli_fetch_array($resultg)) {
 							if ($row1["id_caracteristica"] == $rowg["id"]) {
 								echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["nombre"]."</option>";
 							} else {
@@ -1760,8 +1760,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</form>";
 					if ($row1["valor"] == "") {
 						$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row1["id"]." and visible=1";
-						$resultg = mysql_query(convertSQL($sqlg));
-						$rowg = mysql_fetch_array($resultg);
+						$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+						$rowg = mysqli_fetch_array($resultg);
 						if ($rowg["total"] == 0) {
 							echo "<td style=\"width:100px;height:5px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
 								echo "<a href=\"index.php?op=1004&sop=522&id_caracteristica=".$row1["id"]."\" style=\"color:white;\">".$Crear." ".$Tabla."</a>";
@@ -1822,8 +1822,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql1 = "select id,valor from sgm_articles_caracteristicas_tablas where id_caracteristica=".$_GET["id_caracteristica"]." and visible=1 order by valor";
-			$result1 = mysql_query(convertSQL($sql1));
-			while ($row1 = mysql_fetch_array($result1)) {
+			$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+			while ($row1 = mysqli_fetch_array($result1)) {
 				echo "<tr>";
 					echo "<form action=\"index.php?op=1004&sop=522&ssop=2&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\" method=\"post\">";
 					echo "<td><a href=\"index.php?op=1004&sop=523&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
@@ -1873,8 +1873,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<th>".$Editar."</th>";
 					echo "</tr>";
 					$sql = "select id,nombre,poblacion,telefono from sgm_stock_almacenes where visible=1 order by nombre";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)) {
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
 					echo "<tr>";
 						echo "<td><a href=\"index.php?op=1004&sop=531&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 						echo "<td style=\"width:45%;\">".$row["nombre"]."</td>";
@@ -1897,8 +1897,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<caption>".$Modificar." ".$Almacen."</caption>";
 				}
 					$sql = "select * from sgm_stock_almacenes where visible=1 and id=".$_GET["id"];
-					$result = mysql_query(convertSQL($sql));
-					$row = mysql_fetch_array($result);
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
 					if ($_GET["id"] == 0) {
 						echo "<form action=\"index.php?op=1004&sop=530&ssop=1\" method=\"post\">";
 					} else {
@@ -1978,8 +1978,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		}
 
 		$sqla = "select nombre from sgm_stock_almacenes where id=".$_GET["id"];
-		$resulta = mysql_query(convertSQL($sqla));
-		$rowa = mysql_fetch_array($resulta);
+		$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+		$rowa = mysqli_fetch_array($resulta);
 		echo "<h4>".$Almacenes." : ".$rowa["nombre"]."</h4>";
 		echo boton(array("op=1004&sop=530"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -2005,8 +2005,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select id,nombre,orden from sgm_stock_almacenes_pasillo where visible=1 and id_almacen=".$_GET["id"]." order by orden";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1004&sop=533&id=".$_GET["id"]."&id_pasillo=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1004&sop=532&ssop=2&id=".$_GET["id"]."&id_pasillo=".$row["id"]."\" method=\"post\">";
@@ -2040,8 +2040,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
 				$sqlpe = "select id,nombre,orden from sgm_stock_almacenes_pasillo_estanteria where visible=1 and id_pasillo=".$row["id"]." order by orden";
-				$resultpe = mysql_query(convertSQL($sqlpe));
-				while ($rowpe = mysql_fetch_array($resultpe)) {
+				$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+				while ($rowpe = mysqli_fetch_array($resultpe)) {
 					echo "<tr>";
 						echo "<td></td>";
 						echo "<td></td>";
@@ -2078,8 +2078,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
 					$sqlpes = "select id,nombre,orden,porcentage from sgm_stock_almacenes_pasillo_estanteria_seccion where visible=1 and id_estanteria=".$rowpe["id"]." order by orden";
-					$resultpes = mysql_query(convertSQL($sqlpes));
-					while ($rowpes = mysql_fetch_array($resultpes)) {
+					$resultpes = mysqli_query($dbhandle,convertSQL($sqlpes));
+					while ($rowpes = mysqli_fetch_array($resultpes)) {
 						echo "<tr>";
 							echo "<td></td>";
 							echo "<td></td>";
@@ -2125,8 +2125,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 	
 	if ($soption == 539) {
 		$sql = "select id,nombre from sgm_stock_almacenes where id=".$_GET["id"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<h4>".$row["nombre"]."</h4>";
 		echo boton(array("op=1004&sop=530"),array("&laquo; ".$Volver));
 		echo mostrarAlmacen($row["id"],0);
@@ -2139,8 +2139,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<tr><td><a href=\"index.php?op=1004&sop=400&descatalogat=1\" class=\"style2\">".$Descatalogados."</a></td></tr>";
 			echo "<tr><td><a href=\"index.php?op=1004&sop=400&idgrupo=0&idsubgrupo=0&descatalogat=0\" class=\"style2\">".$Sin." ".$Clasificar."</a></td></tr>";
 			$sql = "select * from sgm_articles_grupos order by grupo";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 					if ($_GET['idgrupo'] == $row["id"]) { echo "<tr><td style=\"background-color:#32599E;color:White;\"><a href=\"index.php?op=1004&sop=400&idgrupo=".$row["id"]."\" class=\"style2\" style=\"color:White;\">".$row["grupo"]." (".$total.")</a></td></tr>"; }
 					else { echo "<tr><td><a href=\"index.php?op=1004&sop=400&idgrupo=".$row["id"]."\" class=\"style2\">".$row["grupo"]."</a></td></tr>"; }
 			}
@@ -2148,8 +2148,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "</td><td valign=\"top\"><strong>".$Subfamilias."</strong>";
 			echo "<table style=\"width:200px\">";
 			$sqlg = "select * from sgm_articles_subgrupos where id_grupo=".$_GET['idgrupo']." order by subgrupo";
-			$resultg = mysql_query(convertSQL($sqlg));
-			while ($rowg = mysql_fetch_array($resultg)) {
+			$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+			while ($rowg = mysqli_fetch_array($resultg)) {
 					if ($_GET['idsubgrupo'] == $rowg["id"]) { echo "<tr><td style=\"background-color:#32599E;color:White;\"><a href=\"index.php?op=1004&sop=400&idgrupo=".$_GET['idgrupo']."&idsubgrupo=".$rowg["id"]."\" class=\"style2\" style=\"color:White;\">".$rowg["subgrupo"]." (".$rowt["total"].")</a></td></tr>";	}
 					else { echo "<tr><td><a href=\"index.php?op=1004&sop=400&idgrupo=".$_GET['idgrupo']."&idsubgrupo=".$rowg["id"]."\" class=\"style2\">".$rowg["subgrupo"]."</a></td></tr>"; }
 			}
@@ -2157,14 +2157,14 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "</td><td>&nbsp;</td><td style=\"text-align:center;vertical-align:top;witdh:300px\"><strong>".$Articulos."</strong>";
 			if (($_GET['idsubgrupo'] != "") and ($_GET["id"] == "")) {
 				$sqlt = "select count(*) as total from sgm_articles where visible=1 and descatalogat=0 and id_subgrupo=".$_GET["idsubgrupo"];
-				$resultt = mysql_query(convertSQL($sqlt));
-				$rowt = mysql_fetch_array($resultt);
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				$rowt = mysqli_fetch_array($resultt);
 				echo "<table cellpadding=\"0\" cellspacing=\"0\">";
 				if ($rowt["total"] <> 0) {
 					$x = 0;
 					$sql = "select * from sgm_articles where visible=1 and id_subgrupo=".$_GET["idsubgrupo"]." and descatalogat=0 order by nombre";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)) {
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
 						if ($x == 0) { echo "<tr style=\"background-color : #D8D8D8;\">"; }
 						if ($x == 1) { echo "<tr>"; }
 							echo "<td style=\"text-align:left; width:100px\">".$row["codigo"]."</td>"; 
@@ -2178,22 +2178,22 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 			if ($_GET['descatalogat'] != "") {
 				$sqlt = "select count(*) as total from sgm_articles where visible=1 and descatalogat=1";
-				$resultt = mysql_query(convertSQL($sqlt));
-				$rowt = mysql_fetch_array($resultt);
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				$rowt = mysqli_fetch_array($resultt);
 				echo "<table cellpadding=\"0\" cellspacing=\"0\">";
 				if ($rowt["total"] <> 0) {
 					$x = 0;
 					$sql = "select * from sgm_articles where visible=1 and descatalogat=1 order by nombre";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)) {
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
 						if ($x == 0) { echo "<tr style=\"background-color : #D8D8D8;\">"; }
 						if ($x == 1) { echo "<tr>"; }
 							echo "<td>".$row["codigo"]."</td>"; 
 							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1004&sop=26&id=".$row["id"]."\" class=\"style2\">[+]&nbsp;</a></td>";
 							echo "<td style=\"text-align:left; width:275px\" class=\"style2\">".$row["nombre"]."</td>";
 						$sqlpvp = "select * from sgm_cuerpo where codigo=".$row["codigo"]." and vigente=1";
-						$resultpvp = mysql_query(convertSQL($sqlpvp));
-						$rowpvp = mysql_fetch_array($resultpvp);
+						$resultpvp = mysqli_query($dbhandle,convertSQL($sqlpvp));
+						$rowpvp = mysqli_fetch_array($resultpvp);
 							echo "<td style=\"text-align:right; width:75px\" class=\"style2\">".number_format($row["pvp"], 2, ',', '.')."€</td>";
 						echo "</tr>";
 						if ($x == 0) { $x = 1; } else { $x = 0; }
@@ -2210,34 +2210,34 @@ if (($option == 1004) AND ($autorizado == true)) {
 
 function mostrarAlmacen($id_almacen,$id_seccion)
 {
-	global $Pasillo,$Sin,$Estanterias;
+	global $db,$dbhandle,$Pasillo,$Sin,$Estanterias;
 
 	$sqlp = "select id,nombre from sgm_stock_almacenes_pasillo where id_almacen=".$id_almacen." and visible=1 order by orden";
-	$resultp = mysql_query(convertSQL($sqlp));
-	while ($rowp = mysql_fetch_array($resultp)) {
+	$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+	while ($rowp = mysqli_fetch_array($resultp)) {
 		echo $Pasillo." : <strong>".$rowp["nombre"]."</strong><br><br>";
 		echo "<table cellpadding=\"0\" cellspacing=\"0\">";
 		$sqlet = "select count(*) as total from sgm_stock_almacenes_pasillo_estanteria where id_pasillo=".$rowp["id"]." and visible=1 order by orden";
-		$resultet = mysql_query(convertSQL($sqlet));
-		$rowet = mysql_fetch_array($resultet);
+		$resultet = mysqli_query($dbhandle,convertSQL($sqlet));
+		$rowet = mysqli_fetch_array($resultet);
 		if ($rowet["total"] == 0) {
 			echo "<tr><td style=\"width:100px;text-align:right;vertical-align:top;\">".$Sin." ".$Estanterias."&nbsp;&nbsp;</td><td><table style=\"width:700px;height:50px;background-color: Black;\"><tr>";
 				echo "<td style=\"width:100%;\">&nbsp;</td>";
 			echo "</tr></table></td></tr>";
 		} else {
 			$sqle = "select id,nombre from sgm_stock_almacenes_pasillo_estanteria where id_pasillo=".$rowp["id"]." and visible=1 order by orden";
-			$resulte = mysql_query(convertSQL($sqle));
-			while ($rowe = mysql_fetch_array($resulte)) {
+			$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+			while ($rowe = mysqli_fetch_array($resulte)) {
 				echo "<tr><td style=\"width:100px;text-align:right;vertical-align:top;\">".$rowe["nombre"]."&nbsp;&nbsp;</td><td><table style=\"width:700px;border-left: 1px solid Black;border-top: 1px solid Black;\" cellpadding=\"0\" cellspacing=\"0\"><tr>";
 				$sqlst = "select count(*) as total from sgm_stock_almacenes_pasillo_estanteria_seccion where id_estanteria=".$rowe["id"]." and visible=1 order by orden";
-				$resultst = mysql_query(convertSQL($sqlst));
-				$rowst = mysql_fetch_array($resultst);
+				$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
+				$rowst = mysqli_fetch_array($resultst);
 				if ($rowst["total"] == 0) {
 					echo "<td style=\"width:100%;background-color: Black;height:25px\">&nbsp;</td>";
 				} else {
 					$sqls = "select id,porcentage from sgm_stock_almacenes_pasillo_estanteria_seccion where id_estanteria=".$rowe["id"]." and visible=1 order by orden";
-					$results = mysql_query(convertSQL($sqls));
-					while ($rows = mysql_fetch_array($results)) {
+					$results = mysqli_query($dbhandle,convertSQL($sqls));
+					while ($rows = mysqli_fetch_array($results)) {
 						if ($rows["id"] == $id_seccion) {
 							echo "<td style=\"background-color: Red;width:".$rows["porcentage"]."%;height:25px;border-right: 1px solid Black;\">&nbsp;</td>";
 						} else {

@@ -3,21 +3,21 @@ error_reporting(~E_ALL);
 
 
 function refactura($idfactura) {
-	global $db;
+	global $db,$dbhandle;
 	#CALCULO DEL TOTAL DE LAS LINEAS
 	$sql = "select count(*) as total from sgm_cuerpo where idfactura=".$idfactura;
-	$result = mysql_query(convertSQL($sql));
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	if ($row["total"] == 0) { $subtotal = 0; } else {
 		$sql = "select sum(total) as subtotal from sgm_cuerpo where suma=0 and idfactura=".$idfactura;
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["subtotal"]) { $subtotal = $row["subtotal"]; } else { $subtotal = 0; }
 	}
 	# SELECT DE LA CABEZERA
 	$sql = "select * from sgm_cabezera where id=".$idfactura;
-	$result = mysql_query(convertSQL($sql));
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	if ($row["total_forzado"] == 0) {
 		$sql = "update sgm_cabezera set ";
 		$sql = $sql."subtotal=".$subtotal;
@@ -28,7 +28,7 @@ function refactura($idfactura) {
 		$xxx = $xx -(($x / 100) * $row["retenciones"]);
 		$sql = $sql.",total=".$xxx;
 		$sql = $sql." WHERE id=".$idfactura;
-		mysql_query(convertSQL($sql));
+		mysqli_query($dbhandle,convertSQL($sql));
 #		echo $sql;
 	}
 	if ($row["total_forzado"] == 1) {
@@ -41,7 +41,7 @@ function refactura($idfactura) {
 		$sql = $sql.",descuento_absoluto=".($subtotal-$x);
 		$sql = $sql.",total=".$row["total"];
 		$sql = $sql." WHERE id=".$idfactura;
-		mysql_query(convertSQL($sql));
+		mysqli_query($dbhandle,convertSQL($sql));
 #		echo $sql;
 	}
 }

@@ -3,11 +3,11 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarContrasenya ($url){
-	global $db,$Volver,$Editar,$Contrasena,$Contrato,$Aplicacion,$Acceso,$Usuario,$Descripcion,$Modificar,$Anadir,$Anterior,$Nueva,$Repetir;
+	global $db,$dbhandle,$Volver,$Editar,$Contrasena,$Contrato,$Aplicacion,$Acceso,$Usuario,$Descripcion,$Modificar,$Anadir,$Anterior,$Nueva,$Repetir;
 	if ($_GET["id_con"] > 0){
 		$sqlcc = "select * from sgm_contrasenyes WHERE id=".$_GET["id_con"];
-		$resultcc = mysql_query(convertSQL($sqlcc));
-		$rowcc = mysql_fetch_array($resultcc);
+		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+		$rowcc = mysqli_fetch_array($resultcc);
 		echo "<h4>".$Editar." ".$Contrasena." :</h4>";
 		echo boton(array($url."&id_contrato=".$rowcc["id_contrato"]."&id_aplicacion=".$rowcc["id_aplicacion"]),array("&laquo; ".$Volver));
 		echo "<form action=\"index.php?".$url."&ssop=2&id_con=".$_GET["id_con"]."\" method=\"post\">";
@@ -24,11 +24,11 @@ function afegirModificarContrasenya ($url){
 				$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1";
 				if ($_GET["id"] > 0){ $sqlc .= " and id=".$_GET["id"];}
 				$sqlc .= " order by nombre";
-				$resultc = mysql_query(convertSQL($sqlc));
-				while ($rowc = mysql_fetch_array($resultc)) {
+				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+				while ($rowc = mysqli_fetch_array($resultc)) {
 					$sql = "select id,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)){
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)){
 						if ($rowcc["id_contrato"] == $row["id"]){
 							echo "<option value=\"".$row["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
 						} else {
@@ -43,8 +43,8 @@ function afegirModificarContrasenya ($url){
 			echo "<td><select style=\"width:200px\" name=\"id_aplicacion\">";
 				echo "<option value=\"0\">-</option>";
 				$sqlam = "select id,aplicacion from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
-				$resultam = mysql_query(convertSQL($sqlam));
-				while ($rowam = mysql_fetch_array($resultam)) {
+				$resultam = mysqli_query($dbhandle,convertSQL($sqlam));
+				while ($rowam = mysqli_fetch_array($resultam)) {
 					if ($rowcc["id_aplicacion"] == $rowam["id"]){
 						echo "<option value=\"".$rowam["id"]."\" selected>".$rowam["aplicacion"]."</option>";
 					} else {

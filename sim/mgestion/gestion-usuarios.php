@@ -58,8 +58,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 	if ($soption == 3) {
 		if ($ssoption == 1) {
 			$sql = "select * from sgm_users_clients where id_user=".$_GET["id_user"]." and id_client=".$_POST["id_client"];
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			if (!$row){
 				$camposInsert = "id_user,id_client,admin";
 				$datosInsert = array($_GET["id_user"],$_POST["id_client"],$_POST["admin"]);
@@ -76,8 +76,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 		}
 
 		$sqluser = "select id,usuario from sgm_users WHERE id=".$_GET["id_user"];
-		$resultuser = mysql_query(convertSQL($sqluser));
-		$rowuser = mysql_fetch_array($resultuser);
+		$resultuser = mysqli_query($dbhandle,convertSQL($sqluser));
+		$rowuser = mysqli_fetch_array($resultuser);
 		echo "<h4>".$Clientes." ".$Usuario." : ".$rowuser["usuario"]."</h4>";
 		echo boton(array("op=1002&sop=0"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -92,8 +92,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><select name=\"id_client\" style=\"width:500px;\">";
 					$sqlc = "select id,nombre from sgm_clients where visible=1 order by nombre";
-					$resultc = mysql_query(convertSQL($sqlc));
-					while ($rowc = mysql_fetch_array($resultc)) {
+					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+					while ($rowc = mysqli_fetch_array($resultc)) {
 						echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]."</option>";
 					}
 				echo "</select></td>";
@@ -107,11 +107,11 @@ if (($option == 1002) AND ($autorizado == true)) {
 
 			echo "<tr><td>&nbsp;</td></tr>";
 			$sql = "select * from sgm_users_clients where id_user=".$_GET["id_user"];
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				$sqlc = "select id,nombre from sgm_clients where id=".$row["id_client"];
-				$resultc = mysql_query(convertSQL($sqlc));
-				$rowc = mysql_fetch_array($resultc);
+				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+				$rowc = mysqli_fetch_array($resultc);
 				echo "<tr>";
 					echo "<td style=\"text-align:center\"><a href=\"index.php?op=1002&sop=3&ssop=3&id_user=".$_GET["id_user"]."&id_linea=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
 					echo "<td style=\"width:200px;\">".$rowc["nombre"]."</td>";
@@ -176,8 +176,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 			echo "</form>";
 			echo "<tr><td>&nbsp;</td></tr>";
 		$sqlut = "select * from sgm_users_tipus where visible=1 order by tipus";
-		$resultut = mysql_query(convertSQL($sqlut));
-		while ($rowut = mysql_fetch_array($resultut)) {
+		$resultut = mysqli_query($dbhandle,convertSQL($sqlut));
+		while ($rowut = mysqli_fetch_array($resultut)) {
 			echo "<tr>";
 				echo "<td style=\"text-align:center\"><a href=\"index.php?op=1002&sop=511&id=".$rowut["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
 				echo "<form action=\"index.php?op=1002&sop=510&ssop=2&id=".$rowut["id"]."\" method=\"post\">";
@@ -202,18 +202,18 @@ if (($option == 1002) AND ($autorizado == true)) {
 	if (($soption == 512) and ($admin == true)) {
 		if ($ssoption == 1) {
 			$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				if ($_POST["permiso".$row["id"]] == 0) {
 					$sqlt = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-					$resultt = mysql_query(convertSQL($sqlt));
-					$rowt = mysql_fetch_array($resultt);
+					$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+					$rowt = mysqli_fetch_array($resultt);
 					deleteFunction ("sgm_users_permisos",$rowt["id"]);
 				}
 				if ($_POST["permiso".$row["id"]] == 1) {
 					$sqlt = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-					$resultt = mysql_query(convertSQL($sqlt));
-					$rowt = mysql_fetch_array($resultt);
+					$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+					$rowt = mysqli_fetch_array($resultt);
 					if (!$rowt){
 						$camposInsert = "id_tipus,id_modulo";
 						$datosInsert = array($_GET["id"],$_POST["id_modulo".$row["id"]]);
@@ -221,8 +221,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 					}
 				}
 				$sqlt = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$_POST["id_modulo".$row["id"]];
-				$resultt = mysql_query(convertSQL($sqlt));
-				$rowt = mysql_fetch_array($resultt);
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				$rowt = mysqli_fetch_array($resultt);
 				$camposUpdate = array("admin");
 				$datosUpdate = array($_POST["admin".$row["id"]]);
 				updateFunction ("sgm_users_permisos",$rowt["id"],$camposUpdate,$datosUpdate);
@@ -230,8 +230,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 		}
 
 		$sql = "select * from sgm_users_tipus where id=".$_GET["id"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		echo "<h4>".$Permisos." ".$Tipo." ".$Usuario." : ".$row["tipus"]."</h4>";
 			echo boton(array("op=1002&sop=510"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -244,11 +244,11 @@ if (($option == 1002) AND ($autorizado == true)) {
 		echo "<form action=\"index.php?op=1002&sop=512&&id=".$_GET["id"]."&ssop=1\" method=\"post\">";
 			echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
 		$sql = "select id,nombre,id_modulo from sgm_users_permisos_modulos where visible=1 order by nombre";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			$sqlt = "select count(*) as total from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$row["id_modulo"];
-			$resultt = mysql_query(convertSQL($sqlt));
-			$rowt = mysql_fetch_array($resultt);
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
 			echo "<tr>";
 				echo "<td style=\"width:150px\"><strong>".$row["nombre"]."</strong></td>";
 				echo "<input type=\"Hidden\" name=\"id_modulo".$row["id"]."\" value=\"".$row["id_modulo"]."\">";
@@ -263,8 +263,8 @@ if (($option == 1002) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				$sqlad = "select * from sgm_users_permisos where id_tipus=".$_GET["id"]." and id_modulo=".$row["id_modulo"];
-				$resultad = mysql_query(convertSQL($sqlad));
-				$rowad = mysql_fetch_array($resultad);
+				$resultad = mysqli_query($dbhandle,convertSQL($sqlad));
+				$rowad = mysqli_fetch_array($resultad);
 				echo "<td style=\"width:60px\"><select name=\"admin".$row["id"]."\" style=\"width:40px\">";
 					if ($rowad["admin"] == 1) {
 						echo "<option value=\"1\" selected>".$Si."</option>";

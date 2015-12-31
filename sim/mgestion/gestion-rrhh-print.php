@@ -19,12 +19,12 @@ if ($soption == 666) {
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] == 1) {
 			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			if ($row["pass"] == $_POST["pass"]) {
 				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/");
 				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/");
@@ -36,11 +36,11 @@ if ($_COOKIE["musername"] == "") {
 else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
 	$result = mysql_query($sql);
-	$row = mysql_fetch_array($result);
+	$row = mysqli_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["pass"] == $_COOKIE["mpassword"] ) {
 			$user = true;
 			$username = $row["usuario"];
@@ -65,13 +65,13 @@ $autorizado = false;
 if ($user == true) {
 
 		$sqlsgm = "select * from sgm_users where id=".$userid;
-		$resultsgm = mysql_query(convertSQL($sqlsgm));
-		$rowsgm = mysql_fetch_array($resultsgm);
+		$resultsgm = mysqli_query($dbhandle,convertSQL($sqlsgm));
+		$rowsgm = mysqli_fetch_array($resultsgm);
 		if ($rowsgm["sgm"] == 1) { $autorizado = true; }
 
 		$sqlpermiso = "select count(*) as total from sgm_users_clients where id_client=".$rowi["id_cliente"]." and id_user=".$userid;
-		$resultpermiso = mysql_query(convertSQL($sqlpermiso));
-		$rowpermiso = mysql_fetch_array($resultpermiso);
+		$resultpermiso = mysqli_query($dbhandle,convertSQL($sqlpermiso));
+		$rowpermiso = mysqli_fetch_array($resultpermiso);
 		if ($rowpermiso["total"] == 1) { $autorizado = true; }
 
 }
@@ -82,8 +82,8 @@ if ($autorizado == true) {
 		echo "<br><br><br>";
 		echo "<table cellpadding=\"10px\" cellspacing=\"10px\" width=\"100%\">";
 			$sql = "select * from sgm_rrhh_departamento where visible=1 and id_departamento=0 order by departamento";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr><td style=\"padding-left: 0px;font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 10px;\">";
 					echo "&nbsp;".$row["departamento"]."";
 				echo "</td></tr>";
@@ -99,19 +99,19 @@ if ($autorizado == true) {
 		echo "<br>";
 		echo "<table cellpadding=\"10px\" cellspacing=\"10px\" width=\"100%\">";
 			$sql = "select * from sgm_rrhh_departamento where visible=1 and id_departamento=0 order by departamento";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr><td style=\"padding-left: 0px;font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 10px;\">";
 				echo "<strong>".$row["departamento"]."</strong>";
 				$sqlp = "select * from sgm_rrhh_puesto_trabajo where visible=1 and id_departamento=".$row["id"]." order by puesto";
-				$resultp = mysql_query(convertSQL($sqlp));
-				while ($rowp = mysql_fetch_array($resultp)){
+				$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+				while ($rowp = mysqli_fetch_array($resultp)){
 					$sqlpe = "select * from sgm_rrhh_puesto_empleado where visible=1 and id_puesto=".$rowp["id"]." and fecha_baja= '0000-00-00'";
-					$resultpe = mysql_query(convertSQL($sqlpe));
-					while ($rowpe = mysql_fetch_array($resultpe)){
+					$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+					while ($rowpe = mysqli_fetch_array($resultpe)){
 						$sqle = "select * from sgm_rrhh_empleado where visible=1 and id=".$rowpe["id_empleado"]."";
-						$resulte = mysql_query(convertSQL($sqle));
-						$rowe = mysql_fetch_array($resulte);
+						$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+						$rowe = mysqli_fetch_array($resulte);
 						echo "</td></tr><tr><td style=\"padding-left: 0px;\">";
 						echo "&nbsp;".$rowp["puesto"].": &nbsp;".$rowe["nombre"]."";
 						echo "<tr><td>";
@@ -129,8 +129,8 @@ if ($autorizado == true) {
 			echo "<br><br>";
 			echo "<table cellpadding=\"10px\" cellspacing=\"10px\" width=\"100%\">";
 				$sql = "select * from sgm_rrhh_empleado where visible=1 and id=".$_GET["id"]."";
-				$result = mysql_query(convertSQL($sql));
-				while ($row = mysql_fetch_array($result)){
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				while ($row = mysqli_fetch_array($result)){
 					echo "<tr style=\"font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 10px;\">";
 						echo "<td>";
 							echo "Numero:&nbsp;<strong>".$row["numero"]."</strong><br>";
@@ -152,11 +152,11 @@ if ($autorizado == true) {
 					echo "<tr></tr>";
 					echo "<tr></tr>";
 						$sqlpe = "select * from sgm_rrhh_puesto_empleado where id_empleado=".$_GET["id"]." and visible=1";
-						$resultpe = mysql_query(convertSQL($sqlpe));
-						while ($rowpe = mysql_fetch_array($resultpe)){
+						$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+						while ($rowpe = mysqli_fetch_array($resultpe)){
 							$sqle = "select * from sgm_rrhh_puesto_trabajo where id=".$rowpe["id_puesto"];
-							$resulte = mysql_query(convertSQL($sqle));
-							while ($rowe = mysql_fetch_array($resulte)){
+							$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+							while ($rowe = mysqli_fetch_array($resulte)){
 								echo "<trstyle=\"font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 10px;\">";
 								echo "<td>&nbsp;</td><td>".$rowe["puesto"]."</td>";
 								echo "<td>".$rowpe["fecha_alta"]."</td>";
@@ -176,11 +176,11 @@ if ($autorizado == true) {
 						echo "<tr></tr>";
 						echo "<tr></tr>";
 						$sqlc = "select * from sgm_rrhh_formacion_empleado where id_empleado=".$_GET["id"]." and visible=1";
-						$resultc = mysql_query(convertSQL($sqlc));
-						while ($rowc = mysql_fetch_array($resultc)){
+						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+						while ($rowc = mysqli_fetch_array($resultc)){
 							$sqlf = "select * from sgm_rrhh_formacion where id=".$rowc["id_curso"];
-							$resultf = mysql_query(convertSQL($sqlf));
-							while ($rowf = mysql_fetch_array($resultf)){
+							$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+							while ($rowf = mysqli_fetch_array($resultf)){
 								echo "<tr>";
 									echo "<td>&nbsp;</td><td>".$rowf["nombre"]."</td>";
 									echo "<td>".$rowf["fecha_inicio"]."</td>";
@@ -205,8 +205,8 @@ function busca_departamentos($id,$x)
 { 
 	global $db;
 			$sql = "select * from sgm_rrhh_departamento where visible=1 and id_departamento=".$id;
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr><td style=\"padding-left: ".$x."px;\">";
 					echo "&nbsp;".$row["departamento"]."";
 				echo "</td></tr>";
@@ -218,19 +218,19 @@ function busca_departamentos2($id,$x)
 { 
 	global $db;
 			$sql = "select * from sgm_rrhh_departamento where visible=1 and id_departamento=".$id;
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)){
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
 				echo "<tr><td style=\"padding-left: ".$x."px;\">";
 				echo "&nbsp;<strong>".$row["departamento"]."</strong>";
 				$sqlp = "select * from sgm_rrhh_puesto_trabajo where visible=1 and id_departamento=".$row["id"]." order by puesto";
-				$resultp = mysql_query(convertSQL($sqlp));
-				while ($rowp = mysql_fetch_array($resultp)){
+				$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+				while ($rowp = mysqli_fetch_array($resultp)){
 					$sqlpe = "select * from sgm_rrhh_puesto_empleado where visible=1 and id_puesto=".$rowp["id"]." and fecha_baja= '0000-00-00'";
-					$resultpe = mysql_query(convertSQL($sqlpe));
-					while ($rowpe = mysql_fetch_array($resultpe)){
+					$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+					while ($rowpe = mysqli_fetch_array($resultpe)){
 						$sqle = "select * from sgm_rrhh_empleado where visible=1 and id=".$rowpe["id_empleado"]."";
-						$resulte = mysql_query(convertSQL($sqle));
-						$rowe = mysql_fetch_array($resulte);
+						$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+						$rowe = mysqli_fetch_array($resulte);
 						echo "</td></tr><tr><td style=\"padding-left: ".$x."px;\">";
 						echo "&nbsp;".$rowp["puesto"].": &nbsp;".$rowe["nombre"]."";
 						echo "<tr><td>";

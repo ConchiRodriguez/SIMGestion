@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarServidors ($url,$url_del){
-	global $db,$Volver,$Modificar,$Anadir,$Eliminar,$Cliente,$Servidor,$Descripcion,$Servidores,$ssoption;
+	global $db,$dbhandle,$Volver,$Modificar,$Anadir,$Eliminar,$Cliente,$Servidor,$Descripcion,$Servidores,$ssoption;
 	if ($ssoption == 1) {
 		$camposInsert = "id_client,servidor,descripcion";
 		$datosInsert = array($_POST["id_client"].$_GET["id"],comillas($_POST["servidor"]),comillas($_POST["descripcion"]));
@@ -33,8 +33,8 @@ function afegirModificarServidors ($url,$url_del){
 			echo "<td>";
 				echo "<select style=\"width:500px\" name=\"id_client\">";
 					$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)) {
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
 						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 					}
 				echo "</select>";
@@ -49,8 +49,8 @@ function afegirModificarServidors ($url,$url_del){
 		$sql = "select * from sgm_clients_servidors where visible=1";
 		if ($_GET["id"] > 0) {$sql.=" and id_client=".$_GET["id"];}
 		$sql.=" order by id_client";
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)) {
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)) {
 			echo "<tr>";
 				echo "<td style=\"text-align:center;width:40;\"><a href=\"index.php?".$url_del."&id=".$_GET["id"]."&id_serv=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 				echo "<form action=\"index.php?".$url."&ssop=2&id=".$_GET["id"]."&id_serv=".$row["id"]."\" method=\"post\">";
@@ -58,8 +58,8 @@ function afegirModificarServidors ($url,$url_del){
 				echo "<td>";
 					echo "<select style=\"width:500px\" name=\"id_client\">";
 					$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
-					$resultc = mysql_query(convertSQL($sqlc));
-					while ($rowc = mysql_fetch_array($resultc)) {
+					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+					while ($rowc = mysqli_fetch_array($resultc)) {
 						if ($rowc["id"] == $row["id_client"]){
 							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 						} else {

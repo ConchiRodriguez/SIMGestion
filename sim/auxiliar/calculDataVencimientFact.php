@@ -4,10 +4,10 @@ error_reporting(~E_ALL);
 
 function calculDataVencimientFact($id_client,$fecha_factura) 
 { 
-	global $db;
+	global $db,$dbhandle;
 	$sqlc = "select * from sgm_clients where id=".$id_client;
-	$resultc = mysql_query(convertSQL($sqlc));
-	$rowc = mysql_fetch_array($resultc);
+	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+	$rowc = mysqli_fetch_array($resultc);
 
 	$a = date("Y", strtotime($fecha_factura));
 	$m = date("m", strtotime($fecha_factura));

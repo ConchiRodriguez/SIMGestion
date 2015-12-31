@@ -14,14 +14,14 @@ function ver_mail($texto,$id_fact,$x) {
 	$texto = str_replace("[/img]","\">", $texto);
 
 	$sqlf = "select * from sgm_cabezera where visible=1 and id=".$_GET["id_fact"];
-	$resultf = mysql_query(convertSQL($sqlf));
-	$rowf = mysql_fetch_array($resultf);
+	$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+	$rowf = mysqli_fetch_array($resultf);
 	$texto = str_replace("[pedido]",$rowf["numero_cliente"], $texto);
 	$texto = str_replace("[orden]",$rowf["numero"], $texto);
 
 	$sqlc = "select * from sgm_cuerpo where idfactura=".$id_fact;
-	$resultc = mysql_query(convertSQL($sqlc));
-	while ($rowc = mysql_fetch_array($resultc)){
+	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+	while ($rowc = mysqli_fetch_array($resultc)){
 		$fechas .= $rowc["fecha_prevision"]."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$rowc["fecha_prevision_propia"]."<br>";
 	}
 	$texto = str_replace("[fechas]",$fechas, $texto);
@@ -43,8 +43,8 @@ function ver_carta($texto,$id_client,$x) {
 
 	if ($x == 1){
 		$sql = "select * from sgm_clients where id=".$id_client;
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 
 		$texto = str_replace("[client]",$row["nombre"], $texto);
 		$texto = str_replace("[cognom1]",$row["cognom1"], $texto);
@@ -56,8 +56,8 @@ function ver_carta($texto,$id_client,$x) {
 		$texto = str_replace("[provincia]",$row["provincia"], $texto);
 
 		$sqlp = "select * from sys_naciones where CodigoNacion=".$row["id_pais"];
-		$resultp = mysql_query(convertSQL($sqlp));
-		$rowp = mysql_fetch_array($resultp);
+		$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+		$rowp = mysqli_fetch_array($resultp);
 
 		$texto = str_replace("[pais]",$rowp["Nacion"], $texto);
 		$texto = str_replace("[mail]",$row["mail"], $texto);
@@ -68,8 +68,8 @@ function ver_carta($texto,$id_client,$x) {
 		$texto = str_replace("[fax2]",$row["fax2"], $texto);
 
 		$sqlc = "select * from sgm_clients_contactos where pred=1 and id_client=".$id_client;
-		$resultc = mysql_query(convertSQL($sqlc));
-		$rowc = mysql_fetch_array($resultc);
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
 
 		$texto = str_replace("[nom]",$rowc["nombre"], $texto);
 		$texto = str_replace("[apellido1]",$rowc["apellido1"], $texto);
@@ -85,8 +85,8 @@ function ver_carta($texto,$id_client,$x) {
 	}
 	if ($x == 2){
 		$sqlc = "select * from sgm_clients_contactos where id=".$id_client;
-		$resultc = mysql_query(convertSQL($sqlc));
-		$rowc = mysql_fetch_array($resultc);
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
 
 		$texto = str_replace("[nom]",$rowc["nombre"], $texto);
 		$texto = str_replace("[apellido1]",$rowc["apellido1"], $texto);
@@ -101,8 +101,8 @@ function ver_carta($texto,$id_client,$x) {
 		$texto = str_replace("[movil]",$rowc["movil"], $texto);
 
 		$sql = "select * from sgm_clients where id=".$rowc["id_client"];
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 
 		$texto = str_replace("[client]",$row["nombre"], $texto);
 		$texto = str_replace("[cognom1]",$row["cognom1"], $texto);
@@ -114,8 +114,8 @@ function ver_carta($texto,$id_client,$x) {
 		$texto = str_replace("[provincia]",$row["provincia"], $texto);
 
 		$sqlp = "select * from sys_naciones where CodigoNacion=".$row["id_pais"];
-		$resultp = mysql_query(convertSQL($sqlp));
-		$rowp = mysql_fetch_array($resultp);
+		$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
+		$rowp = mysqli_fetch_array($resultp);
 
 		$texto = str_replace("[pais]",$rowp["Nacion"], $texto);
 		$texto = str_replace("[mail]",$row["mail"], $texto);
@@ -130,10 +130,10 @@ function ver_carta($texto,$id_client,$x) {
 }
 
 function ver_contacto_mailing($id,$color,$contactes,$check) {
-	global $db;
+	global $db,$dbhandle;
 	$sql = "select * from sgm_clients where visible=1 and id=".$id;
-	$result = mysql_query(convertSQL($sql));
-	$row = mysql_fetch_array($result);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
+	$row = mysqli_fetch_array($result);
 	echo "<tr style=\"background-color:".$color."\">";
 		echo "<td></td>";
 		if (strlen($row["nombre"]) > 50) { 
@@ -153,8 +153,8 @@ function ver_contacto_mailing($id,$color,$contactes,$check) {
 	echo "</tr>";
 	if ($contactes == 1) {
 		$sql = "select * from sgm_clients_contactos where visible=1 and id_client=".$id;
-		$result = mysql_query(convertSQL($sql));
-		while ($row = mysql_fetch_array($result)){
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)){
 			echo "<tr><td></td><td style=\"padding-left:15px;\">".$row["nombre"]."</td><td>".$row["departament"]."</td>";
 			if (($check == 1) or ($check != "")){
 				echo "<td><input type=\"Checkbox\" id=\"chequea_perso\" name=\"enviar_perso[]\" value=\"0\"></td>";
@@ -170,12 +170,12 @@ function ver_contacto_mailing($id,$color,$contactes,$check) {
 	}
 	if ($contactes == 2) {
 		$sql = "select count(*) as total from sgm_clients_contactos where visible=1 and pred=1 and id_client=".$id;
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] > 0) {
 			$sql = "select * from sgm_clients_contactos where visible=1 and pred=1 and id_client=".$id;
-			$result = mysql_query(convertSQL($sql));
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
 			echo "<tr><td></td><td style=\"padding-left:15px;\">".$row["nombre"]."</td><td>".$row["departament"]."</td>";
 				if (($check == 1) or ($check != "")){
 					echo "<td><input type=\"Checkbox\" id=\"chequea_perso\" name=\"enviar_perso[]\" value=\"0\"></td>";
@@ -193,14 +193,14 @@ function ver_contacto_mailing($id,$color,$contactes,$check) {
 
 function comprovar_ip($ip,$id) 
 { 
-	global $db;
+	global $db,$dbhandle;
 	$acceso = false;
 	$accesolocal = false;
 
 	### BUSCA SI ES UNA IP LOCAL
 	$sqlt = "select * from sgm_sys_ip_local";
-	$resultt = mysql_query(convertSQL($sqlt));
-	while ($rowt = mysql_fetch_array($resultt)) {
+	$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+	while ($rowt = mysqli_fetch_array($resultt)) {
 		$accesoip = false;
 		$x = 0;
 		for ($x = 0 ; $x < strlen($rowt["subxarxa"]) ; $x++) {
@@ -214,8 +214,8 @@ function comprovar_ip($ip,$id)
 	if ($accesolocal == true) { $sqlt = "select count(*) as total from sgm_users_ips where id_user=".$id." AND vigente=1 AND remota=0"; }
 	if ($accesolocal == false) { $sqlt = "select count(*) as total from sgm_users_ips where id_user=".$id." AND vigente=1 AND remota=1"; }
 
-	$resultt = mysql_query(convertSQL($sqlt));
-	$rowt = mysql_fetch_array($resultt);
+	$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+	$rowt = mysqli_fetch_array($resultt);
 
 	if ($rowt["total"] == 0) {
 		$acceso = true;
@@ -223,8 +223,8 @@ function comprovar_ip($ip,$id)
 
 		if ($accesolocal == true) { $sqlt2 = "select count(*) as total from sgm_users_ips where ip='".$ip."' AND id_user=".$id." AND vigente=1 AND remota=0"; }
 		if ($accesolocal == false) { $sqlt2 = "select count(*) as total from sgm_users_ips where ip='".$ip."' AND id_user=".$id." AND vigente=1 AND remota=1"; }
-		$resultt2 = mysql_query(convertSQL($sqlt2));
-		$rowt2 = mysql_fetch_array($resultt2);
+		$resultt2 = mysqli_query($dbhandle,convertSQL($sqlt2));
+		$rowt2 = mysqli_fetch_array($resultt2);
 
 		if ($rowt2["total"] > 0) {
 			$acceso = true;
@@ -392,7 +392,7 @@ function mes($year,$mes) {
 	$fiestaviernes = false;
 	$fiestasabado = true;
 	$fiestadomingo = true;
-	global $db;
+	global $db,$dbhandle;
 		$a = $year;
 		$m = $mes;
 		$d = 1;
@@ -500,26 +500,26 @@ function mes($year,$mes) {
 			}
 				$mesok .= "<strong style=\"font-size:12px;font-family :\"Arial Black\";\">".$d."</strong>";
 				$sql = "select count(*) as total from sgm_incidencias where (data_prevision like '%".$fecha."%') and programada=0";
-				$result = mysql_query(convertSQL($sql));
-				$row = mysql_fetch_array($result);
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				$row = mysqli_fetch_array($result);
 					$tareas = $row["total"];
 				if ($programada != 0) {
 					$sql = "select count(*) as total from sgm_incidencias where programada=".$programada;
-					$result = mysql_query(convertSQL($sql));
-					$row = mysql_fetch_array($result);
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
 						$tareas = $tareas + $row["total"];
 				}
 				$minutos = 0;
 				if ($tareas > 0) {
 					$mesok .= "<br><strong>".$tareas."</strong> Tareas";
 						$sql = "select* from sgm_incidencias where (data_prevision like '%".$fecha."%') and programada=0";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
 							$minutos = $minutos + $row["tiempo"];
 						}
 						$sql = "select * from sgm_incidencias where programada=".$programada;
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
 							$minutos = $minutos + $row["tiempo"];
 						}
 					$mesok .= "<br><strong>".$minutos."</strong> Minutos";
@@ -537,7 +537,7 @@ function mes($year,$mes) {
 }
 
 function agenda_mes($dia_select,$year,$mes,$usuario) { 
-	global $db;
+	global $db,$dbhandle;
 		$a = $year;
 		$m = $mes;
 		$d = 1;
@@ -627,16 +627,16 @@ function agenda_mes($dia_select,$year,$mes,$usuario) {
 			if ($date["mon"] < 10) { $y = "0".$date["mon"]; } else {$y = $date["mon"]; }
 			$hoy = $date["year"]."-".$y."-".$z;
 			$sqla = "select count(*) as total from agm_incidencias where fecha='".$fecha."' and id_usuario=".$usuario;
-			$resulta = mysql_query(convertSQL($sqla));
-			$rowa = mysql_fetch_array($resulta);
+			$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+			$rowa = mysqli_fetch_array($resulta);
 			if (($fecha != $hoy) and ($rowa["total"] == 0)) { $color = 'white'; }
 			if (($fecha != $hoy) and ($rowa["total"] == 1)) { 
 				$sqlac = "select * from av_iaula_actividades where fecha='".$fecha."' and id_iaula=".$iaula;
-				$resultac = mysql_query(convertSQL($sqlac));
-				$rowac = mysql_fetch_array($resultac);
+				$resultac = mysqli_query($dbhandle,convertSQL($sqlac));
+				$rowac = mysqli_fetch_array($resultac);
 				$sqlac2 = "select * from av_iaula_actividades_tipos where id='".$rowac["id_tipo_actividad"]."'";
-				$resultac2 = mysql_query(convertSQL($sqlac2));
-				$rowac2 = mysql_fetch_array($resultac2);
+				$resultac2 = mysqli_query($dbhandle,convertSQL($sqlac2));
+				$rowac2 = mysqli_fetch_array($resultac2);
 				$color = $rowac2["color"];
 			}
 			if (($fecha != $hoy) and ($rowa["total"] > 1)) { $color = 'silver'; }
@@ -661,7 +661,7 @@ function agenda_mes($dia_select,$year,$mes,$usuario) {
 }
 
 function agenda_conjunta($dia_select,$year,$mes,$usuario,$conjunta) {
-	global $db;
+	global $db,$dbhandle;
 		$a = $year;
 		$m = $mes;
 		$d = 1;
@@ -751,16 +751,16 @@ function agenda_conjunta($dia_select,$year,$mes,$usuario,$conjunta) {
 			if ($date["mon"] < 10) { $y = "0".$date["mon"]; } else {$y = $date["mon"]; }
 			$hoy = $date["year"]."-".$y."-".$z;
 			$sqla = "select count(*) as total from agm_incidencias where fecha='".$fecha."' and id_usuario=".$usuario;
-			$resulta = mysql_query(convertSQL($sqla));
-			$rowa = mysql_fetch_array($resulta);
+			$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+			$rowa = mysqli_fetch_array($resulta);
 			if (($fecha != $hoy) and ($rowa["total"] == 0)) { $color = 'white'; }
 			if (($fecha != $hoy) and ($rowa["total"] == 1)) { 
 				$sqlac = "select * from av_iaula_actividades where fecha='".$fecha."' and id_iaula=".$iaula;
-				$resultac = mysql_query(convertSQL($sqlac));
-				$rowac = mysql_fetch_array($resultac);
+				$resultac = mysqli_query($dbhandle,convertSQL($sqlac));
+				$rowac = mysqli_fetch_array($resultac);
 				$sqlac2 = "select * from av_iaula_actividades_tipos where id='".$rowac["id_tipo_actividad"]."'";
-				$resultac2 = mysql_query(convertSQL($sqlac2));
-				$rowac2 = mysql_fetch_array($resultac2);
+				$resultac2 = mysqli_query($dbhandle,convertSQL($sqlac2));
+				$rowac2 = mysqli_fetch_array($resultac2);
 				$color = $rowac2["color"];
 			}
 			if (($fecha != $hoy) and ($rowa["total"] > 1)) { $color = 'silver'; }
@@ -787,24 +787,24 @@ function agenda_conjunta($dia_select,$year,$mes,$usuario,$conjunta) {
 					if ($conjunta == 1) {
 
 						$sqlux = "select * from sgm_incidencias_usuaris_permisos where id_usuari_visitant=".$usuario." and id_usuari_propietari<>0";
-						$resultux = mysql_query(convertSQL($sqlux));
-						while ($rowux = mysql_fetch_array($resultux)) {	
+						$resultux = mysqli_query($dbhandle,convertSQL($sqlux));
+						while ($rowux = mysqli_fetch_array($resultux)) {	
 							$sql .= " or (id_usuario_destino=".$rowux["id_usuari_propietari"]." or id_2=".$rowux["id_usuari_propietari"]." or id_3=".$rowux["id_usuari_propietari"]." or id_4=".$rowux["id_usuari_propietari"]." or id_5=".$rowux["id_usuari_propietari"]." or id_6=".$rowux["id_usuari_propietari"]." or id_7=".$rowux["id_usuari_propietari"]." or id_8=".$rowux["id_usuari_propietari"]." or id_9=".$rowux["id_usuari_propietari"]." or id_10=".$rowux["id_usuari_propietari"].")";
 						}
 					}
 
 					$sql .=	") and privada=1 order by data_prevision";
 
-					$result = mysql_query(convertSQL($sql));
-					while ($row = mysql_fetch_array($result)){
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)){
 							$hora = date("H", strtotime($row["data_prevision"])); 
 							$minut = date("i", strtotime($row["data_prevision"]));
 
 							$estado_color = "White";
 							if ($row["id_estado"] > 0) {
 								$sqle = "select * from sgm_incidencias_estados where id=".$row["id_estado"];
-								$resulte = mysql_query(convertSQL($sqle));
-								$rowe = mysql_fetch_array($resulte);
+								$resulte = mysqli_query($dbhandle,convertSQL($sqle));
+								$rowe = mysqli_fetch_array($resulte);
 								$estado_color = $rowe["color"];
 								$estado_color_letras = "Black";
 							} else {
@@ -822,14 +822,14 @@ function agenda_conjunta($dia_select,$year,$mes,$usuario,$conjunta) {
 							$mesok .= "<table cellspacing=\"0\" cellspacing=\"0\" style=\"border:1px solid black;width:100%;background-color : ".$estado_color.";color:".$estado_color_letras."\">";
 							$mesok .= "<tr><td><a href=\"index.php?op=1006&sop=2&id=".$row["id"]."\" style=\"color:".$estado_color_letras."\">".$hora.":".$minut." (".$row["tiempo"]." min.)</a></td></tr>";
 								$sqlusuario = "select * from sgm_users where id=".$row["id_usuario_destino"];
-								$resultusuario = mysql_query(convertSQL($sqlusuario));
-								$rowusuario = mysql_fetch_array($resultusuario);
+								$resultusuario = mysqli_query($dbhandle,convertSQL($sqlusuario));
+								$rowusuario = mysqli_fetch_array($resultusuario);
 								$mesok .= "<tr><td style=\"color:".$estado_color_letras."\"><strong>".$rowusuario["usuario"]."</strong></td></tr>";
 							for ($i = 2 ; $i < 11 ; $i++) {
 								if ($row["id_".$i] != 0) {
 									$sqlusuario = "select * from sgm_users where id=".$row["id_".$i];
-									$resultusuario = mysql_query(convertSQL($sqlusuario));
-									$rowusuario = mysql_fetch_array($resultusuario);
+									$resultusuario = mysqli_query($dbhandle,convertSQL($sqlusuario));
+									$rowusuario = mysqli_fetch_array($resultusuario);
 									$mesok .= "<tr><td style=\"color:".$estado_color_letras."\"><strong>".$rowusuario["usuario"]."</strong></td></tr>";
 								}
 							}

@@ -36,13 +36,13 @@ if ($option == 100) {
 	if ($soption == 2) {
 		$registro = 1;
 		$sql = "select count(*) as total from sgm_users WHERE mail='".$_POST["mail"]."'";
-		$result = mysql_query(convertSQL($sql));
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
 		if ($row["total"] == 0) { echo mensageError($errorMensajeRecuperacion); $registro = 0; }
 		if ($registro == 1 ) {
 			$sql2 = "select * from sgm_users WHERE mail='".$_POST["mail"]."'";
-			$result2 = mysql_query(convertSQL($sql2));
-			$row2 = mysql_fetch_array($result2);
+			$result2 = mysqli_query($dbhandle,convertSQL($sql2));
+			$row2 = mysqli_fetch_array($result2);
 
 			#ENVIO NOTIFICACIÓN
 			$destino = $row2["mail"];
