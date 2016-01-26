@@ -14,7 +14,7 @@ function calculSLAtotal(){
 		$sql1 = $sql1."temps_pendent=".$pendent;
 		$sql1 = $sql1.",fecha_prevision=".$previsio;
 		$sql1 = $sql1." WHERE id=".$row["id"]."";
-		mysql_query($sql1);
+		mysqli_query($dbhandle,$sql1);
 #		echo $sql1."<br>";
 	}
 }

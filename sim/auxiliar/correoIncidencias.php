@@ -7,6 +7,7 @@ function correo_incidencias(){
 
 #	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
 	$imap = imap_open ("{mail.solucions-im.com:143/imap/notls}INBOX", "soporte@solucions-im.com", "Multi12") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
+#	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
 	$checar = imap_check($imap);
 	// Detalles generales de todos los mensajes del usuario.
 	$resultados = imap_fetch_overview($imap,"1:{$checar->Nmsgs}",0);
@@ -23,11 +24,21 @@ function correo_incidencias(){
 		$sqli = "select * from sgm_incidencias_correos";
 		$resulti = mysqli_query($dbhandle,$sqli);
 		$rowi = mysqli_fetch_array($resulti);
-		if ($rowi["uid"]<$uid) {
-			$sql = "update sgm_incidencias_correos set ";
-			$sql = $sql."uid=".$uid;
-			mysqli_query($dbhandle,$sql);
-#			echo $sql."<br>";
+		if (($rowi["uid"]<$uid) or (!$rowi)) {
+			if ($rowi["uid"]<$uid){
+				$sql = "update sgm_incidencias_correos set uid=".$uid;
+				mysqli_query($dbhandle,$sql);
+#				echo $sql."<br>";
+			}
+			if (!$rowi){
+				$sql = "insert into sgm_incidencias_correos (uid,destinatario)";
+				$sql = $sql."values (";
+				$sql = $sql.$uid."";
+				$sql = $sql.",'".$destinatario."'";
+				$sql = $sql.")";
+				mysqli_query($dbhandle,$sql);
+#				echo $sql."<br>";
+			}
 
 			$asunto = imap_utf8($detalles->subject);
 			$remitente = imap_utf8($detalles->from);
@@ -49,6 +60,7 @@ function correo_incidencias(){
 						case 0:
 							// the HTML or plain text part of the email
 							$message = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
+#							echo $message."<br>";
 							// now do something with the message, e.g. render it
 							$message = str_replace("</p>","\r\n",$message);
 							$message = strip_tags($message,'\r\n');
@@ -88,6 +100,7 @@ function correo_incidencias(){
 				}
 			} else {
 				$message = imap_body($imap, $detalles->msgno);
+#				echo $message."<br>";
 			}
 #			echo "<img src=\"".$filename."\">";
 
@@ -139,8 +152,8 @@ function correo_incidencias(){
 				$sql = $sql.",".$data_missatge."";
 				$sql = $sql.",-1";
 				$sql = $sql.",3";
-				$sql = $sql.",'".comillas(utf8_decode($message))."'";
-				$sql = $sql.",'".comillas(utf8_decode($asunto))."'";
+				$sql = $sql.",'".comillas($message)."'";
+				$sql = $sql.",'".comillas($asunto)."'";
 				$sql = $sql.",0";
 				$sql = $sql.")";
 				mysqli_query($dbhandle,$sql);
@@ -160,12 +173,48 @@ function correo_incidencias(){
 					mysqli_query($dbhandle,$sql2);
 #	echo $sql2."<br>";
 				}
+				$sqlm = "select * from sgm_incidencias where fecha_inicio=".$data_missatge;
+				$resultm = mysqli_query($dbhandle,$sqlm);
+				$rowm = mysqli_fetch_array($resultm);
+				
+				$asunto="Incidència oberta correctament";
+				$email="soporte@solucions-im";
+				$cuerpo="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM<br><br>";
+				$cuerpo.="La seva incid&egrave;ncia amb el seg&uuml;ent missatge:</font><br><br><font face=\"Calibri\" size=2>'".$rowm["asunto"]."<br><br>".nl2br($message)."'</font><br><br><font face=\"Calibri\" size=4>s'ha obert correctament amb el numero ".$rowm["id"];
+
+				send_mail($correo_remitente,$asunto,$email,$cuerpo);
 			}
-		if ($leido == 0){imap_clearflag_full($imap, $uid, '\\Seen');}
+			if ($leido == 0){imap_clearflag_full($imap, $uid, '\\Seen');}
 		}
 	}
-
 	imap_close($imap, CL_EXPUNGE);
+	
+}
+
+function send_mail($destinatario,$asunto,$email,$cuerpo){
+	$UN_SALTO="\r\n";
+	$DOS_SALTOS="\r\n\r\n";
+
+	$titulo = $asunto;
+	$mensaje = "<html><head></head><body bgcolor=\"white\">";
+	$mensaje .= "<font face=\"Calibri\" size=4>";
+	$mensaje .= $cuerpo;
+	$mensaje .= "</font>";
+
+	$separador = "_separador_de_trozos_".md5 (uniqid (rand())); 
+
+	$cabecera = "MIME-Version: 1.0".$UN_SALTO; 
+	$cabecera .= "From: Solucions-IM<".$email.">".$UN_SALTO;
+	$cabecera .= "Return-path: ". $email.$UN_SALTO;
+	$cabecera .= "Reply-To: ".$email.$UN_SALTO;
+	$cabecera .= "X-Mailer: PHP/". phpversion().$UN_SALTO;
+	$cabecera .= "X-Priority: 1".$UN_SALTO; 
+	$cabecera .= "Content-Type: text/html;".$UN_SALTO; 
+	$cabecera .= " boundary=".$separador."".$DOS_SALTOS; 
+
+	$texto = $mensaje;
+
+	mail($destinatario, $titulo, $texto, $cabecera);
 
 }
 

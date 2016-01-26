@@ -2,17 +2,17 @@
 error_reporting(~E_ALL);
 
 
-function calculPausaIncidencia ($id_incidencia, $id_nota_incidencia,$data_nota_incidencia){
+function calculPausaIncidencia ($id_incidencia){
 	global $db,$dbhandle;
 	
 	$pausada = 0;
 
 	$sql = "select id_usuario_registro,pausada,id from sgm_incidencias where id_incidencia=".$id_incidencia." and visible=1 order by fecha_inicio";
-	$result = mysql_query($sql);
+	$result = mysqli_query($dbhandle,$sql);
 	while ($row = mysqli_fetch_array($result)){
 		if ($row["id_usuario_registro"] > 0) {
 			$sqlu = "select id from sgm_users where id=".$row["id_usuario_registro"]." and validado=1 and activo=1 and sgm=1";
-			$resultu = mysql_query($sqlu);
+			$resultu = mysqli_query($dbhandle,$sqlu);
 			$rowu = mysqli_fetch_array($resultu);
 			if (($rowu) and ($row["pausada"] == 1)){
 				$pausada = 1;

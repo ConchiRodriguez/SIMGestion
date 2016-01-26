@@ -422,9 +422,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$date1 = $rowc["fecha_ini"];
 				$date2 = $rowc["fecha_fin"];
 			} else {
-				$date = getdate();
-				$date1 = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
-				$date2 = date("Y-m-d", mktime(0,0,0,$date["mon"] ,$date["mday"], $date["year"]));
+				$date1 = date("Y-m-d");
+				$date2 = date("Y-m-d");
 			}
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Inicio.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_ini\" value=\"".$date1."\"></td></tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Fin.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_fin\" value=\"".$date2."\"></td></tr>";

@@ -495,17 +495,17 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<br>";
 	}
 	if ($soption == 130){
-		if (($_POST["data_ini"] > $_POST["data_fi"]) or ($_POST["hora_ini"] > $_POST["hora_fi"]) or ($_POST["hora_ini2"] > $_POST["hora_fi2"])){
-			echo mensageError($ErrorEmpleadoHorario);
+		if ((($_POST["data_ini"] > $_POST["data_fi"]) and ($_POST["data_fi"] != "") and ($_POST["data_fi"] != "0000-00-00")) or ($_POST["hora_ini"] > $_POST["hora_fi"]) or ($_POST["hora_ini2"] > $_POST["hora_fi2"])){
+			echo $_POST["data_fi"].mensageError($ErrorEmpleadoHorario);
 		} else {
 			if ($ssoption == 1) {
-				$camposinsert = "id_empleado,data_ini,data_fi,hora_ini,hora_fi,hora_ini2,hora_fi2";
-				$datosInsert = array($_GET["id"],$_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"]);
+				$camposinsert = "id_empleado,data_ini,data_fi,hora_ini,hora_fi,hora_ini2,hora_fi2,dia_setmana";
+				$datosInsert = array($_GET["id"],$_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"],$_POST["dia_setmana"]);
 				insertFunction ("sgm_rrhh_empleado_horario",$camposinsert,$datosInsert);
 			}
 			if ($ssoption == 2) {
-				$camposUpdate = array("data_ini","data_fi","hora_ini","hora_fi","hora_ini2","hora_fi2");
-				$datosUpdate = array($_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"]);
+				$camposUpdate = array("data_ini","data_fi","hora_ini","hora_fi","hora_ini2","hora_fi2","dia_setmana");
+				$datosUpdate = array($_POST["data_ini"],$_POST["data_fi"],$_POST["hora_ini"],$_POST["hora_fi"],$_POST["hora_ini2"],$_POST["hora_fi2"],$_POST["dia_setmana"]);
 				updateFunction ("sgm_rrhh_empleado_horario",$_GET["id_horari"],$camposUpdate,$datosUpdate);
 			}
 		}
@@ -524,17 +524,24 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<th>".$Hora_Fin."</th>";
 				echo "<th>".$Hora_Inicio." 2</th>";
 				echo "<th>".$Hora_Fin." 2</th>";
+				echo "<th>".$Dia."</th>";
 				echo "<td></td>";
 			echo "</tr>";
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1020&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" name=\"data_ini\" style=\"width:100px;\" value=\"".date("Y-m-d")."\"></td>";
-				echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;\" value=\"0000-00-00\"></td>";
+				echo "<td><input type=\"text\" name=\"data_fi\" style=\"width:100px;\" value=\"\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_ini\" style=\"width:70px;\" value=\"00:00\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_fi\" style=\"width:70px;\" value=\"00:00\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_ini2\" style=\"width:70px;\" value=\"00:00\"></td>";
 				echo "<td><input type=\"text\" name=\"hora_fi2\" style=\"width:70px;\" value=\"00:00\"></td>";
+				echo "<td><select name=\"dia_setmana\" style=\"width:100px\">";
+					echo "<option value=\"-1\">".$Todos."</option>";
+					for ($i=0;$i<=6;$i++){
+						echo "<option value=\"".$i."\">".$dias[$i]."</option>";
+					}
+				echo "</select></td>";
 				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -544,7 +551,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				$color = "white";
-				if (($fecha >= $row["data_ini"]) and ($fecha <= $row["data_fi"])) { $color = "green"; }
+				if (($fecha >= $row["data_ini"]) and (($fecha <= $row["data_fi"]) or ($row["data_fi"] == "0000-00-00"))) { $color = "green"; }
 				echo "<tr style=\"background-color:".$color."\">";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=131&id=".$_GET["id"]."&id_horari=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					echo "<form action=\"index.php?op=1020&sop=130&ssop=2&id=".$_GET["id"]."&id_horari=".$row["id"]."\" method=\"post\">";
@@ -554,6 +561,23 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<td><input type=\"text\" name=\"hora_fi\" style=\"width:70px;\" value=\"".$row["hora_fi"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"hora_ini2\" style=\"width:70px;\" value=\"".$row["hora_ini2"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"hora_fi2\" style=\"width:70px;\" value=\"".$row["hora_fi2"]."\"></td>";
+					echo "<td><select name=\"dia_setmana\" style=\"width:100px\">";
+						if ($row["dia_setmana"] == -1) {
+							echo "<option value=\"-1\" selected>".$Todos."</option>";
+							for ($i=0;$i<=6;$i++){
+								echo "<option value=\"".$i."\">".$dias[$i]."</option>";
+							}
+						} else {
+							echo "<option value=\"-1\">".$Todos."</option>";
+							for ($i=0;$i<=6;$i++){
+								if ($row["dia_setmana"] == $i) {
+									echo "<option value=\"".$i."\" selected>".$dias[$i]."</option>";
+								} else {
+									echo "<option value=\"".$i."\">".$dias[$i]."</option>";
+								}
+							}
+						}
+					echo "</select></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";

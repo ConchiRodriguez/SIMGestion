@@ -77,7 +77,8 @@ input.formclient{
 }
 
 input[type="submit"]{
-	width:100px;
+	max-width:100px;
+	min-width:65px;
 }
 
 td.ficha{

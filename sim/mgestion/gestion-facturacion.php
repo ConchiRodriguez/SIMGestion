@@ -327,7 +327,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					} else { "<input type=\"hidden\" name=\"numero_rfq\">"; }
 					if ($rowtipos["tpv"] == 0) { 
 						echo "<td>";
-							echo "<select name=\"id_cliente\" style=\"width:100%\">";
+							echo "<select name=\"id_cliente\" style=\"width:100%;\">";
 							echo "<option value=\"0\">-</option>";
 							$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 ";
 							$sql = $sql."order by nombre";
@@ -356,8 +356,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<input type=\"hidden\" name=\"subtipo\" value=\"0\">";
 					}
 					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
-					echo "<td style=\"width:100px\"></td>";
-					echo "<td style=\"width:100px\"></td>";
+					echo "<td></td>";
+					echo "<td></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -2134,7 +2134,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		if (($_GET["tipo"] == 1) or ($_GET["tipo"] == 4) or ($_GET["iduser"] > 0)) {$sqltipo = "select * from sgm_factura_tipos where contabilidad=-1";}
 		if (($_GET["tipo"] == 3) or ($_GET["tipo"] == 5) or ($_GET["tipo"] == 9)) {$sqltipo = "select * from sgm_factura_tipos where contabilidad=1";}
 		if (($_GET["tipo"] == 6) or ($_GET["tipo"] == 7) or ($_GET["tipo"] == 8)) {$sqltipo = "select * from sgm_factura_tipos where id =".$_GET["id_tipo"];}
-		echo $sqltipo;
+#		echo $sqltipo;
 		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
 		while ($rowtipo = mysqli_fetch_array($resulttipo)){
 			if ($rowtipo["presu"] == 1){ $presu = 1;}
@@ -2182,7 +2182,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if ($_GET["tipo"] == 8) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha='".$_GET["y"]."-".$_GET["m"]."-".$_GET["d"]."'";}
 			if ($_GET["tipo"] == 9) {$sqlca = "select * from sgm_cabezera where visible=1 and ((tipo IN (select id from sgm_factura_tipos where contabilidad=1) AND fecha_vencimiento='".date("Y-m-d", $_GET["fecha"])."') or (id in (select id_factura from sgm_recibos where fecha='".date("Y-m-d", $_GET["fecha"])."' and visible=1)))";}
 			$sqlca = $sqlca." order by numero desc,version desc,fecha desc";
-			echo $sqlca;
+#			echo $sqlca;
 			$resultca = mysqli_query($dbhandle,convertSQL($sqlca));
 			while ($rowca = mysqli_fetch_array($resultca)) {
 				echo mostrarFacturas($rowca);

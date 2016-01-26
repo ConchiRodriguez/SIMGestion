@@ -830,12 +830,12 @@ ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `visible` tinyint(1) NOT NUL
 CREATE TABLE `sgm_licencias` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_licencias` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_licencias` ADD `id_client_final` int(11) NOT NULL default '0' AFTER `id_client`;
-ALTER TABLE `sgm_licencias` ADD `id_cabecera` int(11) NOT NULL default '0' AFTER `id_client_final`;
-ALTER TABLE `sgm_licencias` ADD `fecha_ini` int(15) NOT NULL default '0' AFTER `id_cabecera`;
-ALTER TABLE `sgm_licencias` ADD `fecha_fin` int(15) NOT NULL default '0' AFTER `fecha_ini`;
-ALTER TABLE `sgm_licencias` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `fecha_fin`;
-ALTER TABLE `sgm_licencias` ADD `descripcion` longtext NOT NULL default '' AFTER `visible`;
-ALTER TABLE `sgm_licencias` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `descripcion`;
+ALTER TABLE `sgm_licencias` ADD `fecha_ini` date NOT NULL default '0000-00-00' AFTER `id_client_final`;
+ALTER TABLE `sgm_licencias` ADD `fecha_fin` date NOT NULL default '0000-00-00' AFTER `fecha_ini`;
+ALTER TABLE `sgm_licencias` ADD `num_elementos` int(11) NOT NULL default '0' AFTER `fecha_fin`;
+ALTER TABLE `sgm_licencias` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_elementos`;
+ALTER TABLE `sgm_licencias` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sgm_licencias` ADD `facturado` tinyint(1) NOT NULL default '0' AFTER `renovado`;
 
 CREATE TABLE `sgm_licencias_articles` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_licencias_articles` ADD `id_licencia` int(11) NOT NULL default '0' AFTER `id`;
@@ -939,6 +939,7 @@ ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi` varchar(11) NOT NULL defau
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_ini2` varchar(11) NOT NULL default '00:00' AFTER `hora_fi` ;
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `hora_fi2` varchar(11) NOT NULL default '00:00' AFTER `hora_ini2` ;
 ALTER TABLE `sgm_rrhh_empleado_horario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `hora_fi2`;
+ALTER TABLE `sgm_rrhh_empleado_horario` ADD `dia_setmana` int(11) NOT NULL default '0' AFTER `visible`;
 
 CREATE TABLE `sgm_rrhh_empleado_nominas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_empleado_nominas` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `id`;

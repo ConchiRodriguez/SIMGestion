@@ -241,7 +241,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				array_push($id_relacio, $rowe["id"]);
 			}
 #			echo var_dump($id_relacio);
-		for ($i = 0; $i<=5;$i++){
+		for ($i = 0; $i<=3;$i++){
 			if (($soption == 0) or ($soption == 1) or (($soption == 200) and ($_GET["filtra"] == 1) and (($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0) or ($_POST["id_cliente"] != 0) or ($_POST["id_servicio"] != 0) or ($_POST["id_usuario"] != 0) or ($_POST["texto"] != "") or ($_POST["id_incidencia"] != "") or ($_POST["id_estado"] != "")))) {
 				if ($i == 0) {
 					echo "<tr style=\"background-color:silver;\">";
@@ -297,18 +297,22 @@ if (($option == 1018) AND ($autorizado == true)) {
 			if ($i == 0) { $sqli = $sqli." and id_servicio = 0 and pausada=0"; }
 			elseif ($i == 1) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision > 0 and pausada=0"; }
 			elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0"; } 
-			elseif ($i == 3) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision > 0 and pausada=1"; }
-			elseif ($i == 4) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=1"; } 
-			elseif ($i == 5) { $sqli = $sqli." and id_servicio = 0 and pausada=1"; } 
-			if (($soption == 200) and ($_GET["filtra"] == 1)) {
-				$sqli = $sqli." order by fecha_inicio desc,id_estado desc";
+			elseif ($i == 3) { $sqli = $sqli." and pausada=1"; }
+			if ($i == 1) {
+				$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
+			} elseif ($i == 3) {
+				$sqli = $sqli." order by id_cliente,id_servicio,id_usuario_destino";
 			} else {
-				if ($_GET["fil"] <= 1) {
-					$sqli = $sqli." order by fecha_prevision,pausada,id_cliente,id_servicio,id_usuario_destino";
-				} elseif ($_GET["fil"] == 2) {
-					$sqli = $sqli." order by id_cliente desc,id_servicio,pausada,fecha_prevision,id_usuario_destino";
-				} elseif ($_GET["fil"] == 3) {
-					$sqli = $sqli." order by id_usuario_destino,pausada,fecha_prevision,id_cliente,id_servicio";
+				if (($soption == 200) and ($_GET["filtra"] == 1)) {
+					$sqli = $sqli." order by fecha_inicio desc,id_estado desc";
+				} else {
+					if ($_GET["fil"] <= 1) {
+						$sqli = $sqli." order by fecha_prevision,pausada,id_cliente,id_servicio,id_usuario_destino";
+					} elseif ($_GET["fil"] == 2) {
+						$sqli = $sqli." order by id_cliente desc,id_servicio,pausada,fecha_prevision,id_usuario_destino";
+					} elseif ($_GET["fil"] == 3) {
+						$sqli = $sqli." order by id_usuario_destino,pausada,fecha_prevision,id_cliente,id_servicio";
+					}
 				}
 			}
 #		echo $sqli."<br>";
@@ -500,25 +504,29 @@ if (($option == 1018) AND ($autorizado == true)) {
 #detall tickets#
 	if ($soption == 100) {
 		if ($ssoption > 0){
-			$sqli = "select id,pausada,id_usuario_destino,id_usuario_finalizacion,fecha_registro_cierre,fecha_cierre,notas_conclusion,id_estado from sgm_incidencias where id=".$_GET["id"];
+			$sqli = "select temps_pendent,fecha_inicio,id,pausada,id_usuario_destino,id_usuario_finalizacion,fecha_registro_cierre,fecha_cierre,notas_conclusion,id_estado from sgm_incidencias where id=".$_GET["id"];
 			$resulti = mysqli_query($dbhandle,convertSQL($sqli));
 			$rowi = mysqli_fetch_array($resulti);
 			$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
 			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 			$rowc = mysqli_fetch_array($resultc);
+			if ($_GET["id"] > 0){
+				$registro = date(U, $rowi["fecha_inicio"]);
+			} else {
+				$registro = date(U, strtotime($_POST["fecha_inicio"]));
+			}
 		}
 
 		if ($ssoption == 1) {
 		#update incidencia#
 			if (($_POST["id_servicio"] > 0) or ($_POST["id_servicio2"] > 0) or ($_POST["id_cliente"] > 0)){
 				if ($_POST["asunto"] != ""){
-					$registro = date(U, strtotime($_POST["fecha_inicio"]));
 					if ($_POST["id_servicio"] > 0) {$servicio = $_POST["id_servicio"];} else {$servicio = $_POST["id_servicio2"];}
 					if ($rowi["pausada"] == 0) {$prevision = fecha_prevision($servicio, $registro);} else {$prevision = 0;}
 					if ($_POST["duracion"] == ""){ $duracion = 0; } else { $duracion = $_POST["duracion"]; }
 
 					$camposUpdate = array("id_usuario_origen","id_usuario_destino","fecha_inicio","id_entrada","notas_registro","id_servicio","asunto","fecha_prevision","duracion","id_cliente");
-					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],$registro,$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$_POST["id_cliente"]);
+					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$_POST["id_cliente"]);
 					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
 					$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
@@ -540,16 +548,13 @@ if (($option == 1018) AND ($autorizado == true)) {
 		}
 		if (($ssoption == 2) and ($_POST["ejecutar"] == 1)) {
 		#update notes desenvolupament#
-			$registro = date(U, strtotime($_POST["fecha_inicio"]));
-			if ($_POST["id_servicio"] > 0) {$servicio = $_POST["id_servicio"];} else {$servicio = $_POST["id_servicio2"];}
-			if ($rowi["pausada"] == 0) {$prevision = fecha_prevision($servicio, $registro);} else {$prevision = 0;}
 			if ($_POST["duracion"] == ""){ $duracion = 0; } else { $duracion = $_POST["duracion"]; }
 
 			$camposUpdate = array("id_usuario_registro","id_incidencia","fecha_inicio","visible_cliente","pausada","notas_desarrollo","duracion");
-			$datosUpdate = array($_POST["id_usuario_registro"],$_POST["id_incidencia"],$registro,$_POST["visible_cliente"],$_POST["pausada"],$_POST["notas_desarrollo"],$duracion);
+			$datosUpdate = array($_POST["id_usuario_registro"],$_POST["id_incidencia"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["visible_cliente"],$_POST["pausada"],$_POST["notas_desarrollo"],$duracion);
 			updateFunction ("sgm_incidencias",$_GET["id_not"],$camposUpdate,$datosUpdate);
 			
-			calculPausaIncidencia($_GET["id"],$_GET["id_not"],$registro);
+			calculPausaIncidencia($_GET["id"]);
 
 			$sla_inc = calculSLA($_GET["id"],0);
 			if ($rowc["temps_resposta"] != 0){$fecha_prevision = fecha_prevision($rowc["id"], $registro);}else{$fecha_prevision = 0;}
@@ -575,7 +580,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 			}
 
-			calculPausaIncidencia($_GET["id"],$_GET["id_not"],$registro);
+			calculPausaIncidencia($_GET["id"]);
 
 			$sla_inc = calculSLA($_GET["id"],0);
 			if ($rowc["temps_resposta"] != 0){$fecha_prevision = fecha_prevision($rowc["id"], $registro);}else{$fecha_prevision = 0;}
@@ -699,7 +704,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			$datosUpdate = array("0");
 			updateFunction ("sgm_incidencias",$_GET["id_not"],$camposUpdate,$datosUpdate);
 
-			calculPausaIncidencia($_GET["id"],$_GET["id_not"],$registro);
+			calculPausaIncidencia($_GET["id"]);
 
 			$sla_inc = calculSLA($_GET["id"],0);
 			if ($rowc["temps_resposta"] != 0){$fecha_prevision = fecha_prevision($rowc["id"], $registro);}else{$fecha_prevision = 0;}

@@ -212,9 +212,9 @@ function mostrarFacturas($row){
 					}
 				if ($rowtipos["tpv"] == 0) {
 					if (strlen($row["nombre"]) > 70) {
-						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
+						echo "<td nowrap><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
 					} else {
-						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".$row["nombre"]."</a></td>";
+						echo "<td nowrap><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".$row["nombre"]."</a></td>";
 					}
 					if ($rowtipos["v_subtipos"] == 1) {
 						echo "<td>";
