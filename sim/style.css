@@ -76,8 +76,12 @@ input.formclient{
 	width:400px;
 }
 
+input.formclient2{
+	width:300px;
+}
+
 input[type="submit"]{
-	max-width:100px;
+	width:100px;
 	min-width:65px;
 }
 

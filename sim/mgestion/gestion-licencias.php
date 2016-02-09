@@ -28,10 +28,9 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if (($soption == 0) or ($soption == 1) or ($soption == 200)) {
 		if ($ssoption == 3) {
-			$sql = "update sgm_licencias set ";
-			$sql = $sql."visible=0";
-			$sql = $sql." WHERE id=".$_GET["id"]."";
-			mysqli_query($dbhandle,convertSQL($sql));
+			$camposUpdate = array("visible");
+			$datosUpdate = array(0);
+			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
 			$sqlf = "select * from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"];
 			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
@@ -48,72 +47,65 @@ if (($option == 1026) AND ($autorizado == true)) {
 		if ($soption == 200) { echo "<strong>".$Buscador."</strong>";}
 		echo "<br><br>";
 		if ($soption != 200){
-			echo "<table><tr>";
-				echo "<td class=\"boton\">";
-					if ($soption == 1) { echo "<a href=\"index.php?op=1026&sop=0\" style=\"color:white;\">".$Activo."</a>";}
-					if ($soption == 0) { echo "<a href=\"index.php?op=1026&sop=1\" style=\"color:white;\">".$Inactivo."</a>";}
-				echo "</td>";
-			echo "</tr></table>";
-			echo "<br><br>";
+			if ($soption == 1) { echo boton(array("op=1026&sop=0"),array($Activo));}
+			if ($soption == 0) { echo boton(array("op=1026&sop=1"),array($Inactivo));}
 		}
 		echo "<center>";
 		if ($soption == 200){
 			echo "<form action=\"index.php?op=1026&sop=200\" method=\"post\">";
-			echo "<table cellspacing=\"0\" style=\"background-color:silver;\">";
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"background-color:silver;\">";
 				echo "<tr>";
-					echo "<td>".$Cliente."</td>";
-					echo "<td>".$Cliente." ".$Final."</td>";
-					echo "<td>".$Descripcion."</td>";
-					echo "<td></td>";
-					echo "<td></td>";
+					echo "<th>".$Cliente."</th>";
+					echo "<th>".$Cliente." ".$Final."</th>";
+					echo "<th></th>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td><select style=\"width:250px\" name=\"id_client2\">";
+					echo "<td><select style=\"width:250px\" name=\"id_cliente2\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_clients where visible=1 order by nombre";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						while ($row = mysqli_fetch_array($result)) {
-							if ($_POST["id_client2"] == $row["id"]){
+							if ($_POST["id_cliente2"] == $row["id"]){
 								echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 							} else {
 								echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 							}
 						}
 					echo "</select></td>";
-					echo "<td><select style=\"width:250px\" name=\"id_client_final2\">";
+					echo "<td><select style=\"width:250px\" name=\"id_cliente_final2\">";
 						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_clients where visible=1 order by nombre";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						while ($row = mysqli_fetch_array($result)) {
-							if ($_POST["id_client_final2"] == $row["id"]){
+							if ($_POST["id_cliente_final2"] == $row["id"]){
 								echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 							} else {
 								echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 							}
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\" style=\"width:150px\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\"></td>";
 				echo "</tr>";
 			echo "</form>";
 			echo "</table>";
 			echo "<br><br>";
 		}
-		if (($soption != 200) or ($_POST["id_client2"] > 0) or ($_POST["id_client_final2"] > 0)){
-			echo "<table cellspacing=\"0\" style=\"width:1000px;\">";
+		if (($soption != 200) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0)){
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 				echo "<form action=\"index.php?op=1026&sop=100&ssop=1\" method=\"post\">";
 				echo "<tr style=\"background-color:silver\">";
-					echo "<td><em>".$Eliminar."</em></td>";
-					echo "<td style=\"text-align:center;\">".$Cliente."</td>";
-					echo "<td style=\"text-align:center;\">".$Cliente." ".$Final."</td>";
-					echo "<td style=\"text-align:center;\">".$Descripcion."</td>";
-					echo "<td><em>".$Editar."</em></td>";
+					echo "<th>".$Eliminar."</th>";
+					echo "<th style=\"width:500px;\">".$Cliente."</th>";
+					echo "<th style=\"width:500px;\">".$Cliente." ".$Final."</th>";
+					echo "<th>".$Fin." ".$Licencia."</th>";
+					echo "<th>".$Editar."</td>";
 				echo "</tr>";
-				$sqlcc = "select * from sgm_licencias where visible=1 ";
-				if ($_POST["id_client2"] > 0) {
-					$sqlcc = $sqlcc." and id_client=".$_POST["id_client2"]."";
+				$sqlcc = "select id,id_cliente,id_cliente_final,fecha_fin from sim_licencias where visible=1 ";
+				if ($_POST["id_cliente2"] > 0) {
+					$sqlcc = $sqlcc." and id_cliente=".$_POST["id_cliente2"]."";
 				}
-				if ($_POST["id_client_final2"] > 0) {
-					$sqlcc = $sqlcc." and id_client_final=".$_POST["id_client_final2"]."";
+				if ($_POST["id_cliente_final2"] > 0) {
+					$sqlcc = $sqlcc." and id_cliente_final=".$_POST["id_cliente_final2"]."";
 				}
 				if ($soption == 0){ $sqlcc = $sqlcc." and renovado=0";}
 				if ($soption == 1){ $sqlcc = $sqlcc." and renovado=1";}
@@ -121,16 +113,16 @@ if (($option == 1026) AND ($autorizado == true)) {
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
 					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=0&ssop=3&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_client"]."";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-						$sql = "select * from sgm_clients where visible=1 and id=".$rowcc["id_client_final"]."";
+						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-						echo "<td><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\">".$rowcc["descripcion"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\">".$rowcc["fecha_fin"]."</a></td>";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a></td>";
 					echo "</tr>";
 				}
@@ -141,39 +133,38 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if ($soption == 10) {
 		echo "<center>";
-		echo "<br><br>¿Seguro que desea eliminar este contrato?<br><br>";
-		echo "<a href=\"index.php?op=1026&sop=0&ssop=3&id=".$_GET["id"]."\">[ SI ]</a>";
-		echo "<a href=\"index.php?op=1026&sop=0\">[ NO ]</a>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1026&sop=0&ssop=3&id=".$_GET["id"],"op=1026&sop=0"),array($Si,$No));
 		echo "</center>";
 	}
 
 	if ($soption == 100) {
 		if ($ssoption == 1) {
-			$camposInsert = "id_client,id_client_final,fecha_ini,fecha_fin,num_elementos";
-			$datosInsert = array($_POST["id_client"],$_POST["id_client_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
-			insertFunction ("sgm_licencias",$camposInsert,$datosInsert);
-			$sqln = "select id from sgm_licencias where visible=1 and id_client_final=".$_POST["id_client_final"]." and fecha_fin='".$_POST["fecha_fin"]."'";
+			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos";
+			$datosInsert = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
+			insertFunction ("sim_licencias",$camposInsert,$datosInsert);
+			$sqln = "select id from sim_licencias where visible=1 and id_cliente_final=".$_POST["id_cliente_final"]." and fecha_fin='".$_POST["fecha_fin"]."'";
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
 			$rown = mysqli_fetch_array($resultn);
 			$id_lic = $rown["id"];
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("id_client","id_client_final","fecha_ini","fecha_fin","num_elementos");
-			$datosUpdate = array($_POST["id_client"],$_POST["id_client_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
-			updateFunction ("sgm_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
+			$camposUpdate = array("id_cliente","id_cliente_final","fecha_ini","fecha_fin","num_elementos");
+			$datosUpdate = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
+			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
 			$camposUpdate = array("renovado");
 			$datosUpdate = array(1);
-			updateFunction ("sgm_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
+			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 4) {
-			$camposInsert = "id_licencia,id_article";
-			$datosInsert = array($_GET["id"],$_POST["id_article"]);
-			insertFunction ("sgm_licencias_articles",$camposInsert,$datosInsert);
+			$camposInsert = "id_licencia,id_articulo";
+			$datosInsert = array($_GET["id"],$_POST["id_articulo"]);
+			insertFunction ("sim_licencias_articulos",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 5) {
-			deleteFunction("sgm_licencias_articles",$_GET["id_lic_art"]);
+			deleteFunction("sim_licencias_articulos",$_GET["id_lic_art"]);
 		}
 
 		if ($_GET["id"] > 0) {$id_lic = $_GET["id"];}
@@ -182,19 +173,19 @@ if (($option == 1026) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			if ($id_lic > 0) {
 				echo "<form action=\"index.php?op=1026&sop=100&ssop=2&id=".$id_lic."\" method=\"post\">";
-				$sqlc = "select * from sgm_licencias where visible=1 and id=".$id_lic;
+				$sqlc = "select * from sim_licencias where visible=1 and id=".$id_lic;
 				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 				$rowc = mysqli_fetch_array($resultc);
 			} else {
 				echo "<form action=\"index.php?op=1026&sop=100&ssop=1\" method=\"post\">";
 			}
 			echo "<tr><td style=\"text-align:right;\">".$Cliente.": </td>";
-				echo "<td><select style=\"width:500px\" name=\"id_client\">";
-					$sqla = "select * from sgm_clients where visible=1 order by nombre";
+				echo "<td><select style=\"width:500px\" name=\"id_cliente\">";
+					$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 					while ($rowa = mysqli_fetch_array($resulta)) {
-						if ($rowa["id"] == $rowc["id_client"]){
-							echo "<option value=\"".$rowa["id"]."\" selected>".$rowa["nombre"]."x ".$rowa["cognom1"]." ".$rowa["cognom2"]."</option>";
+						if ($rowa["id"] == $rowc["id_cliente"]){
+							echo "<option value=\"".$rowa["id"]."\" selected>".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</option>";
 						} else {
 							echo "<option value=\"".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</option>";
 						}
@@ -202,11 +193,11 @@ if (($option == 1026) AND ($autorizado == true)) {
 				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Cliente." ".$Final.": </td>";
-				echo "<td><select style=\"width:500px\" name=\"id_client_final\">";
-					$sqlb = "select * from sgm_clients where visible=1 order by nombre";
+				echo "<td><select style=\"width:500px\" name=\"id_cliente_final\">";
+					$sqlb = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultb = mysqli_query($dbhandle,convertSQL($sqlb));
 					while ($rowb = mysqli_fetch_array($resultb)) {
-						if ($rowb["id"] == $rowc["id_client_final"]){
+						if ($rowb["id"] == $rowc["id_cliente_final"]){
 							echo "<option value=\"".$rowb["id"]."\" selected>".$rowb["nombre"]." ".$rowb["cognom1"]." ".$rowb["cognom2"]."</option>";
 						} else {
 							echo "<option value=\"".$rowb["id"]."\">".$rowb["nombre"]." ".$rowb["cognom1"]." ".$rowb["cognom2"]."</option>";
@@ -260,12 +251,12 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "<tr>";
 						echo "<td></td>";
 						echo "<form action=\"index.php?op=1026&sop=100&ssop=4&id=".$id_lic."\" method=\"post\">";
-						echo "<td><select style=\"width:400px\" name=\"id_article\">";
+						echo "<td><select style=\"width:400px\" name=\"id_articulo\">";
 							echo "<option value=\"0\">-</option>";
-							$sql = "select * from sgm_articles where visible=1 and id_subgrupo in (select id from sgm_articles_subgrupos where id_grupo in (select id from sgm_articles_grupos where id in (select id_familia from sgm_licencias_families_articles)))";
+							$sql = "select id,id_subgrupo,codigo,nombre from sgm_articles where visible=1 and id_subgrupo in (select id from sgm_articles_subgrupos where id_grupo in (select id_familia from sim_licencias_familias_articulos))";
 							$result = mysqli_query($dbhandle,convertSQL($sql));
 							while ($row = mysqli_fetch_array($result)) {
-								$sqlg = "select * from sgm_articles_subgrupos where id=".$row["id_subgrupo"];
+								$sqlg = "select subgrupo from sgm_articles_subgrupos where id=".$row["id_subgrupo"];
 								$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
 								$rowg = mysqli_fetch_array($resultg);
 								echo "<option value=\"".$row["id"]."\">".$rowg["subgrupo"]."(".$row["codigo"].") - ".$row["nombre"]."</option>";
@@ -276,14 +267,14 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
 				}
-				$sql = "select * from sgm_licencias_articles where visible=1 and id_licencia=".$id_lic."";
+				$sql = "select id,id_articulo from sim_licencias_articulos where visible=1 and id_licencia=".$id_lic."";
 				$result = mysqli_query($dbhandle,convertSQL($sql));
 				while ($row = mysqli_fetch_array($result)) {
 					echo "<tr>";
 						if ($rowc["renovado"] == 0) {
 							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=101&id=".$id_lic."&id_lic_art=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 						} else { echo "<td></td>"; }
-						$sqls = "select * from sgm_articles where id=".$row["id_article"];
+						$sqls = "select nombre from sgm_articles where id=".$row["id_articulo"];
 						$results = mysqli_query($dbhandle,convertSQL($sqls));
 						$rows = mysqli_fetch_array($results);
 						echo "<td style=\"text-align:left;width:500px\">".$rows["nombre"]."</td>";
@@ -298,7 +289,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 				if (($rowc["renovado"] == 0) and ($rowc["facturado"] == 0)) {
 					echo "<tr>";
 					echo "<form action=\"index.php?op=1026&sop=102&id=".$id_lic."\" method=\"post\">";
-						echo "<input type=\"hidden\" name=\"id_client\" value=\"".$rowc["id_client"]."\">";
+						echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowc["id_cliente"]."\">";
 						echo "<input type=\"hidden\" name=\"id_licencia\" value=\"".$id_lic."\">";
 						echo "<td><input type=\"Submit\" value=\"".$Crear." ".$Factura."\"></td>";
 					echo "</form>";
@@ -311,7 +302,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "<th style=\"text-align:left;width:500px\">".$Cliente."</th>";
 					echo "<th style=\"text-align:left;width:100px\">".$Importe."</th>";
 				echo "</tr><tr>";
-				$sql = "select * from sgm_cabezera where visible=1 and id_licencia=".$id_lic."";
+				$sql = "select id,nombre,fecha,fecha_vencimiento,total from sgm_cabezera where visible=1 and id_licencia=".$id_lic."";
 				$result = mysqli_query($dbhandle,convertSQL($sql));
 				while ($row = mysqli_fetch_array($result)) {
 					echo "<tr>";
@@ -334,21 +325,25 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if ($soption == 102) {
 
-		$sql = "select id_client from sgm_licencias where visible=1 and id=".$_GET["id"];
+		$sql = "select id_cliente from sim_licencias where visible=1 and id=".$_GET["id"];
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 
-		$datosInsert = array('fecha' => date("Y-m-d"), 'fecha_prevision' => date("Y-m-d",date("U")+$row["dias_vencimiento"]), 'id_cliente' => $row["id_client"], 'id_licencia' => $_GET["id"]);
+		$sqlcli = "select dias_vencimiento from sgm_clients where visible=1 and id=".$row["id_cliente"];
+		$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
+		$rowcli = mysqli_fetch_array($resultcli);
+
+		$datosInsert = array('fecha' => date("Y-m-d"), 'fecha_prevision' => date("Y-m-d",date("U")+$rowcli["dias_vencimiento"]), 'id_cliente' => $row["id_cliente"], 'id_licencia' => $_GET["id"]);
 		insertCabezera($datosInsert);
 
 		$sqlc = "select id from sgm_cabezera where visible=1 and id_licencia=".$_GET["id"]." and fecha='".date("Y-m-d")."' order by id desc";
 		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 		$rowc = mysqli_fetch_array($resultc);
 
-		$sqla = "select * from sgm_articles where visible=1 and id in (select id_article from sgm_licencias_articles where visible=1 and id_licencia=".$_GET["id"].")";
+		$sqla = "select id,nombre from sgm_articles where visible=1 and id in (select id_articulo from sim_licencias_articulos where visible=1 and id_licencia=".$_GET["id"].")";
 		$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 		while ($rowa = mysqli_fetch_array($resulta)){
-			$sqls = "select * from sgm_stock where vigente=1 and id_article=".$rowa["id"];
+			$sqls = "select pvp from sgm_stock where vigente=1 and id_article=".$rowa["id"];
 			$results = mysqli_query($dbhandle,convertSQL($sqls));
 			$rows = mysqli_fetch_array($results);
 
@@ -361,7 +356,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 		$camposUpdate = array("facturado");
 		$datosUpdate = array(1);
-		updateFunction ("sgm_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
+		updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
 		echo "<center>";
 		echo boton(array("op=1003&sop=100&id=".$rowc["id"],"op=1026&sop=100&id=".$_GET["id"]),array($Factura,$Licencia));
@@ -380,12 +375,17 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if (($soption == 510) and ($admin == true)) {
 		if ($ssoption == 1){
-			$camposinsert = "id_familia";
-			$datosInsert = array($_POST["id_familia"]);
-			insertFunction ("sgm_licencias_families_articles",$camposinsert,$datosInsert);
+			$sql = "select * from sim_licencias_familias_articulos where id_familia=".$_POST["id_familia"];
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			if (!$row){
+				$camposinsert = "id_familia";
+				$datosInsert = array($_POST["id_familia"]);
+				insertFunction ("sim_licencias_familias_articulos",$camposinsert,$datosInsert);
+			}
 		}
 		if ($ssoption == 3) {
-			deleteFunction("sgm_licencias_families_articles",$_GET["id"]);
+			deleteFunction("sim_licencias_familias_articulos",$_GET["id"]);
 		}
 
 		echo "<h4>".$Articulos." ".$Familias."</h4>";
@@ -400,7 +400,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1026&sop=510&ssop=1\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><select style=\"width:200px\" name=\"id_familia\">";
-					$sql = "select * from sgm_articles_grupos order by grupo";
+					$sql = "select grupo,id from sgm_articles_grupos where id not in (select id_familia from sim_licencias_familias_articulos) order by grupo";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
 						echo "<option value=\"".$row["id"]."\">".$row["grupo"]."</option>";
@@ -410,15 +410,15 @@ if (($option == 1026) AND ($autorizado == true)) {
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sqll = "select * from sgm_licencias_families_articles";
+			$sqll = "select id_familia,id from sim_licencias_familias_articulos";
 			$resultl = mysqli_query($dbhandle,convertSQL($sqll));
 			while ($rowl = mysqli_fetch_array($resultl)) {
-				$sqla = "select * from sgm_articles_grupos where id=".$rowl["id_familia"];
+				$sqla = "select grupo from sgm_articles_grupos where id=".$rowl["id_familia"];
 				$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 				$rowa = mysqli_fetch_array($resulta);
 				echo "<tr>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=511&id=".$rowl["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<td><input type=\"text\" value=\"".$rowa["grupo"]."\" style=\"width:200px\" name=\"nombre\"></td>";
+					echo "<td>".$rowa["grupo"]."</td>";
 				echo "</tr>";
 			}
 		echo "</table>";
