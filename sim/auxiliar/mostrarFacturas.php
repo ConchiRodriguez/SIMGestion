@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function mostrarFacturas($row){
-	global $db,$dbhandle,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones;
+	global $db,$dbhandle,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones,$Abrir;
 	
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
 	$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
@@ -150,9 +150,9 @@ function mostrarFacturas($row){
 				$rowca = mysqli_fetch_array($resultca);
 				if ($rowca["total"] == 0) {$color_docs = "yellow";} else {$color_docs = "white";}
 				echo "<td style=\"background-color:".$color_docs.";\">(".$rowca["total"].")</td>";
-			}
+			} else {echo "<td></td>";}
 			echo "<td style=\"text-align:right\">".$row["numero"]."</td>";
-			if ($rowtipos["presu"] == 1) { echo "<td>/".$row["version"]."</td>"; }
+			if ($rowtipos["presu"] == 1) { echo "<td>/".$row["version"]."</td>"; } else {echo "<td></td>";}
 ############ CALCULOS SOBRE LAS FECHAS OFICIALES
 				$a = date("Y", strtotime($row["fecha"]));
 				$m = date("m", strtotime($row["fecha"]));
@@ -186,8 +186,8 @@ function mostrarFacturas($row){
 						echo "<td style=\"background-color:red;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".cambiarFormatoFechaDMY($fecha_proxima)."</td>";
 					}
 				}
-				if ($rowtipos["v_fecha_prevision"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_prevision"])."</td>"; }
-				if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_vencimiento"])."</td>"; }
+				if ($rowtipos["v_fecha_prevision"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_prevision"])."</td>"; } else {echo "<td></td>";}
+				if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_vencimiento"])."</td>"; } else {echo "<td></td>";}
 				if ($rowtipos["v_numero_cliente"] == 1) {
 					if (($rowtipos["tipo_ot"] == 1) and ($row["confirmada"] == 1)) {
 						echo "<td>".$row["numero_cliente"]."</td>";
@@ -195,21 +195,21 @@ function mostrarFacturas($row){
 						if ($rowtipos["presu"] == 1){
 							echo "<td>".$row["numero_cliente"]."</td>";
 						} else {
-							echo "<td style=\"background-color:white;\">".$row["numero_cliente"]."</td>";
+							echo "<td>".$row["numero_cliente"]."</td>";
 						}
 					}
-				}
-					if ($rowtipos["v_rfq"] == 1) {
-						if (($rowtipos["tipo_ot"] == 1) and ($row["aprovado"] == 1)) {
+				} else {echo "<td></td>";}
+				if ($rowtipos["v_rfq"] == 1) {
+					if (($rowtipos["tipo_ot"] == 1) and ($row["aprovado"] == 1)) {
+						echo "<td>".$row["numero_rfq"]."</td>";
+					} else {
+						if ($rowtipos["presu"] == 1){
 							echo "<td>".$row["numero_rfq"]."</td>";
 						} else {
-							if ($rowtipos["presu"] == 1){
-								echo "<td>".$row["numero_rfq"]."</td>";
-							} else {
-								echo "<td style=\"background-color:white;\">".$row["numero_rfq"]."</td>";
-							}
+							echo "<td>".$row["numero_rfq"]."</td>";
 						}
 					}
+				} else {echo "<td></td>";}
 				if ($rowtipos["tpv"] == 0) {
 					if (strlen($row["nombre"]) > 70) {
 						echo "<td nowrap><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
@@ -220,7 +220,7 @@ function mostrarFacturas($row){
 						echo "<td>";
 						echo "<select style=\"width:100px\" name=\"subtipo\" disabled>";
 							echo "<option value=\"0\">-</option>";
-							$sqlsss = "select id,subtipo from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
+							$sqlsss = "select id,subtipo from sgm_factura_subtipos where visible=1 and id_tipo=".$row["tipo"]." order by subtipo";
 							$resultsss = mysqli_query($dbhandle,convertSQL($sqlsss));
 							while ($rowsss = mysqli_fetch_array($resultsss)) {
 								if ($row["subtipo"] == $rowsss["id"]) {
@@ -231,8 +231,8 @@ function mostrarFacturas($row){
 							}
 						echo "</select>";
 						echo "</td>";
-					}
-				}
+					} else {echo "<td></td>";}
+				} else {echo "<td></td>";}
 				$sqldi = "select id,abrev from sgm_divisas where id=".$row["id_divisa"];
 				$resultdi = mysqli_query($dbhandle,convertSQL($sqldi));
 				$rowdi = mysqli_fetch_array($resultdi);
@@ -243,7 +243,7 @@ function mostrarFacturas($row){
 					$resultr = mysqli_query($dbhandle,convertSQL($sqlr));
 					$rowr = mysqli_fetch_array($resultr);
 					echo "<td style=\"text-align:right;min-width:100px;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
-				}
+				} else {echo "<td></td>";}
 				if ($rowdiv["id"] == $rowdi["id"]){
 					$totalSenseIVA += $row["subtotal"];
 					$totalSensePagar += $row["total"];
@@ -253,11 +253,11 @@ function mostrarFacturas($row){
 					$totalSensePagar += $row["total"]*$row["div_canvi"];
 					$totalPagat += ($row["total"]-$rowr["total"])*$row["div_canvi"];
 				}
-				echo "<form method=\"post\" action=\"index.php?op=1003&sop=100&id=".$row["id"]."&id_tipo=".$_GET["id"]."\">";
+				echo "<form method=\"post\" action=\"index.php?op=1003&sop=100&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 					echo "<td><input type=\"Submit\" value=\"".$Editar."\"></td>";
 				echo "</form>";
 				if ($rowtipos["tpv"] == 0) {
-					echo "<form method=\"post\" action=\"index.php?op=1003&sop=20&id=".$row["id"]."&id_tipo=".$_GET["id"]."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=20&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 				} else {
 					echo "<form method=\"post\" action=\"".$urlmgestion."/sim/mgestion/gestion-facturacion-tiquet-print-pdf.php?id=".$row["id"]."\" target=\"_blank\">";
 				}
@@ -268,18 +268,26 @@ function mostrarFacturas($row){
 					echo "<form method=\"post\" action=\"index.php?op=1003&sop=30&id=".$row["id"]."\">";
 						echo "<td><input type=\"Submit\" value=\"".$Recibos."\"></td>";
 					echo "</form>";
+				} else {echo "<td></td>";}
+				if ($row["cerrada"] == 1){
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=41&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+						echo "<td><input type=\"Submit\" value=\"".$Abrir."\"></td>";
+					echo "</form>";
+				} elseif ($row["cerrada"] == 0) {
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=40&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+						echo "<td><input type=\"Submit\" value=\"".$Cerrar."\"></td>";
+					echo "</form>";
 				}
-				echo "<form method=\"post\" action=\"index.php?op=1003&sop=40&id=".$row["id"]."&id_tipo=".$_GET["id"]."\">";
-					echo "<td><input type=\"Submit\" value=\"".$Cerrar."\"></td>";
-				echo "</form>";
-				if ($_GET["hist"]) {$link2 = "&hist=".$_GET["hist"];} else {$link2 = "";}
+				if (!$_GET["id"]) {$link2 = "&id=".$row["id"];} else {$link2 = "&id=".$_GET["id"];}
+				if ($_GET["hist"]) {$link2 .= "&hist=".$_GET["hist"];} else {$link2 .= "";}
 				if ($_GET["tipo"]) {$link2 .= "&tipo=".$_GET["tipo"];} else {$link2 .= "";}
 				if ($_GET["y"]) {$link2 .= "&y=".$_GET["y"];} else {$link2 .= "";}
 				if ($_GET["m"]) {$link2 .= "&m=".$_GET["m"];} else {$link2 .= "";}
 				if ($_GET["d"]) {$link2 .= "&d=".$_GET["d"];} else {$link2 .= "";}
 				if ($_GET["id_tipo"]) {$link2 .= "&id_tipo=".$_GET["id_tipo"];} else {$link2 .= "";}
+				if ($_GET["fecha"]) {$link2 .= "&fecha=".$_GET["fecha"];} else {$link2 .= "";}
 				if (($_POST["todo"] > 0) and ($row["id"] == $_POST["id"])) {
-					echo "<form method=\"post\" action=\"index.php?op=1003&sop=".$_GET["sop"]."&filtra=0&id=".$_GET["id"].$link2."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=".$_GET["sop"]."&filtra=0".$link2."\">";
 						echo "<input type=\"Hidden\" name=\"id_tipo\" value=\"".$_POST["id_tipo"]."\">";
 						echo "<input type=\"Hidden\" name=\"id_cliente\" value=\"".$_POST["id_cliente"]."\">";
 						echo "<input type=\"Hidden\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\">";
@@ -290,7 +298,7 @@ function mostrarFacturas($row){
 						echo "<td><input type=\"Submit\" value=\"".$Plegar."\"></td>";
 					echo "</form>";
 				} else {
-					echo "<form method=\"post\" action=\"index.php?op=1003&sop=".$_GET["sop"]."&filtra=1&id=".$_GET["id"].$link2."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=".$_GET["sop"]."&filtra=1".$link2."\">";
 						echo "<input type=\"Hidden\" name=\"id_tipo\" value=\"".$_POST["id_tipo"]."\">";
 						echo "<input type=\"Hidden\" name=\"id_cliente\" value=\"".$_POST["id_cliente"]."\">";
 						echo "<input type=\"Hidden\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\">";
@@ -319,18 +327,18 @@ function mostrarFacturas($row){
 			$rowxx = mysqli_fetch_array($resultxx);
 			if ($rowxx["total"] > 0){
 				echo "<tr><td>&nbsp;</td></tr>";
-				echo "<tr><td colspan=\"12\"><table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+				echo "<tr><td colspan=\"17\"><table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 					echo "<tr style=\"background-color:silver;\">";
 						echo "<th>".$Linea."</th>";
 						echo "<th>".$Fecha." Prev.</th>";
 						echo "<th>".$Codigo."</th>";
 						echo "<th>".$Nombre."</th>";
-						echo "<th>".$Unidades."</th>";
-						echo "<th>".$PVD."</th>";
-						echo "<th>".$PVP."</th>";
-						echo "<th>Desc.%</th>";
-						echo "<th>Desc.</th>";
-						echo "<th>".$Total."</th>";
+						echo "<th style=\"text-align:right;\">".$Unidades."</th>";
+						echo "<th style=\"text-align:right;\">".$PVD."</th>";
+						echo "<th style=\"text-align:right;\">".$PVP."</th>";
+						echo "<th style=\"text-align:right;\">Desc.%</th>";
+						echo "<th style=\"text-align:right;\">Desc.</th>";
+						echo "<th style=\"text-align:right;\">".$Total."</th>";
 					echo "</tr>";
 					$sqlxx = "select * from sgm_cuerpo where idfactura=".$id_fac."";
 					if (($_GET["hist"] == 0) or ($_POST["hist"] == 0)) { $sqlxx = $sqlxx." and id_estado<>-1 and facturado<>1";}
@@ -364,20 +372,20 @@ function mostrarFacturas($row){
 							echo "<td style=\"width:20px\">".$rowxx["linea"]."</td>";
 							echo "<td style=\"width:90px\">".$rowxx["fecha_prevision"]."</td>";
 							echo "<td style=\"width:100px\">".$rowxx["codigo"]."</td>";
-							echo "<td style=\"width:500px\" nowrap>".$rowxx["nombre"]."</td>";
-							echo "<td style=\"width:50px\">".$rowxx["unidades"]."</td>";
+							echo "<td style=\"width:400px\" nowrap>".$rowxx["nombre"]."</td>";
+							echo "<td style=\"width:50px;text-align:right;\">".number_format($rowxx["unidades"],2)."</td>";
 							if ($row["pvd"] == 0){
 								$sqla = "select preu_cost from sgm_articles_costos where visible=1 and id_cuerpo=".$rowxx["id"]." and aprovat=1";
 								$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 								$rowa = mysqli_fetch_array($resulta);
-								echo "<td style=\"width:60px\">".$rowa["preu_cost"]."</td>";
+								echo "<td style=\"width:100px;text-align:right;\">".number_format($rowa["preu_cost"],2,",",".")." ".$rowdi["abrev"]."</td>";
 							} else {
-								echo "<td style=\"width:60px\">".$row["pvd"]."</td>";
+								echo "<td style=\"width:100px;text-align:right;\">".number_format($row["pvp"],2,",",".")." ".$rowdi["abrev"]."</td>";
 							}
-							echo "<td style=\"width:60px\">".$rowxx["pvp"]."</td>";
-							echo "<td style=\"width:40px\">".$rowxx["descuento"]."</td>";
-							echo "<td style=\"width:40px\">".$rowxx["descuento_absoluto"]."</td>";
-							echo "<td style=\"width:80px\"><strong>".$rowxx["total"]."</strong> ".$row2["abrev"]."</td>";
+							echo "<td style=\"width:100px;text-align:right;\">".number_format($rowxx["pvp"],2,",",".")." ".$rowdi["abrev"]."</td>";
+							echo "<td style=\"width:40px;text-align:right;\">".number_format($rowxx["descuento"],2,",",".")."</td>";
+							echo "<td style=\"width:100px;text-align:right;\">".number_format($rowxx["descuento_absoluto"],2,",",".")." ".$rowdi["abrev"]."</td>";
+							echo "<td style=\"width:100px;text-align:right;\"><strong>".number_format($rowxx["total"],2,",",".")." ".$rowdi["abrev"]."</strong></td>";
 						echo "</tr>";
 						$totalArticles += $rowxx["total"];
 					}

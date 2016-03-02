@@ -24,13 +24,14 @@ $Agenda = "Agenda";
 $Agendas = "Agendas";
 $agendas = "agendas";
 $Agrupacion = "Agrupaci&oacute;n";
-$Ajuda_alias = "El <em>Alias</em> es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
 $Alerta = "Alerta";
 $Alertas = "Alertas";
 $Alias = "Alias";
 $Almacen = "Almac&eacute;n";
 $Almacenes = "Almacenes";
 $Alto = "Alto";
+$Ambito = "&Aacute;mbito";
+$Ambito_geografico = "&Aacute;mbito Geogr&aacute;fico";
 $Anadir = "A&ntilde;adir";
 $Anadir_Contacto = "A&ntilde;adir Contacto";
 $AnadiryEliminarIncompatibles = "A&ntilde;adir y Eliminar Incompatibles";
@@ -439,6 +440,7 @@ $Origenes = "Origenes";
 $Original = "Original";
 $OT = "OT";
 $Otras = "Otras";
+$Otro = "Otro";
 
 $PAGADA = "PAGADA";
 $Pago = "Pago";
@@ -743,6 +745,7 @@ $ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los dif
 $ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
 $ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 $ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
+$ayudaFacturaAbrir = "Se abrir&aacute; la factura y volver&aacute; a ser visible.";
 $errorFacturaCrear = "Atenci&oacute;n : La fecha de la factura es superior a la fecha actual.";
 
 $ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
@@ -764,5 +767,8 @@ $errorMensajeRecuperacion = "Esta direcci&oacute;n e-mail no esta registrada";
 $ayudaPanelUserPass = "M&aacute;x. 10 car&aacute;cteres";
 $ayudaPanelUserPass2 = "Si no pudiera hacer correctamente el login de nuevo, borre las cookies referentes a solucions-im.com de su navegador.";
 $errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
+
+$Ayuda_alias = "El <em>Alias</em> es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
+$Ayuda_vip = "El <em>Cliente VIP</em> es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
 
 ?>

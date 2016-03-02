@@ -15,7 +15,7 @@ function updateFunction ($tabla,$id,$camposUpdate,$datosUpdate){
 	}
 	$sql = $sql." WHERE id=".$id."";
 	mysqli_query($dbhandle,convertSQL($sql));
-#	echo $sql;
+	echo $sql;
 }
 
 ?>

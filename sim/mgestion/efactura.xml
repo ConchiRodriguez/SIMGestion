@@ -5,16 +5,16 @@
 		<Modality>I</Modality>
 		<InvoiceIssuerType>EM</InvoiceIssuerType>
 		<Batch>
-			<BatchIdentifier>20150008/0</BatchIdentifier>
+			<BatchIdentifier>/</BatchIdentifier>
 			<InvoicesCount>1</InvoicesCount>
 			<TotalInvoicesAmount>
-				<TotalAmount>4537.50</TotalAmount>
+				<TotalAmount>0.00</TotalAmount>
 			</TotalInvoicesAmount>
 			<TotalOutstandingAmount>
-				<TotalAmount>4537.50</TotalAmount>
+				<TotalAmount>0.00</TotalAmount>
 			</TotalOutstandingAmount>
 			<TotalExecutableAmount>
-				<TotalAmount>4537.50</TotalAmount>
+				<TotalAmount>0.00</TotalAmount>
 			</TotalExecutableAmount>
 			<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
 		</Batch>
@@ -24,28 +24,28 @@
 			<TaxIdentification>
 				<PersonTypeCode>J</PersonTypeCode>
 				<ResidenceTypeCode>R</ResidenceTypeCode>
-				<TaxIdentificationNumber>B65702227</TaxIdentificationNumber>
+				<TaxIdentificationNumber></TaxIdentificationNumber>
 			</TaxIdentification>
 			<LegalEntity>
-				<CorporateName>Solucions Informatiques Maresme S.L.U.</CorporateName>
+				<CorporateName></CorporateName>
 				<AddressInSpain>
-					<Address>Av. Maresme 44 Bj. 2</Address>
-					<PostCode>08490</PostCode>
-					<Town>Tordera</Town>
-					<Province>Barcelona</Province>
+					<Address></Address>
+					<PostCode></PostCode>
+					<Town></Town>
+					<Province></Province>
 					<CountryCode>ESP</CountryCode>
 				</AddressInSpain>
 				<ContactDetails>
-					<Telephone>937 645 637</Telephone>
-					<ElectronicMail>administracion@solucions-im.com</ElectronicMail>
+					<Telephone></Telephone>
+					<ElectronicMail></ElectronicMail>
 				</ContactDetails>
 			</LegalEntity>
 		</SellerParty>
 		<BuyerParty>
 			<TaxIdentification>
-				<PersonTypeCode>J</PersonTypeCode>
-				<ResidenceTypeCode>R</ResidenceTypeCode>
-				<TaxIdentificationNumber>Q5855029D</TaxIdentificationNumber>
+				<PersonTypeCode></PersonTypeCode>
+				<ResidenceTypeCode></ResidenceTypeCode>
+				<TaxIdentificationNumber></TaxIdentificationNumber>
 			</TaxIdentification>
 			<AdministrativeCentres>
 				<AdministrativeCentre>
@@ -53,34 +53,34 @@
 					<FirstSurname></FirstSurname>
 					<SecondSurname></SecondSurname>
 					<AddressInSpain>
-						<Address>Ctra. Del Canyet s/n</Address>
-						<PostCode>08916</PostCode>
-						<Town>Badalona</Town>
-						<Province>Barcelona</Province>
-						<CountryCode>es</CountryCode>
+						<Address></Address>
+						<PostCode></PostCode>
+						<Town></Town>
+						<Province></Province>
+						<CountryCode></CountryCode>
 					</AddressInSpain>
 					<ContactDetails>
 						<Telephone></Telephone>
 						<TeleFax></TeleFax>
-						<WebAddress>http://www.gencat.cat/ics/germanstrias/</WebAddress>
+						<WebAddress></WebAddress>
 						<ElectronicMail></ElectronicMail>
 					</ContactDetails>
 					<CentreDescription>Centro principal</CentreDescription>
 				</AdministrativeCentre>
 			</AdministrativeCentres>
 			<LegalEntity>
-				<CorporateName>Hospital Universitari Germans Trias i Pujol  - Direccio d'Organitzacio i Sis</CorporateName>
+				<CorporateName></CorporateName>
 				<AddressInSpain>
-					<Address>Ctra. Del Canyet s/n</Address>
-					<PostCode>08916</PostCode>
-					<Town>Badalona</Town>
-					<Province>Barcelona</Province>
-					<CountryCode>es</CountryCode>
+					<Address></Address>
+					<PostCode></PostCode>
+					<Town></Town>
+					<Province></Province>
+					<CountryCode></CountryCode>
 				</AddressInSpain>
 				<ContactDetails>
 					<Telephone></Telephone>
 					<TeleFax></TeleFax>
-					<WebAddress>http://www.gencat.cat/ics/germanstrias/</WebAddress>
+					<WebAddress></WebAddress>
 					<ElectronicMail></ElectronicMail>
 				</ContactDetails>
 			</LegalEntity>
@@ -89,35 +89,35 @@
 	<Invoices>
 		<Invoice>
 			<InvoiceHeader>
-				<InvoiceNumber>20150008</InvoiceNumber>
-				<InvoiceSeriesCode>0</InvoiceSeriesCode>
+				<InvoiceNumber></InvoiceNumber>
+				<InvoiceSeriesCode></InvoiceSeriesCode>
 				<InvoiceDocumentType>FC</InvoiceDocumentType>
 				<InvoiceClass>OO</InvoiceClass>
 			</InvoiceHeader>
 			<InvoiceIssueData>
-				<IssueDate>2015-04-01</IssueDate>
+				<IssueDate></IssueDate>
 				<PlaceOfIssue>
-					<PostCode>08490</PostCode>
-					<PlaceOfIssueDescription>Tordera</PlaceOfIssueDescription>
+					<PostCode></PostCode>
+					<PlaceOfIssueDescription></PlaceOfIssueDescription>
 				</PlaceOfIssue>
-				<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
-				<TaxCurrencyCode>EUR</TaxCurrencyCode>
-				<LanguageName>es</LanguageName>
+				<InvoiceCurrencyCode></InvoiceCurrencyCode>
+				<TaxCurrencyCode></TaxCurrencyCode>
+				<LanguageName>ca</LanguageName>
 			</InvoiceIssueData>
 			<TaxesOutputs>
 				<Tax>
 					<TaxTypeCode>01</TaxTypeCode>
-					<TaxRate>21.00</TaxRate>
+					<TaxRate>0.00</TaxRate>
 					<TaxableBase>
-						<TotalAmount>3750.00</TotalAmount>
+						<TotalAmount>0.00</TotalAmount>
 					</TaxableBase>
 					<TaxAmount>
-						<TotalAmount>787.50</TotalAmount>
+						<TotalAmount>0.00</TotalAmount>
 					</TaxAmount>
 				</Tax>
 			</TaxesOutputs>
 			<InvoiceTotals>
-				<TotalGrossAmount>3750.00</TotalGrossAmount>
+				<TotalGrossAmount>0.00</TotalGrossAmount>
 				<GeneralDiscounts>
 					<Discount>
 						<DiscountReason>Descuento Factura</DiscountReason>
@@ -125,50 +125,22 @@
 					</Discount>
 				</GeneralDiscounts>
 				<TotalGeneralDiscounts>0.00</TotalGeneralDiscounts>
-				<TotalGrossAmountBeforeTaxes>3750.00</TotalGrossAmountBeforeTaxes>
-				<TotalTaxOutputs>787.50</TotalTaxOutputs>
+				<TotalGrossAmountBeforeTaxes>0.00</TotalGrossAmountBeforeTaxes>
+				<TotalTaxOutputs>0.00</TotalTaxOutputs>
 				<TotalTaxesWithheld>0.00</TotalTaxesWithheld>
-				<InvoiceTotal>4537.50</InvoiceTotal>
-				<TotalOutstandingAmount>4537.50</TotalOutstandingAmount>
-				<TotalExecutableAmount>4537.50</TotalExecutableAmount>
+				<InvoiceTotal>0.00</InvoiceTotal>
+				<TotalOutstandingAmount>0.00</TotalOutstandingAmount>
+				<TotalExecutableAmount>0.00</TotalExecutableAmount>
 			</InvoiceTotals>
 			<Items>
-				<InvoiceLine>
-					<ReceiverTransactionReference>4430465487</ReceiverTransactionReference>
-					<ItemDescription>Servei de monitoritzacio dels sistemes i dispositius TI</ItemDescription>
-					<Quantity>1.000</Quantity>
-					<UnitOfMeasure>01</UnitOfMeasure>
-					<UnitPriceWithoutTax>3750.000000</UnitPriceWithoutTax>
-					<TotalCost>3750.000000</TotalCost>
-					<DiscountsAndRebates>
-						<Discount>
-							<DiscountReason>Descuento Linea</DiscountReason>
-							<DiscountAmount>0.000000</DiscountAmount>
-						</Discount>
-					</DiscountsAndRebates>
-					<GrossAmount>3750.000000</GrossAmount>
-					<TaxesOutputs>
-						<Tax>
-							<TaxTypeCode>01</TaxTypeCode>
-							<TaxRate>21.00</TaxRate>
-							<TaxableBase>
-								<TotalAmount>3750.00</TotalAmount>
-							</TaxableBase>
-							<TaxAmount>
-								<TotalAmount>787.50</TotalAmount>
-							</TaxAmount>
-						</Tax>
-					</TaxesOutputs>
-					<ArticleCode></ArticleCode>
-				</InvoiceLine>
 			</Items>
 			<PaymentDetails>
 				<Installment>
-					<InstallmentDueDate>2015-08-01</InstallmentDueDate>
-					<InstallmentAmount>4537.50</InstallmentAmount>
+					<InstallmentDueDate></InstallmentDueDate>
+					<InstallmentAmount>0.00</InstallmentAmount>
 					<PaymentMeans>04</PaymentMeans>
 					<AccountToBeCredited>
-						<IBAN>ES59 0081 0443 2900 0109 3917</IBAN>
+						<IBAN></IBAN>
 					</AccountToBeCredited>
 				</Installment>
 			</PaymentDetails>

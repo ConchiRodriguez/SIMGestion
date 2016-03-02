@@ -24,13 +24,14 @@ $Agenda = "Agenda";
 $Agendas = "Agendes";
 $agendas = "agendes";
 $Agrupacion = "Agrupaci&oacute;";
-$Ajuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
 $Alerta = "Alerta";
 $Alertas = "Alertes";
 $Alias = "Alies";
 $Almacen = "Magatzem";
 $Almacenes = "Magatzems";
 $Alto = "Alt";
+$Ambito = "&Agrave;mbit";
+$Ambito_geografico = "&Agrave;mbito Geogr&agrave;fic";
 $Anadir = "Afegir";
 $Anadir_Contacto = "Afegir Contacte";
 $AnadiryEliminarIncompatibles = "Afegir i Eliminar Incompatibles";
@@ -436,6 +437,7 @@ $Origenes = "Origens";
 $Original = "Original";
 $OT = "OT";
 $Otras = "Altres";
+$Otro = "Altre";
 
 $PAGADA = "PAGADA";
 $Pago = "Pagament";
@@ -739,6 +741,7 @@ $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els di
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
 $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 $ayudaFacturaCerrar = "Es tancar&agrave; la factura i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";
+$ayudaFacturaAbrir = "S'obrir&agrave; la factura i tornar&agrave; a ser visible.";
 $errorFacturaCrear = "Atenci&oacute; : La data de la factura es superior a la data actual.";
 
 $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
@@ -760,5 +763,8 @@ $errorMensajeRecuperacion = "Aquesta direcci&oacute; d'e-mail no esta registrada
 $ayudaPanelUserPass = "M&agrave;x. 10 car&agrave;cters";
 $ayudaPanelUserPass2 = "Si no pogues fer correctament el login de nou, esborri les cookies referents a solucions-im.com del seu navegador.";
 $errorPanelUserPass = "Error al introduir les contrasenyes.";
+
+$Ayuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
+$Ayuda_vip = "El <em>Client VIP</em> es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
 
 ?>

@@ -5,9 +5,7 @@ error_reporting(~E_ALL);
 function correo_incidencias(){
 	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
 
-#	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
-	$imap = imap_open ("{mail.solucions-im.com:143/imap/notls}INBOX", "soporte@solucions-im.com", "Multi12") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
-#	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
+	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
 	$checar = imap_check($imap);
 	// Detalles generales de todos los mensajes del usuario.
 	$resultados = imap_fetch_overview($imap,"1:{$checar->Nmsgs}",0);
@@ -177,10 +175,16 @@ function correo_incidencias(){
 				$resultm = mysqli_query($dbhandle,$sqlm);
 				$rowm = mysqli_fetch_array($resultm);
 				
-				$asunto="Incidència oberta correctament";
+				$asunto="Suport/Soporte - ".$rowm["id"]." -";
 				$email="soporte@solucions-im";
-				$cuerpo="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM<br><br>";
-				$cuerpo.="La seva incid&egrave;ncia amb el seg&uuml;ent missatge:</font><br><br><font face=\"Calibri\" size=2>'".$rowm["asunto"]."<br><br>".nl2br($message)."'</font><br><br><font face=\"Calibri\" size=4>s'ha obert correctament amb el numero ".$rowm["id"];
+				$cuerpo="<font face=\"Calibri\" size=4>*Aquest es un missatge autom&agrave;tic.*<br><br>";
+				$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.<br>";
+				$cuerpo.="La seva incid&egrave;ncia s'ha obert correctament amb el n&uacute;mero ".$rowm["id"]." i amb el seg&uuml;ent missatge:</font><br><br>";
+				$cuerpo.="<font face=\"Calibri\" size=2 style=\"italic\">'".utf8_decode($rowm["asunto"])."<br><br>".nl2br($message)."'</font><br><br><br><br>";
+				$cuerpo.="<font face=\"Calibri\" size=4>*Este es un mensaje autom&aacute;tico.*<br><br>";
+				$cuerpo.="Gracias por contactar con el departamento de soporte de Solucions-IM.<br><br>";
+				$cuerpo.="Su incidencia se ha abierto correctamente con el n&uacute;mero ".$rowm["id"]." y con el seguiente mensaje:</font><br><br>";
+				$cuerpo.="<font face=\"Calibri\" size=2 style=\"italic\">'".utf8_decode($rowm["asunto"])."<br><br>".nl2br($message)."'</font><br><br>";
 
 				send_mail($correo_remitente,$asunto,$email,$cuerpo);
 			}
@@ -195,7 +199,7 @@ function send_mail($destinatario,$asunto,$email,$cuerpo){
 	$UN_SALTO="\r\n";
 	$DOS_SALTOS="\r\n\r\n";
 
-	$titulo = $asunto;
+	$titulo = html_entity_decode($asunto).$asunto."Incidència"."Incid&egrave;ncia";
 	$mensaje = "<html><head></head><body bgcolor=\"white\">";
 	$mensaje .= "<font face=\"Calibri\" size=4>";
 	$mensaje .= $cuerpo;
@@ -209,12 +213,13 @@ function send_mail($destinatario,$asunto,$email,$cuerpo){
 	$cabecera .= "Reply-To: ".$email.$UN_SALTO;
 	$cabecera .= "X-Mailer: PHP/". phpversion().$UN_SALTO;
 	$cabecera .= "X-Priority: 1".$UN_SALTO; 
-	$cabecera .= "Content-Type: text/html;".$UN_SALTO; 
+	$cabecera .= "Content-Type: text/html; charset=UTF-8".$UN_SALTO;
 	$cabecera .= " boundary=".$separador."".$DOS_SALTOS; 
 
 	$texto = $mensaje;
 
 	mail($destinatario, $titulo, $texto, $cabecera);
+	echo $destinatario;
 
 }
 
