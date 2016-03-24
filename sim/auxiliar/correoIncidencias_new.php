@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function correo_incidencias(){
-	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
+	global $db,$dbhandle;
 
 	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
 	$checar = imap_check($imap);
@@ -19,13 +19,13 @@ function correo_incidencias(){
 		$destinatario = str_replace('"','',$destinatario);
 		$destinatario = str_replace("'","",$destinatario);
 		$uid = $detalles->uid;
-		$sqli = "select * from sgm_incidencias_correos";
-		$resulti = mysqli_query($dbhandle,$sqli);
-		$rowi = mysqli_fetch_array($resulti);
-		if (($rowi["uid"]<$uid) or (!$rowi)) {
+#		echo $sqli = "select * from sgm_incidencias_correos";
+#		$resulti = mysqli_query($dbhandle,$sqli);
+#		$rowi = mysqli_fetch_array($resulti);
+#		if (($rowi["uid"]<$uid) or (!$rowi)) {
 			if ($rowi["uid"]<$uid){
 				$sql = "update sgm_incidencias_correos set uid=".$uid;
-				mysqli_query($dbhandle,$sql);
+#				mysqli_query($dbhandle,$sql);
 #				echo $sql."<br>";
 			}
 			if (!$rowi){
@@ -34,11 +34,11 @@ function correo_incidencias(){
 				$sql = $sql.$uid."";
 				$sql = $sql.",'".$destinatario."'";
 				$sql = $sql.")";
-				mysqli_query($dbhandle,$sql);
+#				mysqli_query($dbhandle,$sql);
 #				echo $sql."<br>";
 			}
 
-			$asunto = imap_utf8($detalles->subject);
+			$asunto = utf8_decode(imap_utf8($detalles->subject));
 			$remitente = imap_utf8($detalles->from);
 			$remite = imap_headerinfo($imap,$detalles->msgno);
 			$correo_rem = $remite->from;
@@ -155,7 +155,7 @@ function correo_incidencias(){
 				$sql = $sql.",0";
 				$sql = $sql.")";
 				mysqli_query($dbhandle,$sql);
-#	echo $sql."<br>";
+	echo $sql."<br>";
 				if ($filename){
 					$sqlin = "select * from sgm_incidencias where fecha_registro_inicio=".$data." and fecha_inicio=".$data_missatge." and asunto='".comillas($asunto)."'";
 					$resultin = mysqli_query($dbhandle,$sqlin);
@@ -169,7 +169,7 @@ function correo_incidencias(){
 					$sql2 = $sql2.",".$rowin["id"];
 					$sql2 = $sql2.")";
 					mysqli_query($dbhandle,$sql2);
-#	echo $sql2."<br>";
+	echo $sql2."<br>";
 				}
 				$sqlm = "select * from sgm_incidencias where fecha_inicio=".$data_missatge;
 				$resultm = mysqli_query($dbhandle,$sqlm);
@@ -186,10 +186,10 @@ function correo_incidencias(){
 				$cuerpo.="Su incidencia se ha abierto correctamente con el n&uacute;mero ".$rowm["id"]." y con el seguiente mensaje:</font><br><br>";
 				$cuerpo.="<font face=\"Calibri\" size=2 style=\"italic\">'".utf8_decode($rowm["asunto"])."<br><br>".nl2br($message)."'</font><br><br>";
 
-				send_mail($correo_remitente,$asunto,$email,$cuerpo);
+#				send_mail($correo_remitente,$asunto,$email,$cuerpo);
 			}
 			if ($leido == 0){imap_clearflag_full($imap, $uid, '\\Seen');}
-		}
+#		}
 	}
 	imap_close($imap, CL_EXPUNGE);
 	

@@ -147,20 +147,21 @@ if (($option == 1018) AND ($autorizado == true)) {
 #				echo "</tr><tr>";
 					echo "<td colspan=\"3\"><select name=\"id_servicio\" id=\"id_servicio\" style=\"width:500px;\">";
 						echo "<option value=\"0\">-</option>";
-							if ($_POST["id_cliente"] != "") {$sqlc = "select id_cliente_final,id from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";}
-							elseif ($_GET["id_cli"] != "") {$sqlc = "select id_cliente_final,id from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_GET["id_cli"]."";}
+							if ($_POST["id_cliente"] != "") {$sqlc = "select id_cliente_final,id,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";}
+							elseif ($_GET["id_cli"] != "") {$sqlc = "select id_cliente_final,id,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_GET["id_cli"]."";}
 							$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-							$rowc = mysqli_fetch_array($resultc);
-							$sqlclie = "select nombre from sgm_clients where visible=1 and id=".$rowc["id_cliente_final"]." order by nombre";
-							$resultclie = mysqli_query($dbhandle,convertSQL($sqlclie));
-							$rowclie = mysqli_fetch_array($resultclie);
-							$sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$rowc["id"]." order by servicio";
-							$results = mysqli_query($dbhandle,convertSQL($sqls));
-							while ($rows = mysqli_fetch_array($results)){
-								if ($_POST["id_servicio"] == $rows["id"]){
-									echo "<option value=\"".$rows["id"]."\" selected>(".$rowclie["nombre"].")".$rows["servicio"]."</option>";
-								} else {
-									echo "<option value=\"".$rows["id"]."\">(".$rowclie["nombre"].")".$rows["servicio"]."</option>";
+							while ($rowc = mysqli_fetch_array($resultc)){
+								$sqlclie = "select nombre from sgm_clients where visible=1 and id=".$rowc["id_cliente_final"]." order by nombre";
+								$resultclie = mysqli_query($dbhandle,convertSQL($sqlclie));
+								$rowclie = mysqli_fetch_array($resultclie);
+								$sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$rowc["id"]." order by servicio";
+								$results = mysqli_query($dbhandle,convertSQL($sqls));
+								while ($rows = mysqli_fetch_array($results)){
+									if ($_POST["id_servicio"] == $rows["id"]){
+										echo "<option value=\"".$rows["id"]."\" selected>(".$rowc["descripcion"].")".$rows["servicio"]."</option>";
+									} else {
+										echo "<option value=\"".$rows["id"]."\">(".$rowc["descripcion"].")".$rows["servicio"]."</option>";
+									}
 								}
 							}
 					echo "</select></td>";

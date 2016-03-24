@@ -347,26 +347,17 @@ ALTER TABLE `sgm_clients_bases_dades` ADD `pass` varchar(50) NOT NULL default ''
 ALTER TABLE `sgm_clients_bases_dades` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `pass`;
 ALTER TABLE `sgm_clients_bases_dades` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 
-CREATE TABLE `sgm_clientes_busquedas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_clientes_busquedas` ADD `nombre` varchar(20) default NULL AFTER `id`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `letras` varchar(30) default NULL AFTER `nombre`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_tipo` varchar(50) NOT NULL default '' AFTER `lletres` ;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_grupo` varchar(50) NOT NULL default '' AFTER `id_tipo`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_sector` varchar(50) NOT NULL default '' AFTER `id_grupo` ;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_ubicacion` varchar(50) NOT NULL default '' AFTER `id_sector`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_classificacio` varchar(50) NOT NULL default '' AFTER `id_ubicacion`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_servicio` varchar(50) NOT NULL default '' AFTER `id_classificacio`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_sestado` varchar(50) NOT NULL default '' AFTER `id_servicio` ;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_proveedor` varchar(50) NOT NULL default '' AFTER `id_sestado`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_certificado` varchar(50) NOT NULL default '' AFTER `id_proveedor` ;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_cestado` varchar(50) NOT NULL default '' AFTER `id_certificado`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `contactes` tinyint(1) NOT NULL default '0' AFTER `id_cestado`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `likenombre` varchar(20) default NULL AFTER `contactes`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `incidencies` tinyint(1) NOT NULL default '0' AFTER `likenombre`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `desde` date NOT NULL default '0000-00-00' AFTER `incidencies`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `hasta` date NOT NULL default '0000-00-00' AFTER `desde`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_user` int(11) NOT NULL default '0' AFTER `hasta`;
-ALTER TABLE `sgm_clientes_busquedas` ADD `id_client` int(11) NOT NULL default '0' AFTER `id_user`;
+CREATE TABLE `sim_clientes_busquedas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_clientes_busquedas` ADD `nombre` varchar(20) default NULL AFTER `id`;
+ALTER TABLE `sim_clientes_busquedas` ADD `letras` varchar(30) default NULL AFTER `nombre`;
+ALTER TABLE `sim_clientes_busquedas` ADD `tipos` varchar(50) NOT NULL default '' AFTER `letras` ;
+ALTER TABLE `sim_clientes_busquedas` ADD `sectors` varchar(50) NOT NULL default '' AFTER `tipos`;
+ALTER TABLE `sim_clientes_busquedas` ADD `origens` varchar(50) NOT NULL default '' AFTER `sectors` ;
+ALTER TABLE `sim_clientes_busquedas` ADD `paises` varchar(50) NOT NULL default '' AFTER `origens`;
+ALTER TABLE `sim_clientes_busquedas` ADD `comunidades` varchar(50) NOT NULL default '' AFTER `paises`;
+ALTER TABLE `sim_clientes_busquedas` ADD `provincias` varchar(50) NOT NULL default '' AFTER `comunidades`;
+ALTER TABLE `sim_clientes_busquedas` ADD `regiones` varchar(50) NOT NULL default '' AFTER `provincias` ;
+ALTER TABLE `sim_clientes_busquedas` ADD `likenombre` varchar(20) default NULL AFTER `regiones`;
 
 CREATE TABLE `sgm_clients_contactos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_contactos` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;

@@ -5,14 +5,14 @@ function correo_incidencias(){
 	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
 
 	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
-	$checar = imap_check($imap);
-
+echo	$checar = imap_check($imap);
+echo "XX";
 	// Detalles generales de todos los mensajes del usuario.
 	$resultados = imap_fetch_overview($imap,"1:{$checar->Nmsgs}",0);
 	// Ordenamos los mensajes arriba los más nuevos y abajo los más antiguos
 #	krsort($resultados);
 	foreach ($resultados as $detalles) {
-		$id_cliente = 0;
+		echo $id_cliente = 0;
 		$id_usuario = 0;
 
 		$destinatario = imap_utf8($detalles->to);
@@ -25,7 +25,7 @@ function correo_incidencias(){
 		if (($rowi["uid"]<$uid) or (!$rowi)) {
 			if ($rowi["uid"]<$uid){
 				$sql = "update sgm_incidencias_correos set uid=".$uid;
-				mysqli_query($dbhandle,$sql);
+#				mysqli_query($dbhandle,$sql);
 #				echo $sql."<br>";
 			}
 			if (!$rowi){
@@ -34,14 +34,14 @@ function correo_incidencias(){
 				$sql = $sql.$uid."";
 				$sql = $sql.",'".$destinatario."'";
 				$sql = $sql.")";
-				mysqli_query($dbhandle,$sql);
+#				mysqli_query($dbhandle,$sql);
 #				echo $sql."<br>";
 			}
 
-			$asunto = imap_utf8($detalles->subject);
-			$remitente = imap_utf8($detalles->from);
-			$remite = imap_headerinfo($imap,$detalles->msgno);
-			$correo_rem = $remite->from;
+			echo $asunto = imap_utf8($detalles->subject);
+			echo $remitente = imap_utf8($detalles->from);
+			echo $remite = imap_headerinfo($imap,$detalles->msgno);
+			echo $correo_rem = $remite->from;
 			foreach ($correo_rem as $correo_remite) {
 				$correo_remitente = $correo_remite->mailbox."@".$correo_remite->host;
 			}

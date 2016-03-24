@@ -155,8 +155,32 @@ if (($option == 1008) AND ($autorizado == true)) {
 		if ($soption == 0) {
 			echo "<h4>".$Contactos."</h4>";
 		} elseif ($soption == 200) {
+			if ($_GET["filtro"] == 1) {
+				$tipos = $_POST["id_tipo"];
+				$tipo = implode(",", $tipos);
+				$sectors = $_POST["id_sector"];
+				$sector = implode(",", $sectors);
+				$origens = $_POST["id_origen"];
+				$origen = implode(",", $origens);
+				$paises = $_POST["id_pais"];
+				$pais = implode(",", $paises);
+				$comunidades = $_POST["id_comunidad_autonoma"];
+				$comunidad = implode(",", $comunidades);
+				$provincias = $_POST["id_provincia"];
+				$provincia = implode(",", $provincias);
+				$regiones = $_POST["id_region"];
+				$region = implode(",", $regiones);
+			}
+			if ($ssoption == 2){
+				$camposInsert = "nombre,letras,tipos,sectors,origens,paises,comunidades,provincias,regiones,likenombre";
+				$datosInsert = array($_POST["nom_cerca"],$_POST["letras"],$_POST["tipos"],$_POST["sectors"],$_POST["origens"],$_POST["paises"],$_POST["comunidades"],$_POST["provincias"],$_POST["regiones"],$_POST["likenombre"]);
+				insertFunction ("sim_clientes_busquedas",$camposInsert,$datosInsert);
+			}
 			echo "<h4>".$Buscar_Contacto." : </h4>";
-			echo "<form action=\"index.php?op=1008&sop=200&filtro=1\" method=\"post\">";
+			echo "<table style=\"width:100%;float:left;\">";
+				echo "<tr>";
+				echo "<td>";
+				echo "<form action=\"index.php?op=1008&sop=200&filtro=1\" method=\"post\">";
 				echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 					echo "<tr style=\"background-color:silver;\">";
 						echo "<th>".$Tipo."</th>";
@@ -174,7 +198,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlt = "select id,nombre from sim_clientes_tipos where visible=1";
 								$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
 								while ($rowt = mysqli_fetch_array($resultt)) {
-									if (in_array($rowt["id"], $tipo)){
+									if (in_array($rowt["id"], $tipos)){
 										echo "<option value=\"".$rowt["id"]."\" selected>".$rowt["nombre"]."</option>";
 									} else {
 										echo "<option value=\"".$rowt["id"]."\">".$rowt["nombre"]."</option>";
@@ -202,7 +226,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlu = "select id,origen from sim_clientes_origen order by origen";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)){
-									if (in_array($rowu["id"], $origen)){
+									if (in_array($rowu["id"], $origens)){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["origen"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["origen"]."</option>";
@@ -216,7 +240,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlu = "select id,pais from sim_paises order by pais";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)){
-									if (in_array($rowu["id"], $pais)){
+									if (in_array($rowu["id"], $paises)){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["pais"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["pais"]."</option>";
@@ -230,7 +254,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlu = "select id,comunidad_autonoma from sim_comunidades_autonomas order by comunidad_autonoma";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)){
-									if (in_array($rowu["id"], $ubicacions)){
+									if (in_array($rowu["id"], $comunidades)){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["comunidad_autonoma"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["comunidad_autonoma"]."</option>";
@@ -244,7 +268,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlu = "select id,provincia from sim_provincias order by provincia";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)){
-									if (in_array($rowu["id"], $ubicacions)){
+									if (in_array($rowu["id"], $provincias)){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["provincia"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["provincia"]."</option>";
@@ -258,7 +282,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlu = "select id,region from sim_regiones order by region";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)){
-									if (in_array($rowu["id"], $ubicacions)){
+									if (in_array($rowu["id"], $regiones)){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["region"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["region"]."</option>";
@@ -294,31 +318,34 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "</tr>";
 					echo "<tr><td colspan=\"39\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:400px\"></td></tr>";
 				echo "</table>";
-			echo "</form>";
+				echo "</form>";
+			echo "</td><td style=\"vertical-align:top;\">";
+				echo "<table cellpadding=\"1\" cellspacing=\"1\" class=\"lista\">";
+					echo "<caption>".$Busquedas." ".$Guardadas." : </caption>";
+					$x = 0;
+					$sql = "select id,nombre from sim_clientes_busquedas order by nombre";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)){
+						echo "<tr>";
+							echo "<td>";
+								echo boton(array("op=1008&sop=4&id=".$row["id"]),array($row["nombre"]));
+								$x++;
+								if ($x >= 4){ echo "</tr><tr>"; $x = 0 ;}
+							echo "</td>";
+						echo "</tr>";
+					}
+				echo "</table>";
+			echo "</td>";
+			echo "</tr>";
+			echo "</table>";
 			echo "<br>";
 		}
 
 		$ok = 0;
 		for ($i = 48; $i <= 90; $i++) {
 			if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
-				if ($_POST[$i] == true) { $ok = 1; }
+				if ($_POST[chr($i)] == true) { $ok = 1;}
 			}
-		}
-		if (($soption == 200) and ($_GET["filtro"] == 1)) {
-			$tipos = $_POST["id_tipo"];
-			$tipo = implode(",", $tipos);
-			$sectors = $_POST["id_sector"];
-			$sector = implode(",", $sectors);
-			$origens = $_POST["id_origen"];
-			$origen = implode(",", $origens);
-			$paises = $_POST["id_pais"];
-			$pais = implode(",", $paises);
-			$comunidades = $_POST["id_comunidad_autonoma"];
-			$comunidad = implode(",", $comunidades);
-			$provincias = $_POST["id_provincia"];
-			$provincia = implode(",", $provincias);
-			$regiones = $_POST["id_region"];
-			$region = implode(",", $regiones);
 		}
 		if (($soption == 0) or (($soption == 200) and ($_GET["filtro"] == 1) and (($tipo > 0) or ($sector > 0) or ($origen > 0) or ($pais > 0) or ($comunidad > 0) or ($provincia > 0) or ($region > 0) or ($_POST["likenombre"] != "") or ($ok == 1)))) {
 			$ver = true;
@@ -340,6 +367,46 @@ if (($option == 1008) AND ($autorizado == true)) {
 						}
 					}
 					echo "</td>";
+					echo "<form action=\"index.php?op=1008&sop=5\" method=\"post\">";
+					for ($i = 48; $i <= 90; $i++) {
+						if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
+							if ($_POST[chr($i)] == true) {
+								echo "<input type=\"Hidden\" name=\"".chr($i)."\" value=\"".$_POST[chr($i)]."\">";
+							}
+						}
+					}
+					if ($_GET["id_tipo"] != "") {$tipo_cliente = $_GET["id_tipo"];} else {$tipo_cliente = $tipo;}
+					echo "<input type=\"Hidden\" name=\"tipos\" value=\"".$tipo_cliente."\">";
+					echo "<input type=\"Hidden\" name=\"sectors\" value=\"".$sector."\">";
+					echo "<input type=\"Hidden\" name=\"origens\" value=\"".$origen."\">";
+					echo "<input type=\"Hidden\" name=\"paises\" value=\"".$pais."\">";
+					echo "<input type=\"Hidden\" name=\"comunidades\" value=\"".$comunidad."\">";
+					echo "<input type=\"Hidden\" name=\"provincias\" value=\"".$provincia."\">";
+					echo "<input type=\"Hidden\" name=\"regiones\" value=\"".$region."\">";
+					echo "<input type=\"Hidden\" name=\"likenombre\" value=\"".$_POST["likenombre"]."\">";
+					echo "<td style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Imprimir_Lista."\" style=\"width:150px\"></td>";
+					echo "</form>";
+				if ($soption != 4){
+					echo "<form action=\"index.php?op=1008&sop=6\" method=\"post\">";
+					for ($i = 48; $i <= 90; $i++) {
+						if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
+							if ($_POST[chr($i)] == true) {
+								echo "<input type=\"Hidden\" name=\"".chr($i)."\" value=\"".$_POST[chr($i)]."\">";
+							}
+						}
+					}
+					if ($_GET["id_tipo"] != "") {$tipo_cliente = $_GET["id_tipo"];} else {$tipo_cliente = $tipo;}
+					echo "<input type=\"Hidden\" name=\"tipos\" value=\"".$tipo_cliente."\">";
+					echo "<input type=\"Hidden\" name=\"sectors\" value=\"".$sector."\">";
+					echo "<input type=\"Hidden\" name=\"origens\" value=\"".$origen."\">";
+					echo "<input type=\"Hidden\" name=\"paises\" value=\"".$pais."\">";
+					echo "<input type=\"Hidden\" name=\"comunidades\" value=\"".$comunidad."\">";
+					echo "<input type=\"Hidden\" name=\"provincias\" value=\"".$provincia."\">";
+					echo "<input type=\"Hidden\" name=\"regiones\" value=\"".$region."\">";
+					echo "<input type=\"Hidden\" name=\"likenombre\" value=\"".$_POST["likenombre"]."\">";
+					echo "<td style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Guardar_Busqueda."\" style=\"width:150px\"></td>";
+					echo "</form>";
+				}
 				echo "</tr>";
 			echo "</table>";
 			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -364,17 +431,17 @@ if (($option == 1008) AND ($autorizado == true)) {
 #					echo $sql."<br>";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
-						#### NO MOSTRARA SI LA LETRA NO ESTA SELECCIONADA
-						if ($ver_todas_letras == false) {
-							if ($_POST[chr($i)] != true) {
-								$ver = false;
-							}
-						}
 						#### MOSTRARA SI LA LETRA NO ESTA SELECCIONADA
 						if($_GET["id_tipo"] != ""){
 							if ($row["id_agrupacion"] == 0){$ver = true;} else {$ver = false;}
 						} else {
 							$ver = true;
+						}
+						#### NO MOSTRARA SI LA LETRA NO ESTA SELECCIONADA
+						if ($ver_todas_letras == false) {
+							if ($_POST[chr($i)] != true) {
+								$ver = false;
+							}
 						}
 						#### BUSCA TIPUS
 						if (($ver == true) and (($_GET["id_tipo"] != "") OR ($tipo != ""))) {
@@ -462,16 +529,9 @@ if (($option == 1008) AND ($autorizado == true)) {
 							$z++;
 						}
 						$ver_madre = $ver;
-						$sqlsub = "select id from sgm_clients where visible=1 and id_agrupacio=".$row["id"];
-						if ($tipo != "") { $sqlsub = $sqlsub." and id_tipo in (".$tipo.")"; }
-						if ($grupo != "") { $sqlsub = $sqlsub." and id_grupo in (".$grupo.")"; }
-						if ($sector != "") { $sqlsub = $sqlsub." and sector in (".$sector.")"; }
-						if ($ubicacion != "") { $sqlsub = $sqlsub." and id_ubicacion in (".$ubicacion.")"; }
-						if ($_POST["id_client"] != 0) { $sqlsub = $sqlsub." and id=".$_POST["id_client"]; }
-						if ($_POST["likenombre"] != "") {
-							$sqlsub = $sqlsub." and (nombre like '%".$_POST["likenombre"]."%' or cognom1 like '%".$_POST["likenombre"]."%' or cognom2 like '%".$_POST["likenombre"]."%')";
-						}
-						$sqlsub =$sqlsub." order by nombre,cognom1,cognom2,id_origen";
+						$sqlsub = "select id,id_agrupacion from sim_clientes where visible=1 and nombre like '".chr($i)."%' and id_agrupacio=".$row["id"];
+						if ($_POST["likenombre"] != "") { $sqlsub = $sqlsub." and (nombre like '%".$_POST["likenombre"]."%' or apellido1 like '%".$_POST["likenombre"]."%' or apellido2 like '%".$_POST["likenombre"]."%')";}
+						$sqlsub =$sqlsub." order by nombre,apellido1,apellido2,id_origen";
 #						echo $sqlsub."<br>";
 						$resultsub = mysqli_query($dbhandle,convertSQL($sqlsub));
 						while ($rowsub = mysqli_fetch_array($resultsub)) {
@@ -586,7 +646,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</table>";
 		echo "<br>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" width=\"100%\">";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		 for ($i = 48; $i <= 90; $i++) {
 			 if (((($i >= 48) and ($i <= 57)) or (($i >= 65) and ($i <= 90))) and (($filtro == 0) or ($filtro == $i))) {
 			$sqlxt = "select count(*) as total from sgm_clients_contactos where visible=1 and nombre like '".chr($i)."%'";
@@ -605,6 +665,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<th>".$Trato."</th>";
 						echo "<th style=\"white-space:nowrap\">".$Nombre."</th>";
 						echo "<th>".$Telefono."</th>";
+						echo "<th>".$Movil."</th>";
 						echo "<th style=\"white-space:nowrap;\">".$Empresa."</th>";
 						echo "<th style=\"white-space:nowrap\">".$Cargo."</th>";
 					echo "</tr>";
@@ -631,6 +692,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td>".$rowtr["trato"]."</td>";
 							echo "<td style=\"white-space:nowrap;\"><a href=\"index.php?op=1008&sop=122&ssop=2&id=".$rowt["id_client"]."&id_contacto=".$rowt["id"]."\">".$rowt["nombre"]." ".$rowt["apellido1"]." ".$rowt["apellido2"]."</a></td>";
 							echo "<td>".$rowt["telefono"]."</td>";
+							echo "<td>".$rowt["movil"]."</td>";
 							echo "<td style=\"white-space:nowrap;\"><a href=\"index.php?op=1008&sop=100&id=".$rowt["id_client"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]."  ".$rowc["cognom2"]." </a></td>";
 							echo "<td style=\"white-space:nowrap;\">".$rowt["carrec"]."</td>";
 						echo "</tr>";
@@ -641,24 +703,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "</table>";
 	}
 
-	if ($soption == 3) {
-		echo "<table cellpadding=\"1\" cellspacing=\"1\" class=\"lista\">";
-			echo "<tr>";
-			$x = 0;
-			$sql = "select id,nombre from sgm_cerques order by nombre";
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			while ($row = mysqli_fetch_array($result)){
-				echo "<td style=\"width:400px;height:50px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-					echo "<a href=\"index.php?op=1008&sop=4&id=".$row["id"]."\" style=\"color:white;\">".$row["nombre"]."</a>";
-				echo "</td>";
-				$x++;
-				if ($x >= 4){ echo "</tr><tr>"; $x = 0 ;}
-			}
-			echo "</tr>";
-		echo "</table>";
-	}
-
-	if ($soption == 6) {
+	if ($soption == 5) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"text-align:center;width:150px;\">".$Listado." ".$Contactos." : </td>";
@@ -671,14 +716,50 @@ if (($option == 1008) AND ($autorizado == true)) {
 							}
 						}
 					}
-					echo "<input type=\"Hidden\" name=\"tipo\" value=\"".$_POST["tipo"]."\">";
-					echo "<input type=\"Hidden\" name=\"grupo\" value=\"".$_POST["grupo"]."\">";
-					echo "<input type=\"Hidden\" name=\"sector\" value=\"".$_POST["sector"]."\">";
-					echo "<input type=\"Hidden\" name=\"ubicacion\" value=\"".$_POST["ubicacion"]."\">";
-					echo "<input type=\"Hidden\" name=\"id_classificacio\" value=\"".$_POST["id_classificacio"]."\">";
+					echo "<input type=\"Hidden\" name=\"tipos\" value=\"".$_POST["tipos"]."\">";
+					echo "<input type=\"Hidden\" name=\"sectors\" value=\"".$_POST["sectors"]."\">";
+					echo "<input type=\"Hidden\" name=\"origens\" value=\"".$_POST["origens"]."\">";
+					echo "<input type=\"Hidden\" name=\"paises\" value=\"".$_POST["paises"]."\">";
+					echo "<input type=\"Hidden\" name=\"comunidades\" value=\"".$_POST["comunidades"]."\">";
+					echo "<input type=\"Hidden\" name=\"provincias\" value=\"".$_POST["provincias"]."\">";
+					echo "<input type=\"Hidden\" name=\"regiones\" value=\"".$_POST["regiones"]."\">";
+					echo "<input type=\"Hidden\" name=\"likenombre\" value=\"".$_POST["likenombre"]."\">";
 				echo "<td style=\"text-align:center;width:100px;\"><input type=\"Checkbox\" name=\"colorsi\"> ".$Color."</td>";
 				echo "<td style=\"text-align:center;width:100px;\"><input type=\"Checkbox\" name=\"completa\"> ".$Completo."</td>";
 				echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+		echo "</table>";
+	}
+
+	if ($soption == 6) {
+		echo "<h4>".$Guardar." ".$Busquedas."</h4><br><br>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver;\">";
+				echo "<th>".$Nombre."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1008&sop=200&ssop=2\" method=\"post\">";
+				echo "<td><input type=\"text\" name=\"nom_cerca\" style=\"width:250px;\" required></td>";
+				echo "<td><input type=\"submit\" value=\"".$Guardar."\"></td>";
+				$lletres = "";
+				for ($i = 48; $i <= 90; $i++) {
+					if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
+						if ($_POST[chr($i)] == true) {
+							$lletres .= chr($i);
+							echo "<input type=\"Hidden\" name=\"letras\" value=\"".$lletres."\">";
+						}
+					}
+				}
+				echo "<input type=\"Hidden\" name=\"tipos\" value=\"".$_POST["tipos"]."\">";
+				echo "<input type=\"Hidden\" name=\"sectors\" value=\"".$_POST["sectors"]."\">";
+				echo "<input type=\"Hidden\" name=\"origens\" value=\"".$_POST["origens"]."\">";
+				echo "<input type=\"Hidden\" name=\"paises\" value=\"".$_POST["paises"]."\">";
+				echo "<input type=\"Hidden\" name=\"comunidades\" value=\"".$_POST["comunidades"]."\">";
+				echo "<input type=\"Hidden\" name=\"provincias\" value=\"".$_POST["provincias"]."\">";
+				echo "<input type=\"Hidden\" name=\"regiones\" value=\"".$_POST["regiones"]."\">";
+				echo "<input type=\"Hidden\" name=\"likenombre\" value=\"".$_POST["likenombre"]."\">";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -2776,9 +2857,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "</table>";
 	}
 
-	echo "</td></tr></table><br>";
-}
-
 	if ($soption == 500) {
 		if ($admin == true) {
 			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=540","op=1008&sop=560","op=1008&sop=570","op=1008&sop=580");
@@ -3254,37 +3332,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
-	if ($soption == 572) {
-		echo "<h4>".$Guardar." ".$Busquedas."</h4><br><br>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr style=\"background-color:silver;\">";
-				echo "<th>".$Nombre."</th>";
-				echo "<th></th>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<form action=\"index.php?op=1008&sop=570&ssop=1\" method=\"post\">";
-				echo "<td><input type=\"text\" name=\"nom_cerca\" style=\"width:250px;\" required></td>";
-				echo "<td><input type=\"submit\" value=\"".$Guardar."\"></td>";
-				$lletres = "";
-				for ($i = 48; $i <= 90; $i++) {
-					if ((($i >= 48) and ($i <= 57)) or(($i >= 65) and ($i <= 90))) {
-						if ($_POST[chr($i)] == true) {
-							$lletres .= chr($i);
-							echo "<input type=\"Hidden\" name=\"lletres\" value=\"".$lletres."\">";
-						}
-					}
-				}
-				echo "<input type=\"Hidden\" name=\"tipo\" value=\"".$_POST["tipo"]."\">";
-				echo "<input type=\"Hidden\" name=\"grupo\" value=\"".$_POST["grupo"]."\">";
-				echo "<input type=\"Hidden\" name=\"sector\" value=\"".$_POST["sector"]."\">";
-				echo "<input type=\"Hidden\" name=\"ubicacion\" value=\"".$_POST["ubicacion"]."\">";
-				echo "<input type=\"Hidden\" name=\"id_classificacio\" value=\"".$_POST["id_classificacio"]."\">";
-				echo "<input type=\"Hidden\" name=\"likenombre\" value=\"".$_POST["likenombre"]."\">";
-				echo "</form>";
-			echo "</tr>";
-		echo "</table>";
-	}
-
 	if ($soption == 580) {
 		if ($ssoption == 1) {
 			$camposInsert = "nombre,porcentage,descuento";
@@ -3360,6 +3407,9 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo boton(array("op=1008&sop=580&ssop=3&id=".$_GET["id"],"op=1008&sop=580"),array($Si,$No));
 		echo "</center>";
 	}
+
+	echo "</td></tr></table><br>";
+}
 
 function ver_contacto($id,$color,$contactes) {
 	global $db,$dbhandle;
