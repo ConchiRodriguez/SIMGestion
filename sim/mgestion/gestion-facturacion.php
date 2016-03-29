@@ -898,10 +898,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$datosInsert = array($_GET["id"],$userid,$rowf["fecha_entrega"],$fecha);
 				insertFunction ("sgm_factura_canvi_data_entrega",$camposInsert,$datosInsert);
 			}
-			$fechaf = cambiarFormatoFechaDMY($_POST["fecha"]);
-			$fecha_prevf = cambiarFormatoFechaDMY($_POST["fecha_prevision"]);
-			$fecha_entf = cambiarFormatoFechaDMY($_POST["fecha_entrega"]);
-			$fecha_venf = cambiarFormatoFechaDMY($_POST["fecha_vencimiento"]);
+			$fechaf = date("Y-m-d", strtotime(cambiarFormatoFechaDMY($_POST["fecha"])));
+			$fecha_prevf = date("Y-m-d", strtotime(cambiarFormatoFechaDMY($_POST["fecha_prevision"])));
+			$fecha_entf = date("Y-m-d", strtotime(cambiarFormatoFechaDMY($_POST["fecha_entrega"])));
+			$fecha_venf = date("Y-m-d", strtotime(cambiarFormatoFechaDMY($_POST["fecha_vencimiento"])));
+
 			$camposUpdate = array("numero","version","numero_rfq","numero_cliente","fecha","fecha_prevision","fecha_entrega","fecha_vencimiento","id_cliente","nombre","nif","direccion","poblacion","cp","provincia","id_pais","mail","telefono","edireccion","epoblacion","ecp","eprovincia","notas","imp_exp","id_divisa","div_canvi","id_pagador","id_user","id_dades_origen_factura_iban","cnombre","cmail","ctelefono");
 			$datosUpdate = array($_POST["numero"],$_POST["version"],$_POST["numero_rfq"],$_POST["numero_cliente"],$fechaf,$fecha_prevf,$fecha_entf,$fecha_venf,$_POST["id_cliente"],$_POST["nombre"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["mail"],$_POST["telefono"],$_POST["edireccion"],$_POST["epoblacion"],$_POST["ecp"],$_POST["eprovincia"],$_POST["notas"],$_POST["imp_exp"],$_POST["id_divisa"],$_POST["div_canvi"],$_POST["id_pagador"],$_POST["id_user"],$_POST["id_dades_origen_factura_iban"],$_POST["cnombre"],$_POST["cmail"],$_POST["ctelf"]);
 			updateFunction ("sgm_cabezera",$_GET["id"],$camposUpdate,$datosUpdate);
@@ -2480,11 +2481,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<th style=\"width:150px\">".$Tipo."</th>";
 				echo "<th style=\"width:200px\">".$Descripcion."</th>";
 				echo "<th style=\"width:50px\">".$Plantilla."</th>";
-				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:10px\">".$Dias."</th>";
 				echo "<th style=\"width:50px\">TPV</th>";
 				echo "<th style=\"width:50px\">".$Caja."</th>";
 				echo "<th style=\"width:50px\">V.Prev</th>";
-				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:20px\">".$Dias."</th>";
 				echo "<th style=\"width:50px\">V.Venc</th>";
 				echo "<th style=\"width:50px\">V.Ref</th>";
 				echo "<th style=\"width:50px\">V.Sub</th>";
@@ -2492,7 +2493,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<th style=\"width:50px\">V.Rec</th>";
 				echo "<th style=\"width:50px\">OT</th>";
 				echo "<th style=\"width:50px\">Presu</th>";
-				echo "<th style=\"width:35px\">".$Dias."</th>";
+				echo "<th style=\"width:20px\">".$Dias."</th>";
 				echo "<th style=\"width:35px\">".$Stock."</th>";
 				echo "<th style=\"width:50px\">".$Aprobar."</th>";
 				echo "<th style=\"width:50px\">V.RFQ</th>";
@@ -2579,7 +2580,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1003&sop=530&ssop=2&id=".$rowtipos["id"]."\" method=\"post\">";
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=501&id=".$rowtipos["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<td><input type=\"Text\" name=\"orden\" value=\"".$rowtipos["orden"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"orden\" value=\"".$rowtipos["orden"]."\"></td>";
 					echo "<td><input type=\"Text\" name=\"tipo\" value=\"".$rowtipos["tipo"]."\"></td>";
 					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$rowtipos["descripcion"]."\"></td>";
 					echo "<td><select name=\"facturable\">";
@@ -2592,7 +2593,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"dias\" value=\"".$rowtipos["dias"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"dias\" value=\"".$rowtipos["dias"]."\"></td>";
 					echo "<td><select name=\"tpv\">";
 						if ($rowtipos["tpv"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
@@ -2623,7 +2624,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\"></td>";
 					echo "<td><select name=\"v_fecha_vencimiento\">";
 						if ($rowtipos["v_fecha_vencimiento"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
@@ -2694,7 +2695,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Text\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\"></td>";
 					echo "<td><select name=\"stock\">";
 						if ($rowtipos["stock"] == 0) {
 							echo "<option value=\"0\" selected>=</option>";
