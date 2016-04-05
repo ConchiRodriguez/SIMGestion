@@ -172,8 +172,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$region = implode(",", $regiones);
 			}
 			if ($ssoption == 2){
-				$camposInsert = "nombre,letras,tipos,sectors,origens,paises,comunidades,provincias,regiones,likenombre";
-				$datosInsert = array($_POST["nom_cerca"],$_POST["letras"],$_POST["tipos"],$_POST["sectors"],$_POST["origens"],$_POST["paises"],$_POST["comunidades"],$_POST["provincias"],$_POST["regiones"],$_POST["likenombre"]);
+				$camposInsert = "nombre,letras,tipos,sectores,origenes,paises,comunidades,provincias,regiones,likenombre";
+				$datosInsert = array($_POST["nom_cerca"],$_POST["letras"],$_POST["tipos"],$_POST["sectores"],$_POST["origenes"],$_POST["paises"],$_POST["comunidades"],$_POST["provincias"],$_POST["regiones"],$_POST["likenombre"]);
 				insertFunction ("sim_clientes_busquedas",$camposInsert,$datosInsert);
 			}
 			echo "<h4>".$Buscar_Contacto." : </h4>";
@@ -1513,52 +1513,17 @@ if (($option == 1008) AND ($autorizado == true)) {
 #Dades facturació
 	if ($soption == 110) {
 		if ($ssoption == 1) {
-			$camposUpdate = array("entidadbancaria","domiciliobancario","cuentabancaria");
-			$datosUpdate = array($_POST["entidadbancaria"],$_POST["domiciliobancario"],$_POST["cuentabancaria"]);
-			updateFunction ("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
+			$camposUpdate = array("cuenta_bancaria","dia_facturacion","dia_recibo","unidad_vencimiento","vencimiento");
+			$datosUpdate = array($_POST["cuenta_bancaria"],$_POST["dia_facturacion"],$_POST["dia_recibo"],$_POST["unidad_vencimiento"],$_POST["vencimiento"]);
+			updateFunction ("sim_clientes",$_GET["id"],$camposUpdate,$datosUpdate);
+			if ($_POST["dia"] != 0){
+				$camposInsert = "dia,id_cliente";
+				$datosInsert = array($_POST["dia"],$_GET["id"]);
+				insertFunction ("sim_clients_dias_vencimiento",$camposInsert,$datosInsert);
+			}
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("dias_vencimiento","dias","dia_mes_vencimiento","cuentacontable");
-			$datosUpdate = array($_POST["dias_vencimiento"],$_POST["dias"],$_POST["dia_mes_vencimiento"],$_POST["cuentacontable"]);
-			updateFunction ("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
-			$i = 1;
-			$sqlz = "select id from sgm_clients_dias_facturacion where id_cliente=".$_GET["id"]." order by dia";
-			$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
-			while ($rowz = mysqli_fetch_array($resultz)) {
-				$i++;
-				if ($_POST["dia_facturacion".$i.""] == 0) {
-					deleteFunction ("sgm_clients_dias_facturacion",$rowz["id"]);
-				} else {
-					$camposUpdate = array("dia");
-					$datosUpdate = array($_POST["dia_facturacion".$i.""]);
-					updateFunction ("sgm_clients_dias_facturacion",$_GET["id"],$camposUpdate,$datosUpdate);
-				}
-			}
-
-			if ($_POST["dia_facturacion1"] != 0) {
-				$camposInsert = "dia,id_cliente";
-				$datosInsert = array($_POST["dia_facturacion1"],$_GET["id"]);
-				insertFunction ("sgm_clients_dias_facturacion",$camposInsert,$datosInsert);
-			}
-			$i = 1;
-			$sqlz = "select id from sgm_clients_dias_recibos where id_cliente=".$_GET["id"]." order by dia";
-			$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
-			while ($rowz = mysqli_fetch_array($resultz)) {
-				$i++;
-				if ($_POST["dia_recibo".$i.""] == 0) {
-					deleteFunction ("sgm_clients_dias_recibos",$rowz["id"]);
-				} else {
-					$camposUpdate = array("dia");
-					$datosUpdate = array($_POST["dia_recibo".$i.""]);
-					updateFunction ("sgm_clients_dias_recibos",$_GET["id"],$camposUpdate,$datosUpdate);
-				}
-			}
-
-			if ($_POST["dia_recibo1"] != 0) {
-				$camposInsert = "dia,id_cliente";
-				$datosInsert = array($_POST["dia_recibo1"],$_GET["id"]);
-				insertFunction ("sgm_clients_dias_recibos",$camposInsert,$datosInsert);
-			}
+			deleteFunction ("sim_clients_dias_vencimiento",$_GET["id_dia"]);
 		}
 		if ($ssoption == 4) {
 			$sqltc = "select count(*) as total from sgm_tarifas_clients where predeterminado=1";
@@ -1588,23 +1553,23 @@ if (($option == 1008) AND ($autorizado == true)) {
 			deleteFunction ("sgm_tarifas_clients",$_GET["id_tarifa"]);
 		}
 
-		$sql = "select * from sgm_clients where id=".$_GET["id"];
+		$sql = "select dia_facturacion,dia_recibo,unidad_vencimiento,vencimiento,cuenta_bancaria from sim_clientes where id=".$_GET["id"];
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr><th>".$Datos_Facturacion." :</th></tr>";
-			echo "<form action=\"index.php?op=1008&sop=110&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
+			echo "<form action=\"index.php?op=1008&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 			echo "<tr>";
+				echo "<td>IBAN : </td>";
+				echo "<td><input type=\"Text\" name=\"cuenta_bancaria\" style=\"width:300px\" value=\"".$row["cuenta_bancaria"]."\"></td>";
+			echo "</tr><tr>";
 				echo "<td>".$Dia." ".$Facturacion."</td>";
 				echo "<td>";
 					$i = 1;
-					$sqlz = "select dia from sgm_clients_dias_facturacion where id_cliente=".$row["id"]." order by dia";
-					$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
-					$rowz = mysqli_fetch_array($resultz);
-					echo "<select name=\"dia_facturacion".$i."\">";
+					echo "<select name=\"dia_facturacion\">";
 						echo "<option value=\"0\">-</option>";
 						for ($x = 1; $x < 32; $x++) {
-							if ($rowz["dia"] == $x) {
+							if ($row["dia_facturacion"] == $x) {
 								echo "<option value=\"".$x."\" selected>".$x."</option>";
 							} else {
 								echo "<option value=\"".$x."\">".$x."</option>";
@@ -1612,73 +1577,52 @@ if (($option == 1008) AND ($autorizado == true)) {
 						}
 					echo "</select>";
 				echo "</td>";
-			echo "</tr>";
-			echo "<tr>";
+			echo "</tr><tr>";
 				echo "<td>".$Dia." ".$Recibo."</td>";
 				echo "<td>";
 					$i = 1;
-					$sqlz = "select dia from sgm_clients_dias_recibos where id_cliente=".$row["id"]." order by dia";
-					$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
-					$rowz = mysqli_fetch_array($resultz);
-					echo "<select name=\"dia_recibo".$i."\">";
+					echo "<select name=\"dia_recibo\">";
 						echo "<option value=\"0\">-</option>";
 						for ($x = 1; $x < 32; $x++) {
-							if ($rowz["dia"] == $x) {
-								echo "<option value=\"".$x."\" selected>".$x."</option>";
-							} else {
-								echo "<option value=\"".$x."\">".$x."</option>";
-							}
+							echo "<option value=\"".$x."\">".$x."</option>";
 						}
 					echo "</select>";
 				echo "</td>";
-			echo "</tr>";
-			echo "<tr>";
+			echo "</tr><tr>";
 				echo "<td>".$Vencimiento."</td>";
-				echo "<td><input type=\"Text\" name=\"dias_vencimiento\" style=\"width:50px\" value=\"".$row["dias_vencimiento"]."\">";
-					echo "<select name=\"dias\">";
-						if ($row["dias"] == 1) {
-							echo "<option value=\"1\" selected>Días</option>";
-							echo "<option value=\"0\">Meses</option>";
+				echo "<td><input type=\"numbre\" name=\"unidad_vencimiento\" style=\"width:50px\" value=\"".$row["unidad_vencimiento"]."\">";
+					echo "<select name=\"vencimiento\">";
+						if ($row["vencimiento"] == 1) {
+							echo "<option value=\"1\" selected>".$Dias."</option>";
+							echo "<option value=\"0\">".$Meses."</option>";
 						}
-						if ($row["dias"] == 0) {
-							echo "<option value=\"1\">Días</option>";
-							echo "<option value=\"0\" selected>Meses</option>";
-						}
-					echo "</select>";
-					echo "Dia de mes: <select name=\"dia_mes_vencimiento\">";
-						echo "<option value=\"0\">-</option>";
-						for ($x = 1; $x < 32; $x++) {
-							if ($row["dia_mes_vencimiento"] == $x) {
-								echo "<option value=\"".$x."\" selected>".$x."</option>";
-							} else {
-								echo "<option value=\"".$x."\">".$x."</option>";
-							}
+						if ($row["vencimiento"] == 0) {
+							echo "<option value=\"1\">".$Dias."</option>";
+							echo "<option value=\"0\" selected>".$Meses."</option>";
 						}
 					echo "</select>";
-				echo "</td>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<td>".$Cuenta_Contable."</td><td><input type=\"Text\" name=\"cuentacontable\" style=\"width:300px\" value=\"".$row["cuentacontable"]."\"></td>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<td></td>";
-				echo "<td><input type=\"submit\" value=\"".$Guardar."\" style=\"width:300px\"></td>";
-			echo "</tr>";
-			echo "</form>";
-			echo "</tr><td>&nbsp;</td><tr>";
-			echo "<form action=\"index.php?op=1008&sop=110&ssop=1&id=".$_GET["id"]."\"  method=\"post\">";
-			echo "<tr>";
-				echo "<th>".$Datos_Bancarios." : </th>";
-			echo "<tr>";
-				echo "<td>".$Entidad.": </td>";
-				echo "<td><input type=\"text\" name=\"entidadbancaria\" style=\"width:300px\" value=\"".$row["entidadbancaria"]."\"></td>";
 			echo "</tr><tr>";
-				echo "<td>".$Direccion.": </td>";
-				echo "<td><input type=\"Text\" name=\"domiciliobancario\" style=\"width:300px\" value=\"".$row["domiciliobancario"]."\"></td>";
-			echo "</tr><tr>";
-				echo "<td>IBAN : </td>";
-				echo "<td><input type=\"Text\" name=\"cuentabancaria\" style=\"width:300px\" value=\"".$row["cuentabancaria"]."\"></td>";
-			echo "</tr><tr>";
+				echo "<td>".$Dia." del ".$Mes."</td>";
+				echo "<td><select name=\"dia\">";
+					echo "<option value=\"0\">-</option>";
+					for ($x = 1; $x < 32; $x++) {
+						if ($rowdv["dia"] == $x) {
+							echo "<option value=\"".$x."\" selected>".$x."</option>";
+						} else {
+							echo "<option value=\"".$x."\">".$x."</option>";
+						}
+					}
+				echo "</select></td>";
+			echo "</tr>";
+			$sqldv = "select dia,id from sim_clients_dias_vencimiento where id_cliente=".$_GET["id"];
+			$resultdv = mysqli_query($dbhandle,convertSQL($sqldv));
+			while ($rowdv = mysqli_fetch_array($resultdv)){
+				echo "<tr>";
+					echo "<td><a href=\"index.php?op=1008&sop=110&ssop=2&id=".$_GET["id"]."&id_dia=".$rowdv["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"width:300px\">".$rowdv["dia"]."</td>";
+				echo "</tr>";
+			}
+			echo "<tr>";
 				echo "<td></td>";
 				echo "<td><input type=\"submit\" value=\"".$Guardar."\" style=\"width:300px\"></td>";
 			echo "</tr>";

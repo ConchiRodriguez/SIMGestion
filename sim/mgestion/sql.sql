@@ -330,13 +330,12 @@ ALTER TABLE `sim_clientes` ADD `alias` varchar(11) NOT NULL default '' AFTER `we
 ALTER TABLE `sim_clientes` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `alias`;
 ALTER TABLE `sim_clientes` ADD `cliente_fid` tinyint(1) NOT NULL default '0' AFTER `id_idioma`;
 ALTER TABLE `sim_clientes` ADD `cliente_vip` tinyint(1) NOT NULL default '0' AFTER `cliente_fid`;
-ALTER TABLE `sim_clientes` ADD `dias_vencimiento` int(11) NOT NULL default '0' AFTER `cliente_vip`;
-ALTER TABLE `sim_clientes` ADD `dias` tinyint(1) NOT NULL default '1' AFTER `dias_vencimiento`;
-ALTER TABLE `sim_clientes` ADD `dia_mes_vencimiento` int(11) NOT NULL default '0' AFTER `dias`;
-ALTER TABLE `sim_clientes` ADD `cuenta_contable` varchar(20) NOT NULL default '' AFTER `dia_mes_vencimiento`;
-ALTER TABLE `sim_clientes` ADD `entidad_bancaria` varchar(100) NOT NULL default '' AFTER `cuenta_contable`;
-ALTER TABLE `sim_clientes` ADD `domicilio_bancario` varchar(255) NOT NULL default '' AFTER `entidad_bancaria`;
-ALTER TABLE `sim_clientes` ADD `cuenta_bancaria` varchar(30) default NULL AFTER `domicilio_bancario`;
+ALTER TABLE `sim_clientes` ADD `cuenta_bancaria` varchar(30) default NULL AFTER `cliente_vip`;
+ALTER TABLE `sim_clientes` ADD `dia_facturacion` int(11) NOT NULL default '0' AFTER `cuenta_bancaria`;
+ALTER TABLE `sim_clientes` ADD `dia_recibo` int(11) NOT NULL default '0' AFTER `dia_facturacion`;
+ALTER TABLE `sim_clientes` ADD `unidad_vencimiento` int(11) NOT NULL default '0' AFTER `dia_recibo`;
+ALTER TABLE `sim_clientes` ADD `vencimiento` tinyint(1) NOT NULL default '1' AFTER `unidad_vencimiento`;
+/*vencimiento: 0 dias; 1 meses*/
 
 CREATE TABLE `sgm_clients_bases_dades` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_bases_dades` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;
@@ -351,9 +350,9 @@ CREATE TABLE `sim_clientes_busquedas` ( `id` int(11) NOT NULL auto_increment, PR
 ALTER TABLE `sim_clientes_busquedas` ADD `nombre` varchar(20) default NULL AFTER `id`;
 ALTER TABLE `sim_clientes_busquedas` ADD `letras` varchar(30) default NULL AFTER `nombre`;
 ALTER TABLE `sim_clientes_busquedas` ADD `tipos` varchar(50) NOT NULL default '' AFTER `letras` ;
-ALTER TABLE `sim_clientes_busquedas` ADD `sectors` varchar(50) NOT NULL default '' AFTER `tipos`;
-ALTER TABLE `sim_clientes_busquedas` ADD `origens` varchar(50) NOT NULL default '' AFTER `sectors` ;
-ALTER TABLE `sim_clientes_busquedas` ADD `paises` varchar(50) NOT NULL default '' AFTER `origens`;
+ALTER TABLE `sim_clientes_busquedas` ADD `sectores` varchar(50) NOT NULL default '' AFTER `tipos`;
+ALTER TABLE `sim_clientes_busquedas` ADD `origenes` varchar(50) NOT NULL default '' AFTER `sectors` ;
+ALTER TABLE `sim_clientes_busquedas` ADD `paises` varchar(50) NOT NULL default '' AFTER `origenes`;
 ALTER TABLE `sim_clientes_busquedas` ADD `comunidades` varchar(50) NOT NULL default '' AFTER `paises`;
 ALTER TABLE `sim_clientes_busquedas` ADD `provincias` varchar(50) NOT NULL default '' AFTER `comunidades`;
 ALTER TABLE `sim_clientes_busquedas` ADD `regiones` varchar(50) NOT NULL default '' AFTER `provincias` ;
@@ -411,11 +410,15 @@ CREATE TABLE `sgm_clients_dias_facturacion` ( `id` int(11) NOT NULL auto_increme
 ALTER TABLE `sgm_clients_dias_facturacion` ADD `dia` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_clients_dias_facturacion` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `dia`;
 
+CREATE TABLE `sim_clients_dias_vencimiento` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_clients_dias_vencimiento` ADD `dia` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_clients_dias_vencimiento` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `dia`;
+
 CREATE TABLE `sim_clientes_origen` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_clientes_origen` ADD `origen` varchar(30) NOT NULL default '' AFTER `id`;
 
 CREATE TABLE `sim_clientes_rel_origen` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sim_clientes_rel_origen` ADD `id_cliente` varchar(30) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_clientes_rel_origen` ADD `id_cliente` int(11) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sim_clientes_rel_origen` ADD `id_origen` int(11) NOT NULL AFTER `id_cliente`;
 ALTER TABLE `sim_clientes_rel_origen` ADD `tipo_origen` int(11) NOT NULL AFTER `id_origen`;
 ALTER TABLE `sim_clientes_rel_origen` ADD `otro_origen` varchar(30) NOT NULL default '' AFTER `tipo_origen`;
@@ -564,18 +567,35 @@ ALTER TABLE `sgm_contratos_servicio` ADD `incidencias` tinyint(1) NOT NULL defau
 ALTER TABLE `sgm_contratos_servicio` ADD `sla` int(11) NOT NULL default '0' AFTER `incidencias`;
 ALTER TABLE `sgm_contratos_servicio` ADD `duracion` int(11) NOT NULL default '0' AFTER `sla`;
 ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` decimal(11,3) NOT NULL default '0.000' AFTER `duracion`;
-INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment  Plataforma',0,0,0,1,0,0,0,0,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-3,0,'Monitoritzaci&oacute; Plataforma',1,0,0,1,1,0,0,0,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-4,0,'Gesti&oacute; d&#39;Incid&egrave;ncies',1,4,0,1,1,0,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-5,0,'Gesti&oacute; de Canvis',2,8,1,1,1,0,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-6,0,'Gesti&oacute; d&#39;Alertes',1,4,0,1,1,0,0,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-7,0,'Auditoria de servei i plataforma',2,8,1,1,1,0,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-8,0,'Servei de Consultoria',2,0,0,1,1,0,1,0,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-9,0,'Servei de Formaci&oacute;',2,8,1,1,1,0,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-10,0,'Servei de Backups',2,8,1,1,1,0,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-11,0,'Gesti&oacute; Comercial',2,8,1,1,1,1,1,95,0,0);
-INSERT INTO `sgm_contratos_servicio` VALUES (-12,0,'Gesti&oacute; Administrativa',2,8,1,1,1,1,1,95,0,0);
+ALTER TABLE `sgm_contratos_servicio` ADD `codigo_catalogo` varchar(55) NOT NULL default '' AFTER `precio_hora`;
+ALTER TABLE `sgm_contratos_servicio` ADD `auto_email` tinyint(1) NOT NULL default '1' AFTER `codigo_catalogo`;
+INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-3,0,'Monitoritzaci&oacute; Plataforma',1,0,0,1,1,0,0,0,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-4,0,'Gesti&oacute; d&#39;Incid&egrave;ncies',1,4,0,1,1,0,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-5,0,'Gesti&oacute; de Canvis',2,8,1,1,1,0,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-6,0,'Gesti&oacute; d&#39;Alertes',1,4,0,1,1,0,0,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-7,0,'Auditoria de servei i plataforma',2,8,1,1,1,0,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-8,0,'Servei de Consultoria',2,0,0,1,1,0,1,0,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-9,0,'Servei de Formaci&oacute;',2,8,1,1,1,0,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-10,0,'Servei de Backups',2,8,1,1,1,0,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-11,0,'Gesti&oacute; Comercial',2,8,1,1,1,1,1,95,0,0,'',0);
+INSERT INTO `sgm_contratos_servicio` VALUES (-12,0,'Gesti&oacute; Administrativa',2,8,1,1,1,1,1,95,0,0,'',0);
+
+CREATE TABLE `sim_contratos_servicios` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contratos_servicios` ADD `servicio` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_contratos_servicios` ADD `id_cobertura` int(11) NOT NULL default '0' AFTER `servicio`;
+ALTER TABLE `sim_contratos_servicios` ADD `tiempo_respuesta` int(11) NOT NULL default '0' AFTER `id_cobertura`;
+ALTER TABLE `sim_contratos_servicios` ADD `nbd` tinyint(1) NOT NULL default '1' AFTER `tiempo_respuesta`;
+ALTER TABLE `sim_contratos_servicios` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `nbd`;
+ALTER TABLE `sim_contratos_servicios` ADD `extranet` tinyint(1) NOT NULL default '1' AFTER `visible`;
+ALTER TABLE `sim_contratos_servicios` ADD `obligatorio` tinyint(1) NOT NULL default '1' AFTER `extranet`;
+ALTER TABLE `sim_contratos_servicios` ADD `incidencias` tinyint(1) NOT NULL default '1' AFTER `obligatorio`;
+ALTER TABLE `sim_contratos_servicios` ADD `sla` int(11) NOT NULL default '0' AFTER `incidencias`;
+ALTER TABLE `sim_contratos_servicios` ADD `duracion` int(11) NOT NULL default '0' AFTER `sla`;
+ALTER TABLE `sim_contratos_servicios` ADD `precio_hora` decimal(11,3) NOT NULL default '0.000' AFTER `duracion`;
+ALTER TABLE `sim_contratos_servicios` ADD `codigo_catalogo` varchar(55) NOT NULL default '' AFTER `precio_hora`;
+ALTER TABLE `sim_contratos_servicios` ADD `auto_email` tinyint(1) NOT NULL default '1' AFTER `codigo_catalogo`;
 
 CREATE TABLE `sgm_contrasenyes` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contrasenyes` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;
