@@ -1,7 +1,7 @@
 <?php
 #32599E antiguo color
 
-error_reporting(~E_ALL);
+error_reporting(E_ALL);
 date_default_timezone_set('Europe/Madrid');
 
 ### BUSCA SI ES UNA IP LOCAL
@@ -17,17 +17,17 @@ date_default_timezone_set('Europe/Madrid');
 
 
 include ("config.php");
-foreach (glob("auxiliar/*.php") as $filename)
-{
-    include ($filename);
-}
-
 ### CONEXION
 #$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass ) or die("Couldn't connect to SQL Server on $dbhost");
 #$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
+
+foreach (glob("auxiliar/*.php") as $filename)
+{
+    include ($filename);
+}
 
 
 if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }

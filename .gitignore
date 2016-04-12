@@ -1,3 +1,9 @@
 admin/config.php
 admin/controlLog.txt
 *.db
+*.db
+*.pdf
+*.jpg
+*.png
+*.gif
+*.db
