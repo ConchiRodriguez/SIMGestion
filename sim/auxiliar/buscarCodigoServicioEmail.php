@@ -6,8 +6,9 @@ function buscarCodigoServicioEmail($asun,$id_cli){
 
 	$x = 0;
 	$data = time();
+	$id_serv = 0;
 
-	//buscar en el asunto el id de alguna incidencia abierta
+	//buscar en el asunto el codigo_catalogo de algun servicio existente en algun contrato
 	$sqlcs = "select id from sgm_contratos_servicio where visible=1";
 	if ($id_cli > 0) { $sqlcs .= " and id_contrato in (select id from sgm_contratos where id_cliente=".$id_cli.")"; }
 	$resultcs = mysqli_query($dbhandle,$sqlcs);

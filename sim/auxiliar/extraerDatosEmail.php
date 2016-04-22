@@ -27,7 +27,6 @@ function extraerDatosEmail(){
 			if ($rowi["uid"]<$uid){
 				$sql = "update sgm_incidencias_correos set uid=".$uid;
 #				mysqli_query($dbhandle,$sql);
-#				echo $sql."<br>";
 			}
 
 			$asunto = utf8_decode(imap_utf8($detalles->subject));
@@ -38,10 +37,6 @@ function extraerDatosEmail(){
 			foreach ($correo_rem as $correo_remite) {
 				$correo_remitente = $correo_remite->mailbox."@".$correo_remite->host;
 			}
-
-#			$fecha = $detalles->date;
-#			$id = $detalles->message_id;
-#			$num_mensage = $detalles->msgno;
 			$leido = $detalles->seen;
 			//extraer las diferentes partes de un correo electrónico
 			$estructura = imap_fetchstructure($imap,$detalles->msgno);
@@ -52,22 +47,18 @@ function extraerDatosEmail(){
 						case 0:
 							// the HTML or plain text part of the email
 							$message = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
-#							echo $message."<br>";
 							// now do something with the message, e.g. render it
 							$message = str_replace("</p>","\r\n",$message);
 							$message = strip_tags($message,'\r\n');
 							$message = str_replace("&nbsp;", "", $message);
 							$message = trim($message);
-						break;
-					
+							break;
 						case 1:
 							// multi-part headers, can ignore
-					
-						break;
+							break;
 						case 2:
 							// attached message headers, can ignore
-						break;
-					
+							break;
 						case 3: // application
 						case 4: // audio
 						case 5: // image
@@ -78,22 +69,14 @@ function extraerDatosEmail(){
 							$filetipus .= $part->subtype;
 							$filesize = $part->bytes;
 							if($filename) {
-								// it's an attachment
 								$file = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
-								// now do something with the attachment, e.g. save it somewhere
-#								file_put_contents("../sim/files/incidencias/".$filename,$attachment,FILE_APPEND); 
-							} else {
-								// don't know what it is
 							}
-						break;
+							break;
 					}
-	#				echo "<pre>".var_dump($message)."</pre>";
 				}
 			} else {
 				$message = imap_body($imap, $detalles->msgno);
-#				echo $message."<br>";
 			}
-#			echo "<img src=\"".$filename."\">";
 
 			$cabeza = imap_header($imap, $detalles->msgno );
 			$data_missatge = strtotime($cabeza->MailDate);
@@ -136,6 +119,7 @@ function extraerDatosEmail(){
 			if ($remitente != "soporte@solucions-im.com") {
 //Busca si contiene codigo de incidencia en el asunto
 				$idinci = buscarCodigoIncidenciaEmail($asunto,$id_cliente);
+				echo $remitente."--".$idinci."<br>";
 //si se encuentra una sola coincidencia inserta una nota de desarrollo, si es 0 o mas de 1 añade una incidencia nueva.
 				if ($idinci == 1){
 //Añadir nota a incidencia
@@ -150,18 +134,17 @@ function extraerDatosEmail(){
 					$sqlser = "select auto_email from sgm_contratos_servicio where visible=1 and id=".$rowinc["id_servicio"];
 					$resultser = mysqli_query($dbhandle,$sqlser);
 					$rowser = mysqli_fetch_array($resultser);
-					
 //enviar notificación nueva nota en la incidencia
 					if ($rowser["auto_email"] == 1){
 					}
-					
 				} else {
 //Buscar si contiene codigo de catalogo de servicio
-					$idserv = buscarCodigoIncidenciaEmail($asunto,$id_cliente);
-
+					$idserv = buscarCodigoServicioEmail($asunto,$id_cliente);
+					echo $remitente."--".$idserv."<br>";
+					if ($idserv == 1){$id_servicio_con = $idserv;} else {$id_servicio_con = 0;}
 //Añadir incidencia
-					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada";
-					$datosInsert = array(0,1,$id_user,$id_user,$id_cli,$data,$data_missatge,-1,3,comillas($mensa),comillas($asun),0);
+					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio";
+					$datosInsert = array(0,1,$id_user,$id_user,$id_cli,$data,$data_missatge,-1,3,comillas($mensa),comillas($asun),0,$id_servicio_con);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					if ($filename){
@@ -177,11 +160,10 @@ function extraerDatosEmail(){
 			}
 			//Marca el mensaje como leido en el buzón de correo
 			if ($leido == 0){imap_clearflag_full($imap, $uid, '\\Seen');}
-		}
-#	}
+#		}
+	}
 	//Cierra la conexión IMAP
 	imap_close($imap, CL_EXPUNGE);
-	return $correo_nuevo;
 }
 
 function getPart($connection, $messageNumber, $partNumber, $encoding) {
