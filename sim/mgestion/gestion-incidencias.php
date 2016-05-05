@@ -1000,7 +1000,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if (($_POST["notas_desarrollo"] != "") and ($_POST["duracion"] != "")){
 							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\"></textarea></td></tr>";
 						} else {
-							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
+							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".nl2br($_POST["notas_desarrollo"])."</textarea></td></tr>";
 						}
 						if ($row["id_estado"] != -2){
 							echo "<tr><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";

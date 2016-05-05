@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function extraerDatosEmail(){
-	global $db,$dbhandle,$asunto;
+	global $db,$dbhandle;
 
 	//Abre conexión IMAP
 	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
@@ -18,18 +18,20 @@ function extraerDatosEmail(){
 		$destinatario = str_replace("'","",$destinatario);
 		$uid = $detalles->uid;
 		//Comprobación de que el correo ya ha sido gestionado o no
-		$sqli = "select * from sgm_incidencias_correos where destinatario='".$destinatario."'";
+		$sqli = "select * from sgm_incidencias_correos";
 		$resulti = mysqli_query($dbhandle,$sqli);
 		$rowi = mysqli_fetch_array($resulti);
-//Si hay correo ...
-#		if (($rowi["uid"]<$uid) or (!$rowi)) {
-			$correo_nuevo = 1;
-			if ($rowi["uid"]<$uid){
-				$sql = "update sgm_incidencias_correos set uid=".$uid;
-#				mysqli_query($dbhandle,$sql);
+//Si hay correo nuevo ...
+		if (($rowi["uid"]<$uid) or (!$rowi)) {
+			if (($rowi["uid"]<$uid) and ($rowi["uid"] != '') and ($uid != '')){
+				$datosUpdate = array($uid);
+				updateFunction ("sgm_incidencias_correos",$rowi["id"],array("uid"),$datosUpdate);
+			} elseif ($rowi["uid"] == '') {
+				$datosInsert = array($uid);
+				insertFunction ("sgm_incidencias_correos","uid",$datosInsert);
 			}
 
-			$asunto = utf8_decode(imap_utf8($detalles->subject));
+			$asunto1 = utf8_decode(imap_utf8($detalles->subject));
 			$remitente = imap_utf8($detalles->from);
 			//Extraer correo del remitente
 			$remite = imap_headerinfo($imap,$detalles->msgno);
@@ -82,28 +84,28 @@ function extraerDatosEmail(){
 			$data_missatge = strtotime($cabeza->MailDate);
 
 			// Buscar si el remitente corresponde con un usuario de SIMges
-			$sqlum = "select * from sgm_users where mail='".$correo_remitente."'";
+			$sqlum = "select id from sgm_users where mail='".$correo_remitente."'";
 			$resultum = mysqli_query($dbhandle,$sqlum);
 			$rowum = mysqli_fetch_array($resultum);
 			if ($rowum){
-				$sqluc = "select * from sgm_users_clients where id_user=".$rowum["id"];
+				$sqluc = "select id_client from sgm_users_clients where id_user=".$rowum["id"];
 				$resultuc = mysqli_query($dbhandle,$sqluc);
 				$rowuc = mysqli_fetch_array($resultuc);
 				$id_cliente = $rowuc["id_client"];
 				$id_usuario = $rowum["id"];
 			} else {
-				$sqlcc = "select * from sgm_clients_contactos where mail='".$correo_remitente."'";
+				$sqlcc = "select id_client from sgm_clients_contactos where mail='".$correo_remitente."'";
 				$resultcc = mysqli_query($dbhandle,$sqlcc);
 				$rowcc = mysqli_fetch_array($resultcc);
 				if ($rowcc){
 					$id_cliente = $rowcc["id_client"];
 					$id_usuario = 0;
 				} else {
-					$sqlumh = "select * from sgm_users where mail like '%@".$correo_remite->host."'";
+					$sqlumh = "select id from sgm_users where mail like '%@".$correo_remite->host."'";
 					$resultumh = mysqli_query($dbhandle,$sqlumh);
 					$rowumh = mysqli_fetch_array($resultumh);
 					if ($rowumh){
-						$sqluch = "select * from sgm_users_clients where id_user=".$rowumh["id"];
+						$sqluch = "select id_client from sgm_users_clients where id_user=".$rowumh["id"];
 						$resultuch = mysqli_query($dbhandle,$sqluch);
 						$rowuch = mysqli_fetch_array($resultuch);
 						$id_cliente = $rowuch["id_client"];
@@ -114,53 +116,83 @@ function extraerDatosEmail(){
 			// Asigna valores a las variables que no han encontrado valor en el proceso
 			if ($id_usuario == "") { $id_usuario = 0;}
 			if ($id_cliente == "") { $id_cliente = 0;}
-			if ($asunto == "") { $asunto = "Sense assumpte";}
+			if ($asunto1 == "") { $asunto = "Sense assumpte";} else {$asunto = comillas($asunto1);}
+			$data = time();
+			$mensaje = comillas($message);
 
 			if ($remitente != "soporte@solucions-im.com") {
 //Busca si contiene codigo de incidencia en el asunto
-				$idinci = buscarCodigoIncidenciaEmail($asunto,$id_cliente);
-				echo $remitente."--".$idinci."<br>";
+				list($idinci,$id_inc) = buscarCodigoIncidenciaEmail($asunto1,$id_cliente);
+				if ($idinci == 0) {list($idinci,$id_inc) = buscarEmailRespuesta($asunto1,$id_cliente);}
+				
 //si se encuentra una sola coincidencia inserta una nota de desarrollo, si es 0 o mas de 1 añade una incidencia nueva.
 				if ($idinci == 1){
 //Añadir nota a incidencia
 					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada";
-					$datosInsert = array($id_inc,1,$id_user,$id_user,$id_cli,$data,$data_missatge,-1,3,comillas($mensa),comillas($asun),0);
+					$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					$sqlinc = "select id_servicio from sgm_incidencias where visible=1 and id=".$id_inc;
 					$resultinc = mysqli_query($dbhandle,$sqlinc);
 					$rowinc = mysqli_fetch_array($resultinc);
+					$incidencia_id = $rowinc["id"];
 					
-					$sqlser = "select auto_email from sgm_contratos_servicio where visible=1 and id=".$rowinc["id_servicio"];
+					$sqlser = "select auto_email,codigo_catalogo from sgm_contratos_servicio where visible=1 and id=".$rowinc["id_servicio"];
 					$resultser = mysqli_query($dbhandle,$sqlser);
 					$rowser = mysqli_fetch_array($resultser);
 //enviar notificación nueva nota en la incidencia
 					if ($rowser["auto_email"] == 1){
+						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],'',2);
 					}
 				} else {
 //Buscar si contiene codigo de catalogo de servicio
-					$idserv = buscarCodigoServicioEmail($asunto,$id_cliente);
-					echo $remitente."--".$idserv."<br>";
-					if ($idserv == 1){$id_servicio_con = $idserv;} else {$id_servicio_con = 0;}
+					list($idserv,$id_serv) = buscarCodigoServicioEmail($asunto1,$id_cliente);
+					if ($idserv == 1){
+						$id_servicio_con = $id_serv;
+						$sqlc = "select id_cliente from sgm_contratos where visible=1 and id=(select id_contrato from sgm_contratos_servicio where id=".$id_servicio_con.")";
+						$resultc = mysqli_query($dbhandle,$sqlc);
+						$rowc = mysqli_fetch_array($resultc);
+						$id_cli = $rowc["id_cliente"];
+					} else {
+						$id_servicio_con = 0;
+					}
+//Buscar si contiene codigo de incidencia del cliente
+					if ($id_servicio_con != 0){
+						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente);
+					}
 //Añadir incidencia
-					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio";
-					$datosInsert = array(0,1,$id_user,$id_user,$id_cli,$data,$data_missatge,-1,3,comillas($mensa),comillas($asun),0,$id_servicio_con);
+					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo";
+					$datosInsert = array(0,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,'-1',3,$mensaje,$asunto,0,$id_servicio_con,$id_codigo_externo);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
-					if ($filename){
-						$sqlin = "select * from sgm_incidencias where fecha_registro_inicio=".$data." and fecha_inicio=".$data_missatge." and asunto='".comillas($asunto)."'";
-						$resultin = mysqli_query($dbhandle,$sqlin);
-						$rowin = mysqli_fetch_array($resultin);
+					$sqlin = "select id_servicio,id,fecha_inicio from sgm_incidencias where fecha_registro_inicio=".$data." and fecha_inicio=".$data_missatge." and asunto='".$asunto."'";
+					$resultin = mysqli_query($dbhandle,$sqlin);
+					$rowin = mysqli_fetch_array($resultin);
 
-						subirArchivo(0,$file,$filename,$filesize,$filetipus,4,$rowin["id"]);
-					}
-					//enviar notificación nueva incidencia
-					
+					$incidencia_id = $rowin["id"];
+
+					$sqlser = "select codigo_catalogo,temps_resposta,id from sgm_contratos_servicio where visible=1 and id=".$rowin["id_servicio"];
+					$resultser = mysqli_query($dbhandle,$sqlser);
+					$rowser = mysqli_fetch_array($resultser);
+
+					$sla_inc = calculSLA($rowin["id"],0);
+					if ($rowser["temps_resposta"] != 0){$fecha_prevision = fecha_prevision($rowser["id"], $rowin["fecha_inicio"]);}else{$fecha_prevision = 0;}
+
+					$camposUpdate = array("temps_pendent","fecha_prevision");
+					$datosUpdate = array($sla_inc,$fecha_prevision);
+					updateFunction ("sgm_incidencias",$rowin["id"],$camposUpdate,$datosUpdate);
+
+//enviar notificación nueva incidencia
+					enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1);
+				}
+				// guardar ficheros adjuntos
+				if ($filename){
+					subirArchivo(0,$file,$filename,$filesize,$filetipus,4,$incidencia_id);
 				}
 			}
 			//Marca el mensaje como leido en el buzón de correo
 			if ($leido == 0){imap_clearflag_full($imap, $uid, '\\Seen');}
-#		}
+		}
 	}
 	//Cierra la conexión IMAP
 	imap_close($imap, CL_EXPUNGE);

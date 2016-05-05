@@ -569,6 +569,9 @@ ALTER TABLE `sgm_contratos_servicio` ADD `duracion` int(11) NOT NULL default '0'
 ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` decimal(11,3) NOT NULL default '0.000' AFTER `duracion`;
 ALTER TABLE `sgm_contratos_servicio` ADD `codigo_catalogo` varchar(55) NOT NULL default '' AFTER `precio_hora`;
 ALTER TABLE `sgm_contratos_servicio` ADD `auto_email` tinyint(1) NOT NULL default '0' AFTER `codigo_catalogo`;
+ALTER TABLE `sgm_contratos_servicio` ADD `funcion` varchar(55) NOT NULL default '' AFTER `auto_email`;
+ALTER TABLE `sgm_contratos_servicio` ADD `id_servicio_origen` int(11) NOT NULL default '0' AFTER `funcion`;
+/*
 INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-3,0,'Monitoritzaci&oacute; Plataforma',1,0,0,1,1,0,0,0,0,0,'',0);
@@ -581,7 +584,7 @@ INSERT INTO `sgm_contratos_servicio` VALUES (-9,0,'Servei de Formaci&oacute;',2,
 INSERT INTO `sgm_contratos_servicio` VALUES (-10,0,'Servei de Backups',2,8,1,1,1,0,1,95,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-11,0,'Gesti&oacute; Comercial',2,8,1,1,1,1,1,95,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-12,0,'Gesti&oacute; Administrativa',2,8,1,1,1,1,1,95,0,0,'',0);
-
+*/
 CREATE TABLE `sgm_contrasenyes` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contrasenyes` ADD `id_client` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_contrasenyes` ADD `id_aplicacion` int(11) NOT NULL default '0' AFTER `id_client`;
@@ -824,10 +827,14 @@ ALTER TABLE `sgm_incidencias` ADD `temps_transcorregut` int(15) NOT NULL default
 ALTER TABLE `sgm_incidencias` ADD `temps_pendent` int(15) NOT NULL default '0' AFTER `temps_transcorregut`;
 ALTER TABLE `sgm_incidencias` ADD `correo` int(15) NOT NULL default '0' AFTER `temps_pendent`;
 ALTER TABLE `sgm_incidencias` ADD `pausada_forzada` tinyint(1) NOT NULL default '0' AFTER `correo` ;
+ALTER TABLE `sgm_incidencias` ADD `codigo_externo` varchar(50) default NULL AFTER `pausada_forzada`;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_incidencias_correos` ADD `destinatario` varchar(100) NOT NULL default '' AFTER `uid`;
+
+CREATE TABLE `sgm_incidencias_correo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_incidencias_correo` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
 
 CREATE TABLE `sgm_incidencias_estados` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_estados` ADD `estado` varchar(30) NOT NULL default '' AFTER `id`;

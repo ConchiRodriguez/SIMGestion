@@ -303,6 +303,7 @@ $Formulario_Subir_Archivo = "Formulario Subir Archivo";
 $Forzado = "Forzado";
 $Fuentes = "Fuentes";
 $Fuera = "Fuera";
+$Funcion = "Funci&oacute;n";
 $Funciones = "Funciones";
 
 $Gastos = "Gastos";
@@ -773,5 +774,20 @@ $errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
 
 $Ayuda_alias = "El <em>Alias</em> es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
 $Ayuda_vip = "El <em>Cliente VIP</em> es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
+
+$ErrorServicio = "Un servicio con el mismo nombre ya existe en este contrato";
+$ayudaServicios = "<strong>Obligatorio</strong>: Si para aquellos servicios que van incluidos en el contrato y no son seleccionables por el cliente.<br>
+<strong>Extranet</strong>: Si el servicio es visible para el cliente en la extranet, secci&oacute;n contratos.<br>
+<strong>Incidencias</strong>: Si el cliente puede abrir incidencias sobre este servicio.<br>
+<strong>Duraci&oacute;n </strong>: Si el cliente puede ver la duraci&oacute;n de las incidencias.<br>
+<strong>Cobertura</strong>: Horas de cobertura del servicio.<br>
+<strong>Tiempo</strong>: Tiempo máximo de resoluci&oacute;n de incidencias del servicio en SLA.<br>
+<strong>NBD</strong>: Next Bussines Day, Si las incidencias hay que resolverlas dentro del horario laboral.<br>
+<strong>SLA</strong>: Porcentage de incidencias que se deben resolver dentro del máximo de horas de SLA.<br>
+<strong>Codigo Catalogo</strong>: identificador &uacute;nico del servicio en el sistema.<br>
+<strong>AutoEmail</strong>: Envio autom&aacute;tico de email en el modulo de incidencias.<br>
+<strong>Funcion</strong>: nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.<br>
+<strong>Origen</strong>: codigo de quien abre incidencias relacionadas con este servicio.<br>
+";
 
 ?>

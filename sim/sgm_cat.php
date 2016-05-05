@@ -101,7 +101,7 @@ $Cargo = "Carrec";
 $carpeta = "carpeta";
 $Carta = "Carta";
 $Cat = "Cat";
-$Cataleg = "Cat&agrave;leg";
+$Catalogo = "Cat&agrave;leg";
 $Catalogados = "Catalogats";
 $Catalogar = "Catalogar";
 $Central = "Central";
@@ -214,7 +214,7 @@ $Documentos = "Documents";
 $DOMICILIADA = "DOMICILIADA";
 $Duplicar = "Duplicar";
 $Duplicado = "Duplicat";
-$Duracion = "Duraci&oacute;";
+$Duracion = "Durada";
 
 $Es = "Es";
 $Efectivo = "Efectiu";
@@ -300,6 +300,7 @@ $Formulario_Subir_Archivo = "Formulari Pujar Archiu";
 $Forzado = "For&ccedil;at";
 $Fuentes = "Fonts";
 $Fuera = "Fora";
+$Funcion = "Funci&oacute;";
 $Funciones = "Funcions";
 
 $Gastos = "Despeses";
@@ -756,7 +757,7 @@ $ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
 $ErrorEmpleadoCalendario = "Les dates no son correctas";
 $ErrorPuestoDasactivar = "No es pot desactivar un lloc de treball amb un empleat assignat";
 
-$ayudaLogin = "¿Has oblidat l'usuari i/o la contrasenya?";
+$ayudaLogin = "Has oblidat l'usuari i/o la contrasenya?";
 $asuntoMensajeRecuperacion = "Missatge de recuperaci&oacute; de contrasenya.";
 $textoMensajeRecuperacion1 = "Segueixi el link per restaurar la contrasenya";
 $textoMensajeRecuperacion2 = "No respongui aquest e-mail";
@@ -769,5 +770,21 @@ $errorPanelUserPass = "Error al introduir les contrasenyes.";
 
 $Ayuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
 $Ayuda_vip = "El <em>Client VIP</em> es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
+
+$ErrorServicio = "Un servei amb el mateix nom ja existeix en aquest contracte";
+$ayudaServicios = "<strong>Obligatori</strong>: Si per aquells serveis que estan inclosos en el contracte i no son seleccionables pel client.<br>
+<strong>Extranet</strong>: Si el servei es visible per el client en la extranet, secci&oacute; contractes.<br>
+<strong>Incid&egrave;ncies</strong>: Si el client pot obrir incid&egrave;ncies sobre aquest servei.<br>
+<strong>Durada</strong>: Si el client pot veure la durada de les incid&egrave;ncies.<br>
+<strong>Cobertura</strong>: Hores de cobertura del servei.<br>
+<strong>Temps</strong>: Temps m&agrave;xim de resoluci&oacute; de incid&egrave;ncies del servei en SLA.<br>
+<strong>NBD</strong>: Next Bussines Day, Si les incid&egrave;ncies han de resoldre-las dins del horari laboral.<br>
+<strong>SLA</strong>: Porcentatge de incid&egrave;ncies que s'han de resoldre dins del m&agrave;xim d'hores de SLA.<br>
+<strong>Codi Cat&agrave;leg</strong>: identificador &uacute;nic del servei en el sistema.<br>
+<strong>AutoEmail</strong>: Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.<br>
+<strong>Funci&oacute;</strong>: nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.<br>
+<strong>Origen</strong>: codi de qui obre incid&egrave;ncies relacionades amb aquest servei.<br>
+";
+
 
 ?>
