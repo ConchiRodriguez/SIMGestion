@@ -158,7 +158,7 @@ function extraerDatosEmail(){
 					}
 //Buscar si contiene codigo de incidencia del cliente
 					if ($id_servicio_con != 0){
-						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente);
+						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente,$asunto1);
 					}
 //Añadir incidencia
 					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo";

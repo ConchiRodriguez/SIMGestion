@@ -1,10 +1,12 @@
 <?php
 error_reporting(~E_ALL);
 
-function funcionPrueba(){
-	global $db,$dbhandle;
-	
-	return "Hello World!";
+function funcionPrueba($asun){
+
+	//buscar en el asunto el codigo de incidencia del cliente
+	preg_match('(INCMNG\\d+)',$asun,$codigo);
+
+	return $codigo[0];
 }
 
 ?>

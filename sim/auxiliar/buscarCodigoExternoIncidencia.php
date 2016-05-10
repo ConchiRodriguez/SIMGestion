@@ -1,7 +1,7 @@
 <?php
 error_reporting(~E_ALL);
 
-function buscarCodigoExternoIncidencia($id_servicio_con,$id_cli){
+function buscarCodigoExternoIncidencia($id_servicio_con,$id_cli,$asunto){
 	global $db,$dbhandle;
 
 	$sqlcs = "select funcion from sgm_contratos_servicio where visible=1 and id=".$id_servicio_con;
@@ -9,7 +9,7 @@ function buscarCodigoExternoIncidencia($id_servicio_con,$id_cli){
 	$resultcs = mysqli_query($dbhandle,$sqlcs);
 	$rowcs = mysqli_fetch_array($resultcs);
 	
-	$codigo_externo = call_user_func($rowcs["funcion"]);
+	$codigo_externo = call_user_func($rowcs["funcion"],$asunto);
 	
 	return $codigo_externo;
 }

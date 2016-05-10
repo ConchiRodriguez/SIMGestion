@@ -15,9 +15,9 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 	
 	$asunto="[Solucions-IM]";
 	if ($id != '') {$asunto.=" [SIM".$id."] ";}
-	if ($codigo != '') { $asunto.= " ".$codigo;}
-	if ($id_codigo_externo != '') { $asunto.= " ".$id_codigo_externo;}
-	$asunto.=utf8_decode($rowm["asunto"]);
+	if ($codigo != '') { $asunto.= " ".$codigo." ";}
+	if (($id_codigo_externo != '')) { $asunto.= " ".$id_codigo_externo;}
+	$asunto.= comillasInver(utf8_decode($rowm["asunto"]));
 	$email="proves@solucions-im.net";
 	if ($tipo == 1) {
 		$cuerpo="<font face=\"Calibri\" size=4>**Aquest es un missatge autom&agrave;tic.**<br><br>";
@@ -33,7 +33,7 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 		$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.</font><br>";
 	} elseif ($tipo == 2){
 		$cuerpo="<font face=\"Calibri\" size=4>**Aquest es un missatge autom&agrave;tic.**<br><br>";
-		$cuerpo.="Hem rebut el seu e-mail amb informació adicional.<br><br>";
+		$cuerpo.="Hem rebut el seu e-mail amb informaci&oacute; adicional.<br><br>";
 
 		$cuerpo.="Per facilitar mes informaci&oacute;, contesti aquest missatge.<br><br>";
 
