@@ -49,11 +49,16 @@ function extraerDatosEmail(){
 						case 0:
 							// the HTML or plain text part of the email
 							$message = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
+#							echo $message."0<br>";
 							// now do something with the message, e.g. render it
-							$message = str_replace("</p>","\r\n",$message);
-							$message = strip_tags($message,'\r\n');
+							$message = strip_tags($message,'<br>');
+#							echo $message."1<br>";
 							$message = str_replace("&nbsp;", "", $message);
-							$message = trim($message);
+#							echo $message."2<br>";
+#							$message = str_replace("<br>","\r\n",$message);
+#							echo $message."3<br>";
+#							$message = trim($message);
+#							echo $message."4<br>";
 							break;
 						case 1:
 							// multi-part headers, can ignore
@@ -119,6 +124,7 @@ function extraerDatosEmail(){
 			if ($asunto1 == "") { $asunto = "Sense assumpte";} else {$asunto = comillas($asunto1);}
 			$data = time();
 			$mensaje = comillas($message);
+#			$mensaje = comillas($message);
 
 			if ($remitente != "soporte@solucions-im.com") {
 //Busca si contiene codigo de incidencia en el asunto

@@ -11,6 +11,7 @@ body {
 th{
 	font-size: 13px;
 	text-align : left;
+	white-space: nowrap;
 }
 
 caption {
@@ -23,6 +24,7 @@ td{
 	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	font-size: 13px;
 	color:#000000;
+	white-space: nowrap;
 }
 
 form {
@@ -67,17 +69,39 @@ table.lista {
 	margin-right: auto;
 }
 
+table.formclient {
+	width:100%;
+}
+
 th.formclient{
+	vertical-align:top;
 	text-align:right;
-	width:150px;
+	width:30%;
+}
+
+th.formclient2{
+	vertical-align:top;
+	text-align:right;
+}
+
+td.formclient{
+	width:30%;
+}
+
+td.formclient2{
+	width:70%;
 }
 
 input.formclient{
-	width:400px;
+	width:100%;
 }
 
-input.formclient2{
-	width:200px;
+textarea.formclient{
+	width:100%;
+}
+
+select.formclient{
+	width:100%;
 }
 
 input[type="submit"]{

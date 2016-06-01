@@ -242,7 +242,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				array_push($id_relacio, $rowe["id"]);
 			}
 #			echo var_dump($id_relacio);
-		for ($i = 0; $i<=3;$i++){
+		for ($i = 0; $i<=4;$i++){
 			if (($soption == 0) or ($soption == 1) or (($soption == 200) and ($_GET["filtra"] == 1) and (($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0) or ($_POST["id_cliente"] != 0) or ($_POST["id_servicio"] != 0) or ($_POST["id_usuario"] != 0) or ($_POST["texto"] != "") or ($_POST["id_incidencia"] != "") or ($_POST["id_estado"] != "")))) {
 				if ($i == 0) {
 					echo "<tr style=\"background-color:silver;\">";
@@ -297,11 +297,12 @@ if (($option == 1018) AND ($autorizado == true)) {
 #			if ($_GET["pausa"] == 0) { $sqli = $sqli." and pausada=0"; }
 			if ($i == 0) { $sqli = $sqli." and id_servicio = 0 and pausada=0"; }
 			elseif ($i == 1) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision > 0 and pausada=0"; }
-			elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0"; } 
-			elseif ($i == 3) { $sqli = $sqli." and pausada=1"; }
+			elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente<>(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
+			elseif ($i == 3) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente=(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
+			elseif ($i == 4) { $sqli = $sqli." and pausada=1"; }
 			if ($i == 1) {
 				$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
-			} elseif ($i == 3) {
+			} elseif ($i == 4) {
 				$sqli = $sqli." order by id_cliente,id_servicio,id_usuario_destino";
 			} else {
 				if (($soption == 200) and ($_GET["filtra"] == 1)) {
@@ -525,9 +526,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if ($_POST["id_servicio"] > 0) {$servicio = $_POST["id_servicio"];} else {$servicio = $_POST["id_servicio2"];}
 					if ($rowi["pausada"] == 0) {$prevision = fecha_prevision($servicio, $registro);} else {$prevision = 0;}
 					if ($_POST["duracion"] == ""){ $duracion = 0; } else { $duracion = $_POST["duracion"]; }
+					if ($_POST["id_cliente"] > 0) {$id_cliente = $_POST["id_cliente"];} else {$id_cliente = $_POST["id_cliente2"];}
 
 					$camposUpdate = array("id_usuario_origen","id_usuario_destino","fecha_inicio","id_entrada","notas_registro","id_servicio","asunto","fecha_prevision","duracion","id_cliente");
-					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$_POST["id_cliente"]);
+					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$id_cliente);
 					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
 					$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
@@ -632,11 +634,12 @@ if (($option == 1018) AND ($autorizado == true)) {
 			if (($_POST["id_servicio"] > 0) or ($_POST["id_servicio2"] > 0) or ($_POST["id_cliente"] > 0)){
 				if ($_POST["asunto"] != ""){
 					if ($_POST["id_servicio"] > 0) {$servicio = $_POST["id_servicio"];} else {$servicio = $_POST["id_servicio2"];}
+					if ($_POST["id_cliente"] > 0) {$id_cliente = $_POST["id_cliente"];} else {$id_cliente = $_POST["id_cliente2"];}
 					$fecha_registro_inicio = time();
 					$fecha_inicio = date(U, strtotime($_POST["fecha_inicio"]));
 					$fecha_prevision = fecha_prevision($servicio, $fecha_inicio);
 					$camposInsert = "id_usuario_registro,id_usuario_destino,id_usuario_origen,id_servicio,fecha_registro_inicio,fecha_inicio,fecha_prevision,id_estado,id_entrada,notas_registro,asunto,id_cliente,pausada";
-					$datosInsert = array($userid,$_POST["id_usuario_destino"],$_POST["id_usuario_origen"],$servicio,$fecha_registro_inicio,$fecha_inicio,$fecha_prevision,"-1",$_POST["id_entrada"],$_POST["notas_registro"],$_POST["asunto"],$_POST["id_cliente"],$_POST["pausada"]);
+					$datosInsert = array($userid,$_POST["id_usuario_destino"],$_POST["id_usuario_origen"],$servicio,$fecha_registro_inicio,$fecha_inicio,$fecha_prevision,"-1",$_POST["id_entrada"],$_POST["notas_registro"],$_POST["asunto"],$id_cliente,$_POST["pausada"]);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					$sql = "select id from sgm_incidencias where fecha_prevision=".$fecha_prevision." and id_incidencia=0 order by id desc";
@@ -835,6 +838,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						$sqlcli = "select id from sgm_clients where visible=1 and nif='".$rowcl["nif"]."'";
 						$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
 						$rowcli = mysqli_fetch_array($resultcli);
+						echo "<input type=\"Hidden\" name=\"id_cliente2\" value=\"".$rowcli["id"]."\">";
 						echo "<tr>";
 							echo "<th style=\"text-align:left;vertical-align:top;width:13%;\">".$Servicio." SIM :</th>";
 							echo "<td colspan=\"9\"><select name=\"id_servicio\" id=\"id_servicio\" style=\"width:100%\" onchange=\"desplegableCombinado()\">";
@@ -924,7 +928,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($row["duracion"] != ""){$duracion = $row["duracion"];} else {$duracion = $_POST["duracion"];}
 						echo "<tr><td colspan=\"9\"><input type=\"text\" name=\"asunto\" style=\"width:100%;\" value=\"".$asunto."\" required></td></tr>";
 						echo "<tr><th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Registro." :</th></tr>";
-						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".$notas_registro."</textarea></td></tr>";
+						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode($notas_registro)."</textarea></td></tr>";
 						echo "<tr>";
 							if ($id_inc == ""){
 								echo "<th style=\"text-align:left;vertical-align:top;\">".$Duracion." (Min) :</th>";
@@ -1000,7 +1004,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if (($_POST["notas_desarrollo"] != "") and ($_POST["duracion"] != "")){
 							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\"></textarea></td></tr>";
 						} else {
-							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".nl2br($_POST["notas_desarrollo"])."</textarea></td></tr>";
+							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode($_POST["notas_desarrollo"])."</textarea></td></tr>";
 						}
 						if ($row["id_estado"] != -2){
 							echo "<tr><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";
@@ -1020,7 +1024,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if ($rowc["id_usuario_registro"] == $userid){$color_td = "white";} else {$color_td = "silver";}
 					echo "<td style=\"text-align:left;vertical-align:top;width:25%;\">";
 					echo "<table cellspacing=\"0\" cellspacing=\"0\" style=\"width:100%;\">";
-						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">ID. ".$Incidencia." :</th><td><input type=\"number\" min=\"1\" name=\"id_incidencia\" style=\"width:150px\" value=\"".$rowc["id_incidencia"]."\"></td></tr>";
+						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">ID. ".$Incidencia." :</th><td><input type=\"number\" min=\"0\" name=\"id_incidencia\" style=\"width:150px\" value=\"".$rowc["id_incidencia"]."\"></td></tr>";
 						echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;width:150px\">".$Fecha." :</th>";
 						if ($rowc["id_usuario_registro"] == $userid){
 							echo "<td><input type=\"text\" name=\"fecha_inicio\" style=\"width:150px\" value=\"".$fecha."\"></td></tr>";
@@ -1347,6 +1351,20 @@ if (($option == 1018) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 #estados incidencias fin#
+
+#	if ($soption = 600){
+#		$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id_incidencia=0 and id_cliente=0";
+#		$resultinc = mysqli_query($dbhandle,convertSQL($sqlinc));
+#		while ($rowinc = mysqli_fetch_array($resultinc)){
+#			$sqlc = "select id_cliente from sgm_contratos where visible=1 and id=(select id_contrato from sgm_contratos_servicio where id=".$rowinc["id_servicio"].")";
+#			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+#			$rowc = mysqli_fetch_array($resultc);
+
+#			$camposUpdate = array("id_cliente");
+#			$datosUpdate = array($rowc["id_cliente"]);
+#			updateFunction ("sgm_incidencias",$rowinc["id"],$camposUpdate,$datosUpdate);
+#		}
+#	}
 
 	echo "</td></tr></table><br>";
 }

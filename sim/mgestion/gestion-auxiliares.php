@@ -20,6 +20,10 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=160\" class=".$class.">".$Provincia."</a></td>";
 				if (($soption >= 170) and($soption < 180)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=170\" class=".$class.">".$Region."</a></td>";
+				if (($soption >= 180) and($soption < 190)) {$class = "menu_select";} else {$class = "menu";}
+				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=180\" class=".$class.">".$Medio." ".$Comunicacion."</a></td>";
+				if (($soption >= 190) and($soption < 200)) {$class = "menu_select";} else {$class = "menu";}
+				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=190\" class=".$class.">".$Formato." ".$Documentos."</a></td>";
 				echo "</tr>";
 			echo "</table>";
 		echo "</td></tr>";
@@ -503,6 +507,118 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1023&sop=170&ssop=3&id=".$_GET["id"],"op=1023&sop=170"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 180){
+		if ($ssoption == 1) {
+			$camposInsert = "medio_comunicacion";
+			$datosInsert = array($_POST["medio_comunicacion"]);
+			insertFunction ("sim_medio_comunicacion",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('medio_comunicacion');
+			$datosUpdate=array($_POST["medio_comunicacion"]);
+			updateFunction("sim_medio_comunicacion",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sim_medio_comunicacion",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Medio." ".$Comunicacion."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th></th>";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Medio." ".$Comunicacion."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1023&sop=180&ssop=1\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td></td>";
+				echo "<td><input type=\"Text\" name=\"medio_comunicacion\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select * from sim_medio_comunicacion where visible=1 order by medio_comunicacion";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<td></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=181&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<form action=\"index.php?op=1023&sop=180&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"Text\" name=\"medio_comunicacion\" style=\"width:200px\" value=\"".$row["medio_comunicacion"]."\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 181) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1023&sop=180&ssop=3&id=".$_GET["id"],"op=1023&sop=180"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 190){
+		if ($ssoption == 1) {
+			$camposInsert = "formato_documento";
+			$datosInsert = array($_POST["formato_documento"]);
+			insertFunction ("sim_formato_documento",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('formato_documento');
+			$datosUpdate=array($_POST["formato_documento"]);
+			updateFunction("sim_formato_documento",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sim_formato_documento",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Formato." ".$Documentos."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th></th>";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Formato." ".$Documentos."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1023&sop=190&ssop=1\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td></td>";
+				echo "<td><input type=\"Text\" name=\"formato_documento\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select * from sim_formato_documento where visible=1 order by formato_documento";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<td></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=191&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<form action=\"index.php?op=1023&sop=190&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"Text\" name=\"formato_documento\" style=\"width:200px\" value=\"".$row["formato_documento"]."\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 191) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1023&sop=190&ssop=3&id=".$_GET["id"],"op=1023&sop=190"),array($Si,$No));
 		echo "</center>";
 	}
 
