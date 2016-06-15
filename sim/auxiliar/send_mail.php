@@ -5,7 +5,7 @@ function send_mail($destinatario,$asunto,$email,$cuerpo){
 	$UN_SALTO="\r\n";
 	$DOS_SALTOS="\r\n\r\n";
 
-	$titulo = $asunto;
+	$titulo = "=?ISO-8859-1?B?".base64_encode($asunto)."=?=";
 	$mensaje = "<html><head></head><body bgcolor=\"white\">";
 	$mensaje .= "<font face=\"Calibri\" size=4>";
 	$mensaje .= $cuerpo;

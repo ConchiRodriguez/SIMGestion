@@ -928,7 +928,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($row["duracion"] != ""){$duracion = $row["duracion"];} else {$duracion = $_POST["duracion"];}
 						echo "<tr><td colspan=\"9\"><input type=\"text\" name=\"asunto\" style=\"width:100%;\" value=\"".$asunto."\" required></td></tr>";
 						echo "<tr><th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Registro." :</th></tr>";
-						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode($notas_registro)."</textarea></td></tr>";
+#						$notas_registro = ereg_replace("<br>","\r\n",$notas_registro);
+						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode(str_replace("\r\n","<br>",$notas_registro))."</textarea></td></tr>";
 						echo "<tr>";
 							if ($id_inc == ""){
 								echo "<th style=\"text-align:left;vertical-align:top;\">".$Duracion." (Min) :</th>";
@@ -963,10 +964,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 				if ($rowid["idioma"] != ""){echo "<img src=\"mgestion/pics/flags/".$rowid["idioma"].".png\" style=\"border:0px;width:100%;\"\">";}
 				if ($row["correo"] == 1){
 					echo "<br>".$Documentos." ".$Adjuntos." :";
-					$sqlfiles = "select name from sgm_files where visible=1 and id_incidencia=".$row["id"];
+					$sqlfiles = "select name from sgm_files where visible=1 and id_elemento=".$row["id"];
 					$resultfiles = mysqli_query($dbhandle,convertSQL($sqlfiles));
 					while ($rowfiles = mysqli_fetch_array($resultfiles)){
-						echo "<br><a href=\"".$urlmgestion."/files/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a>";
+						echo "<br><a href=\"".$urlmgestion."/archivos/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a>";
 					}
 				}
 				echo "</td>";

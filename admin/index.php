@@ -6,11 +6,13 @@ setTimeout ("redireccionar()", 600000);
 </script>
 <?PHP
 include ("../archivos_comunes/config.php");
-include ("../archivos_comunes/variables.php");
-include("../archivos_comunes/functions.php");
+#include("../archivos_comunes/functions.php");
 #include("../archivos_comunes/funciones.php");
-include("../sim/auxiliar/calendariEconomic.php");
-include("../sim/auxiliar/correoIncidencias.php");
+
+foreach (glob("../sim/auxiliar/*.php") as $filename)
+{
+    include ($filename);
+}
 
 echo "<center><table cellspacing=\"10\" style=\"width:1000px;\">";
 	echo "<tr>";
@@ -81,8 +83,9 @@ echo "</table></center>";
 
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
+echo comprobarTipoCliente();
 echo calendari_economic(0);
-echo correo_incidencias();
+echo correoIncidencias();
 #echo calculSLAtotal();
 #echo simAlert();
 

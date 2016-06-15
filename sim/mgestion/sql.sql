@@ -805,9 +805,6 @@ CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, P
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_incidencias_correos` ADD `destinatario` varchar(100) NOT NULL default '' AFTER `uid`;
 
-CREATE TABLE `sgm_incidencias_correo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_incidencias_correo` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
-
 CREATE TABLE `sgm_incidencias_estados` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_estados` ADD `estado` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_incidencias_estados` ADD `editable` tinyint(1) NOT NULL default '1' AFTER `estado`;

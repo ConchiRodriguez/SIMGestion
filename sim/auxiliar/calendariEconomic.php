@@ -40,6 +40,9 @@ function calendari_economic($rec){
 			$sqlingre2 = "select sum(total) as total_ingre2 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
 			$resultingre2 = mysqli_query($dbhandle,$sqlingre2);
 			$rowingre2 = mysqli_fetch_array($resultingre2);
+			$ingre2 = $rowingre2["total_ingre2"];
+		} else {
+			$ingre2 = 0;
 		}
 
 		$sqlingre3 = "select sum(total) as total_ingre3 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=0) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
@@ -51,7 +54,7 @@ function calendari_economic($rec){
 		$rowex = mysqli_fetch_array($resultex);
 
 		$total_gastos = $rowgasto["total_gasto"];
-		$total_ingresos = ($rowingre1["total_ingre1"] + $rowingre2["total_ingre2"] + $rowingre3["total_ingre3"]);
+		$total_ingresos = ($rowingre1["total_ingre1"] + $ingre2 + $rowingre3["total_ingre3"]);
 		$saldo_actual = $saldo_inicial - $total_gastos + $total_ingresos;
 		$pagos_externos = $pagos_externos + $rowex["total_externos"];
 #		echo date("Y-m-d", $dia_actual)."-----Saldo : ".$saldo_inicial." - Ingresos :".$total_ingresos."--".$rowingre1["total_ingre1"]."1--".$rowingre2["total_ingre2"]."2--".$rowingre3["total_ingre3"]."3-- Gastos : ".$total_gastos." - Saldo Final:".$saldo_actual."<br>";

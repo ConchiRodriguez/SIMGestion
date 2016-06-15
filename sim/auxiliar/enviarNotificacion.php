@@ -17,7 +17,7 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 	if ($id != '') {$asunto.=" [SIM".$id."] ";}
 	if ($codigo != '') { $asunto.= " ".$codigo." ";}
 	if (($id_codigo_externo != '')) { $asunto.= " ".$id_codigo_externo;}
-	$asunto.= comillasInver(utf8_decode($rowm["asunto"]));
+	$asunto.= comillasInver($rowm["asunto"]);
 	$email="proves@solucions-im.net";
 	if ($tipo == 1) {
 		$cuerpo="<font face=\"Calibri\" size=4>**Aquest es un missatge autom&agrave;tic.**<br><br>";
@@ -26,19 +26,20 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 		$cuerpo.="Per facilitar mes informaci&oacute;, contesti aquest missatge.<br><br>";
 
 		$cuerpo.="Id Incid&egrave;ncia: ".$id."<br>";
-		$cuerpo.="Assumpte: ".utf8_decode($rowm["asunto"])."<br>";
+		$cuerpo.="Assumpte: ".$asunto."<br>";
 		$cuerpo.="Data: ".date(DATE_RFC2822,$rowm["fecha_registro_inicio"])."<br>";
 		$cuerpo.="Remitent: ".$correo_remitente."<br><br>";
 
 		$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.</font><br>";
-	} elseif ($tipo == 2){
+	}
+	if ($tipo == 2){
 		$cuerpo="<font face=\"Calibri\" size=4>**Aquest es un missatge autom&agrave;tic.**<br><br>";
 		$cuerpo.="Hem rebut el seu e-mail amb informaci&oacute; adicional.<br><br>";
 
 		$cuerpo.="Per facilitar mes informaci&oacute;, contesti aquest missatge.<br><br>";
 
 		$cuerpo.="Id Incid&egrave;ncia: ".$id."<br>";
-		$cuerpo.="Assumpte: ".utf8_decode($rowm["asunto"])."<br>";
+		$cuerpo.="Assumpte: ".$asunto."<br>";
 		$cuerpo.="Data: ".date(DATE_RFC2822,$rowm["fecha_registro_inicio"])."<br>";
 		$cuerpo.="Remitent: ".$correo_remitente."<br><br>";
 
@@ -48,7 +49,7 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 
 
 
-
+#	echo $correo_remitente." - ".$asunto." - ".$email." - ".$cuerpo."<br>";
 
 	send_mail($correo_remitente,$asunto,$email,$cuerpo);
 }
