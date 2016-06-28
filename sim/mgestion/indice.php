@@ -4,7 +4,7 @@
 	if ($option == 100) { include ("mgestion/login.php");}
 	if ($option == 200) { include ("mgestion/panel-usuario.php");}
 
-	if ($option == 1001) { include ("mgestion/gestion-contenidos.php");}
+	if ($option == 1001) { include ("mgestion/gestion-contenidos-3.0.php");}
 	if ($option == 1002) { include ("mgestion/gestion-usuarios.php");}
 	if ($option == 1003) { include ("mgestion/gestion-facturacion.php");}
 	if ($option == 1004) { include ("mgestion/gestion-articulos.php");}

@@ -12,7 +12,7 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 	if ($id_tipo == 5) {$adress = "dispositivos/";}
 	if ($id_tipo == 6) {$adress = "empleados/";}
 
-	echo $archivo_name." - ".$archivo_size." - ".$archivo_type." - ".$id_tipo."<br>";
+#	echo $archivo_name." - ".$archivo_size." - ".$archivo_type." - ".$id_tipo."<br>";
 
 	if ($tipo == 0){
 		$tipo1 = explode("/",$archivo_type);
@@ -39,7 +39,7 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 		echo mensageError($errorSubirArchivoDuplicado);
 	} else {
 		if (($archivo != "none") AND ($archivo_size != 0) AND (($archivo_size/1024)<=$lim_tamano)){
-		echo $adr."archivos/".$adress.$archivo_name."<br>";
+#		echo $adr."archivos/".$adress.$archivo_name."<br>";
 			if (copy ($archivo, $adr."archivos/".$adress.$archivo_name)) {
 				$camposInsert = "id_tipo,name,type,size,id_elemento,tipo_id_elemento";
 				$datosInsert = array($tipo,$archivo_name,$archivo_type,$archivo_size,$id,$id_tipo);
@@ -48,7 +48,7 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 				$errors= error_get_last();
 				echo "COPY ERROR: ".$errors['type'];
 				echo "<br />\n".$errors['message'];
-				var_dump($errors);
+#				var_dump($errors);
 			}
 		}else{
 			echo mensageError($errorSubirArchivoTamany);

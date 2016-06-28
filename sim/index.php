@@ -159,9 +159,15 @@ lopd($userid,$username,$option,$soption);
 			document.forms.form2.method='POST';
 			document.forms.form2.submit();
 		}
-
 		</script>
-	</head>
+		<script src="/includes/tinymce/tinymce.min.js"></script>
+		<script type="text/javascript">
+			tinymce.init({
+				selector: '#mytextarea',
+				toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code',
+				plugins: 'code'
+		</script>
+  </head>
 <body>
 <center>
 <?php 
@@ -241,7 +247,7 @@ if (($option == 900) or ($option == 600)) {
 		echo "</tr>";
 		if ($veure_peu != 0){
 		echo "<tr>";
-			echo "<td class=\"maestra\" style=\"color:white;\">&copy;2015 Solucions-im.com</td>";
+			echo "<td class=\"maestra\" style=\"color:white;\">&copy;".date('Y')." Solucions-im.com</td>";
 		echo "</tr>";
 		}
 	echo "</table>";

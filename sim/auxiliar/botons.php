@@ -20,6 +20,13 @@ function boton_form($ruta,$texto)
 	echo "</td>";
 }
 
+function boton_form_color($ruta,$texto,$color) 
+{
+	echo "<td class=\"boton\" style=\"height:3px;background-color:silver\">";
+		echo "<a href=\"index.php?".$ruta."\" style=\"color:white;\">".$texto."</a>";
+	echo "</td>";
+}
+
 function boton_volver($Volver) 
 {
 	echo "<table cellpadding=\"0\">";

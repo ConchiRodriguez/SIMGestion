@@ -22,7 +22,9 @@ function send_mail($destinatario,$asunto,$email,$cuerpo){
 	$cabecera .= "Content-Type: text/html; charset=UTF-8".$UN_SALTO; 
 	$cabecera .= " boundary=".$separador."".$DOS_SALTOS; 
 
-	mail($destinatario, $titulo, $mensaje, $cabecera);
+	if (mail($destinatario, $titulo, $mensaje, $cabecera)){
+		return true;
+	}
 }
 
 ?>

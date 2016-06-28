@@ -1,323 +1,5 @@
-<?php$autorizado = autorizado($userid,$option);$admin = admin($userid,$option);if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>"; }if (($option == 1001) AND ($autorizado == true)) {	echo "<table class=\"principal\">";		echo"<tr>";			echo "<td style=\"width:15%;vertical-align : middle;text-align:left;\">";				echo "<h4>".$Clientes."</h4>";			echo "</td><td style=\"width:85%;vertical-align:top;text-align:left;\">";				echo "<table>";					echo "<tr>";						if (($soption == 0) or ($_GET["id_tipo"] != 0)) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=0\" class=".$class.">".$Contactos."</a></td>";						if (($soption == 1) and ($_GET["id_tipo"] == 0)) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=1\" class=".$class.">".$Personas."</a></td>";						if ($soption == 100) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=100&id=0\" class=".$class.">".$Anadir." ".$Contactos."</a></td>";						if ($soption == 200) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=200\" class=".$class.">".$Buscar." ".$Contactos."</a></td>";#						if ($soption == 300) {$class = "menu_select";} else {$class = "menu";}#						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=300\" class=".$class.">".$Gestion." ".$Rapida."</a></td>";						if (($soption >= 500) and ($soption < 600) and ($admin == true)) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1008&sop=500\" class=".$class.">".$Administrar."</a></td>";					echo "</tr>";				echo "</table>";			echo "</td>";		echo "</tr>";	echo "</table><br>";	echo "<table  class=\"principal\">";		echo "<tr>";			echo "<td style=\"width:100%;vertical-align:top;text-align:left;\">";	if (($soption == 0) or ($soption == 200)) {	echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
-		echo "<td>";
-
-			echo "<center><table><tr>";
-				echo "<td style=\"height:20px;width:170px;\";><strong>Contenidos 3.0 :</strong></td>";
-				$color = "#4B53AF";
-				$lcolor = "white";
-				if (($soption == 15) and ($_GET["id_new"] == "")) { $color = "white"; $lcolor = "blue"; }
-				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1001&sop=15\" class=\"gris\" style=\"color:".$lcolor."\">Nuevo Contenido</a></td>";
-				$color = "#4B53AF";
-				$lcolor = "white";
-				if (($soption == 12) or (($soption == 15) and ($_GET["id_new"] != "")) or ($soption == 16) or ($soption == 17) or ($soption == 20) or ($soption == 21)){ $color = "white"; $lcolor = "blue"; }
-				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1001&sop=12\" class=\"gris\" style=\"color:".$lcolor."\">Contenidos</a></td>";
-				$color = "#4B53AF";
-				$lcolor = "white";
-				if (($soption == 50) or ($soption == 51) or ($soption == 52)){ $color = "white"; $lcolor = "blue"; }
-				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1001&sop=50\" class=\"gris\" style=\"color:".$lcolor."\">Elementos de Contenidos</a></td>";
-				if ($admin == true) {
-					$color = "#4B53AF";
-					$lcolor = "white";
-					if (($soption == 1) or ($soption == 10) or ($soption == 30) or ($soption == 40) or ($soption == 41)){ $color = "white"; $lcolor = "blue"; }
-					echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=1001&sop=10\" class=\"gris\" style=\"color:".$lcolor."\">Administrar</a></td>";
-				}
-				$color = "red";
-				$lcolor = "white";
-				if ($soption == 100){ $color = "white"; $lcolor = "blue"; }
-				echo "<td style=\"height:20px;width:170px;text-align:center;vertical-align:middle;background-color:".$color.";border: 1px solid black\"><a href=\"index.php?op=800&text=".$_GET["op"]."".$_GET["sop"]."\" onclick=\"NewWindow(this.href,'name','400','300','no');return false;\" style=\"color:".$lcolor."\">Ayuda</a></td>";
-			echo "</tr></table></center>";
-		echo "</td></tr></table><br>";
-		echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
-		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
-
-
-	if (($soption == 1) and ($admin == true)) {
-		if ($ssoption == 1) {
-			$sql = "insert into sgm_news_grupos (name,visible,general,articulos,id_idioma,id_origen) ";
-			$sql = $sql."values (";
-			$sql = $sql."'".comillas($_POST["name"])."'";
-			$sql = $sql.",".$_POST["visible"]."";
-			$sql = $sql.",".$_POST["general"]."";
-			$sql = $sql.",".$_POST["articulos"]."";
-			$sql = $sql.",".$_POST["id_idioma"]."";
-			$sql = $sql.",".$_POST["id_origen"]."";
-			$sql = $sql.")";
-			mysql_query(convertSQL($sql));
-		}
-		if ($ssoption == 2) {
-			$sql = "update sgm_news_grupos set ";
-			$sql = $sql."name='".comillas($_POST["name"])."'";
-			$sql = $sql.",visible=".$_POST["visible"]."";
-			$sql = $sql.",general=".$_POST["general"]."";
-			$sql = $sql.",articulos=".$_POST["articulos"]."";
-			$sql = $sql.",id_idioma=".$_POST["id_idioma"]."";
-			$sql = $sql.",id_origen=".$_POST["id_origen"]."";
-			$sql = $sql." WHERE id=".$_POST["id_grupo"]."";
-			mysql_query(convertSQL($sql));
-		}
-		if ($ssoption == 3) {
-			$sql = "delete from sgm_news_grupos WHERE id=".$_GET["id"];
-			mysql_query(convertSQL($sql));
-		}
-
-			echo "<strong>Grupos de Contenidos :</strong><br><br>";
-			echo "<table><tr>";
-					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-						echo "<a href=\"index.php?op=1001&sop=10\" style=\"color:white;\">&laquo; Volver</a>";
-					echo "</td>";
-			echo "</tr></table>";
-			echo "<br><br>";
-			echo "<center><table cellspacing=\"0\">";
-			echo "<tr style=\"background-color:silver;\">";
-				echo "<td style=\"text-align:right;\">Id.</td>";
-				echo "<td style=\"text-align:right;\">Cont.</td>";
-				echo "<td style=\"text-align:center;\"><em>Eliminar</em></td>";
-				echo "<td style=\"text-align:left;\">Grupo Origen</td>";
-				echo "<td style=\"text-align:left;\">Grupo</td>";
-				echo "<td style=\"text-align:center;\">Visible</td>";
-				echo "<td style=\"text-align:center;\">General</td>";
-				echo "<td style=\"text-align:center;\">Articulos</td>";
-				echo "<td style=\"text-align:center;\">Idioma</td>";
-				echo "<td style=\"text-align:center;\"></td>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<form action=\"index.php?op=1001&sop=1&ssop=1\" method=\"post\">";
-					echo "<td style=\"text-align:right;\"></td>";
-					echo "<td style=\"text-align:right;\"></td>";
-					echo "<td style=\"text-align:center;\"></td>";
-					echo "<td><select name=\"id_origen\" style=\"width:200px\">";
-						echo "<option value=\"0\">-</option>";
-						$sql = "select * from sgm_news_grupos where visible=1 and id_origen=0";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
-							echo "<option value=\"".$row["id"]."\">".$row["name"]."</option>";
-						}
-					echo "</select></td>";
-					echo "<td style=\"text-align:left;\"><input type=\"Text\" name=\"name\" style=\"width:200px\"></td>";
-					echo "<td><select name=\"visible\" style=\"width:50px\">";
-						echo "<option value=\"1\" selected>SI</option>";
-						echo "<option value=\"0\">NO</option>";
-					echo "</select></td>";
-					echo "<td><select name=\"general\" style=\"width:50px\">";
-						echo "<option value=\"1\" selected>SI</option>";
-						echo "<option value=\"0\">NO</option>";
-					echo "</select></td>";
-					echo "<td><select name=\"articulos\" style=\"width:50px\">";
-						echo "<option value=\"1\">SI</option>";
-						echo "<option value=\"0\" selected>NO</option>";
-					echo "</select></td>";
-					echo "<td><select name=\"id_idioma\" style=\"width:80px\">";
-						$sql = "select * from sgm_idiomas where visible=1";
-						$result = mysql_query(convertSQL($sql));
-						while ($row = mysql_fetch_array($result)) {
-							echo "<option value=\"".$row["id"]."\">".$row["descripcion"]."</option>";
-						}
-					echo "</select></td>";
-					echo "<td style=\"text-align:left;\"><input style=\"width:100px\" type=\"Submit\" value=\"Añadir\"></td>";
-				echo "</form>";
-			echo "</tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select * from sgm_news_grupos ORDER BY name";
-			$result = mysql_query(convertSQL($sql));
-			while ($row = mysql_fetch_array($result)) {
-				echo "<form action=\"index.php?op=1001&sop=1&ssop=2\" method=\"post\">";
-				echo "<input type=\"Hidden\" name=\"id_grupo\" value=\"".$row["id"]."\">";
-				echo "<tr>";
-					echo "<td style=\"text-align:right;\">".$row["id"]."</td>";
-						$sqlt = "select count(*) as total from sgm_news_posts where id_grupo=".$row["id"];
-						$resultt = mysql_query(convertSQL($sqlt));
-						$rowt = mysql_fetch_array($resultt);
-					echo "<td style=\"text-align:right;\">".$rowt["total"]."</td>";
-					echo "<td  style=\"text-align:center;\">";
-						if (($rowt["total"] == 0) and ($row["blocked"] == 0)) { 
-							echo "<a href=\"index.php?op=1001&sop=1&ssop=3&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a>";
-						}
-					echo "</td>";
-					echo "<td><select name=\"id_origen\" style=\"width:200px\">";
-						echo "<option value=\"0\">-</option>";
-						$sqlg = "select * from sgm_news_grupos where visible=1 and id_origen=0 and id<>".$row["id"];
-						$resultg = mysql_query(convertSQL($sqlg));
-						while ($rowg = mysql_fetch_array($resultg)) {
-							if ($row["id_origen"] == $rowg["id"]){
-								echo "<option value=\"".$rowg["id"]."\" selected>".$rowg["name"]."</option>";
-							} else {
-								echo "<option value=\"".$rowg["id"]."\">".$rowg["name"]."</option>";
-							}
-						}
-					echo "</select></td>";
-					if ($row["blocked"] == 0) { echo "<td><input type=\"Text\" name=\"name\" value=\"".$row["name"]."\" style=\"width:200px\"></td>"; }
-					if ($row["blocked"] == 1) { echo "<td><input type=\"Text\" name=\"name\" value=\"".$row["name"]."\" style=\"width:200px\" disabled></td>"; }
-					if ($row["blocked"] == 0) { echo "<td><select name=\"visible\" style=\"width:50px\">"; }
-					if ($row["blocked"] == 1) { echo "<td><select name=\"visible\" style=\"width:50px\" disabled>"; }
-						if ($row["visible"] == 1) {
-							echo "<option value=\"1\" selected>SI</option>";
-							echo "<option value=\"0\">NO</option>";
-						}
-						if ($row["visible"] == 0) {
-							echo "<option value=\"1\">SI</option>";
-							echo "<option value=\"0\" selected>NO</option>";
-						}
-					echo "</select></td>";
-					if ($row["blocked"] == 0) { echo "<td><select name=\"general\" style=\"width:50px\">"; }
-					if ($row["blocked"] == 1) { echo "<td><select name=\"general\" style=\"width:50px\" disabled>"; }
-						if ($row["general"] == 1) {
-							echo "<option value=\"1\" selected>SI</option>";
-							echo "<option value=\"0\">NO</option>";
-						}
-						if ($row["general"] == 0) {
-							echo "<option value=\"1\">SI</option>";
-							echo "<option value=\"0\" selected>NO</option>";
-						}
-					echo "</select></td>";
-					if ($row["blocked"] == 0) { echo "<td><select name=\"articulos\" style=\"width:50px\">"; }
-					if ($row["blocked"] == 1) { echo "<td><select name=\"articulos\" style=\"width:50px\" disabled>"; }
-						if ($row["articulos"] == 1) {
-							echo "<option value=\"1\" selected>SI</option>";
-							echo "<option value=\"0\">NO</option>";
-						}
-						if ($row["articulos"] == 0) {
-							echo "<option value=\"1\">SI</option>";
-							echo "<option value=\"0\" selected>NO</option>";
-						}
-					echo "</select></td>";
-					echo "<td><select name=\"id_idioma\" style=\"width:80px\">";
-						$sqli = "select * from sgm_idiomas where visible=1";
-						$resulti = mysql_query(convertSQL($sqli));
-						while ($rowi = mysql_fetch_array($resulti)) {
-							if ($row["id_idioma"] == $rowi["id"]){
-								echo "<option value=\"".$rowi["id"]."\" selected>".$rowi["descripcion"]."</option>";
-							} else {
-								echo "<option value=\"".$rowi["id"]."\">".$rowi["descripcion"]."</option>";
-							}
-						}
-					echo "</select></td>";
-					if ($row["blocked"] == 0) { echo "<td><input style=\"width:100px\" type=\"Submit\" value=\"Modificar\"></td>"; }
-					if ($row["blocked"] == 1) { echo "<td><input style=\"width:100px\" type=\"Submit\" value=\"Modificar\" disabled></td>"; }
-					echo "</form>";
-				echo "</tr>";
-			}
-			echo "</table></center>";
-	}
-
-	if ($soption == 10){
-		echo "<table><tr>";
-			echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black\"><a href=\"index.php?op=1001&sop=1\" class=\"gris\" style=\"color: white\">Grupos</a></td>";
-			echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black\"><a href=\"index.php?op=1001&sop=30\" class=\"gris\" style=\"color: white\">Fuentes</a></td>";
-			echo "<td style=\"height:20px;width:120px;text-align:center;vertical-align:middle;background-color: #4B53AF;color: white;border: 1px solid black\"><a href=\"index.php?op=1001&sop=40\" class=\"gris\" style=\"color: white\">Usuarios</a></td>";
-		echo "</tr></table>";
-	}
-
-	if (($soption == 12) OR ($soption == 0)) {
-		if ($ssoption == 1) {
-			if (($_POST["id_grupo"] == "0") OR ($_POST["message"] == "" ) OR ($_POST["id_site"] == "0") OR ($_POST["asunto"] == "")) {
-				echo "No se permite mandar noticias que no estan con todos los datos.<br>";
-			} else {
-				$sql = "insert into sgm_news_posts (asunto,cuerpo,fecha,hora,id_user,id_grupo,id_site,idioma) ";
-				$sql = $sql."values (";
-				$sql = $sql."'".comillas($_POST["asunto"])."'";
-				$sql = $sql.",'".comillas($_POST["message"])."'";
-				$sql = $sql.",'".$_POST["fecha"]."'";
-				$sql = $sql.",'".$_POST["hora"]."'";
-				$sql = $sql.",".$userid."";
-				$sql = $sql.",".$_POST["id_grupo"]."";
-				$sql = $sql.",".$_POST["id_site"]."";
-				$sql = $sql.",'".$_POST["idioma"]."'";
-				$sql = $sql.")";
-				mysql_query(convertSQL($sql));
-			}
-		}
-		if ($ssoption == 2) {
-			$sql = "update sgm_news_posts set visible=0 WHERE id=".$_GET["id_new"];
-			mysql_query(convertSQL($sql));
-		}
-
-		echo "<strong>Últimos 10 Contenidos de cada Grupo :</strong>";
-		echo "<table style=\"text-align:left;\" cellpadding=\"10\" cellspacing=\"10\">";
-			echo "<tr>";
-				echo "<td style=\"width:780px\">";
-				$sqlg = "select * from sgm_users_permisos_news WHERE id_user=".$userid;
-				$resultg = mysql_query(convertSQL($sqlg));
-				while ($rowg = mysql_fetch_array($resultg)) {
-					$sqlg2 = "select * from sgm_news_grupos WHERE id=".$rowg["id_news"];
-					$resultg2 = mysql_query(convertSQL($sqlg2));
-					$rowg2 = mysql_fetch_array($resultg2);
-						$sqlg3 = "select * from sgm_idiomas WHERE id=".$rowg2["id_idioma"];
-						$resultg3 = mysql_query(convertSQL($sqlg3));
-						$rowg3 = mysql_fetch_array($resultg3);
-					echo "<br><br><br><strong>".$rowg3["idioma"]." - ".$rowg2["name"]."</strong> : <a href=\"index.php?op=1001&sop=21&id_grupo=".$rowg2["id"]."\">[ Ver todas ]</a>";
-				if ($rowg["admin"] == 1) { echo " <strong>Eres administrador</strong>"; }
-				if ($rowg["admin"] == 0) { $sql = "select * from sgm_news_posts WHERE (id_grupo=".$rowg["id_news"].") AND (id_user=".$userid.") AND (visible=1) AND (validada=1) ORDER BY fecha DESC,hora DESC"; }
-				if ($rowg["admin"] == 1) { $sql = "select * from sgm_news_posts WHERE (id_grupo=".$rowg["id_news"].") AND (visible=1) ORDER BY fecha DESC,hora DESC"; }
-				$result = mysql_query(convertSQL($sql));
-				$count = 1;
-				echo "<br>";
-				while ($row = mysql_fetch_array($result)) {
-					if ($count <= 10) {
-						echo "<br>";
-						echo "&nbsp;&nbsp;<a href=\"index.php?op=1001&sop=17&id_new=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>&nbsp;";
-						echo fechacorta($row["fecha"])." ".hora($row["hora"]);
-						echo "&nbsp;<a href=\"index.php?op=1001&sop=20&id_new=".$row["id"]."&s=12\"><strong style=\"text-decoration:underline;\">\"".$row["asunto"]."\"</strong></a>";
-						echo "&nbsp;".buscarnick($row["id_user"]);
-						if ($row["validada"] == 1) {
-							echo "&nbsp;<a href=\"index.php?op=1001&sop=15&id_new=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a>";
-						}
-						else  {
-							echo "&nbsp;<a href=\"index.php?op=1001&sop=15&id_new=".$row["id"]."\"><strong>[ PENDIENTE DE VALIDAR ]</strong></a>";
-						}
-					}
-					$count++;
-				}
-			}
-		echo "</td></tr>";
-		echo "</table>";
-	}
-
-	if ($soption == 15) {
-		if ($ssoption == 1) {
-			$sql = "update sgm_news_posts set ";
-			$sql = $sql."asunto='".comillas($_POST["asunto"])."'";
-			$sql = $sql.",fecha='".$_POST["fecha"]."'";
-			$sql = $sql.",hora='".$_POST["hora"]."'";
-			$sql = $sql.",cuerpo='".comillas($_POST["message"])."'";
-			$sql = $sql.",idioma='".$_POST["idioma"]."'";
-			$sql = $sql.",id_grupo=".$_POST["id_grupo"]."";
-			$sql = $sql.",id_site=".$_POST["id_site"]."";
-			$sql = $sql.",validada=1";
-			$sql = $sql." WHERE id=".$_POST["id_new"]."";
-			mysql_query(convertSQL($sql));
-		}
-		if ($ssoption == 2) {
-			$sql = "insert into sgm_news_elementos_news (id_new,id_elemento) ";
-			$sql = $sql."values (";
-			$sql = $sql."'".$_GET["id_new"]."'";
-			$sql = $sql.",".$_POST["id_elemento"]."";
-			$sql = $sql.")";
-			mysql_query(convertSQL($sql));
-		}
-		if ($ssoption == 3) {
-			$sql = "delete from sgm_news_elementos_news WHERE id_elemento=".$_GET["id_element"]." and id_new=".$_GET["id_new"];
-			mysql_query(convertSQL($sql));
-		}
-
-		if ($_GET["id_new"] != "") {
-			echo "<strong>Editar Contenido</strong>";
-			echo "<table><tr>";
-					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-						echo "<a href=\"index.php?op=1001&sop=12\" style=\"color:white;\">&laquo; Volver</a>";
-					echo "</td>";
-			echo "</tr></table>";
-			echo "<form action=\"index.php?op=1001&sop=15&ssop=1&id_new=".$_GET["id_new"]."\" method=\"post\" name=\"post\">";
-		} else {
-			echo "<strong>Nuevo Contenido</strong>";
-			echo "<form action=\"index.php?op=1001&sop=12&ssop=1\" method=\"post\" name=\"post\">";
-		}
-			echo "<br><br>";
-		$sqlnew = "select * from sgm_news_posts WHERE id=".$_GET["id_new"];
-		$resultnew = mysql_query(convertSQL($sqlnew));
-		$rownew = mysql_fetch_array($resultnew);
-		echo "<table><tr><td>";
-			echo "<input type=\"Hidden\" name=\"id_new\" value=\"".$_GET["id_new"]."\">";
-			echo "<table>";
+<?php$autorizado = autorizado($userid,$option);$admin = admin($userid,$option);if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>"; }if (($option == 1001) AND ($autorizado == true)) {	echo "<table class=\"principal\">";		echo"<tr>";			echo "<td style=\"width:15%;vertical-align : middle;text-align:left;\">";				echo "<h4>".$Contenido."</h4>";			echo "</td><td style=\"width:85%;vertical-align:top;text-align:left;\">";				echo "<table>";					echo "<tr>";						if (($soption == 0) or ($_GET["id_tipo"] != 0)) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1001&sop=0\" class=".$class.">".$Contenido."</a></td>";						if ($soption == 100) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1001&sop=100&id=0\" class=".$class.">".$Anadir." ".$Contenido."</a></td>";						if (($soption >= 500) and ($soption < 600) and ($admin == true)) {$class = "menu_select";} else {$class = "menu";}						echo "<td class=".$class."><a href=\"index.php?op=1001&sop=500\" class=".$class.">".$Administrar."</a></td>";					echo "</tr>";				echo "</table>";			echo "</td>";		echo "</tr>";	echo "</table><br>";	echo "<table  class=\"principal\">";		echo "<tr>";			echo "<td style=\"width:100%;vertical-align:top;text-align:left;\">";	if ($soption == 0) {		if ($ssoption == 1) {			$camposInsert = "id_autor,fecha_creacion,fecha_publicacion,id_idioma,titulo,contenido";			$datosInsert = array($userid,date('U'),$_POST["fecha_publicacion"],$_POST["id_idioma"],comillas($_POST["titulo"]),comillas($_POST["contenido"]));			insertFunction ("sim_contenidos",$camposInsert,$datosInsert);		}		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			$sqlg = "select * from sim_contenidos_categoria where visibe=1";			$resultg = mysqli_query($dbhandle,convertSQL($sqlg));			while ($rowg = mysql_fetch_array($resultg)) {				echo "<tr><td><strong>".$rowg["categoria"]."</strong></td></tr>";				$sqlg2 = "select * from sim_contenidos where visibe=1 and id in (select id_contenido from sim_contenidos_rel_categoria where id_categoria=".$rowg["id"].")";				$resultg2 = mysqli_query($dbhandle,convertSQL($sqlg2));				while ($rowg2 = mysql_fetch_array($resultg2)){					$sqlg3 = "select * from sgm_idiomas WHERE id=".$rowg["id_idioma"];					$resultg3 = mysql_query(convertSQL($sqlg3));					$rowg3 = mysql_fetch_array($resultg3);					echo "<tr>";						echo "<td>".$rowg2["idioma"]."-".$rowg2["fecha_publicacion"]."-".$rowg2["titulo"]."</td>";					echo "</tr>";				}			}		echo "</table>";	}	if ($soption == 500) {		if ($admin == true) {			$ruta_botons = array("op=1001&sop=510","op=1001&sop=520","op=1001&sop=530","op=1001&sop=540");			$texto = array($Categorias,$Etiquetas,$Redes_Sociales,$Medios);			echo boton($ruta_botons,$texto);		}		if ($admin == false) {			echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>";		}	}	if (($soption == 510) AND ($admin == true)) {		if (($ssoption == 1) AND ($admin == true)) {			$camposInsert = "categoria";			$datosInsert = array(comillas($_POST["categoria"]));			insertFunction ("sim_contenidos_categorias",$camposInsert,$datosInsert);		}		if (($ssoption == 2) AND ($admin == true)) {			$camposUpdate = array("categoria");			$datosUpdate = array(comillas($_POST["categoria"]));			updateFunction ("sim_contenidos_categorias",$_GET["id"],$camposUpdate,$datosUpdate);		}		if (($ssoption == 3) AND ($admin == true)) {			$sql = "select id from sim_contenidos_rel_categoria where id_categoria=".$_GET["id"];			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				deleteFunction ("sim_contenidos_rel_categoria",$row["id"]);			}			deleteFunction ("sim_contenidos_categorias",$_GET["id"]);		}		echo "<h4>".$Categorias." :</h4>";		echo boton(array("op=1001&sop=500"),array("&laquo; ".$Volver));		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			echo "<form action=\"index.php?op=1001&sop=510&ssop=1\" method=\"post\">";			echo "<tr style=\"background-color:silver\">";				echo "<th>".$Eliminar."</td>";				echo "<th>".$Categoria."</th>";				echo "<th></th>";			echo "</tr><tr>";				echo "<td></td>";				echo "<td><input type=\"text\" style=\"width:200px\" name=\"categoria\" required></td>";				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";			echo "</tr>";			echo "<tr><td>&nbsp;</td></tr>";			echo "</form>";			$sql = "select id,categoria from sim_contenidos_categorias order by categoria";			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				echo "<tr>";					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1001&sop=512&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";					echo "<form action=\"index.php?op=1001&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";					echo "<td><input type=\"text\" value=\"".$row["categoria"]."\" style=\"width:200px\" name=\"categoria\" required></td>";					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";					echo "</form>";				echo "</tr>";			}		echo "</table>";	}	if (($soption == 512) AND ($admin == true)) {		echo "<center>";		echo "<br><br>".$pregunta_eliminar;		echo boton(array("op=1001&sop=510&ssop=3&id=".$_GET["id"],"op=1001&sop=510"),array($Si,$No));		echo "</center>";	}	if (($soption == 520) AND ($admin == true)) {		if (($ssoption == 1) AND ($admin == true)) {			$camposInsert = "etiqueta";			$datosInsert = array(comillas($_POST["etiqueta"]));			insertFunction ("sim_contenidos_etiquetas",$camposInsert,$datosInsert);		}		if (($ssoption == 2) AND ($admin == true)) {			$camposUpdate = array("etiqueta");			$datosUpdate = array(comillas($_POST["etiqueta"]));			updateFunction ("sim_contenidos_etiquetas",$_GET["id"],$camposUpdate,$datosUpdate);		}		if (($ssoption == 3) AND ($admin == true)) {			$sql = "select id from sim_contenidos_rel_etiquetas where id_etiqueta=".$_GET["id"];			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				deleteFunction ("sgm_clients_rel_etiqueta",$row["id"]);			}			deleteFunction ("sim_contenidos_etiquetas",$_GET["id"]);		}		echo "<h4>".$Etiquetas." :</h4>";		echo boton(array("op=1001&sop=500"),array("&laquo; ".$Volver));		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			echo "<form action=\"index.php?op=1001&sop=520&ssop=1\" method=\"post\">";			echo "<tr style=\"background-color:silver\">";				echo "<th>".$Eliminar."</td>";				echo "<th>".$Etiqueta."</th>";				echo "<th></th>";			echo "</tr><tr>";				echo "<td></td>";				echo "<td><input type=\"text\" style=\"width:200px\" name=\"etiqueta\" required></td>";				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";			echo "</tr>";			echo "<tr><td>&nbsp;</td></tr>";			echo "</form>";			$sql = "select id,etiqueta from sim_contenidos_etiquetas order by etiqueta";			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				echo "<tr>";					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1001&sop=522&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";					echo "<form action=\"index.php?op=1001&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";					echo "<td><input type=\"text\" value=\"".$row["etiqueta"]."\" style=\"width:200px\" name=\"etiqueta\" required></td>";					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";					echo "</form>";				echo "</tr>";			}		echo "</table>";	}	if (($soption == 522) AND ($admin == true)) {		echo "<center>";		echo "<br><br>".$pregunta_eliminar;		echo boton(array("op=1001&sop=520&ssop=3&id=".$_GET["id"],"op=1001&sop=520"),array($Si,$No));		echo "</center>";	}	if (($soption == 530) AND ($admin == true)) {		if (($ssoption == 1) AND ($admin == true)) {			$camposInsert = "red_social";			$datosInsert = array(comillas($_POST["red_social"]));			insertFunction ("sim_contenidos_redes_sociales",$camposInsert,$datosInsert);		}		if (($ssoption == 2) AND ($admin == true)) {			$camposUpdate = array("red_social");			$datosUpdate = array(comillas($_POST["red_social"]));			updateFunction ("sim_contenidos_redes_sociales",$_GET["id"],$camposUpdate,$datosUpdate);		}		if (($ssoption == 3) AND ($admin == true)) {			$sql = "select id from sim_contenidos_rel_redes_sociales where id_red_social=".$_GET["id"];			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				deleteFunction ("sim_contenidos_rel_redes_sociales",$row["id"]);			}			deleteFunction ("sim_contenidos_redes_sociales",$_GET["id"]);		}		echo "<h4>".$Redes_Sociales." :</h4>";		echo boton(array("op=1001&sop=500"),array("&laquo; ".$Volver));		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			echo "<form action=\"index.php?op=1001&sop=530&ssop=1\" method=\"post\">";			echo "<tr style=\"background-color:silver\">";				echo "<th>".$Eliminar."</td>";				echo "<th>".$Redes_Sociales."</th>";				echo "<th></th>";			echo "</tr><tr>";				echo "<td></td>";				echo "<td><input type=\"text\" style=\"width:200px\" name=\"red_social\" required></td>";				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";			echo "</tr>";			echo "<tr><td>&nbsp;</td></tr>";			echo "</form>";			$sql = "select id,red_social from sim_contenidos_redes_sociales order by red_social";			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				echo "<tr>";					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1001&sop=532&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";					echo "<form action=\"index.php?op=1001&sop=530&ssop=2&id=".$row["id"]."\" method=\"post\">";					echo "<td><input type=\"text\" value=\"".$row["red_social"]."\" style=\"width:200px\" name=\"red_social\" required></td>";					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";					echo "</form>";				echo "</tr>";			}		echo "</table>";	}	if (($soption == 532) AND ($admin == true)) {		echo "<center>";		echo "<br><br>".$pregunta_eliminar;		echo boton(array("op=1001&sop=530&ssop=3&id=".$_GET["id"],"op=1001&sop=530"),array($Si,$No));		echo "</center>";	}	if (($soption == 540) AND ($admin == true)) {		if (($ssoption == 1) AND ($admin == true)) {			$camposInsert = "medio_publicacion";			$datosInsert = array(comillas($_POST["medio_publicacion"]));			insertFunction ("sim_contenidos_medios_publicacion",$camposInsert,$datosInsert);		}		if (($ssoption == 2) AND ($admin == true)) {			$camposUpdate = array("medio_publicacion");			$datosUpdate = array(comillas($_POST["medio_publicacion"]));			updateFunction ("sim_contenidos_medios_publicacion",$_GET["id"],$camposUpdate,$datosUpdate);		}		if (($ssoption == 3) AND ($admin == true)) {			$sql = "select id from sim_contenidos_rel_medios_publicacion where id_medio_publicacion=".$_GET["id"];			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				deleteFunction ("sim_contenidos_rel_medios_publicacion",$row["id"]);			}			deleteFunction ("sim_contenidos_medios_publicacion",$_GET["id"]);		}		echo "<h4>".$Medios." :</h4>";		echo boton(array("op=1001&sop=500"),array("&laquo; ".$Volver));		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			echo "<form action=\"index.php?op=1001&sop=540&ssop=1\" method=\"post\">";			echo "<tr style=\"background-color:silver\">";				echo "<th>".$Eliminar."</td>";				echo "<th>".$Medios."</th>";				echo "<th></th>";			echo "</tr><tr>";				echo "<td></td>";				echo "<td><input type=\"text\" style=\"width:200px\" name=\"medio_publicacion\" required></td>";				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";			echo "</tr>";			echo "<tr><td>&nbsp;</td></tr>";			echo "</form>";			$sql = "select id,medio_publicacion from sim_contenidos_medios_publicacion order by medio_publicacion";			$result = mysqli_query($dbhandle,convertSQL($sql));			while ($row = mysqli_fetch_array($result)) {				echo "<tr>";					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1001&sop=542&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";					echo "<form action=\"index.php?op=1001&sop=540&ssop=2&id=".$row["id"]."\" method=\"post\">";					echo "<td><input type=\"text\" value=\"".$row["medio_publicacion"]."\" style=\"width:200px\" name=\"medio_publicacion\" required></td>";					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";					echo "</form>";				echo "</tr>";			}		echo "</table>";	}	if (($soption == 542) AND ($admin == true)) {		echo "<center>";		echo "<br><br>".$pregunta_eliminar;		echo boton(array("op=1001&sop=540&ssop=3&id=".$_GET["id"],"op=1001&sop=540"),array($Si,$No));		echo "</center>";	}			if ($soption == 101) {		echo "<h1>TinyMCE Quick Start Guide</h1>";		  echo "<form method=\"post\">";			echo "<textarea id=\"mytextarea\">Hello, World!</textarea>";		  echo "</form>";	}	if ($soption == 100) {		if ($ssoption == 2) {			$camposUpdate = array("id_autor","fecha_creacion","fecha_publicacion","id_idioma","titulo","contenido");			$datosUpdate = array($userid,date('U'),$_POST["fecha_publicacion"],$_POST["id_idioma"],comillas($_POST["titulo"]),comillas($_POST["contenido"]));			updateFunction ("sim_contenidos",$_GET["id_envio"],$camposUpdate,$datosUpdate);		}		if ($ssoption == 3){			updateFunction ("sim_contenidos",$_GET["id"],array("visible"),array("0"));		}		if ($_GET["id"] > 0) {			$sql = "select * from sgm_clients where id=".$_GET["id"];			$result = mysqli_query($dbhandle,convertSQL($sql));			$row = mysqli_fetch_array($result);			echo "<h4>".$Editar." ".$Contenido."</h4>";			echo "<form action=\"index.php?op=1001&sop=100&ssop=2&id=".$_GET["id"]."\"  method=\"post\">";		} 		if ($_GET["id"] <= 0) {			echo "<h4>".$Anadir." ".$Contenido."</h4>";			echo "<form action=\"index.php?op=1001&sop=0&ssop=1\"  method=\"post\">";		}
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";			echo "<tr>";				echo "<td>";			echo "<table>";
 			echo "<tr><td>Fuente</td><td><select name=\"id_site\" class=\"px400\">";
 				echo "<option value=\"0\">- Selecciona un fuente -</option>";
 				$sql = "select * from sgm_news_sites WHERE showonweb=1";
@@ -351,17 +33,10 @@
 			if ($_GET["id_new"] != "") {
 				echo "<tr><td>Fecha</td><td style=\"width:400px;\"><table cellspacing=\"0\"><tr><td><input type=\"Text\" style=\"width:180px;\" name=\"fecha\" value=\"".$rownew["fecha"]."\"></td>";
 				echo "<td style=\"width:40px;\">Hora</td><td><input type=\"Text\" style=\"width:180px;\" name=\"hora\" value=\"".$rownew["hora"]."\"></td></tr></table></td></tr>";
-			} else {
-				$a = date("Y");
-				$m = date("n");
-				$d = date("j");
-				$date = date("Y-m-d", mktime(0,0,0,$m ,$d, $a));
-				$hora = date("H:i");
-				echo "<tr><td>Fecha</td><td style=\"width:400px;\"><table cellspacing=\"0\"><tr><td><input type=\"Text\" style=\"width:180px;\" name=\"fecha\" value=\"".$date."\"></td>";
-				echo "<td style=\"width:35px;text-align:center;\">Hora</td><td><input type=\"Text\" style=\"width:180px;\" name=\"hora\" value=\"".$hora."\"></td></tr></table></td></tr>";
+			} else {				$date = date("Y-m-d");				$hora = date("H:i");				echo "<tr><td>Fecha</td><td style=\"width:400px;\"><table cellspacing=\"0\"><tr><td><input type=\"Text\" style=\"width:180px;\" name=\"fecha\" value=\"".$date."\"></td>";				echo "<td style=\"width:35px;text-align:center;\">Hora</td><td><input type=\"Text\" style=\"width:180px;\" name=\"hora\" value=\"".$hora."\"></td></tr></table></td></tr>";
 			}
 			echo "<tr><td>Titular</td><td><input type=\"Text\" name=\"asunto\" class=\"px400\" value=\"".$rownew["asunto"]."\"></td></tr>";
-			echo "<tr><td style=\"vertical-align:top;\">Noticia</td><td><textarea name=\"message\"rows=\"20\" style=\"width:600px\">".$rownew["cuerpo"]."</textarea></td></tr>";
+			echo "<tr><td style=\"vertical-align:top;\">Noticia</td><td><textarea id=\"mytextarea\"rows=\"20\" style=\"width:600px\">".$rownew["cuerpo"]."</textarea></td></tr>";
 			if ($_GET["id_new"] != "") {
 				if ($rownew["validada"] == 1) { echo "<tr><td></td><td><input type=\"Submit\" value=\"Modificar\" class=\"px150\"></td></tr>";	}
 				if ($rownew["validada"] == 0) { echo "<tr><td></td><td><input type=\"Submit\" value=\"Validar Noticia - Ok\" class=\"px150\"></td></tr>"; }

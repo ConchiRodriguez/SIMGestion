@@ -528,8 +528,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if ($_POST["duracion"] == ""){ $duracion = 0; } else { $duracion = $_POST["duracion"]; }
 					if ($_POST["id_cliente"] > 0) {$id_cliente = $_POST["id_cliente"];} else {$id_cliente = $_POST["id_cliente2"];}
 
+					echo $notas_registro = str_replace("/","/ ",$_POST["notas_registro"]);
+					
 					$camposUpdate = array("id_usuario_origen","id_usuario_destino","fecha_inicio","id_entrada","notas_registro","id_servicio","asunto","fecha_prevision","duracion","id_cliente");
-					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$_POST["notas_registro"],$servicio,$_POST["asunto"],$prevision,$duracion,$id_cliente);
+					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$notas_registro,$servicio,$_POST["asunto"],$prevision,$duracion,$id_cliente);
 					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
 					$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
@@ -717,7 +719,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 			$datosUpdate = array($sla_inc,$fecha_prevision);
 			updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-
+		if ($ssoption == 7) {
+			$notas_desarrollo = str_replace("\r\n","<br>",$_POST["notas_desarrollo"]);
+			enviarNotificacion($_POST["correo_remitente"],$_POST["id_incidencia"],$_POST["codigo"],$_POST["id_codigo_externo"],3,$notas_desarrollo);
+		}
 		if ($_GET["id"] != ""){$id_inc= $_GET["id"];}
 		#inicio de la tabla de modificación o inserción.
 		if ($id_inc != ""){
@@ -928,8 +933,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($row["duracion"] != ""){$duracion = $row["duracion"];} else {$duracion = $_POST["duracion"];}
 						echo "<tr><td colspan=\"9\"><input type=\"text\" name=\"asunto\" style=\"width:100%;\" value=\"".$asunto."\" required></td></tr>";
 						echo "<tr><th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Registro." :</th></tr>";
-#						$notas_registro = ereg_replace("<br>","\r\n",$notas_registro);
-						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode(str_replace("\r\n","<br>",$notas_registro))."</textarea></td></tr>";
+						echo "<tr><td colspan=\"9\"><textarea name=\"notas_registro\" style=\"width:100%;\" rows=\"4\">".$notas_registro."</textarea></td></tr>";
 						echo "<tr>";
 							if ($id_inc == ""){
 								echo "<th style=\"text-align:left;vertical-align:top;\">".$Duracion." (Min) :</th>";
@@ -1005,7 +1009,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if (($_POST["notas_desarrollo"] != "") and ($_POST["duracion"] != "")){
 							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\"></textarea></td></tr>";
 						} else {
-							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".htmlspecialchars_decode($_POST["notas_desarrollo"])."</textarea></td></tr>";
+							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
 						}
 						if ($row["id_estado"] != -2){
 							echo "<tr><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";
@@ -1095,18 +1099,35 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "</td><td style=\"text-align:right;vertical-align:top;width:60%;\">";
 						echo "<table cellspacing=\"0\" cellspacing=\"0\" style=\"width:100%;\">";
 						if ($rowc["id_usuario_registro"] == $userid){
-							echo "<tr><td colspan=\"2\"><textarea name=\"notas_desarrollo\" style=\"width:100%;height:97px\">".$rowc["notas_desarrollo"]."</textarea></td></tr>";
+							echo "<tr><td colspan=\"3\"><textarea name=\"notas_desarrollo\" style=\"width:100%;height:97px\">".$rowc["notas_desarrollo"]."</textarea></td></tr>";
 						} else {
 							echo "<tr><td style=\"width:100%;height:97px;background-color:silver;vertical-align:top;\">".$rowc["notas_desarrollo"]."&nbsp;</td></tr>";
 							echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
 						}
 							if ($row["id_estado"] != -2){
 								echo "<tr>";
-									echo "<td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
+									echo "<td><input type=\"Submit\" value=\"".$Guardar."\"></td>";
 									echo "</form>";
+									$sqlud = "select mail from sgm_users where id=".$row["id_usuario_origen"];
+									$resultud = mysqli_query($dbhandle,convertSQL($sqlud));
+									$rowud = mysqli_fetch_array($resultud);
+									$sqlcs = "select codigo_catalogo from sgm_contratos_servicio where id=".$row["id_servicio"];
+									$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+									$rowcs = mysqli_fetch_array($resultcs);
+									echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$id_inc."\" method=\"post\" name=\"form3\">";
+									echo "<td><input type=\"Submit\" value=\"".$Enviar." ".$Email."\"></td>";
+									echo "<input type=\"hidden\" name=\"correo_remitente\" value=\"".$rowud["mail"]."\">";
+									echo "<input type=\"hidden\" name=\"id_incidencia\" value=\"".$id_inc."\">";
+									echo "<input type=\"hidden\" name=\"codigo\" value=\"".$rowcs["codigo_catalogo"]."\">";
+									echo "<input type=\"hidden\" name=\"id_codigo_externo\" value=\"".$row["codigo_externo"]."\">";
+									echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
+									echo "</form>";
+#									echo "<td class=\"boton\">";
+#										echo "<a href=\"mailto:".$rowud["mail"]."?subject=".$asunto." ".$row["codigo_externo"]."&body=".$rowc["notas_desarrollo"]."\" style=\"color:black\">".$Enviar." ".$Email."</a>";
+#									echo "</td>";
 								if ($rowc["id_usuario_registro"] == $userid){
 									echo "<form action=\"index.php?op=1018&sop=100&ssop=6&id=".$id_inc."&id_not=".$rowc["id"]."\" method=\"post\" name=\"form2\">";
-									echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Eliminar."\" style=\"width:100px\"></td>";
+									echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Eliminar."\"></td>";
 								}
 								echo "</tr>";
 							}

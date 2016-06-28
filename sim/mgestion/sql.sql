@@ -805,6 +805,12 @@ CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, P
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_incidencias_correos` ADD `destinatario` varchar(100) NOT NULL default '' AFTER `uid`;
 
+CREATE TABLE `sgm_incidencias_correos_enviados` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `id_incidencia` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `destinatario` varchar(100) NOT NULL default '' AFTER `id_incidencia`;
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `asunto` varchar(150) NOT NULL default '' AFTER `destinatario`;
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `fecha` int(15) NOT NULL default '0' AFTER `asunto`;
+
 CREATE TABLE `sgm_incidencias_estados` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_estados` ADD `estado` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_incidencias_estados` ADD `editable` tinyint(1) NOT NULL default '1' AFTER `estado`;

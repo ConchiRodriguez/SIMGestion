@@ -12,6 +12,9 @@ function correoIncidencias(){
 	foreach ($resultados as $detalles) {
 		$id_cliente = 0;
 		$id_usuario = 0;
+		$filename = '';
+		$id_codigo_externo = '';
+		$encode = '';
 
 		$destinatario = imap_utf8($detalles->to);
 		$destinatario = str_replace('"','',$destinatario);
@@ -49,16 +52,7 @@ function correoIncidencias(){
 						case 0:
 							// the HTML or plain text part of the email
 							$message = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
-#							echo $message."0<br>";
 							// now do something with the message, e.g. render it
-							$message = strip_tags($message,'<br>');
-#							echo $message."1<br>";
-							$message = str_replace("&nbsp;", "", $message);
-#							echo $message."2<br>";
-#							$message = str_replace("<br>","\r\n",$message);
-#							echo $message."3<br>";
-#							$message = trim($message);
-#							echo $message."4<br>";
 							break;
 						case 1:
 							// multi-part headers, can ignore
@@ -153,6 +147,14 @@ function correoIncidencias(){
 			if ($id_cliente == "") { $id_cliente = 0;}
 			if ($asunto1 == "") { $asunto = "Sense assumpte";} else {$asunto = comillas($asunto1);}
 			$data = time();
+
+			$message = str_replace("</p>","\r\n",$message);
+#			$be_erres = array ('<br>','<\br>','<br />');
+#			$message = str_replace($be_erres,'\r\n',$message);
+			$message = strip_tags($message);
+			if (mb_detect_encoding($message, 'UTF-8', true)){
+				$message = utf8_decode($message);
+			}
 			$mensaje = comillas($message);
 
 			if ($remitente != "soporte@solucions-im.com") {
@@ -192,9 +194,7 @@ function correoIncidencias(){
 					}
 //Buscar si contiene codigo de incidencia del cliente
 					if ($id_servicio_con != 0){
-						echo "xx<br>";
 						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente,$asunto1);
-						echo $id_codigo_externo."<br>";
 					}
 //Añadir incidencia
 					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo";
