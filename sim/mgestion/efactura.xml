@@ -5,16 +5,16 @@
 		<Modality>I</Modality>
 		<InvoiceIssuerType>EM</InvoiceIssuerType>
 		<Batch>
-			<BatchIdentifier>/</BatchIdentifier>
+			<BatchIdentifier>3/0</BatchIdentifier>
 			<InvoicesCount>1</InvoicesCount>
 			<TotalInvoicesAmount>
-				<TotalAmount>0.00</TotalAmount>
+				<TotalAmount>49654.53</TotalAmount>
 			</TotalInvoicesAmount>
 			<TotalOutstandingAmount>
-				<TotalAmount>0.00</TotalAmount>
+				<TotalAmount>49654.53</TotalAmount>
 			</TotalOutstandingAmount>
 			<TotalExecutableAmount>
-				<TotalAmount>0.00</TotalAmount>
+				<TotalAmount>49654.53</TotalAmount>
 			</TotalExecutableAmount>
 			<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
 		</Batch>
@@ -24,64 +24,108 @@
 			<TaxIdentification>
 				<PersonTypeCode>J</PersonTypeCode>
 				<ResidenceTypeCode>R</ResidenceTypeCode>
-				<TaxIdentificationNumber></TaxIdentificationNumber>
+				<TaxIdentificationNumber>B65702227</TaxIdentificationNumber>
 			</TaxIdentification>
 			<LegalEntity>
-				<CorporateName></CorporateName>
+				<CorporateName>Solucions Informatiques Maresme S.L.</CorporateName>
 				<AddressInSpain>
-					<Address></Address>
-					<PostCode></PostCode>
-					<Town></Town>
-					<Province></Province>
+					<Address>Av. Maresme 44 Bj. 2</Address>
+					<PostCode>08490</PostCode>
+					<Town>Tordera</Town>
+					<Province>Barcelona</Province>
 					<CountryCode>ESP</CountryCode>
 				</AddressInSpain>
 				<ContactDetails>
-					<Telephone></Telephone>
-					<ElectronicMail></ElectronicMail>
+					<Telephone>937 645 637</Telephone>
+					<ElectronicMail>administracion@solucions-im.com</ElectronicMail>
 				</ContactDetails>
 			</LegalEntity>
 		</SellerParty>
 		<BuyerParty>
 			<TaxIdentification>
-				<PersonTypeCode></PersonTypeCode>
-				<ResidenceTypeCode></ResidenceTypeCode>
-				<TaxIdentificationNumber></TaxIdentificationNumber>
+				<PersonTypeCode>J</PersonTypeCode>
+				<ResidenceTypeCode>R</ResidenceTypeCode>
+				<TaxIdentificationNumber>G62743125</TaxIdentificationNumber>
 			</TaxIdentification>
 			<AdministrativeCentres>
 				<AdministrativeCentre>
-					<Name></Name>
-					<FirstSurname></FirstSurname>
-					<SecondSurname></SecondSurname>
+					<CentreCode>A09006670</CentreCode>
+					<RoleTypeCode>01</RoleTypeCode>
+					<Name>Domingo</Name>
+					<FirstSurname>Barrabés</FirstSurname>
+					<SecondSurname>Moreno</SecondSurname>
 					<AddressInSpain>
-						<Address></Address>
-						<PostCode></PostCode>
-						<Town></Town>
-						<Province></Province>
-						<CountryCode></CountryCode>
+						<Address>Sant Jaume, 209-217</Address>
+						<PostCode>08370</PostCode>
+						<Town>Calella</Town>
+						<Province>Barcelona</Province>
+						<CountryCode>ESP</CountryCode>
 					</AddressInSpain>
 					<ContactDetails>
-						<Telephone></Telephone>
-						<TeleFax></TeleFax>
-						<WebAddress></WebAddress>
-						<ElectronicMail></ElectronicMail>
+						<Telephone>937690201</Telephone>
+						<TeleFax>937660676</TeleFax>
+						<WebAddress>www.salutms.cat</WebAddress>
+						<ElectronicMail>web@salutms.cat</ElectronicMail>
+					</ContactDetails>
+					<CentreDescription>Centro principal</CentreDescription>
+				</AdministrativeCentre>
+				<AdministrativeCentre>
+					<CentreCode>A09006670</CentreCode>
+					<RoleTypeCode>02</RoleTypeCode>
+					<Name>Domingo</Name>
+					<FirstSurname>Barrabés</FirstSurname>
+					<SecondSurname>Moreno</SecondSurname>
+					<AddressInSpain>
+						<Address>Sant Jaume, 209-217</Address>
+						<PostCode>08370</PostCode>
+						<Town>Calella</Town>
+						<Province>Barcelona</Province>
+						<CountryCode>ESP</CountryCode>
+					</AddressInSpain>
+					<ContactDetails>
+						<Telephone>937690201</Telephone>
+						<TeleFax>937660676</TeleFax>
+						<WebAddress>www.salutms.cat</WebAddress>
+						<ElectronicMail>web@salutms.cat</ElectronicMail>
+					</ContactDetails>
+					<CentreDescription>Centro principal</CentreDescription>
+				</AdministrativeCentre>
+				<AdministrativeCentre>
+					<CentreCode>A09006670</CentreCode>
+					<RoleTypeCode>03</RoleTypeCode>
+					<Name>Domingo</Name>
+					<FirstSurname>Barrabés</FirstSurname>
+					<SecondSurname>Moreno</SecondSurname>
+					<AddressInSpain>
+						<Address>Sant Jaume, 209-217</Address>
+						<PostCode>08370</PostCode>
+						<Town>Calella</Town>
+						<Province>Barcelona</Province>
+						<CountryCode>ESP</CountryCode>
+					</AddressInSpain>
+					<ContactDetails>
+						<Telephone>937690201</Telephone>
+						<TeleFax>937660676</TeleFax>
+						<WebAddress>www.salutms.cat</WebAddress>
+						<ElectronicMail>web@salutms.cat</ElectronicMail>
 					</ContactDetails>
 					<CentreDescription>Centro principal</CentreDescription>
 				</AdministrativeCentre>
 			</AdministrativeCentres>
 			<LegalEntity>
-				<CorporateName></CorporateName>
+				<CorporateName>Corporacio de Salut del Maresme i la Selva  </CorporateName>
 				<AddressInSpain>
-					<Address></Address>
-					<PostCode></PostCode>
-					<Town></Town>
-					<Province></Province>
-					<CountryCode></CountryCode>
+					<Address>Sant Jaume, 209-217</Address>
+					<PostCode>08370</PostCode>
+					<Town>Calella</Town>
+					<Province>Barcelona</Province>
+					<CountryCode>ESP</CountryCode>
 				</AddressInSpain>
 				<ContactDetails>
-					<Telephone></Telephone>
-					<TeleFax></TeleFax>
-					<WebAddress></WebAddress>
-					<ElectronicMail></ElectronicMail>
+					<Telephone>937690201</Telephone>
+					<TeleFax>937660676</TeleFax>
+					<WebAddress>www.salutms.cat</WebAddress>
+					<ElectronicMail>web@salutms.cat</ElectronicMail>
 				</ContactDetails>
 			</LegalEntity>
 		</BuyerParty>
@@ -89,58 +133,86 @@
 	<Invoices>
 		<Invoice>
 			<InvoiceHeader>
-				<InvoiceNumber></InvoiceNumber>
-				<InvoiceSeriesCode></InvoiceSeriesCode>
+				<InvoiceNumber>3</InvoiceNumber>
+				<InvoiceSeriesCode>0</InvoiceSeriesCode>
 				<InvoiceDocumentType>FC</InvoiceDocumentType>
 				<InvoiceClass>OO</InvoiceClass>
 			</InvoiceHeader>
 			<InvoiceIssueData>
-				<IssueDate></IssueDate>
+				<IssueDate>2016-06-23</IssueDate>
 				<PlaceOfIssue>
-					<PostCode></PostCode>
-					<PlaceOfIssueDescription></PlaceOfIssueDescription>
+					<PostCode>08490</PostCode>
+					<PlaceOfIssueDescription>Tordera</PlaceOfIssueDescription>
 				</PlaceOfIssue>
-				<InvoiceCurrencyCode></InvoiceCurrencyCode>
-				<TaxCurrencyCode></TaxCurrencyCode>
-				<LanguageName>ca</LanguageName>
+				<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
+				<TaxCurrencyCode>EUR</TaxCurrencyCode>
+				<LanguageName>es</LanguageName>
 			</InvoiceIssueData>
 			<TaxesOutputs>
 				<Tax>
 					<TaxTypeCode>01</TaxTypeCode>
-					<TaxRate>0.00</TaxRate>
+					<TaxRate>21.00</TaxRate>
 					<TaxableBase>
-						<TotalAmount>0.00</TotalAmount>
+						<TotalAmount>41036.80</TotalAmount>
 					</TaxableBase>
 					<TaxAmount>
-						<TotalAmount>0.00</TotalAmount>
+						<TotalAmount>8617.73</TotalAmount>
 					</TaxAmount>
 				</Tax>
 			</TaxesOutputs>
 			<InvoiceTotals>
-				<TotalGrossAmount>0.00</TotalGrossAmount>
+				<TotalGrossAmount>51296.00</TotalGrossAmount>
 				<GeneralDiscounts>
 					<Discount>
 						<DiscountReason>Descuento Factura</DiscountReason>
-						<DiscountAmount>0.000000</DiscountAmount>
+						<DiscountRate>20.0000</DiscountRate>
 					</Discount>
 				</GeneralDiscounts>
-				<TotalGeneralDiscounts>0.00</TotalGeneralDiscounts>
-				<TotalGrossAmountBeforeTaxes>0.00</TotalGrossAmountBeforeTaxes>
-				<TotalTaxOutputs>0.00</TotalTaxOutputs>
+				<TotalGeneralDiscounts>10259.20</TotalGeneralDiscounts>
+				<TotalGrossAmountBeforeTaxes>41036.80</TotalGrossAmountBeforeTaxes>
+				<TotalTaxOutputs>8617.73</TotalTaxOutputs>
 				<TotalTaxesWithheld>0.00</TotalTaxesWithheld>
-				<InvoiceTotal>0.00</InvoiceTotal>
-				<TotalOutstandingAmount>0.00</TotalOutstandingAmount>
-				<TotalExecutableAmount>0.00</TotalExecutableAmount>
+				<InvoiceTotal>49654.53</InvoiceTotal>
+				<TotalOutstandingAmount>49654.53</TotalOutstandingAmount>
+				<TotalExecutableAmount>49654.53</TotalExecutableAmount>
 			</InvoiceTotals>
 			<Items>
+				<InvoiceLine>
+					<ReceiverTransactionReference></ReceiverTransactionReference>
+					<ItemDescription>proves</ItemDescription>
+					<Quantity>2.000</Quantity>
+					<UnitOfMeasure>01</UnitOfMeasure>
+					<UnitPriceWithoutTax>25648.000000</UnitPriceWithoutTax>
+					<TotalCost>51296.000000</TotalCost>
+					<DiscountsAndRebates>
+						<Discount>
+							<DiscountReason>Descuento Linea</DiscountReason>
+							<DiscountAmount>0.000000</DiscountAmount>
+						</Discount>
+					</DiscountsAndRebates>
+					<GrossAmount>51296.000000</GrossAmount>
+					<TaxesOutputs>
+						<Tax>
+							<TaxTypeCode>01</TaxTypeCode>
+							<TaxRate>21.00</TaxRate>
+							<TaxableBase>
+								<TotalAmount>51296.00</TotalAmount>
+							</TaxableBase>
+							<TaxAmount>
+								<TotalAmount>10772.16</TotalAmount>
+							</TaxAmount>
+						</Tax>
+					</TaxesOutputs>
+					<ArticleCode></ArticleCode>
+				</InvoiceLine>
 			</Items>
 			<PaymentDetails>
 				<Installment>
-					<InstallmentDueDate></InstallmentDueDate>
-					<InstallmentAmount>0.00</InstallmentAmount>
+					<InstallmentDueDate>2016-06-23</InstallmentDueDate>
+					<InstallmentAmount>49654.53</InstallmentAmount>
 					<PaymentMeans>04</PaymentMeans>
 					<AccountToBeCredited>
-						<IBAN></IBAN>
+						<IBAN>ES59 0081 0443 2900 0109 3917</IBAN>
 					</AccountToBeCredited>
 				</Installment>
 			</PaymentDetails>

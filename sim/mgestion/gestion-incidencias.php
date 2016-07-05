@@ -1101,7 +1101,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($rowc["id_usuario_registro"] == $userid){
 							echo "<tr><td colspan=\"3\"><textarea name=\"notas_desarrollo\" style=\"width:100%;height:97px\">".$rowc["notas_desarrollo"]."</textarea></td></tr>";
 						} else {
-							echo "<tr><td style=\"width:100%;height:97px;background-color:silver;vertical-align:top;\">".$rowc["notas_desarrollo"]."&nbsp;</td></tr>";
+							echo "<tr><td colspan=\"2\" style=\"width:100%;height:97px;background-color:silver;vertical-align:top;\">".$rowc["notas_desarrollo"]."&nbsp;</td></tr>";
 							echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
 						}
 							if ($row["id_estado"] != -2){

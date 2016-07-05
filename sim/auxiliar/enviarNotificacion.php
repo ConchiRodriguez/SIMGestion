@@ -50,13 +50,13 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 		$cuerpo=$body;
 	}
 
-#	echo $correo_remitente." - ".$asunto." - ".$email." - ".$cuerpo."<br>";
+	echo $correo_remitente." - ".$asunto." - ".$email." - ".$cuerpo."<br>";
 
-	if (send_mail($correo_remitente,$asunto,$email,$cuerpo)){
-		$camposInsert = "id_incidencia,destinatario,asunto,fecha";
-		$datosInsert = array($id,$correo_remitente,$asunto,date('U'));
-		insertFunction ("sgm_incidencias_correos_enviados",$camposInsert,$datosInsert);
-	}
+#	if (send_mail($correo_remitente,$asunto,$email,$cuerpo)){
+#		$camposInsert = "id_incidencia,destinatario,asunto,fecha";
+#		$datosInsert = array($id,$correo_remitente,$asunto,date('U'));
+#		insertFunction ("sgm_incidencias_correos_enviados",$camposInsert,$datosInsert);
+#	}
 }
 
 ?>

@@ -427,6 +427,11 @@ ALTER TABLE `sgm_clients_servidors_param` ADD `mem` int(11) NOT NULL AFTER `cpu`
 ALTER TABLE `sgm_clients_servidors_param` ADD `memswap` int(11) NOT NULL AFTER `mem`;
 ALTER TABLE `sgm_clients_servidors_param` ADD `hd` int(11) NOT NULL AFTER `memswap`;
 
+CREATE TABLE `sgm_clients_tarifas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_clients_tarifas` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_clients_tarifas` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `id_cliente`;
+ALTER TABLE `sgm_clients_tarifas` ADD `predeterminado` tinyint(1) NOT NULL default '1' AFTER `id_tarifa`;
+
 CREATE TABLE `sgm_clients_tratos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_tratos` ADD `trato` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_clients_tratos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `trato`;
@@ -497,6 +502,52 @@ ALTER TABLE `sim_comunidades_autonomas` ADD `siglas` char(3) default NULL AFTER 
 ALTER TABLE `sim_comunidades_autonomas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `siglas`;
 ALTER TABLE `sim_comunidades_autonomas` ADD `predefinido` tinyint(1) NOT NULL default '0' AFTER `visible`;
 INSERT INTO `sim_comunidades_autonomas` (`id`,`comunidad_autonoma`,`siglas`,`visible`,`predefinido`) VALUES (1,'Andalucía','AN',1,0),(2,'Aragón','AR',1,0),(3,'Asturias, Principado de','AS',1,0),(4,'Balears, Illes','IB',1,0),(5,'Canarias','CN',1,0),(6,'Cantabria','CB',1,0),(7,'Castilla y León','CL',1,0),(8,'Castilla - La Mancha','CM',1,0),(9,'Catalunya','CT',1,1),(10,'Comunitat Valenciana','VC',1,0),(11,'Extremadura','EX',1,0),(12,'Galicia','GA',1,0),(13,'Madrid, Comunidad de','MD',1,0),(14,'Murcia, Región de','MC',1,0),(15,'Navarra, Comunidad Foral de','NC',1,0),(16,'País Vasco','PV',1,0),(17,'Rioja, La','RI',1,0),(18,'Ceuta','CE',1,0),(19,'Melilla','ML',1,0);
+
+CREATE TABLE `sim_contenidos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos` ADD `id_autor` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `id_autor`;
+ALTER TABLE `sim_contenidos` ADD `fecha_creacion` int(15) NOT NULL default '0' AFTER `id_idioma`;
+ALTER TABLE `sim_contenidos` ADD `fecha_publicacion` int(15) NOT NULL default '0' AFTER `fecha_creacion`;
+ALTER TABLE `sim_contenidos` ADD `titulo` varchar(55) NOT NULL default '' AFTER `fecha_publicacion`;
+ALTER TABLE `sim_contenidos` ADD `contenido` longtext AFTER `titulo`;
+ALTER TABLE `sim_contenidos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `contenido`;
+
+CREATE TABLE `sim_contenidos_revisiones` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_revisiones` ADD `id_autor_revision` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos_revisiones` ADD `id_contenido` int(11) NOT NULL default '0' AFTER `id_autor_revision`;
+ALTER TABLE `sim_contenidos_revisiones` ADD `fecha_revision` int(15) NOT NULL default '0' AFTER `id_contenido`;
+
+CREATE TABLE `sim_contenidos_categorias` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_categorias` ADD `categoria` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_contenidos_categorias` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `categoria`;
+
+CREATE TABLE `sim_contenidos_rel_categorias` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_rel_categorias` ADD `id_categoria` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos_rel_categorias` ADD `id_contenido` int(11) NOT NULL default '0' AFTER `id_categoria`;
+
+CREATE TABLE `sim_contenidos_etiquetas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_etiquetas` ADD `etiqueta` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_contenidos_etiquetas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `etiqueta`;
+
+CREATE TABLE `sim_contenidos_rel_etiquetas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_rel_etiquetas` ADD `id_etiqueta` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos_rel_etiquetas` ADD `id_contenido` int(11) NOT NULL default '0' AFTER `id_etiqueta`;
+
+CREATE TABLE `sim_contenidos_medios_publicacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_medios_publicacion` ADD `medio_publicacion` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_contenidos_medios_publicacion` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `medio_publicacion`;
+
+CREATE TABLE `sim_contenidos_rel_medios_publicacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_rel_medios_publicacion` ADD `id_medios_publicacion` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos_rel_medios_publicacion` ADD `id_contenido` int(11) NOT NULL default '0' AFTER `id_medios_publicacion`;
+
+CREATE TABLE `sim_contenidos_redes_sociales` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_redes_sociales` ADD `red_social` varchar(55) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_contenidos_redes_sociales` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `red_social`;
+
+CREATE TABLE `sim_contenidos_rel_redes_sociales` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_contenidos_rel_redes_sociales` ADD `id_redes_sociales` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contenidos_rel_redes_sociales` ADD `id_contenido` int(11) NOT NULL default '0' AFTER `id_redes_sociales`;
 
 CREATE TABLE `sgm_contratos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos` ADD `id_contrato_tipo` int(11) NOT NULL default '0' AFTER `id`;
@@ -1149,11 +1200,6 @@ ALTER TABLE `sgm_tarifas` ADD `nombre` varchar(255) NOT NULL default '' AFTER `i
 ALTER TABLE `sgm_tarifas` ADD `porcentage` decimal(10,2) NOT NULL default '0.00' AFTER `nombre`;
 ALTER TABLE `sgm_tarifas` ADD `descuento` tinyint(1) NOT NULL default '1' AFTER `porcentage`;
 ALTER TABLE `sgm_tarifas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descuento`;
-
-CREATE TABLE `sgm_tarifas_clients` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_tarifas_clients` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_tarifas_clients` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `id_tarifa`;
-ALTER TABLE `sgm_tarifas_clients` ADD `predeterminado` tinyint(1) NOT NULL default '1' AFTER `id_cliente`;
   
 CREATE TABLE `sgm_tpv_tipos_pago` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_tpv_tipos_pago` ADD `tipo` varchar(150) NOT NULL default '' AFTER `id`;

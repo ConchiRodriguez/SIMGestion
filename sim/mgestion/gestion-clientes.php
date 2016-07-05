@@ -39,8 +39,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 			$color=$rowc["color"];
 			$color_letra=$rowc["color_letra"];
 		}
-		$camposUpdate = array('id_origen','nombre','color','color_letra','factura','contrato','incidencia','datos_fiscales');
-		$datosUpdate = array($_POST["id_origen"],comillas($_POST["nombre"]),$color,$color_letra,$_POST["factura"],$_POST["contrato"],$_POST["incidencia"],$_POST["datos_fiscales"]);
+		$camposUpdate = array('id_origen','nombre','color','color_letra','factura','id_tipo_factura','contrato','incidencia','datos_fiscales');
+		$datosUpdate = array($_POST["id_origen"],comillas($_POST["nombre"]),$color,$color_letra,$_POST["factura"],$_POST["id_tipo_factura"],$_POST["contrato"],$_POST["incidencia"],$_POST["datos_fiscales"]);
 		if (($_POST["factura"] > 0) and ($_POST["id_tipo_factura"] > 0)){
 			array_push($camposUpdate,"id_tipo_factura");
 			array_push($datosUpdate,$_POST["id_tipo_factura"]);
@@ -462,7 +462,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
 						#### MOSTRARA SI LA LETRA NO ESTA SELECCIONADA
-						if($_GET["id_tipo"] != ""){
+						if (($_GET["id_tipo"] != "") and ($tipo_cliente == "")) {
 							if ($row["id_agrupacio"] == 0){$ver = true;} else {$ver = false;}
 						} else {
 							$ver = true;
@@ -710,6 +710,10 @@ if (($option == 1008) AND ($autorizado == true)) {
 			}
 		}
 		echo "</table>";
+	}
+
+	if ($soption == 2) {
+		comprobarTipoCliente();
 	}
 
 	if ($soption == 5) {
@@ -1253,7 +1257,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:35%;\"><select style=\"width:100%;\" name=\"id_cliente_origen\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql2 = "select id,nombre,cognom1,cognom2 from sgm_clients order by nombre,cognom1,cognom2";
+								$sql2 = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre,cognom1,cognom2";
 								$result2 = mysqli_query($dbhandle,convertSQL($sql2));
 								while ($row2 = mysqli_fetch_array($result2)) {
 									echo "<option value=\"".$row2["id"]."\">".$row2["nombre"]." ".$row2["cognom1"]." ".$row2["cognom2"]."</option>";
@@ -1261,7 +1265,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:16%;\"><select style=\"width:100%;\" name=\"id_contacto_origen\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql3 = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos order by nombre,apellido1,apellido2";
+								$sql3 = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 order by nombre,apellido1,apellido2";
 								$result3 = mysqli_query($dbhandle,convertSQL($sql3));
 								while ($row3 = mysqli_fetch_array($result3)) {
 									echo "<option value=\"".$row3["id"]."\">".$row3["nombre"]." ".$row3["apellido1"]." ".$row3["apellido2"]."</option>";
@@ -1269,7 +1273,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:16%;\"><select style=\"width:100%;\" name=\"id_empleado_origen\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql4 = "select id,nombre from sgm_rrhh_empleado order by nombre";
+								$sql4 = "select id,nombre from sgm_rrhh_empleado where visible=1 order by nombre";
 								$result4 = mysqli_query($dbhandle,convertSQL($sql4));
 								while ($row4 = mysqli_fetch_array($result4)) {
 									echo "<option value=\"".$row4["id"]."\">".$row4["nombre"]."</option>";
@@ -1367,7 +1371,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<td style=\"width:25%;\"><select style=\"width:100%;\" name=\"id_ubicacion_pais\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql1 = "select id,pais from sim_paises order by pais";
+								$sql1 = "select id,pais from sim_paises where visible=1 order by pais";
 								$result1 = mysqli_query($dbhandle,convertSQL($sql1));
 								while ($row1 = mysqli_fetch_array($result1)) {
 									echo "<option value=\"".$row1["id"]."\">".$row1["pais"]."</option>";
@@ -1375,7 +1379,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:25%;\"><select style=\"width:100%;\" name=\"id_ubicacion_comunidad\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql2 = "select id,comunidad_autonoma from sim_comunidades_autonomas order by comunidad_autonoma";
+								$sql2 = "select id,comunidad_autonoma from sim_comunidades_autonomas where visible=1 order by comunidad_autonoma";
 								$result2 = mysqli_query($dbhandle,convertSQL($sql2));
 								while ($row2 = mysqli_fetch_array($result2)) {
 									echo "<option value=\"".$row2["id"]."\">".$row2["comunidad_autonoma"]."</option>";
@@ -1383,7 +1387,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:25%;\"><select style=\"width:100%;\" name=\"id_ubicacion_provincia\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql3 = "select id,provincia from sim_provincias order by provincia";
+								$sql3 = "select id,provincia from sim_provincias where visible=1 order by provincia";
 								$result3 = mysqli_query($dbhandle,convertSQL($sql3));
 								while ($row3 = mysqli_fetch_array($result3)) {
 									echo "<option value=\"".$row3["id"]."\">".$row3["provincia"]."</option>";
@@ -1391,7 +1395,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "</select></td>";
 							echo "<td style=\"width:25%;\"><select style=\"width:100%;\" name=\"id_ubicacion_region\">";
 								echo "<option value=\"-1\">Indeterminado</option>";
-								$sql4 = "select id,region from sim_regiones order by region";
+								$sql4 = "select id,region from sim_regiones where visible=1 order by region";
 								$result4 = mysqli_query($dbhandle,convertSQL($sql4));
 								while ($row4 = mysqli_fetch_array($result4)) {
 									echo "<option value=\"".$row4["id"]."\">".$row4["region"]."</option>";
@@ -1511,31 +1515,31 @@ if (($option == 1008) AND ($autorizado == true)) {
 			deleteFunction ("sgm_clients_dias_vencimiento",$_GET["id_dia"]);
 		}
 		if ($ssoption == 4) {
-			$sqltc = "select count(*) as total from sgm_tarifas_clients where predeterminado=1";
+			$sqltc = "select count(*) as total from sgm_clients_tarifas where predeterminado=1";
 			$resulttc = mysqli_query($dbhandle,convertSQL($sqltc));
 			$rowtc = mysqli_fetch_array($resulttc);
 			if ($rowtc["total"]== 0){
 				$camposInsert = "id_tarifa,id_cliente,predeterminado";
 				$datosInsert = array($_POST["id_tarifa"],$_GET["id"],1);
-				insertFunction ("sgm_tarifas_clients",$camposInsert,$datosInsert);
+				insertFunction ("sgm_clients_tarifas",$camposInsert,$datosInsert);
 			} else {
 				$camposInsert = "id_tarifa,id_cliente";
 				$datosInsert = array($_POST["id_tarifa"],$_GET["id"]);
-				insertFunction ("sgm_tarifas_clients",$camposInsert,$datosInsert);
+				insertFunction ("sgm_clients_tarifas",$camposInsert,$datosInsert);
 			}
 		}
 		if ($ssoption == 5) {
-			$sql = "update sgm_tarifas_clients set ";
+			$sql = "update sgm_clients_tarifas set ";
 			$sql = $sql."predeterminado = 0";
 			$sql = $sql." WHERE id<>".$_GET["id_tarifa"]."";
 			mysqli_query($dbhandle,convertSQL($sql));
-			$sql = "update sgm_tarifas_clients set ";
+			$sql = "update sgm_clients_tarifas set ";
 			$sql = $sql."predeterminado = ".$_GET["s"];
 			$sql = $sql." WHERE id =".$_GET["id_tarifa"]."";
 			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		if ($ssoption == 6) {
-			deleteFunction ("sgm_tarifas_clients",$_GET["id_tarifa"]);
+			deleteFunction ("sgm_clients_tarifas",$_GET["id_tarifa"]);
 		}
 
 		$sql = "select id,dia_facturacion,dia_recibo,dias_vencimiento,dias,cuentabancaria,id_medio_facturacion,destino_facturacion,id_formato_facturacion,id_contacto_facturacion,notas_facturacion from sgm_clients where id=".$_GET["id"];
@@ -1699,7 +1703,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
-			$sqltc = "select id,predeterminado,id_tarifa from sgm_tarifas_clients where id_cliente=".$row["id"]."";
+			$sqltc = "select id,predeterminado,id_tarifa from sgm_clients_tarifas where id_cliente=".$row["id"]."";
 			$resulttc = mysqli_query($dbhandle,convertSQL($sqltc));
 			while ($rowtc = mysqli_fetch_array($resulttc)) {
 				$color = "white";
@@ -3120,7 +3124,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<td><input type=\"text\" style=\"width:100px\" name=\"color_letra\" required></td>";
 				echo "<td>";
 					echo "<select style=\"width:50px\" name=\"factura\">";
-						echo "<option value=\"0\" selected>".$No."</option>";
+						echo "<option value=\"2\" selected>-</option>";
+						echo "<option value=\"0\">".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 					echo "</select>";
 				echo "</td>";
@@ -3136,7 +3141,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</td>";
 				echo "<td>";
 					echo "<select style=\"width:50px\" name=\"contrato\">";
-						echo "<option value=\"0\" selected>".$No."</option>";
+						echo "<option value=\"2\" selected>-</option>";
+						echo "<option value=\"0\">".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 					echo "</select>";
 				echo "</td>";
@@ -3149,13 +3155,15 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</td>";
 				echo "<td>";
 					echo "<select style=\"width:70px\" name=\"incidencia\">";
-						echo "<option value=\"0\" selected>".$No."</option>";
+						echo "<option value=\"2\" selected>-</option>";
+						echo "<option value=\"0\">".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 					echo "</select>";
 				echo "</td>";
 				echo "<td>";
 					echo "<select style=\"width:100px\" name=\"datos_fiscales\">";
-						echo "<option value=\"0\" selected>".$No."</option>";
+						echo "<option value=\"2\" selected>-</option>";
+						echo "<option value=\"0\">".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 					echo "</select>";
 				echo "</td>";
@@ -3201,11 +3209,17 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<td>";
 						echo "<select style=\"width:50px\" name=\"factura\">";
 							if ($row["factura"] == 0){
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\" selected>".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
-							} else {
+							} elseif ($row["factura"] == 1) {
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\">".$No."</option>";
 								echo "<option value=\"1\" selected>".$Si."</option>";
+							} elseif ($row["factura"] == 2) {
+								echo "<option value=\"2\" selected>-</option>";
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
 							}
 						echo "</select>";
 					echo "</td>";
@@ -3226,11 +3240,17 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<td>";
 						echo "<select style=\"width:50px\" name=\"contrato\">";
 							if ($row["contrato"] == 0){
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\" selected>".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
-							} else {
+							} elseif ($row["contrato"] == 1) {
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\">".$No."</option>";
 								echo "<option value=\"1\" selected>".$Si."</option>";
+							} elseif ($row["contrato"] == 2) {
+								echo "<option value=\"2\" selected>-</option>";
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
 							}
 						echo "</select>";
 					echo "</td>";
@@ -3254,22 +3274,34 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<td>";
 						echo "<select style=\"width:70px\" name=\"incidencia\">";
 							if ($row["incidencia"] == 0){
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\" selected>".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
-							} else {
+							} elseif ($row["incidencia"] == 1) {
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\">".$No."</option>";
 								echo "<option value=\"1\" selected>".$Si."</option>";
+							} elseif ($row["incidencia"] == 2) {
+								echo "<option value=\"2\" selected>-</option>";
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
 							}
 						echo "</select>";
 					echo "</td>";
 					echo "<td>";
 						echo "<select style=\"width:100px\" name=\"datos_fiscales\">";
 							if ($row["datos_fiscales"] == 0){
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\" selected>".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
-							} else {
+							} elseif ($row["datos_fiscales"] == 1) {
+								echo "<option value=\"2\">-</option>";
 								echo "<option value=\"0\">".$No."</option>";
 								echo "<option value=\"1\" selected>".$Si."</option>";
+							} elseif ($row["datos_fiscales"] == 2) {
+								echo "<option value=\"2\" selected>-</option>";
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
 							}
 						echo "</select>";
 					echo "</td>";
@@ -3417,7 +3449,7 @@ function ver_contacto($id,$color,$contactes) {
 	$result = mysqli_query($dbhandle,convertSQL($sql));
 	$row = mysqli_fetch_array($result);
 	echo "<tr style=\"background-color:".$color."\">";
-		if (($row["tipo_identificador"] == 2) or ($row["tipo_identificador"] == 3)) { $check_nif = 1;} else { $check_nif = valida_nif_cif_nie($row["nif"]);}
+		if (($row["tipo_identificador"] == 2) or ($row["tipo_identificador"] == 3) or ($row["tipo_identificador"] == 4)) { $check_nif = 1;} else { $check_nif = valida_nif_cif_nie($row["nif"]);}
 		if (($check_nif <= 0) OR ($row["nombre"] == "") OR ($row["direccion"] == "") OR ($row["cp"] == "") OR ($row["poblacion"] == "") OR ($row["provincia"] == "")) { 
 			echo "<td><img src=\"mgestion/pics/icons-mini/page_white_error.png\" title=\"Error Id. Fiscal\" alt=\"Error Id. Fiscal\" border=\"0\"></td>";
 		} else { 
