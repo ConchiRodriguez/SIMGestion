@@ -104,8 +104,11 @@ select.formclient{
 }
 
 input[type="submit"]{
-	width:100px;
-	min-width:65px;
+    width:100%;
+}
+
+td.submit{
+	 width:100px;
 }
 
 td.ficha{
@@ -154,12 +157,13 @@ td.menu_select{
 }
 
 td.boton{
-	width:100px;
-	height:20px;
-	text-align:center;
-	vertical-align:middle;
-	background-color:#33339f;
-	border:1px solid black;
+	width: 100px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #33339f;
+	color: white;
+	border: 1px solid black;
+	height: 20px;
 }
 
 td.factur{

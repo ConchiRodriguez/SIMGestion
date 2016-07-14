@@ -46,7 +46,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 			echo "<th></th>";
 		echo "</tr>";
 	echo "<form action=\"index.php?".$url."&id_user=".$_GET["id_user"]."&ssop=1\" method=\"post\">";
-		echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
+		echo "<tr><td class=\"submit\" colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 	$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
 	$result = mysqli_query($dbhandle,convertSQL($sql));
 	while ($row = mysqli_fetch_array($result)) {
@@ -81,7 +81,7 @@ function modificarPermisosUsuaris ($url_volver,$url){
 			echo "</select></td>";
 		echo "</tr>";
 	}
-		echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100%\"></td></tr>";
+		echo "<tr><td class=\"submit\" colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 	echo "</form>";
 	echo "</table>";
 }

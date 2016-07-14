@@ -42,8 +42,8 @@ function modificarContrasenya($url_volver){
 		echo "<tr><th>".$Nueva." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass1\" style=\"width:100px\" required>*</td></tr>";
 		echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align:middle;\"><input type=\"password\" name=\"pass2\" style=\"width:100px\" required>*</td></tr>";
 		echo "<tr>";
-			echo "<td></td><td>";
-				echo "<input type=\"submit\" value=\"".$Modificar."\" style=\"width:100px\">";
+			echo "<td></td><td class=\"submit\">";
+				echo "<input type=\"submit\" value=\"".$Modificar."\">";
 			echo "</td>";
 		echo "</tr>";
 		echo "</form>";

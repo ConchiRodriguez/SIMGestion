@@ -14,12 +14,22 @@ if ($servidor == "iss"){
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
+		$sqlcc = "select nombre,apellido1,apellido2 from sgm_clients_contactos where pred=1 and id_client=31";
+		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+		$rowcc = mysqli_fetch_array($resultcc);
+		echo quitarAcentos($rowcc["apellido1"]);
+		echo strtr($rowcc["apellido1"],'é','e');
+		echo strtr(utf8_decode($rowcc["apellido1"]),utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝªº'),'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUYao');
+$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
+$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
+echo $texto = ereg_replace($no_permitidas, $permitidas ,$rowcc["apellido1"]);
+
 ?>
 <html>
 <body>
 <?php
-
 	echo factura_print_e($_GET["id"]);
+
 	echo "<a href=\"".$urloriginal."/mgestion/efactura.xml\">facturae</a>";
 #	header("Location: ".$urloriginal."/mgestion/efactura.xml");
 
@@ -49,7 +59,7 @@ function factura_print_e($id)
 		$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
 		$rowdiv = mysqli_fetch_array($resultdiv);
 
-		echo $sqlcc = "select nombre,apellido1,apellido2 from sgm_clients_contactos where pred=1 and id_client=".$rowcabezera["id_cliente"];
+		$sqlcc = "select nombre,apellido1,apellido2 from sgm_clients_contactos where pred=1 and id_client=".$rowcabezera["id_cliente"];
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 		$rowcc = mysqli_fetch_array($resultcc);
 

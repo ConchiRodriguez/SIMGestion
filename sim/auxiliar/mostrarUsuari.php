@@ -135,7 +135,7 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 					echo "<option value=\"0\" selected>".$No."</option>";
 				}
 			echo "</select></td>";
-			echo "<td style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+			echo "<td class=\"submit\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 			echo "</form>";
 			$sqlt = "select count(*) as total from sgm_users_permisos where id_user=".$row["id"];
 			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));

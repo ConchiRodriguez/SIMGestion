@@ -195,7 +195,7 @@ $desde = "desde";
 $Desde_archivo = "Des de archiu";
 $Desmarcar = "Desmarcar";
 $Desplegar = "Desplegar";
-$Despre = "Despre.";
+$Despredeterminar = "Despredeterminar";
 $Destino = "Desti";
 $Detalles = "Detalls";
 $Dia = "Dia";
@@ -315,6 +315,7 @@ $Gestion_Comercial = "Gesti&oacute; Comercial";
 $Grafico = "Gr&agrave;fic";
 $Grupo = "Grup";
 $Grupos = "Grups";
+$Guardadas = "Guardades";
 $Guardar = "Guardar";
 $Guardar_Busqueda = "Guardar Cerca";
 $Guardias = "Guardies";
@@ -733,20 +734,17 @@ $ContratoTipoErrorEliminar = "No es pot eliminar aquest tipus de contracte, per 
 $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els diferents tipus en el llistat superior.
 <br><strong>Plantilla</strong> - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.
 <br><strong>Dies</strong> - La periocitat en dies en que s'ha de regenerar una nova plantilla.
-<br><strong>TPV</strong> - Terminal Punt de Venda. No Demana client, les impresions son en format tiquet.
-<br><strong>Caja</strong> - (Incluir en caixa) Els resultats de aquest grup es mostraran en els tancament de caixa.
 <br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
 <br><strong>Dies</strong> - Dies que suma de forma autom&agrave;tica a la previsi&oacute;n. Data de previsi&oacute; = Data actual + D&iacute;as.
 <br><strong>V.Ven</strong> - (Visualitzar Vencimient) Visualitza en el llistat el vencimient de la factura. Data de vencimient = Data actual + Dies de la fitxa client.
 <br><strong>V.Ref</strong> - (Visualitzar Referencia del Cliente) Visualitza en el llistat n&uacute;mero de referencia del cliente y nombre de solicitante.
 <br><strong>V.Sub</strong> - (Visualitzar Subtipus) Visualitza el subtipus (en cas de que existeixin).
-<br><strong>V.Pes</strong> - (Visualitzar Peso) Visualitza el pes i n&uacute;mero de fardells, la impresi&oacute; es realitza sense linias ni totals.
 <br><strong>V.Rec</strong> - (Visualitzar Recibos) Permet la gesti&oacute; de rebuts pel control del cobrament.
-<br><strong>OT</strong> - Ordre de treball. S'utilitzar&agrave; en gesti&oacute; de comandes.
 <br><strong>Presu</strong> - Format de pressupuest. Vencimient i c&agrave;lcul de costos.
 <br><strong>Dies</strong> - Dies que suma a la caducidad del pressupuesto. Data de caducidad = Data actual + Dies.
 <br><strong>Aprovar</strong> - Donar aprovaci&oacute; a un pressupuesto.
 <br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualitza n&uacute;mero RFQ.
+<br><strong>Caixa</strong> - Indica com aquest tipus influeix en la caixa.
 ";
 
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
@@ -793,5 +791,7 @@ $ayudaServicios = "<strong>Obligatori</strong>: Si per aquells serveis que estan
 <strong>Origen</strong>: codi de qui obre incid&egrave;ncies relacionades amb aquest servei.<br>
 ";
 
+$OkActualizacionCliente = "El tipus dels clients s'ha actualitzat correctament";
+$ErrorActualizacionCliente = "El tipus dels clients no s'ha actualitzat correctament";
 
 ?>

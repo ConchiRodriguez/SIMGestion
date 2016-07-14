@@ -64,14 +64,15 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<th>".$Pedido." ".$Cliente."</th>";
 					echo "<th>".$Desde."</th>";
 					echo "<th>".$Hasta."</th>";
+					echo "<th>".$Codigo."</th>";
 					echo "<th>".$Articulo."</th>";
 					echo "<th>".$Historico."</th>";
 					echo "<th></th>";
 				echo "</tr><tr style=\"background-color:silver;\">";
 					echo "<form action=\"index.php?op=1003&sop=200\" method=\"post\">";
 					echo "<input type=\"Hidden\" name=\"tipo\" value=\"".$rowtipos2["id"]."\">";
-					echo "<td>";
-						echo "<select style=\"width:150px\" name=\"id_tipo\">";
+					echo "<td style=\"width:10%\">";
+						echo "<select name=\"id_tipo\">";
 						$sqlft = "select id,tipo from sgm_factura_tipos where visible=1 order by orden,descripcion";
 						$resultft = mysqli_query($dbhandle,convertSQL($sqlft));
 						echo "<option value=\"0\">".$Todas."</option>";
@@ -84,8 +85,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 						echo "</select>";
 					echo "</td>";
-					echo "<td>";
-						echo "<select style=\"width:500px\" name=\"id_cliente\">";
+					echo "<td style=\"width:25%\">";
+						echo "<select name=\"id_cliente\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -98,7 +99,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 						echo "</select>";
 					echo "</td>";
-					echo "<td><input type=\"Text\" style=\"width:100px;\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\"></td>";
+					echo "<td style=\"width:5%;\"><input type=\"Text\" style=\"width:100%;\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\"></td>";
 					$fecha = getdate();
 					if ($_POST["data_desde1"]){
 						$data = $_POST["data_desde1"];
@@ -114,11 +115,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$data2 = cambiarFormatoFechaDMY(date("Y-m-d", mktime(0,0,0,$fecha["mon"] ,$fecha["mday"], $fecha["year"])));
 						$data3 = $data2;
 					}
-					echo "<td><input type=\"Text\" style=\"width:80px;\" name=\"data_desde1\" value=\"".$data."\"></td>";
-					echo "<td><input type=\"Text\" style=\"width:80px;\" name=\"data_fins1\" value=\"".$data1."\"></td>";
-					echo "<td><input type=\"Text\" style=\"width:100px;\" name=\"articulo\" value=\"".$_POST["articulo"]."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"data_desde1\" value=\"".$data."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"data_fins1\" value=\"".$data1."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"codigo\" value=\"".$_POST["codigo"]."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"articulo\" value=\"".$_POST["articulo"]."\"></td>";
 					echo "<td>";
-						echo "<select style=\"width:150px\" name=\"hist\">";
+						echo "<select name=\"hist\">";
 						echo "<option value=\"0\">-</option>";
 							if ($_POST["hist"] == 0){
 								echo "<option value=\"0\" selected>".$No."</option>";
@@ -129,13 +131,13 @@ if (($option == 1003) AND ($autorizado == true)) {
 							}
 						echo "</select>";
 					echo "</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Buscar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			echo "</table>";
 			echo "<br>";
 		}
-		if (($_GET["id"] != "") or $_POST["id_tipo"] or $_POST["id_cliente"] or $_POST["ref_cli"] or $_POST["data_desde1"] or $_POST["data_fins1"] or $_POST["articulo"] or $_POST["hist"]){
+		if (($_GET["id"] != "") or $_POST["id_tipo"] or $_POST["id_cliente"] or $_POST["ref_cli"] or $_POST["data_desde1"] or $_POST["data_fins1"] or $_POST["codigo"] or $_POST["articulo"] or $_POST["hist"]){
 			if ($ssoption == 1) {
 				$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$_POST["numero"]." and tipo=".$_POST["tipo"];
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
@@ -255,9 +257,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
 						echo "<th>Docs</th>";
 					} else {echo "<th></th>";}
-					echo "<th style=\"min-width:80px;\">".$Numero."</th>";
+					echo "<th style=\"min-width:60px;\">".$Numero."</th>";
 					if ($rowtipos["presu"] == 1) { echo "<th>Ver.</th>";} else {echo "<th></th>";}
-					echo "<th style=\"min-width:70px;\">".$Fecha."</th>";
+					echo "<th style=\"min-width:65px;\">".$Fecha."</th>";
 					if ($rowtipos["v_fecha_prevision"] == 1) { echo "<th style=\"min-width:70px;\">".$Prevision."</th>";} else {echo "<th></th>";}
 					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<th style=\"min-width:70px;\">".$Vencimiento."</th>";} else {echo "<th></th>";}
 					if ($rowtipos["v_numero_cliente"] == 1) { echo "<th style=\"min-width:80px;\">Ref. Ped. ".$Cliente."</th>";} else {echo "<th></th>";}
@@ -279,13 +281,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\">";
 					echo "<input type=\"Hidden\" name=\"data_desde1\" value=\"".$_POST["data_desde1"]."\">";
 					echo "<input type=\"Hidden\" name=\"data_fins1\" value=\"".$_POST["data_fins1"]."\">";
+					echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$_POST["codigo"]."\">";
 					echo "<input type=\"Hidden\" name=\"articulo\" value=\"".$_POST["articulo"]."\">";
 					echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
 					echo "<input type=\"Hidden\" name=\"todo\" value=\"1\">";
 					if ($_GET["filtra"] == 0){
-						echo "<td colspan=\"6\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
+						echo "<td class=\"submit\" colspan=\"5\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
 					} else {
-						echo "<td colspan=\"6\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
+						echo "<td class=\"submit\" colspan=\"5\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
 					}
 					echo "</form>";
 				echo "</tr>";
@@ -299,15 +302,15 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$numero = $row["numero"] + 1;
 					echo "<td></td>";
 					echo "<td></td>";
-					echo "<td><input type=\"Text\" name=\"numero\" value=\"".$numero."\" style=\"width:70px;text-align:right;\"></td>";
+					echo "<td><input type=\"Text\" name=\"numero\" value=\"".$numero."\" style=\"text-align:right;width:100%\"></td>";
 					if ($rowtipos["presu"] == 1) { 
-						echo "<td style=\"width:30px;text-align:center\"><input type=\"Text\" name=\"version\" value=\"0\" style=\"width:25px\"></td>";
+						echo "<td style=\"width:30px;text-align:center\"><input type=\"Text\" name=\"version\" value=\"0\" style=\"width:100%\"></td>";
 					} else {
 						echo "<input type=\"hidden\" name=\"version\" value=\"0\">";
 						echo "<td></td>";
 					}
 					$date1 = date("Y-m-d");
-					echo "<td><input type=\"Text\" name=\"fecha\" style=\"width:70px\" value=\"".cambiarFormatoFechaDMY($date1)."\"></td>";
+					echo "<td><input type=\"Text\" name=\"fecha\" style=\"text-align:right;width:100%\" value=\"".cambiarFormatoFechaDMY($date1)."\"></td>";
 				### CALCULO DE LA FECHA DE PREVISION DE ENTREGA
 					$suma = $rowtipos["v_fecha_prevision_dias"];
 					$a = date("Y", strtotime($date1)); 
@@ -315,14 +318,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$d = date("j", strtotime($date1)); 
 					$fecha_prevision = date("Y-m-d", mktime(0,0,0,$m ,$d+$suma, $a));
 					if ($rowtipos["v_fecha_prevision"] == 1) { 
-						echo "<td><input type=\"Text\" name=\"fecha_prevision\" style=\"width:70px\" value=\"".cambiarFormatoFechaDMY($fecha_prevision)."\"></td>";
+						echo "<td><input type=\"Text\" name=\"fecha_prevision\" style=\"width:100%\" value=\"".cambiarFormatoFechaDMY($fecha_prevision)."\"></td>";
 					} else {
-						echo "<input type=\"hidden\" name=\"fecha_prevision\" style=\"width:70px\" value=\"0\">";
+						echo "<input type=\"hidden\" name=\"fecha_prevision\" style=\"width:100%\" value=\"0\">";
 						echo "<td></td>";
 					}
 					echo "<td></td>";
 					if ($rowtipos["v_numero_cliente"] == 1) { 
-						echo "<td><input type=\"Text\" name=\"numero_cliente\" style=\"width:100px\"></td>";
+						echo "<td><input type=\"Text\" name=\"numero_cliente\" style=\"width:100%\"></td>";
 					} else { "<input type=\"hidden\" name=\"numero_cliente\">"; echo "<td></td>";}
 					if ($rowtipos["v_rfq"] == 1) { 
 						echo "<td><input type=\"Text\" name=\"numero_rfq\" style=\"width:75px\"></td>";
@@ -359,7 +362,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<input type=\"hidden\" name=\"subtipo\" value=\"0\">";
 						echo "<td></td>";
 					}
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "<td></td>";
 					echo "<td></td>";
 					echo "</form>";
@@ -390,25 +393,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:right;\"><strong>".number_format($totalSensePagar,2,",",".")." ".$rowdiv["abrev"]."</strong></td>";
 					if ($rowtipos["v_recibos"] == 1)  {echo "<td style=\"text-align:right;\"><strong>".number_format($totalPagat,2,",",".")." ".$rowdiv["abrev"]."</strong></td>";}
 					echo "<td></td>";
-					echo "<td></td>";
 					if ($filtra == 1)  {echo "<td><strong>".$Total." ".$Articulo."</strong></td><td style=\"text-align:left;\"><strong>".number_format($totalArticles,2,",",".")." ".$rowdiv["abrev"]."</strong></td>";}
 				echo "</tr>";
 			echo "</table>";
 		}
-	}
-
-	if ($soption == 40) {
-		echo "<center>";
-		echo "<br><br>".$ayudaFacturaCerrar;
-		echo boton(array("op=1003&sop=0&ssop=8&id=".$_GET["id_tipo"]."&id_fact=".$_GET["id"],"op=1003&sop=0&id=".$_GET["id_tipo"]),array($Si,$No));
-		echo "</center>";
-	}
-
-	if ($soption == 41) {
-		echo "<center>";
-		echo "<br><br>".$ayudaFacturaAbrir;
-		echo boton(array("op=1003&sop=0&ssop=9&id=".$_GET["id_tipo"]."&id_fact=".$_GET["id"],"op=1003&sop=0&id=".$_GET["id_tipo"]),array($Si,$No));
-		echo "</center>";
 	}
 
 	if ($soption == 10) {
@@ -467,7 +455,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									}
 								echo "</select></td>";
 								echo "<input type=\"Hidden\" name=\"trasp\" value=\"1\">";
-								echo "<td><input type=\"Submit\" value=\"".$Enviar."\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Enviar."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						echo "</table>";
@@ -542,7 +530,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<input type=\"Hidden\" name=\"trasp\" value=\"2\">";
-				echo "<td><input type=\"Submit\" value=\"".$Enviar."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Enviar."\"></td>";
 				echo "<td></td>";
 				echo "<td></td>";
 			echo "</tr>";
@@ -574,7 +562,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 				echo "</form>";
 			echo "</tr><tr>";
 				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-print-e.php?id=".$_GET["id"]."\" target=\"_blank\">";
@@ -590,7 +578,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -758,7 +746,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<option value=\"0\" selected>".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Nuevo."\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Nuevo."\"></td>";
 							echo "</form>";
 							echo "<td></td>";
 							echo "<td></td>";
@@ -796,10 +784,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<option value=\"1\" selected>".$Si."</option>";
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
-								echo "<td><form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-recibos-print-pdf.php?id=".$rowr["id"]."\" target=\"_blank\">";
-								echo "<input type=\"Submit\" value=\"".$Imprimir."\"></form>";
+								echo "<td class=\"submit\">";
+									echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-facturacion-recibos-print-pdf.php?id=".$rowr["id"]."\" target=\"_blank\">";
+										echo "<input type=\"Submit\" value=\"".$Imprimir."\">";
+									echo "</form>";
 								echo "</td>";
 #								$sqlx = "select * from sgm_clients where id=".$rowf["id_cliente"];
 #								$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
@@ -822,6 +812,20 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1003&sop=30&ssop=3&id=".$_GET["id"]."&id_recibo=".$_GET["id_recibo"],"op=1003&sop=30".$_GET["id"]),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 40) {
+		echo "<center>";
+		echo "<br><br>".$ayudaFacturaCerrar;
+		echo boton(array("op=1003&sop=0&ssop=8&id=".$_GET["id_tipo"]."&id_fact=".$_GET["id"],"op=1003&sop=0&id=".$_GET["id_tipo"]),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 41) {
+		echo "<center>";
+		echo "<br><br>".$ayudaFacturaAbrir;
+		echo boton(array("op=1003&sop=0&ssop=9&id=".$_GET["id_tipo"]."&id_fact=".$_GET["id"],"op=1003&sop=0&id=".$_GET["id_tipo"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -1127,7 +1131,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									}
 									echo "</select>";
 								echo "</td>";
-								echo "<td><input type=\"Submit\" value=\"".$Cambio." ".$Cliente."\" style=\"width:150px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Cambio." ".$Cliente."\"></td>";
 								echo "</form>";
 								echo "<td>&nbsp;</td>";
 								echo "<form action=\"index.php?op=1003&sop=100&ssop=2&id=".$_GET["id"]."&id_cliente=".$row["id_cliente"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
@@ -1139,7 +1143,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<option value=\"".$rowcc["id"]."\">".$rowcc["nombre"]." ".$rowcc["apellido1"]." ".$rowcc["apellido2"]."</option>";
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Cambio." ".$Contacto."\" style=\"width:150px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Cambio." ".$Contacto."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						echo "</table>";
@@ -1158,7 +1162,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 										echo "<option value=\"".$row1["id"]."\">".$row1["nombre"]."(".$row1["direccion"].", ".$row1["poblacion"]." (".$row1["cp"].") ".$row1["provincia"].")</option>";
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Cambio." ".$Direccion." ".$Envio."\" style=\"width:200px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Cambio." ".$Direccion." ".$Envio."\"></td>";
 								echo "</form>";
 								echo "<td>&nbsp;</td>";
 								echo "<form action=\"index.php?op=1003&sop=100&ssop=18&id=".$_GET["id"]."&id_cliente=".$row["id_cliente"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
@@ -1370,7 +1374,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 									echo "</table>";
 								echo "</td>";
 							echo "</tr>";
-							echo "<tr><td style=\"text-align:center;\" colspan=\"2\"><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:300px\"></td></tr>";
+							echo "<tr><td class=\"submit\" style=\"text-align:center;\" colspan=\"2\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 						echo "</table>";
 						echo "</form>";
 					}
@@ -1413,12 +1417,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td><input type=\"Text\" name=\"pvp\" style=\"width:60px\" value=\"0.000\"></td>";
 								echo "<td><input type=\"Text\" name=\"descuento\" style=\"width:40px\" value=\"0.000\"></td>";
 								echo "<td><input type=\"Text\" name=\"descuento_absoluto\" style=\"width:40px\" value=\"0.000\"></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 							echo "<tr><th colspan=\"13\" style=\"text-align:right;\">".$Total."</th></tr>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=9&id=".$_GET["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
-							echo "<tr><td colspan=\"13\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><td class=\"submit\" colspan=\"13\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 						$sql = "select * from sgm_cuerpo where idfactura=".$_GET["id"]." order by linea";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						while ($row = mysqli_fetch_array($result)) {
@@ -1483,28 +1487,28 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td style=\"vertical-align:bottom;\"><a href=\"index.php?op=1003&sop=107&id=".$row["id"]."&id_factura=".$_GET["id"]."&id_tipo=".$_GET["id_tipo"]."\"><img src=\"mgestion/pics/icons-mini/page_white_stack.png\" style=\"border:0px;\"></a></td>";
 							echo "</tr>";
 						}
-							echo "<tr><td colspan=\"13\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><td class=\"submit\" colspan=\"13\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							$sql = "select id,subtotal,descuento,iva,total_forzado,descuento_absoluto,total,retenciones from sgm_cabezera where id=".$_GET["id"];
 							$result = mysqli_query($dbhandle,convertSQL($sql));
 							$row = mysqli_fetch_array($result);
 							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Subtotal."</th><td style=\"text-align:right;\">".number_format ($row["subtotal"],3)." ".$row2["abrev"]."</td><td></td></tr>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=15&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
-							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">Desc.%</th><td><input type=\"Text\" name=\"descuento\" style=\"text-align:right;width:70px\" value=\"".number_format ($row["descuento"],3)."\">%</td><td><input type=\"submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">Desc.%</th><td><input type=\"Text\" name=\"descuento\" style=\"text-align:right;width:70px\" value=\"".number_format ($row["descuento"],3)."\">%</td><td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=15&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
-							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">Desc. ".$row2["abrev"]."</th><td><input type=\"Text\" name=\"descuento_absoluto\" style=\"text-align:right;width:70px\" value=\"".number_format ($row["descuento_absoluto"],3)."\"> ".$row2["abrev"]."</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">Desc. ".$row2["abrev"]."</th><td><input type=\"Text\" name=\"descuento_absoluto\" style=\"text-align:right;width:70px\" value=\"".number_format ($row["descuento_absoluto"],3)."\"> ".$row2["abrev"]."</td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=16&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
-							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">IVA</th><td><input type=\"Text\" name=\"iva\" style=\"text-align:right;width:70px\" value=\"".$row["iva"]."\">%</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">IVA</th><td><input type=\"Text\" name=\"iva\" style=\"text-align:right;width:70px\" value=\"".$row["iva"]."\">%</td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=14&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
-							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Retenciones."</th><td><input type=\"Text\" name=\"retenciones\" style=\"text-align:right;width:70px\" value=\"".$row["retenciones"]."\">%</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Retenciones."</th><td><input type=\"Text\" name=\"retenciones\" style=\"text-align:right;width:70px\" value=\"".$row["retenciones"]."\">%</td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 							echo "<form action=\"index.php?op=1003&sop=100&ssop=17&id=".$row["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
 							$color_fondo_total = "white";
 							if ($row["total_forzado"] == 1) { $color_fondo_total = "#FF6347"; }
-							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Total."</th><td><input type=\"Text\" name=\"total\" style=\"text-align:right;width:70px;background-color:".$color_fondo_total."\" value=\"".number_format ($row["total"],3)."\"> ".$row2["abrev"]."</td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+							echo "<tr><th style=\"text-align:right;\" colspan=\"12\">".$Total."</th><td><input type=\"Text\" name=\"total\" style=\"text-align:right;width:70px;background-color:".$color_fondo_total."\" value=\"".number_format ($row["total"],3)."\"> ".$row2["abrev"]."</td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 							echo "</form>";
 						echo "</table>";
 					echo "</td>";
@@ -1763,7 +1767,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					}
 				}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 			echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1788,7 +1792,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		if ($ssoption == 1) {
 			echo calendari_economic(1);
 		}
-		echo "<h4>".$Calendario_Economico." (".$Gastos."/ Pre-".$Gastos."/".$Ingresos."/".$Externo."/".$Total.") : </h4>";
+		echo "<h4>".$Calendario_Economico." (".$Gastos."/".$Ingresos."/".$Externo."/".$Total.") : </h4>";
 		echo "<form action=\"index.php?op=1003&sop=411\" method=\"post\">";
 			echo "<input type=\"submit\" value=\"".$Recalcular."\">";
 		echo "</form>";
@@ -2267,26 +2271,26 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo boton(array("op=1003&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
-				echo "<td style=\"vertical-align:top;width:40%\">";
+				echo "<td style=\"vertical-align:top;width:35%\">";
 					$sql = "select * from sgm_dades_origen_factura";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
-					echo "<table>";
+					echo "<table style=\"width:100%\">";
 					echo "<form action=\"index.php?op=1003&sop=510&ssop=1\" method=\"post\">";
-						echo "<tr><th>".$Nombre."</th><td><input type=\"Text\" name=\"nombre\" style=\"width:300px\" value=\"".$row["nombre"]."\"></td></tr>";
-						echo "<tr><th>".$NIF."</th><td><input type=\"Text\" name=\"nif\" style=\"width:300px\" value=\"".$row["nif"]."\"></td></tr>";
-						echo "<tr><th>".$Direccion."</th><td><input type=\"Text\" name=\"direccion\" style=\"width:300px\" value=\"".$row["direccion"]."\"></td></tr>";
-						echo "<tr><th>".$Poblacion."</th><td><input type=\"Text\" name=\"poblacion\" style=\"width:300px\" value=\"".$row["poblacion"]."\"></td></tr>";
-						echo "<tr><th>".$Codigo." ".$Postal."</th><td><input type=\"Text\" name=\"cp\" style=\"width:300px\" value=\"".$row["cp"]."\"></td></tr>";
-						echo "<tr><th>".$Provincia."</th><td><input type=\"Text\" name=\"provincia\" style=\"width:300px\" value=\"".$row["provincia"]."\"></td></tr>";
-						echo "<tr><th>".$Email."</th><td><input type=\"Text\" name=\"mail\" style=\"width:300px\" value=\"".$row["mail"]."\"></td></tr>";
-						echo "<tr><th>".$Telefono."</th><td><input type=\"tel\" pattern=\"".$reg_exp_telf."\" name=\"telefono\" style=\"width:300px\" value=\"".$row["telefono"]."\" placeholder=\"000000000\"></td></tr>";
-						echo "<tr><th>I.V.A.</th><td><input type=\"Text\" name=\"iva\" style=\"width:300px\" value=\"".$row["iva"]."\"></td></tr>";
-						echo "<tr><th></th><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:300px\"></td></tr>";
+						echo "<tr><th>".$Nombre."</th><td><input type=\"Text\" name=\"nombre\" style=\"width:100%\" value=\"".$row["nombre"]."\"></td></tr>";
+						echo "<tr><th>".$NIF."</th><td><input type=\"Text\" name=\"nif\" style=\"width:100%\" value=\"".$row["nif"]."\"></td></tr>";
+						echo "<tr><th>".$Direccion."</th><td><input type=\"Text\" name=\"direccion\" style=\"width:100%\" value=\"".$row["direccion"]."\"></td></tr>";
+						echo "<tr><th>".$Poblacion."</th><td><input type=\"Text\" name=\"poblacion\" style=\"width:100%\" value=\"".$row["poblacion"]."\"></td></tr>";
+						echo "<tr><th>".$Codigo." ".$Postal."</th><td><input type=\"Text\" name=\"cp\" style=\"width:100%\" value=\"".$row["cp"]."\"></td></tr>";
+						echo "<tr><th>".$Provincia."</th><td><input type=\"Text\" name=\"provincia\" style=\"width:100%\" value=\"".$row["provincia"]."\"></td></tr>";
+						echo "<tr><th>".$Email."</th><td><input type=\"Text\" name=\"mail\" style=\"width:100%\" value=\"".$row["mail"]."\"></td></tr>";
+						echo "<tr><th>".$Telefono."</th><td><input type=\"tel\" pattern=\"".$reg_exp_telf."\" name=\"telefono\" style=\"width:100%\" value=\"".$row["telefono"]."\" placeholder=\"000000000\"></td></tr>";
+						echo "<tr><th>I.V.A.</th><td><input type=\"Text\" name=\"iva\" style=\"width:100%\" value=\"".$row["iva"]."\"></td></tr>";
+						echo "<tr><th></th><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 					echo "</form>";
 					echo "</table>";
 				echo "</td>";
-				echo "<td style=\"vertical-align:top;width:60%\">";
+				echo "<td style=\"vertical-align:top;width:65%\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<tr style=\"background-color : Silver;\">";
 							echo "<th></th>";
@@ -2300,10 +2304,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<form action=\"index.php?op=1003&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
 							echo "<td></td>";
 							echo "<td></td>";
-							echo "<td><input type=\"Text\" name=\"entidad_bancaria\" style=\"width:200px\"></td>";
-							echo "<td><input type=\"Text\" name=\"iban\" style=\"width:200px\"></td>";
-							echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:200px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+							echo "<td style=\"width:20%\"><input type=\"Text\" name=\"entidad_bancaria\" style=\"width:100%\"></td>";
+							echo "<td style=\"width:60%\"><input type=\"Text\" name=\"iban\" style=\"width:100%\"></td>";
+							echo "<td style=\"width:20%\"><input type=\"Text\" name=\"descripcion\" style=\"width:100%\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 						echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -2314,7 +2318,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$color = "white";
 					if ($row2["predefinido"] == 1) { $color = "#FF4500"; }
 						echo "<tr style=\"background-color : ".$color."\">";
-							echo "<td>";
+							echo "<td class=\"submit\">";
 						if ($row2["predefinido"] == 1) {
 							echo "<form action=\"index.php?op=1003&sop=510&ssop=6&id=".$row2["id"]."\" method=\"post\">";
 							echo "<input type=\"Submit\" value=\"".$Despre."\">";
@@ -2328,10 +2332,10 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1003&sop=511&id=".$row2["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 						}
 							echo "<form action=\"index.php?op=1003&sop=510&ssop=3&id=".$row2["id"]."\" method=\"post\">";
-							echo "<td><input type=\"Text\" name=\"entidad_bancaria\" style=\"width:200px\" value=\"".$row2["entidad_bancaria"]."\"></td>";
-							echo "<td><input type=\"Text\" name=\"iban\" style=\"width:200px\" value=\"".$row2["iban"]."\"></td>";
-							echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:200px\" value=\"".$row2["descripcion"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+							echo "<td><input type=\"Text\" name=\"entidad_bancaria\" style=\"width:100%\" value=\"".$row2["entidad_bancaria"]."\"></td>";
+							echo "<td><input type=\"Text\" name=\"iban\" style=\"width:100%\" value=\"".$row2["iban"]."\"></td>";
+							echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:100%\" value=\"".$row2["descripcion"]."\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					}
@@ -2477,52 +2481,40 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<th></th>";
-				echo "<th style=\"width:35px\">".$Orden."</th>";
-				echo "<th style=\"width:150px\">".$Tipo."</th>";
-				echo "<th style=\"width:200px\">".$Descripcion."</th>";
-				echo "<th style=\"width:50px\">".$Plantilla."</th>";
-				echo "<th style=\"width:10px\">".$Dias."</th>";
-				echo "<th style=\"width:50px\">TPV</th>";
-				echo "<th style=\"width:50px\">".$Caja."</th>";
-				echo "<th style=\"width:50px\">V.Prev</th>";
-				echo "<th style=\"width:20px\">".$Dias."</th>";
-				echo "<th style=\"width:50px\">V.Venc</th>";
-				echo "<th style=\"width:50px\">V.Ref</th>";
-				echo "<th style=\"width:50px\">V.Sub</th>";
-				echo "<th style=\"width:50px\">V.Pes</th>";
-				echo "<th style=\"width:50px\">V.Rec</th>";
-				echo "<th style=\"width:50px\">OT</th>";
-				echo "<th style=\"width:50px\">Presu</th>";
-				echo "<th style=\"width:20px\">".$Dias."</th>";
-				echo "<th style=\"width:35px\">".$Stock."</th>";
-				echo "<th style=\"width:50px\">".$Aprobar."</th>";
-				echo "<th style=\"width:50px\">V.RFQ</th>";
-				echo "<th style=\"width:50px\">Contabilidad</th>";
+				echo "<th>".$Orden."</th>";
+				echo "<th>".$Tipo."</th>";
+#				echo "<th>".$Descripcion."</th>";
+				echo "<th>".$Plantilla."</th>";
+				echo "<th>".$Dias."</th>";
+				echo "<th>V.Prev</th>";
+				echo "<th>".$Dias."</th>";
+				echo "<th>V.Venc</th>";
+				echo "<th>V.Ref</th>";
+				echo "<th>V.Sub</th>";
+				echo "<th>V.Rec</th>";
+				echo "<th>Presu</th>";
+				echo "<th>".$Dias."</th>";
+				echo "<th>".$Stock."</th>";
+				echo "<th>".$Aprobar."</th>";
+				echo "<th>V.RFQ</th>";
+				echo "<th>".$Caja."</th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1003&sop=530&ssop=1\" method=\"post\">";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td><input type=\"number\" min=\"0\" name=\"orden\" value=\"0\"></td>";
-				echo "<td><input type=\"Text\" name=\"tipo\"></td>";
-				echo "<td><input type=\"Text\" name=\"descripcion\"></td>";
+				echo "<td style=\"width:35px\"><input type=\"number\" min=\"0\" name=\"orden\" value=\"0\" style=\"width:100%\"></td>";
+				echo "<td style=\"width:25%\"><input type=\"Text\" name=\"tipo\" style=\"width:100%\"></td>";
+#				echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:100%\"></td>";
 				echo "<td><select name=\"facturable\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"number\" min=\"0\" name=\"dias\" value=\"0\"></td>";
-				echo "<td><select name=\"tpv\">";
-					echo "<option value=\"0\"selected>".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</select></td>";
-				echo "<td><select name=\"caja\">";
-					echo "<option value=\"0\"selected>".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</select></td>";
+				echo "<td style=\"width:35px\"><input type=\"number\" min=\"0\" name=\"dias\" value=\"0\" style=\"width:100%\"></td>";
 				echo "<td><select name=\"v_fecha_prevision\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"number\" min=\"0\" name=\"v_fecha_prevision_dias\" value=\"0\"></td>";
+				echo "<td style=\"width:35px\"><input type=\"number\" min=\"0\" name=\"v_fecha_prevision_dias\" value=\"0\" style=\"width:100%\"></td>";
 				echo "<td><select name=\"v_fecha_vencimiento\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
@@ -2535,15 +2527,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><select name=\"v_pesobultos\">";
-					echo "<option value=\"0\" selected>".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</select></td>";
 				echo "<td><select name=\"v_recibos\">";
-					echo "<option value=\"0\" selected>".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</select></td>";
-				echo "<td><select name=\"tipo_ot\">";
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
@@ -2551,7 +2535,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"number\" min=\"0\" name=\"presu_dias\" value=\"0\"></td>";
+				echo "<td style=\"width:35px\"><input type=\"number\" min=\"0\" name=\"presu_dias\" value=\"0\" style=\"width:100%\"></td>";
 				echo "<td><select name=\"stock\">";
 					echo "<option value=\"0\" selected>=</option>";
 					echo "<option value=\"-1\">-</option>";
@@ -2570,7 +2554,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<option value=\"-1\">-</option>";
 					echo "<option value=\"1\">+</option>";
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</tr>";
 			echo "</form>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -2580,9 +2564,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1003&sop=530&ssop=2&id=".$rowtipos["id"]."\" method=\"post\">";
 				echo "<tr>";
 					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=501&id=".$rowtipos["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<td><input type=\"number\" name=\"orden\" value=\"".$rowtipos["orden"]."\"></td>";
-					echo "<td><input type=\"Text\" name=\"tipo\" value=\"".$rowtipos["tipo"]."\"></td>";
-					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$rowtipos["descripcion"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"orden\" value=\"".$rowtipos["orden"]."\" style=\"width:100%\"></td>";
+					echo "<td><input type=\"Text\" name=\"tipo\" value=\"".$rowtipos["tipo"]."\" style=\"width:100%\"></td>";
+#					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$rowtipos["descripcion"]."\" style=\"width:100%\"></td>";
 					echo "<td><select name=\"facturable\">";
 						if ($rowtipos["facturable"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
@@ -2593,27 +2577,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"number\" name=\"dias\" value=\"".$rowtipos["dias"]."\"></td>";
-					echo "<td><select name=\"tpv\">";
-						if ($rowtipos["tpv"] == 0) {
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						}
-						if ($rowtipos["tpv"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
-						}
-					echo "</select></td>";
-					echo "<td><select name=\"caja\">";
-						if ($rowtipos["caja"] == 0) {
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						}
-						if ($rowtipos["caja"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
-						}
-					echo "</select></td>";
+					echo "<td><input type=\"number\" name=\"dias\" value=\"".$rowtipos["dias"]."\" style=\"width:100%\"></td>";
 					echo "<td><select name=\"v_fecha_prevision\">";
 						if ($rowtipos["v_fecha_prevision"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
@@ -2624,7 +2588,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"number\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"v_fecha_prevision_dias\" value=\"".$rowtipos["v_fecha_prevision_dias"]."\" style=\"width:100%\"></td>";
 					echo "<td><select name=\"v_fecha_vencimiento\">";
 						if ($rowtipos["v_fecha_vencimiento"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
@@ -2655,32 +2619,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><select name=\"v_pesobultos\">";
-						if ($rowtipos["v_pesobultos"] == 0) {
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						}
-						if ($rowtipos["v_pesobultos"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
-						}
-					echo "</select></td>";
 					echo "<td><select name=\"v_recibos\">";
 						if ($rowtipos["v_recibos"] == 0) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
 						}
 						if ($rowtipos["v_recibos"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
-						}
-					echo "</select></td>";
-					echo "<td><select name=\"tipo_ot\">";
-						if ($rowtipos["tipo_ot"] == 0) {
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						}
-						if ($rowtipos["tipo_ot"] == 1) {
 							echo "<option value=\"0\">".$No."</option>";
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
@@ -2695,7 +2639,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>".$Si."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"number\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\"></td>";
+					echo "<td><input type=\"number\" name=\"presu_dias\" value=\"".$rowtipos["presu_dias"]."\" style=\"width:100%\"></td>";
 					echo "<td><select name=\"stock\">";
 						if ($rowtipos["stock"] == 0) {
 							echo "<option value=\"0\" selected>=</option>";
@@ -2750,7 +2694,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"1\" selected>+</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "<td>";
 						echo boton_form("op=1003&sop=535&id=".$rowtipos["id"],$Opciones);
 					echo "</td>";
@@ -2827,7 +2771,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<td><input type=\"Text\" name=\"tipo".$row["id"]."\" value=\"".$rowi["tipo"]."\"></td>";
 							echo "</tr>";
 						}
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+						echo "<tr><td></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 						echo "</form>";
 					echo "</table>";
 				echo "</td><td style=\"width:50%;vertical-align:top;\">";
@@ -2841,7 +2785,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<td></td>";
 							echo "<td><input type=\"text\" name=\"subtipo\"></td>";
-							echo "<td><input type=\"submit\" value=\"".$Anadir."\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 						echo "</tr>";
 						echo "</form>";
 						$sqlstipos = "select id,subtipo from sgm_factura_subtipos where visible=1 and id_tipo=".$_GET["id"]." order by subtipo";
@@ -2851,7 +2795,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<tr>";
 								echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=536&id=".$_GET["id"]."&id_sub=".$rowstipos["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
 								echo "<td><input type=\"text\" value=\"".$rowstipos["subtipo"]."\" name=\"subtipo\"></td>";
-								echo "<td><input type=\"submit\" value=\"".$Modificar."\"></td>";
+								echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 							echo "</tr>";
 							echo "</form>";
 						}
@@ -2912,7 +2856,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"0\" selected>".$No."</option>";
 							echo "<option value=\"1\">".$Si."</option>";
 						echo "</select></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 					$sql2 = "select id,id_user,admin from sgm_factura_tipos_permisos where id_tipo=".$row["id"];
@@ -2936,7 +2880,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<option value=\"1\" selected>".$Si."</option>";
 							}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 						echo "</form>";
 						echo "</tr>";
 					}
@@ -2971,7 +2915,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<option value=\"0\" selected>".$No."</option>";
 						echo "<option value=\"1\">".$Si."</option>";
 						echo "</select></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 					$sql2 = "select id,id_tipo,admin from sgm_factura_tipos_permisos where id_user=".$rowx["id"];
@@ -2995,7 +2939,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 								echo "<option value=\"1\" selected>".$Si."</option>";
 							}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 						echo "</form>";
 						echo "</tr>";
 					}
@@ -3045,7 +2989,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 							echo "<option value=\"".$rowtipos1["id"]."\">".$rowtipos1["tipo"]."</option>";
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Relacionar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Relacionar."\"></td>";
 				echo "<tr>";
 				echo "</form>";
 				$sqltiposrel = "select id,id_tipo_d from sgm_factura_tipos_relaciones where id_tipo_o=".$rowtipos["id"];
@@ -3118,7 +3062,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><input type=\"Text\" style=\"width:60px\" name=\"abrev\"></td>";
 				echo "<td><input type=\"Text\" style=\"width:200px\" name=\"divisa\"></td>";
 				echo "<td><input type=\"Text\" style=\"width:20px\" name=\"simbolo\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 			echo "</tr>";
 			$sql = "select * from sgm_divisas where visible=1";
@@ -3127,7 +3071,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$color = "white";
 				if ($row["predefinido"] == 1) { $color = "#FF4500"; }
 					echo "<tr style=\"background-color : ".$color."\">";
-					echo "<td>";
+					echo "<td class=\"submit\">";
 				if ($row["predefinido"] == 1) {
 					echo "<form action=\"index.php?op=1003&sop=560&ssop=5&id=".$row["id"]."\" method=\"post\">";
 					echo "<input type=\"Submit\" value=\"Despred.\">";
@@ -3144,7 +3088,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td><input type=\"Text\" style=\"width:60px\" name=\"abrev\" value=\"".$row["abrev"]."\"></td>";
 				echo "<td><input type=\"Text\" style=\"width:200px\" name=\"divisa\" value=\"".$row["divisa"]."\"></td>";
 				echo "<td><input type=\"Text\" style=\"width:20px\" name=\"simbolo\" value=\"".$row["simbolo"]."\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				echo boton_form("op=1003&sop=565&id=".$row["id"],$Cambio);
 				echo boton_form("op=1003&sop=566&id=".$row["id"],$Historico);
@@ -3211,7 +3155,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				}
 			echo "</tr>";
 			echo "<tr>";
-				echo "<td colspan=\"2\"></td><td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+				echo "<td colspan=\"2\"></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "</form>";

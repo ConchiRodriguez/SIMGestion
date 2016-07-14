@@ -36,7 +36,7 @@ function afegirModificarBasesDades ($url,$url_del){
 			echo "<td><form action=\"index.php?".$url."&ssop=1&id=".$_GET["id"]."\" method=\"post\"></td>";
 		if ($_GET["id"] == 0) {
 			echo "<td>";
-				echo "<select style=\"width:500px\" name=\"id_client\">";
+				echo "<select style=\"width:50%\" name=\"id_client\">";
 					$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
@@ -49,8 +49,8 @@ function afegirModificarBasesDades ($url,$url_del){
 			echo "<td><input name=\"ip\" type=\"Text\" required></td>";
 			echo "<td><input name=\"usuario\" type=\"Text\" required></td>";
 			echo "<td><input name=\"pass\" type=\"Text\" required></td>";
-			echo "<td><input name=\"descripcion\" type=\"Text\" style=\"width:250px\"></td>";
-			echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px;\"></td>";
+			echo "<td><input name=\"descripcion\" type=\"Text\"></td>";
+			echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 		echo "</tr>";
 		echo "<tr>";
@@ -69,7 +69,7 @@ function afegirModificarBasesDades ($url,$url_del){
 				echo "<form action=\"index.php?".$url."&ssop=2&id=".$_GET["id"]."&id_bd=".$row["id"]."\" method=\"post\">";
 			if ($_GET["id"] == 0) {
 				echo "<td>";
-					echo "<select style=\"width:500px\" name=\"id_client\">";
+					echo "<select style=\"width:50%\" name=\"id_client\">";
 					$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 					while ($rowc = mysqli_fetch_array($resultc)) {
@@ -87,8 +87,8 @@ function afegirModificarBasesDades ($url,$url_del){
 				echo "<td><input name=\"usuario\" type=\"Text\" value=\"".$row["usuario"]."\" required></td>";
 				$cadena = decrypt($row["pass"],$simclau);
 				echo "<td><input name=\"pass\" type=\"Text\" value=\"".$cadena."\" required></td>";
-				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\" style=\"width:250px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
+				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		}

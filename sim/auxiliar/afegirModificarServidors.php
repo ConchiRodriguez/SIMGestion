@@ -42,7 +42,7 @@ function afegirModificarServidors ($url,$url_del){
 		}
 			echo "<td><input name=\"servidor\" type=\"Text\" style=\"width:60px\" required></td>";
 			echo "<td><input name=\"descripcion\" type=\"Text\" style=\"width:300px\" required></td>";
-			echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px;\"></td>";
+			echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
@@ -71,7 +71,7 @@ function afegirModificarServidors ($url,$url_del){
 			}
 				echo "<td><input name=\"servidor\" type=\"Text\" value=\"".$row["servidor"]."\" style=\"width:60px\" ".$row["cognom1"]." ".$row["cognom2"]."></td>";
 				echo "<td><input name=\"descripcion\" type=\"Text\" value=\"".$row["descripcion"]."\" style=\"width:300px\" ".$row["cognom1"]." ".$row["cognom2"]."></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		}

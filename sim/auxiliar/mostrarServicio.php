@@ -98,7 +98,7 @@ function mostrarServicio ($id_contrato,$sop_delete){
 						echo "<option value=\"".$rowcso["id"]."\">".$rowcso["codigo_origen"]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";

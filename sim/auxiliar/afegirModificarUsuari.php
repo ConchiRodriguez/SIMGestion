@@ -38,9 +38,9 @@ function afegirModificarUsuari ($url){
 		echo "<tr>";
 			echo "<td></td>";
 		if ($_GET["id_user"] > 0){
-			echo "<td><input type=\"Submit\" value=\"".$Modificar."\" class=\"px100\"></td>";
+			echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 		} else {
-			echo "<td><input type=\"Submit\" value=\"".$Anadir."\" class=\"px100\"></td>";
+			echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 		}
 		echo "</tr>";
 	echo "</table>";
