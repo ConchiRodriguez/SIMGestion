@@ -150,9 +150,9 @@ class PDF extends FPDF
 			$this->SetFont('Calibri','',10);
 			$this->MultiCell(90,3,$numero." : ".$rowcabezera["numero"]." / ".$rowcabezera["version"]."\n".$pedido." : ".$rowcabezera["numero_cliente"]."\n".$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"])."\n".$fecha_vencimiento." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_vencimiento"])."\n".$nombre." : ".str_replace("&#39;", "'", $rowcabezera["nombre"])."\nNIF / CIF: ".$rowcabezera["nif"]."",0,'L');
 
-			$this->SetXY(102,10);
-			$this->SetFont('Calibri','',10);
-			$this->Cell(90,3,$rowcabezera["numero"]." / ".$rowcabezera["version"],0,1);
+			$this->SetXY(102,35);
+			$this->SetFont('fre3of9x','',30);
+			$this->Cell(90,5,$rowcabezera["numero"].$rowcabezera["version"].str_replace("&#39;", "'", $rowcabezera["nombre"]),0,1);
 		
 			$this->SetXY(102,45);
 			$this->SetFont('Calibri','',12);
@@ -306,7 +306,7 @@ class PDF extends FPDF
 	$pdf->AddFont('Calibri','','../font/Calibri.php');
 	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
 	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
-	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
+	$pdf->AddFont('fre3of9x','','../font/fre3of9x.php');
 	$pdf->AliasNbPages();
 
 	if ($_POST["data_desde"] == ""){
