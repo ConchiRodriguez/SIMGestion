@@ -149,6 +149,10 @@ class PDF extends FPDF
 			$this->SetXY(102,10);
 			$this->SetFont('Calibri','',10);
 			$this->MultiCell(90,3,$numero." : ".$rowcabezera["numero"]." / ".$rowcabezera["version"]."\n".$pedido." : ".$rowcabezera["numero_cliente"]."\n".$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"])."\n".$fecha_vencimiento." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_vencimiento"])."\n".$nombre." : ".str_replace("&#39;", "'", $rowcabezera["nombre"])."\nNIF / CIF: ".$rowcabezera["nif"]."",0,'L');
+
+			$this->SetXY(102,10);
+			$this->SetFont('Calibri','',10);
+			$this->Cell(90,3,$rowcabezera["numero"]." / ".$rowcabezera["version"],0,1);
 		
 			$this->SetXY(102,45);
 			$this->SetFont('Calibri','',12);
@@ -185,7 +189,7 @@ class PDF extends FPDF
 		$this->Cell(75,5,"".$nombre."",'TB',0);
 		$this->Cell(17,5,"".$unitats."",'TB',0);
 		$this->Cell(17,5,"".$precio."",'TB',0);
-		$this->Cell(15,5,"".$Descuento."%",'TBR',0);
+		$this->Cell(15,5,"Desc.%",'TBR',0);
 		$this->Cell(19,5,"".$total."",'TBR',1);
 	
 		$this->SetFont('Calibri','',9);
@@ -301,6 +305,7 @@ class PDF extends FPDF
 #	$pdf->AddFont('codi_barres','','../../archivos_comunes/font/codi_barres.php');
 	$pdf->AddFont('Calibri','','../font/Calibri.php');
 	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->AliasNbPages();
 

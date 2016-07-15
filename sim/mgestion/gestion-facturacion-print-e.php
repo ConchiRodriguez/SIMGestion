@@ -14,16 +14,6 @@ if ($servidor == "iss"){
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
-		$sqlcc = "select nombre,apellido1,apellido2 from sgm_clients_contactos where pred=1 and id_client=31";
-		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
-		$rowcc = mysqli_fetch_array($resultcc);
-		echo quitarAcentos($rowcc["apellido1"]);
-		echo strtr($rowcc["apellido1"],'é','e');
-		echo strtr(utf8_decode($rowcc["apellido1"]),utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝªº'),'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUYao');
-$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
-$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
-echo $texto = ereg_replace($no_permitidas, $permitidas ,$rowcc["apellido1"]);
-
 ?>
 <html>
 <body>
@@ -97,7 +87,7 @@ function factura_print_e($id)
 		$content .= "				<TaxIdentificationNumber>".$rowele["nif"]."</TaxIdentificationNumber>\n";
 		$content .= "			</TaxIdentification>\n";
 		$content .= "			<LegalEntity>\n";
-		$content .= "				<CorporateName>".quitarAcentos(comillasInver($rowele["nombre"]))."</CorporateName>\n";
+		$content .= "				<CorporateName>".comillasInver(quitarAcentos($rowele["nombre"]))."</CorporateName>\n";
 #		$content .= "				<TradeName>Solucions-IM</TradeName>\n";
 #		$content .= "				<RegistrationData>\n";
 #		$content .= "					<Book>1</Book>\n";
@@ -108,10 +98,10 @@ function factura_print_e($id)
 #		$content .= "					<AdditionalRegistrationData>Sin datos</AdditionalRegistrationData>\n";
 #		$content .= "				</RegistrationData>\n";
 		$content .= "				<AddressInSpain>\n";
-		$content .= "					<Address>".quitarAcentos(comillasInver($rowele["direccion"]))."</Address>\n";
+		$content .= "					<Address>".comillasInver(quitarAcentos($rowele["direccion"]))."</Address>\n";
 		$content .= "					<PostCode>".$rowele["cp"]."</PostCode>\n";
-		$content .= "					<Town>".quitarAcentos(comillasInver($rowele["poblacion"]))."</Town>\n";
-		$content .= "					<Province>".quitarAcentos(comillasInver($rowele["provincia"]))."</Province>\n";
+		$content .= "					<Town>".comillasInver(quitarAcentos($rowele["poblacion"]))."</Town>\n";
+		$content .= "					<Province>".comillasInver(quitarAcentos($rowele["provincia"]))."</Province>\n";
 		$content .= "					<CountryCode>ESP</CountryCode>\n";
 		$content .= "				</AddressInSpain>\n";
 		$content .= "				<ContactDetails>\n";
@@ -137,15 +127,15 @@ function factura_print_e($id)
 		$content .= "				<AdministrativeCentre>\n";
 		$content .= "					<CentreCode>".$rowx["dir3_oficina_contable"]."</CentreCode>\n";
 		$content .= "					<RoleTypeCode>01</RoleTypeCode>\n";
-		$content .= "					<Name>".quitarAcentos(comillasInver($rowcc["nombre"]))."</Name>\n";
-		$content .= "					<FirstSurname>".quitarAcentos(comillasInver($rowcc["apellido1"]))."</FirstSurname>\n";
-		$content .= "					<SecondSurname>".quitarAcentos(comillasInver($rowcc["apellido2"]))."</SecondSurname>\n";
+		$content .= "					<Name>".comillasInver(quitarAcentos($rowcc["nombre"]))."</Name>\n";
+		$content .= "					<FirstSurname>".comillasInver(quitarAcentos($rowcc["apellido1"]))."</FirstSurname>\n";
+		$content .= "					<SecondSurname>".comillasInver(quitarAcentos($rowcc["apellido2"]))."</SecondSurname>\n";
 
 		$content .= "					<AddressInSpain>\n";
-		$content .= "						<Address>".quitarAcentos(comillasInver($rowcabezera["direccion"]))."</Address>\n";
+		$content .= "						<Address>".comillasInver(quitarAcentos($rowcabezera["direccion"]))."</Address>\n";
 		$content .= "						<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
-		$content .= "						<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
-		$content .= "						<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
+		$content .= "						<Town>".comillasInver(quitarAcentos($rowcabezera["poblacion"]))."</Town>\n";
+		$content .= "						<Province>".comillasInver(quitarAcentos($rowcabezera["provincia"]))."</Province>\n";
 		$content .= "						<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "					</AddressInSpain>\n";
 		$content .= "					<ContactDetails>\n";
@@ -160,14 +150,14 @@ function factura_print_e($id)
 		$content .= "				<AdministrativeCentre>\n";
 		$content .= "					<CentreCode>".$rowx["dir3_organo_gestor"]."</CentreCode>\n";
 		$content .= "					<RoleTypeCode>02</RoleTypeCode>\n";
-		$content .= "					<Name>".quitarAcentos(comillasInver($rowcc["nombre"]))."</Name>\n";
-		$content .= "					<FirstSurname>".quitarAcentos(comillasInver($rowcc["apellido1"]))."</FirstSurname>\n";
-		$content .= "					<SecondSurname>".quitarAcentos(comillasInver($rowcc["apellido2"]))."</SecondSurname>\n";
+		$content .= "					<Name>".comillasInver(quitarAcentos($rowcc["nombre"]))."</Name>\n";
+		$content .= "					<FirstSurname>".comillasInver(quitarAcentos($rowcc["apellido1"]))."</FirstSurname>\n";
+		$content .= "					<SecondSurname>".comillasInver(quitarAcentos($rowcc["apellido2"]))."</SecondSurname>\n";
 		$content .= "					<AddressInSpain>\n";
-		$content .= "						<Address>".quitarAcentos(comillasInver($rowcabezera["direccion"]))."</Address>\n";
+		$content .= "						<Address>".comillasInver(quitarAcentos($rowcabezera["direccion"]))."</Address>\n";
 		$content .= "						<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
-		$content .= "						<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
-		$content .= "						<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
+		$content .= "						<Town>".comillasInver(quitarAcentos($rowcabezera["poblacion"]))."</Town>\n";
+		$content .= "						<Province>".comillasInver(quitarAcentos($rowcabezera["provincia"]))."</Province>\n";
 		$content .= "						<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "					</AddressInSpain>\n";
 		$content .= "					<ContactDetails>\n";
@@ -182,15 +172,15 @@ function factura_print_e($id)
 		$content .= "				<AdministrativeCentre>\n";
 		$content .= "					<CentreCode>".$rowx["dir3_unidad_tramitadora"]."</CentreCode>\n";
 		$content .= "					<RoleTypeCode>03</RoleTypeCode>\n";
-		$content .= "					<Name>".quitarAcentos(comillasInver($rowcc["nombre"]))."</Name>\n";
-		$content .= "					<FirstSurname>".quitarAcentos(comillasInver($rowcc["apellido1"]))."</FirstSurname>\n";
-		$content .= "					<SecondSurname>".quitarAcentos(comillasInver($rowcc["apellido2"]))."</SecondSurname>\n";
+		$content .= "					<Name>".comillasInver(quitarAcentos($rowcc["nombre"]))."</Name>\n";
+		$content .= "					<FirstSurname>".comillasInver(quitarAcentos($rowcc["apellido1"]))."</FirstSurname>\n";
+		$content .= "					<SecondSurname>".comillasInver(quitarAcentos($rowcc["apellido2"]))."</SecondSurname>\n";
 
 		$content .= "					<AddressInSpain>\n";
-		$content .= "						<Address>".quitarAcentos(comillasInver($rowcabezera["direccion"]))."</Address>\n";
+		$content .= "						<Address>".comillasInver(quitarAcentos($rowcabezera["direccion"]))."</Address>\n";
 		$content .= "						<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
-		$content .= "						<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
-		$content .= "						<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
+		$content .= "						<Town>".comillasInver(quitarAcentos($rowcabezera["poblacion"]))."</Town>\n";
+		$content .= "						<Province>".comillasInver(quitarAcentos($rowcabezera["provincia"]))."</Province>\n";
 		$content .= "						<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "					</AddressInSpain>\n";
 		$content .= "					<ContactDetails>\n";
@@ -205,15 +195,15 @@ function factura_print_e($id)
 		$content .= "				<AdministrativeCentre>\n";
 #		$content .= "					<CentreCode></CentreCode>\n";
 #		$content .= "					<RoleTypeCode></RoleTypeCode>\n";
-		$content .= "					<Name>".quitarAcentos(comillasInver($rowcc["nombre"]))."</Name>\n";
-		$content .= "					<FirstSurname>".quitarAcentos(comillasInver($rowcc["apellido1"]))."</FirstSurname>\n";
-		$content .= "					<SecondSurname>".quitarAcentos(comillasInver($rowcc["apellido2"]))."</SecondSurname>\n";
+		$content .= "					<Name>".comillasInver(quitarAcentos($rowcc["nombre"]))."</Name>\n";
+		$content .= "					<FirstSurname>".comillasInver(quitarAcentos($rowcc["apellido1"]))."</FirstSurname>\n";
+		$content .= "					<SecondSurname>".comillasInver(quitarAcentos($rowcc["apellido2"]))."</SecondSurname>\n";
 
 		$content .= "					<AddressInSpain>\n";
-		$content .= "						<Address>".quitarAcentos(comillasInver($rowcabezera["direccion"]))."</Address>\n";
+		$content .= "						<Address>".comillasInver(quitarAcentos($rowcabezera["direccion"]))."</Address>\n";
 		$content .= "						<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
-		$content .= "						<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
-		$content .= "						<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
+		$content .= "						<Town>".comillasInver(quitarAcentos($rowcabezera["poblacion"]))."</Town>\n";
+		$content .= "						<Province>".comillasInver(quitarAcentos($rowcabezera["provincia"]))."</Province>\n";
 		$content .= "						<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "					</AddressInSpain>\n";
 		$content .= "					<ContactDetails>\n";
@@ -228,7 +218,7 @@ function factura_print_e($id)
 		$content .= "			</AdministrativeCentres>\n";
 	if ($rowx["tipo_persona"]==0){
 		$content .= "			<LegalEntity>\n";
-		$content .= "				<CorporateName>".quitarAcentos(comillasInver(substr($rowcabezera["nombre"],0,80)))."</CorporateName>\n";
+		$content .= "				<CorporateName>".comillasInver(quitarAcentos(substr($rowcabezera["nombre"],0,80)))."</CorporateName>\n";
 #		$content .= "				<TradeName></TradeName>\n";
 #		$content .= "				<RegistrationData>\n";
 #		$content .= "					<Book></Book>\n";
@@ -241,16 +231,16 @@ function factura_print_e($id)
 #		$content .= "				</RegistrationData>\n";
 	} elseif ($rowx["tipo_persona"]==1){
 		$content .= "			<Individual>\n";
-		$content .= "				<Name>".quitarAcentos(comillasInver($rowx["nombre"]))."</Name>\n";
-		$content .= "				<FirstSurname>".quitarAcentos(comillasInver($rowx["cognom1"]))."</FirstSurname>\n";
-		$content .= "				<SecondSurname>".quitarAcentos(comillasInver($rowx["cognom2"]))."</SecondSurname>\n";
+		$content .= "				<Name>".comillasInver(quitarAcentos($rowx["nombre"]))."</Name>\n";
+		$content .= "				<FirstSurname>".comillasInver(quitarAcentos($rowx["cognom1"]))."</FirstSurname>\n";
+		$content .= "				<SecondSurname>".comillasInver(quitarAcentos($rowx["cognom2"]))."</SecondSurname>\n";
 	}
 	
 		$content .= "				<AddressInSpain>\n";
-		$content .= "					<Address>".quitarAcentos(comillasInver($rowcabezera["direccion"]))."</Address>\n";
+		$content .= "					<Address>".comillasInver(quitarAcentos($rowcabezera["direccion"]))."</Address>\n";
 		$content .= "					<PostCode>".$rowcabezera["cp"]."</PostCode>\n";
-		$content .= "					<Town>".quitarAcentos(comillasInver($rowcabezera["poblacion"]))."</Town>\n";
-		$content .= "					<Province>".quitarAcentos(comillasInver($rowcabezera["provincia"]))."</Province>\n";
+		$content .= "					<Town>".comillasInver(quitarAcentos($rowcabezera["poblacion"]))."</Town>\n";
+		$content .= "					<Province>".comillasInver(quitarAcentos($rowcabezera["provincia"]))."</Province>\n";
 		$content .= "					<CountryCode>".$rowsys["siglas"]."</CountryCode>\n";
 		$content .= "				</AddressInSpain>\n";
 		$content .= "				<ContactDetails>\n";
@@ -281,7 +271,7 @@ function factura_print_e($id)
 #		$content .= "				<OperationDate></OperationDate>\n";
 		$content .= "				<PlaceOfIssue>\n";
 		$content .= "					<PostCode>".$rowele["cp"]."</PostCode>\n";
-		$content .= "					<PlaceOfIssueDescription>".quitarAcentos(comillasInver($rowele["poblacion"]))."</PlaceOfIssueDescription>\n";
+		$content .= "					<PlaceOfIssueDescription>".comillasInver(quitarAcentos($rowele["poblacion"]))."</PlaceOfIssueDescription>\n";
 		$content .= "				</PlaceOfIssue>\n";
 #		$content .= "				<InvoicingPeriod>\n";
 #		$content .= "					<StartDate></StartDate>\n";
@@ -356,7 +346,7 @@ function factura_print_e($id)
 
 		$content .= "				<InvoiceLine>\n";
 	if ($rowco){
-		$content .= "					<IssuerContractReference>".quitarAcentos(comillasInver(substr($rowco["descripcion"],0,20)))."</IssuerContractReference>\n";
+		$content .= "					<IssuerContractReference>".comillasInver(quitarAcentos(substr($rowco["descripcion"],0,20)))."</IssuerContractReference>\n";
 		$content .= "					<IssuerContractDate>".$rowco["fecha_ini"]."</IssuerContractDate>\n";
 		$content .= "					<IssuerTransactionReference>".substr($rowco["num_contrato"],0,20)."</IssuerTransactionReference>\n";
 		$content .= "					<IssuerTransactionDate>".$rowco["fecha_ini"]."</IssuerTransactionDate>\n";
@@ -374,7 +364,7 @@ function factura_print_e($id)
 #		$content .= "							<DeliveryNoteDate></DeliveryNoteDate>\n";
 #		$content .= "						</DeliveryNote>\n";
 #		$content .= "					</DeliveryNotesReferences>\n";
-		$content .= "					<ItemDescription>".quitarAcentos(comillasInver($rowcuerpo["nombre"]))."</ItemDescription>\n";
+		$content .= "					<ItemDescription>".comillasInver(quitarAcentos($rowcuerpo["nombre"]))."</ItemDescription>\n";
 		$content .= "					<Quantity>".$rowcuerpo["unidades"]."</Quantity>\n";
 		$content .= "					<UnitOfMeasure>01</UnitOfMeasure>\n";
 		$content .= "					<UnitPriceWithoutTax>".number_format($rowcuerpo["pvp"], 6, '.', '')."</UnitPriceWithoutTax>\n";

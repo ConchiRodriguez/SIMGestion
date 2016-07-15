@@ -43,6 +43,7 @@ input,textarea,select {
 	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 	color: black;
 	border : 1px solid Black;
+	width: 100%;
 }
 
 table.principal{
