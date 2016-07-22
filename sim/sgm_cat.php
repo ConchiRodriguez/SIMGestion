@@ -184,6 +184,7 @@ $Departamentos = "Departaments";
 $Dependencia = "Depend&egrave;ncia";
 $Dependencias = "Dependencies";
 $Desactivar = "Desactivar";
+$Desaprobar = "Desaprovar";
 $Desarrollo = "Desenvolupament";
 $Descatalogado = "Descatalogat";
 $Descatalogados = "Descatalogats";
@@ -752,6 +753,8 @@ $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes l
 $ayudaFacturaCerrar = "Es tancar&agrave; la factura i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";
 $ayudaFacturaAbrir = "S'obrir&agrave; la factura i tornar&agrave; a ser visible.";
 $errorFacturaCrear = "Atenci&oacute; : La data de la factura es superior a la data actual.";
+$ayudaFacturaAprobar = "S'aprobar&agrave; el document i se podr&agrave; facturar.";
+$ayudaFacturaDesaprobar = "Es desaprobar&agrave; el document i no se podr&agrave; facturar.";
 
 $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
 $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";

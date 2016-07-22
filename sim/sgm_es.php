@@ -187,6 +187,7 @@ $Departamentos = "Departamentos";
 $Dependencia = "Dependencia";
 $Dependencias = "Dependencias";
 $Desactivar = "Desactivar";
+$Desaprobar = "Desaprobar";
 $Desarrollo = "Desarrollo";
 $Descatalogado = "Descatalogado";
 $Descatalogados = "Descatalogados";
@@ -756,6 +757,8 @@ $ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Tod
 $ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
 $ayudaFacturaAbrir = "Se abrir&aacute; la factura y volver&aacute; a ser visible.";
 $errorFacturaCrear = "Atenci&oacute;n : La fecha de la factura es superior a la fecha actual.";
+$ayudaFacturaAprobar = "Se aprobar&aacute; el documento y se podr&aacute; facturar.";
+$ayudaFacturaDesaprobar = "Se desaprobar&aacute; el documento y no se podr&aacute; facturar.";
 
 $ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
 $ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";

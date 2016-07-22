@@ -864,20 +864,20 @@ if (($option == 1008) AND ($autorizado == true)) {
 		}
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"background-color:Silver;\">";
 			echo "<tr><td></td><th>".$Datos_Fiscales."</th></tr>";
-			echo "<tr><th class=\"formclient\">*".$Nombre.": </th><td><input type=\"Text\" name=\"nombre\" value=\"".$row["nombre"]."\"  class=\"formclient\" required></td></tr>";
+			echo "<tr><th class=\"formclient\">*".$Nombre.": </th><td style=\"width:400px\"><input type=\"Text\" name=\"nombre\" value=\"".$row["nombre"]."\"  class=\"formclient\" required></td></tr>";
 			echo "<tr><th class=\"formclient\">".$Apellido." 1: </th><td><input type=\"Text\" name=\"cognom1\" value=\"".$row["cognom1"]."\" class=\"formclient\"></td></tr>";
 			echo "<tr><th class=\"formclient\">".$Apellido." 2: </th><td><input type=\"Text\" name=\"cognom2\" value=\"".$row["cognom2"]."\" class=\"formclient\"></td></tr>";
 			echo "<tr><td></td><td style=\"vertical-align:middle;\">";
-				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"1\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"1\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_identificador"] == 1) { echo " checked";}
 				echo ">NIF&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"2\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"2\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_identificador"] == 2) { echo " checked";}
 				echo ">VAT&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"3\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"3\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_identificador"] == 3) { echo " checked";}
 				echo ">Extrangero&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"4\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_identificador\" value=\"4\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_identificador"] == 4) { echo " checked";}
 				echo ">Sin&nbsp;&nbsp;";
 			echo "</td></tr>";
@@ -907,22 +907,22 @@ if (($option == 1008) AND ($autorizado == true)) {
 					}
 				}
 			echo "</td></tr>";
-			echo "<tr><td></td><td style=\"vertical-align:middle;width:400px;\">";
-				echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"0\" style=\"border:0px solid black\"";
+			echo "<tr><td></td><td style=\"vertical-align:top;text-align:left;\">";
+				echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"0\" style=\"border:0px solid black;width:20%\"";
 				if ($row["tipo_persona"] == 0) { echo " checked";}
 				echo ">".$Juridica."&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"1\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"1\" style=\"border:0px solid black;width:20%\"";
 				if ($row["tipo_persona"] == 1) { echo " checked";}
 				echo ">".$Fisica."&nbsp;&nbsp;";
 			echo "</td></tr>";
-			echo "<tr><td></td><td style=\"vertical-align:middle;width:400px;\">";
-				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"0\" style=\"border:0px solid black\"";
+			echo "<tr><td></td><td style=\"vertical-align:top;\">";
+				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"0\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_residencia"] == 0) { echo " checked";}
 				echo ">".$Residente."&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"1\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"1\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_residencia"] == 1) { echo " checked";}
 				echo ">".$Residente." UE&nbsp;&nbsp;";
-				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"2\" style=\"border:0px solid black\"";
+				echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"2\" style=\"border:0px solid black;width:15%\"";
 				if ($row["tipo_residencia"] == 2) { echo " checked";}
 				echo ">".$Extranjero."&nbsp;&nbsp;";
 			echo "</td></tr>";
@@ -1148,22 +1148,22 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<tr><td></td><th>".$Clasificacion."</th></tr>";
 						echo "<tr><th class=\"formclient2\">".$Cliente_fidelizado."</th><td>";
 							if ($row["client"] == 1) {
-								echo $Si." <input type=\"Radio\" name=\"client\" value=\"1\" style=\"border:0px solid black\" checked>";
-								echo $No." <input type=\"Radio\" name=\"client\" value=\"0\" style=\"border:0px solid black\">";
+								echo $Si." <input type=\"Radio\" name=\"client\" value=\"1\" style=\"border:0px solid black;width:25%\" checked>";
+								echo $No." <input type=\"Radio\" name=\"client\" value=\"0\" style=\"border:0px solid black;width:25%\">";
 							}
 							if ($row["client"] == 0) {
-								echo $Si." <input type=\"Radio\" name=\"client\" value=\"1\" style=\"border:0px solid black\">";
-								echo $No." <input type=\"Radio\" name=\"client\" value=\"0\" style=\"border:0px solid black\" checked>";
+								echo $Si." <input type=\"Radio\" name=\"client\" value=\"1\" style=\"border:0px solid black;width:25%\">";
+								echo $No." <input type=\"Radio\" name=\"client\" value=\"0\" style=\"border:0px solid black;width:25%\" checked>";
 							}
 						echo "</td></tr>";
 						echo "<tr><th class=\"formclient2\">".$Cliente_vip."</th><td>";
 							if ($row["clientvip"] == 1) {
-								echo $Si." <input type=\"Radio\" name=\"clientvip\" value=\"1\" style=\"border:0px solid black\" checked>";
-								echo $No." <input type=\"Radio\" name=\"clientvip\" value=\"0\" style=\"border:0px solid black\">";
+								echo $Si." <input type=\"Radio\" name=\"clientvip\" value=\"1\" style=\"border:0px solid black;width:25%\" checked>";
+								echo $No." <input type=\"Radio\" name=\"clientvip\" value=\"0\" style=\"border:0px solid black;width:25%\">";
 							}
 							if ($row["clientvip"] == 0) {
-								echo $Si." <input type=\"Radio\" name=\"clientvip\" value=\"1\" style=\"border:0px solid black\">";
-								echo $No." <input type=\"Radio\" name=\"clientvip\" value=\"0\" style=\"border:0px solid black\" checked>";
+								echo $Si." <input type=\"Radio\" name=\"clientvip\" value=\"1\" style=\"border:0px solid black;width:25%\">";
+								echo $No." <input type=\"Radio\" name=\"clientvip\" value=\"0\" style=\"border:0px solid black;width:25%\" checked>";
 							}
 						echo "</td></tr>";
 						echo "<tr>";

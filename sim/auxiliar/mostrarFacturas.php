@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function mostrarFacturas($row){
-	global $db,$dbhandle,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones,$Abrir;
+	global $db,$dbhandle,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones,$Abrir,$Aprobar,$Desaprobar;
 	
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
 	$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
@@ -147,6 +147,11 @@ function mostrarFacturas($row){
 			if ($row["cerrada"] == 1) { $color = "#00EC00"; }
 			if ($row["cobrada"] == 1) { $color = "#FFFFFF"; }
 		}
+		#aprobacion
+		if ($rowtipos["aprovado"] == 1) {
+			if ($row["aprovado"] == 1)  { $color = "#00EC00";}
+		}
+
 		echo "<tr style=\"background-color:".$color."\">";
 			echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=10&id=".$rowtipos["id"]."&id_fact=".$row["id"]."\">";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Opciones."\"></td>";
@@ -218,11 +223,11 @@ function mostrarFacturas($row){
 					}
 				} else {echo "<td></td>";}
 				if ($rowtipos["tpv"] == 0) {
-#					if (strlen($row["nombre"]) > 70) {
-#						echo "<td style=\"width:20%;\"><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
-#					} else {
+					if (strlen($row["nombre"]) > 70) {
+						echo "<td style=\"width:20%;\"><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
+					} else {
 						echo "<td style=\"width:20%;\"><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".quitarAcentos($row["nombre"])."</a></td>";
-#					}
+					}
 					if ($rowtipos["v_subtipos"] == 1) {
 						echo "<td>";
 						echo "<select style=\"width:100%\" name=\"subtipo\" disabled>";
@@ -276,6 +281,17 @@ function mostrarFacturas($row){
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Recibos."\"></td>";
 					echo "</form>";
 				} else {echo "<td></td>";}
+				if ($rowtipos["aprovado"] == 1) {
+					if ($row["aprovado"] == 0)  {
+						echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=50&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Aprobar."\"></td>";
+						echo "</form>";
+					} elseif ($row["aprovado"] == 1) {
+						echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=51&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Desaprobar."\"></td>";
+						echo "</form>";
+					}
+				}
 				if ($row["cerrada"] == 1){
 					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=41&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Abrir."\"></td>";

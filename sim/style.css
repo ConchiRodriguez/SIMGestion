@@ -109,7 +109,7 @@ input[type="submit"]{
 }
 
 td.submit{
-	 width:100px;
+	width:100px;
 }
 
 td.ficha{
@@ -169,8 +169,7 @@ td.boton{
 
 td.factur{
 	min-width:300px;
-	max-width:550px;
-	width:100%
+	width:550px;
 }
 
 a:LINK, a:VISITED {

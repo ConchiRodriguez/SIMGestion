@@ -127,8 +127,6 @@ class PDF extends FPDF
 			$this->Cell(90,5,$provincia.": ".$rowcabezera["provincia"],1,0);
 			$this->Cell(90,5,'',1,1);
 			$limit_lines = 34;
-#			$this->SetFont('codi_barres','',8);
-#			$this->Cell(90,5,$rowcabezera["numero"]." / ".$rowcabezera["version"],1,0);
 		}
 		
 		if ($tipo == 0) {
@@ -159,8 +157,6 @@ class PDF extends FPDF
 			$this->MultiCell(95,5,str_replace("&#39;", "'", $rowcabezera["nombre"])."\n".str_replace("&#39;", "'", $rowcabezera["direccion"])."\n".str_replace("&#39;", "'", $rowcabezera["poblacion"])." (".$rowcabezera["cp"].") ".$rowcabezera["provincia"],0,'L');
 			$this->SetY(71);
 			$limit_lines = 34;
-#			$this->SetFont('codi_barres','',8);
-#			$this->Cell(90,5,$rowcabezera["numero"]." / ".$rowcabezera["version"],1,0);
 		}
 		
 	

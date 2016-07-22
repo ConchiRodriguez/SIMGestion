@@ -562,6 +562,8 @@ ALTER TABLE `sgm_contratos` ADD `descripcion` longtext AFTER `activo`;
 ALTER TABLE `sgm_contratos` ADD `id_responsable` int(11) NOT NULL default '0' AFTER `descripcion`;
 ALTER TABLE `sgm_contratos` ADD `id_tecnico` int(11) NOT NULL default '0' AFTER `id_responsable`;
 ALTER TABLE `sgm_contratos` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `id_tecnico`;
+ALTER TABLE `sgm_contratos` ADD `id_plantilla` int(11) NOT NULL default '0' AFTER `renovado`;
+ALTER TABLE `sgm_contratos` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id_plantilla`;
 
 CREATE TABLE `sgm_contratos_sla_cobertura` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_sla_cobertura` ADD `nombre` varchar(55) NOT NULL default '' AFTER `id`;
@@ -810,6 +812,7 @@ ALTER TABLE `sgm_factura_tipos_permisos` ADD `admin`  tinyint(1) NOT NULL defaul
 CREATE TABLE `sgm_factura_tipos_relaciones` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_factura_tipos_relaciones` ADD `id_tipo_o` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_factura_tipos_relaciones` ADD `id_tipo_d` int(11) NOT NULL default '0' AFTER `id_tipo_o`;
+ALTER TABLE `sgm_factura_tipos_relaciones` ADD `cerrar` int(11) NOT NULL default '0' AFTER `id_tipo_d`;
 
 CREATE TABLE `sim_formato_documento` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_formato_documento` ADD `formato_documento` varchar(50) default NULL AFTER `id`;
@@ -876,51 +879,51 @@ INSERT INTO `sgm_incidencias_entrada` VALUES (3, 'Mail');
 INSERT INTO `sgm_incidencias_entrada` VALUES (4, 'Web');
 INSERT INTO `sgm_incidencias_entrada` VALUES (5, 'Otra');
 
-CREATE TABLE `sgm_inventario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_inventario` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `nombre` ;
-ALTER TABLE `sgm_inventario` ADD `id_client` int(11) NOT NULL default '0' AFTER `id_tipo` ;
-ALTER TABLE `sgm_inventario` ADD `codigo` varchar(50) NOT NULL default '' AFTER `id_client`;
-ALTER TABLE `sgm_inventario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `codigo` ;
-ALTER TABLE `sgm_inventario` ADD `num_serie` varchar(50) NOT NULL default '' AFTER `id_empleado` ;
-ALTER TABLE `sgm_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_serie` ;
+CREATE TABLE `sim_inventario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_inventario` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `nombre` ;
+ALTER TABLE `sim_inventario` ADD `id_client` int(11) NOT NULL default '0' AFTER `id_tipo` ;
+ALTER TABLE `sim_inventario` ADD `codigo` varchar(50) NOT NULL default '' AFTER `id_client`;
+ALTER TABLE `sim_inventario` ADD `id_empleado` int(11) NOT NULL default '0' AFTER `codigo` ;
+ALTER TABLE `sim_inventario` ADD `num_serie` varchar(50) NOT NULL default '' AFTER `id_empleado` ;
+ALTER TABLE `sim_inventario` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_serie` ;
 
-CREATE TABLE `sgm_inventario_relacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_relacion` ADD `id_disp1` int(11) NOT NULL default '0' AFTER `id` ;
-ALTER TABLE `sgm_inventario_relacion` ADD `id_disp2` int(11) NOT NULL default '0' AFTER `id_disp1` ;
-ALTER TABLE `sgm_inventario_relacion` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_disp2` ;
+CREATE TABLE `sim_inventario_relacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_relacion` ADD `id_disp1` int(11) NOT NULL default '0' AFTER `id` ;
+ALTER TABLE `sim_inventario_relacion` ADD `id_disp2` int(11) NOT NULL default '0' AFTER `id_disp1` ;
+ALTER TABLE `sim_inventario_relacion` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_disp2` ;
 
-CREATE TABLE `sgm_inventario_actuacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_actuacion` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_inventario_actuacion` ADD `parada` tinyint(1) NOT NULL default '0' AFTER `nombre`;
-ALTER TABLE `sgm_inventario_actuacion` ADD `duracion` int(11) NOT NULL default '0' AFTER `parada`;
-ALTER TABLE `sgm_inventario_actuacion` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `duracion` ;
+CREATE TABLE `sim_inventario_actuacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_actuacion` ADD `nombre` varchar(50) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_inventario_actuacion` ADD `parada` tinyint(1) NOT NULL default '0' AFTER `nombre`;
+ALTER TABLE `sim_inventario_actuacion` ADD `duracion` int(11) NOT NULL default '0' AFTER `parada`;
+ALTER TABLE `sim_inventario_actuacion` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `duracion` ;
 
-CREATE TABLE `sgm_inventario_actuacion_disp` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `id_actuacion` int(11) NOT NULL default '0' AFTER `id` ;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `id_dispositivo` int(11) NOT NULL default '0' AFTER `id_actuacion` ;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `id_user` int(11) NOT NULL default '0' AFTER `id_dispositivo` ;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `data_prevision` datetime default NULL AFTER `id_user`;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `data_finalizacion` datetime default NULL AFTER `data_prevision`;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `finalizada` tinyint(1) NOT NULL default '0' AFTER `data_finalizacion` ;
-ALTER TABLE `sgm_inventario_actuacion_disp` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `finalizada` ;
+CREATE TABLE `sim_inventario_actuacion_disp` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `id_actuacion` int(11) NOT NULL default '0' AFTER `id` ;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `id_dispositivo` int(11) NOT NULL default '0' AFTER `id_actuacion` ;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `id_user` int(11) NOT NULL default '0' AFTER `id_dispositivo` ;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `data_prevision` datetime default NULL AFTER `id_user`;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `data_finalizacion` datetime default NULL AFTER `data_prevision`;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `finalizada` tinyint(1) NOT NULL default '0' AFTER `data_finalizacion` ;
+ALTER TABLE `sim_inventario_actuacion_disp` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `finalizada` ;
 
-CREATE TABLE `sgm_inventario_tipo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_tipo` ADD `tipo` varchar(50) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_inventario_tipo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `tipo` ;
-ALTER TABLE `sgm_inventario_tipo` ADD `orden` int(11) NOT NULL default '0' AFTER `visible` ;
-ALTER TABLE `sgm_inventario_tipo` ADD `codigo` int(4) NOT NULL default '0000' AFTER `orden` ;
+CREATE TABLE `sim_inventario_tipo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_tipo` ADD `tipo` varchar(50) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_inventario_tipo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `tipo` ;
+ALTER TABLE `sim_inventario_tipo` ADD `orden` int(11) NOT NULL default '0' AFTER `visible` ;
+ALTER TABLE `sim_inventario_tipo` ADD `codigo` int(4) NOT NULL default '0000' AFTER `orden` ;
 
-CREATE TABLE `sgm_inventario_tipo_atributo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_tipo_atributo` ADD `atributo` varchar(50) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_inventario_tipo_atributo` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `atributo` ;
-ALTER TABLE `sgm_inventario_tipo_atributo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_tipo` ;
+CREATE TABLE `sim_inventario_tipo_atributo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_tipo_atributo` ADD `atributo` varchar(50) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_inventario_tipo_atributo` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `atributo` ;
+ALTER TABLE `sim_inventario_tipo_atributo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_tipo` ;
 
-CREATE TABLE `sgm_inventario_tipo_atributo_dada` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `dada` longtext NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `id_atribut` int(11) NOT NULL default '0' AFTER `dada` ;
-ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `id_inventario` int(11) NOT NULL default '0' AFTER `id_atribut` ;
-ALTER TABLE `sgm_inventario_tipo_atributo_dada` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_inventario` ;
+CREATE TABLE `sim_inventario_tipo_atributo_dada` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_inventario_tipo_atributo_dada` ADD `dada` longtext NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_inventario_tipo_atributo_dada` ADD `id_atribut` int(11) NOT NULL default '0' AFTER `dada` ;
+ALTER TABLE `sim_inventario_tipo_atributo_dada` ADD `id_inventario` int(11) NOT NULL default '0' AFTER `id_atribut` ;
+ALTER TABLE `sim_inventario_tipo_atributo_dada` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_inventario` ;
 
 CREATE TABLE `sim_licencias` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_licencias` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `id`;
