@@ -267,24 +267,26 @@ if (($option == 1003) AND ($autorizado == true)) {
 			} elseif (($_GET["hist"] == 0) and ($_GET["id"] != "")){
 				echo boton(array("op=1003&sop=0&id=".$rowtipos["id"]."&hist=1"),array($Historico));
 			}
+			$tds2 = 3;
 			echo "<table cellpadding=\"2\" cellspacing=\"0\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver;\">";
 					echo "<th></th>";
+					
 					if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
-						echo "<th>Docs</th>";
-					} else {echo "<th></th>";}
-					echo "<th style=\"min-width:60px;width:100px;\">".$Numero."</th>";
-					if ($rowtipos["presu"] == 1) { echo "<th>Ver.</th>";} else {echo "<th></th>";}
-					echo "<th style=\"min-width:65px;width:100px;\">".$Fecha."</th>";
-					if ($rowtipos["v_fecha_prevision"] == 1) { echo "<th style=\"min-width:70px;width:100px;\">".$Prevision."</th>";} else {echo "<th></th>";}
-					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<th style=\"min-width:70px;width:100px;\">".$Vencimiento."</th>";} else {echo "<th></th>";}
-					if ($rowtipos["v_numero_cliente"] == 1) { echo "<th style=\"min-width:80px;width:100px;\">Ref. Ped. ".$Cliente."</th>";} else {echo "<th></th>";}
-					if ($rowtipos["v_rfq"] == 1) { echo "<th style=\"min-width:80px;width:100px;\">".$Numero." RFQ</th>";} else {echo "<th></th>";}
-					if ($rowtipos["tpv"] == 0) { echo "<th class=\"factur\">".$Cliente."</th>";} else {echo "<th></th>";}
-					if ($rowtipos["v_subtipos"] == 1) { echo "<th style=\"min-width:100px;width:150px;\">".$Subtipo."</th>";} else {echo "<th></th>";}
+						echo "<th style=\"min-width:20px;width:30px;\">Docs</th>";
+					} else { echo "<td></td>"; }
+					echo "<th style=\"min-width:60px;width:80px;\">".$Numero."</th>";
+					if ($rowtipos["presu"] == 1) { echo "<th style=\"min-width:30px;width:60px;\">Ver.</th>";} else { echo "<td></td>"; }
+					echo "<th style=\"min-width:60px;width:80px;\">".$Fecha."</th>";
+					if ($rowtipos["v_fecha_prevision"] == 1) { echo "<th style=\"min-width:70px;width:80px;\">".$Prevision."</th>";} else { echo "<td></td>"; }
+					if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<th style=\"min-width:70px;width:80px;\">".$Vencimiento."</th>";} else { echo "<td></td>"; }
+					if ($rowtipos["v_numero_cliente"] == 1) { echo "<th style=\"min-width:80px;width:80px;\">Ref. Ped. ".$Cliente."</th>";} else { echo "<td></td>"; }
+					if ($rowtipos["v_rfq"] == 1) { echo "<th style=\"min-width:80px;width:80px;\">".$Numero." RFQ</th>";} else { echo "<td></td>"; }
+					if ($rowtipos["tpv"] == 0) { echo "<th class=\"factur\">".$Cliente."</th>";} else { echo "<td></td>"; }
+					if ($rowtipos["v_subtipos"] == 1) { echo "<th style=\"min-width:100px;width:80px;\">".$Subtipo."</th>";} else { echo "<td></td>"; }
 					echo "<th style=\"text-align:right;width:100px;\">".$Subtotal."</th>";
 					echo "<th style=\"text-align:right;width:100px;\">".$Total."</th>";
-					if ($rowtipos["v_recibos"] == 1)  {echo "<th style=\"text-align:right;width:100px;\">".$Pendiente."</th>";} else {echo "<th></th>";}
+					if ($rowtipos["v_recibos"] == 1)  {echo "<th style=\"text-align:right;width:100px;\">".$Pendiente."</th>";} else { echo "<td></td>"; }
 					if ($_GET["id"]) {$link = "&id=".$_GET["id"];} else {$link = "";}
 					if ($_GET["hist"]) {$link .= "&hist=".$_GET["hist"];} else {$link .= "";}
 					if ($_GET["filtra"] == 0){
@@ -301,10 +303,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"articulo\" value=\"".$_POST["articulo"]."\">";
 					echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
 					echo "<input type=\"Hidden\" name=\"todo\" value=\"1\">";
+					if ($rowtipos["aprovado"] == 1)  {$tds2++;}
+					if ($rowtipos["v_recibos"] == 1)  {$tds2++;}
 					if ($_GET["filtra"] == 0){
-						echo "<td class=\"submit\" colspan=\"4\" style=\"text-align:right;\"></td><td><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
+						echo "<td class=\"submit\" colspan=\"".$tds2."\" style=\"text-align:right;\"></td><td><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
 					} else {
-						echo "<td class=\"submit\" colspan=\"4\" style=\"text-align:right;\"></td><td><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
+						echo "<td class=\"submit\" colspan=\"".$tds2."\" style=\"text-align:right;\"></td><td><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
 					}
 					echo "</form>";
 				echo "</tr>";
@@ -316,11 +320,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
 					$numero = $row["numero"] + 1;
-					echo "<td></td>";
-					echo "<td></td>";
+					echo "<td style=\"width:0px;\"></td>";
+					echo "<td style=\"width:0px;\"></td>";
 					echo "<td><input type=\"Text\" name=\"numero\" value=\"".$numero."\" style=\"text-align:right;width:100%\"></td>";
 					if ($rowtipos["presu"] == 1) { 
-						echo "<td style=\"width:30px;text-align:center\"><input type=\"Text\" name=\"version\" value=\"0\" style=\"width:100%\"></td>";
+						echo "<td style=\"text-align:center\"><input type=\"Text\" name=\"version\" value=\"0\" style=\"width:100%\"></td>";
 					} else {
 						echo "<input type=\"hidden\" name=\"version\" value=\"0\">";
 						echo "<td></td>";
@@ -333,19 +337,31 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$m = date("n", strtotime($date1)); 
 					$d = date("j", strtotime($date1)); 
 					$fecha_prevision = date("Y-m-d", mktime(0,0,0,$m ,$d+$suma, $a));
+					$fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$m ,$d+$suma, $a));
 					if ($rowtipos["v_fecha_prevision"] == 1) { 
 						echo "<td><input type=\"Text\" name=\"fecha_prevision\" style=\"width:100%\" value=\"".cambiarFormatoFechaDMY($fecha_prevision)."\"></td>";
 					} else {
-						echo "<input type=\"hidden\" name=\"fecha_prevision\" style=\"width:100%\" value=\"0\">";
+						echo "<input type=\"hidden\" name=\"fecha_prevision\" value=\"0\">";
 						echo "<td></td>";
 					}
-					echo "<td></td>";
+					if ($rowtipos["v_fecha_vencimiento"] == 1) { 
+						echo "<td><input type=\"Text\" name=\"fecha_vencimiento\" style=\"width:100%\" value=\"".cambiarFormatoFechaDMY($fecha_vencimiento)."\"></td>";
+					} else {
+						echo "<input type=\"hidden\" name=\"fecha_vencimiento\" value=\"0\">";
+						echo "<td></td>";
+					}
 					if ($rowtipos["v_numero_cliente"] == 1) { 
 						echo "<td><input type=\"Text\" name=\"numero_cliente\" style=\"width:100%\"></td>";
-					} else { "<input type=\"hidden\" name=\"numero_cliente\">"; echo "<td></td>";}
+					} else {
+						echo "<input type=\"hidden\" name=\"numero_cliente\">";
+						echo "<td></td>";
+					}
 					if ($rowtipos["v_rfq"] == 1) { 
-						echo "<td><input type=\"Text\" name=\"numero_rfq\" style=\"width:75px\"></td>";
-					} else { "<input type=\"hidden\" name=\"numero_rfq\">"; echo "<td></td>";}
+						echo "<td><input type=\"Text\" name=\"numero_rfq\" style=\"width:100%\"></td>";
+					} else {
+						echo "<input type=\"hidden\" name=\"numero_rfq\">";
+						echo "<td></td>";
+					}
 					if ($rowtipos["tpv"] == 0) { 
 						echo "<td>";
 							echo "<select name=\"id_cliente\" style=\"width:100%;\">";
@@ -379,8 +395,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "<td></td>";
 					}
 					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
-					echo "<td></td>";
-					echo "<td></td>";
+					echo "<td style=\"width:0px;\"></td>";
+					echo "<td style=\"width:0px;\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -1785,7 +1801,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		}
 		echo "<h4>".$Calendario_Economico." (".$Gastos."/".$Ingresos."/".$Externo."/".$Total.") : </h4>";
 		echo "<form action=\"index.php?op=1003&sop=411\" method=\"post\">";
-			echo "<input type=\"submit\" value=\"".$Recalcular."\">";
+			echo "<input type=\"submit\" value=\"".$Recalcular."\"  style=\"width:100px;\">";
 		echo "</form>";
 		echo "<table cellpadding=\"1\" cellspacing=\"10\" class=\"lista\">";
 			echo "<tr>";
@@ -3023,7 +3039,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if (($soption == 551) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1002&sop=550&ssop=3&id=".$_GET["id"],"op=1002&sop=550"),array($Si,$No));
+		echo boton(array("op=1003&sop=550&ssop=3&id=".$_GET["id"],"op=1003&sop=550"),array($Si,$No));
 		echo "</center>";
 	}
 

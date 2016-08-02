@@ -150,7 +150,7 @@ class PDF extends FPDF
 
 			$this->SetXY(102,35);
 			$this->SetFont('fre3of9x','',30);
-			$this->Cell(90,5,$rowcabezera["numero"].$rowcabezera["version"].str_replace("&#39;", "'", $rowcabezera["nombre"]),0,1);
+			$this->Cell(90,5,$rowcabezera["numero"].$rowcabezera["version"],0,1);
 		
 			$this->SetXY(102,45);
 			$this->SetFont('Calibri','',12);

@@ -1001,7 +1001,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 					insertFunction("sgm_clients_rel_origen",$camposInsert,$datosInsert);
 				}
 			}
-			echo $_POST["id_empleado_origen"];
 			if ($_POST["id_empleado_origen"] != -1){
 				echo "zz";
 				echo $sql = "select * from sgm_clients_rel_origen where id_cliente=".$id_client." and id_origen=".$_POST["id_empleado_origen"]." and tipo_origen=4";

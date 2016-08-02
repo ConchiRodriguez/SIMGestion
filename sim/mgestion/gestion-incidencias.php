@@ -1104,33 +1104,36 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "<tr><td colspan=\"2\" style=\"width:100%;height:97px;background-color:silver;vertical-align:top;\">".$rowc["notas_desarrollo"]."&nbsp;</td></tr>";
 							echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
 						}
-							if ($row["id_estado"] != -2){
-								echo "<tr>";
-									echo "<td><input type=\"Submit\" value=\"".$Guardar."\"></td>";
-									echo "</form>";
-									$sqlud = "select mail from sgm_users where id=".$row["id_usuario_origen"];
-									$resultud = mysqli_query($dbhandle,convertSQL($sqlud));
-									$rowud = mysqli_fetch_array($resultud);
-									$sqlcs = "select codigo_catalogo from sgm_contratos_servicio where id=".$row["id_servicio"];
-									$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-									$rowcs = mysqli_fetch_array($resultcs);
-									echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$id_inc."\" method=\"post\" name=\"form3\">";
-									echo "<td><input type=\"Submit\" value=\"".$Enviar." ".$Email."\"></td>";
-									echo "<input type=\"hidden\" name=\"correo_remitente\" value=\"".$rowud["mail"]."\">";
-									echo "<input type=\"hidden\" name=\"id_incidencia\" value=\"".$id_inc."\">";
-									echo "<input type=\"hidden\" name=\"codigo\" value=\"".$rowcs["codigo_catalogo"]."\">";
-									echo "<input type=\"hidden\" name=\"id_codigo_externo\" value=\"".$row["codigo_externo"]."\">";
-									echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
-									echo "</form>";
+						$sqlud = "select * from sgm_users where id=".$row["id_usuario_origen"];
+						$resultud = mysqli_query($dbhandle,convertSQL($sqlud));
+						$rowud = mysqli_fetch_array($resultud);
+						if (($row["id_estado"] != -2) and ($rowc["id_usuario_registro"] != $userid)){
+							echo "<tr>";
+								echo "<td><input type=\"Submit\" value=\"".$Guardar."\"></td>";
+								echo "</form>";
+								$sqlud = "select mail from sgm_users where id=".$row["id_usuario_origen"];
+								$resultud = mysqli_query($dbhandle,convertSQL($sqlud));
+								$rowud = mysqli_fetch_array($resultud);
+								$sqlcs = "select codigo_catalogo from sgm_contratos_servicio where id=".$row["id_servicio"];
+								$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+								$rowcs = mysqli_fetch_array($resultcs);
+								echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$id_inc."\" method=\"post\" name=\"form3\">";
+								echo "<td><input type=\"Submit\" value=\"".$Enviar." ".$Email."\"></td>";
+								echo "<input type=\"hidden\" name=\"correo_remitente\" value=\"".$rowud["mail"]."\">";
+								echo "<input type=\"hidden\" name=\"id_incidencia\" value=\"".$id_inc."\">";
+								echo "<input type=\"hidden\" name=\"codigo\" value=\"".$rowcs["codigo_catalogo"]."\">";
+								echo "<input type=\"hidden\" name=\"id_codigo_externo\" value=\"".$row["codigo_externo"]."\">";
+								echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
+								echo "</form>";
 #									echo "<td class=\"boton\">";
 #										echo "<a href=\"mailto:".$rowud["mail"]."?subject=".$asunto." ".$row["codigo_externo"]."&body=".$rowc["notas_desarrollo"]."\" style=\"color:black\">".$Enviar." ".$Email."</a>";
 #									echo "</td>";
-								if ($rowc["id_usuario_registro"] == $userid){
-									echo "<form action=\"index.php?op=1018&sop=100&ssop=6&id=".$id_inc."&id_not=".$rowc["id"]."\" method=\"post\" name=\"form2\">";
-									echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Eliminar."\"></td>";
-								}
-								echo "</tr>";
+							if ($rowc["id_usuario_registro"] == $userid){
+								echo "<form action=\"index.php?op=1018&sop=100&ssop=6&id=".$id_inc."&id_not=".$rowc["id"]."\" method=\"post\" name=\"form2\">";
+								echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Eliminar."\"></td>";
 							}
+							echo "</tr>";
+						}
 						echo "</table>";
 					echo "</form>";
 				echo "</td></tr>";

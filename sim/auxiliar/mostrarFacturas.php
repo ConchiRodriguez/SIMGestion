@@ -162,9 +162,9 @@ function mostrarFacturas($row){
 				$rowca = mysqli_fetch_array($resultca);
 				if ($rowca["total"] == 0) {$color_docs = "yellow";} else {$color_docs = "white";}
 				echo "<td style=\"background-color:".$color_docs.";\">(".$rowca["total"].")</td>";
-			} else {echo "<td></td>";}
-			echo "<td style=\"text-align:right\">".$row["numero"]."</td>";
-			if ($rowtipos["presu"] == 1) { echo "<td>/".$row["version"]."</td>"; } else {echo "<td></td>";}
+			} else { echo "<td></td>"; }
+			echo "<td style=\"text-align:right;\">".$row["numero"]."</td>";
+			if ($rowtipos["presu"] == 1) { echo "<td>/".$row["version"]."</td>"; } else { echo "<td></td>"; }
 ############ CALCULOS SOBRE LAS FECHAS OFICIALES
 				$a = date("Y", strtotime($row["fecha"]));
 				$m = date("m", strtotime($row["fecha"]));
@@ -198,8 +198,8 @@ function mostrarFacturas($row){
 						echo "<td style=\"background-color:red;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".cambiarFormatoFechaDMY($fecha_proxima)."</td>";
 					}
 				}
-				if ($rowtipos["v_fecha_prevision"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_prevision"])."</td>"; } else {echo "<td></td>";}
-				if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_vencimiento"])."</td>"; } else {echo "<td></td>";}
+				if ($rowtipos["v_fecha_prevision"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_prevision"])."</td>"; } else { echo "<td></td>"; }
+				if ($rowtipos["v_fecha_vencimiento"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_vencimiento"])."</td>"; } else { echo "<td></td>"; }
 				if ($rowtipos["v_numero_cliente"] == 1) {
 					if (($rowtipos["tipo_ot"] == 1) and ($row["confirmada"] == 1)) {
 						echo "<td>".$row["numero_cliente"]."</td>";
@@ -210,7 +210,7 @@ function mostrarFacturas($row){
 							echo "<td>".$row["numero_cliente"]."</td>";
 						}
 					}
-				} else {echo "<td></td>";}
+				} else { echo "<td></td>"; }
 				if ($rowtipos["v_rfq"] == 1) {
 					if (($rowtipos["tipo_ot"] == 1) and ($row["aprovado"] == 1)) {
 						echo "<td>".$row["numero_rfq"]."</td>";
@@ -221,12 +221,12 @@ function mostrarFacturas($row){
 							echo "<td>".$row["numero_rfq"]."</td>";
 						}
 					}
-				} else {echo "<td></td>";}
+				} else { echo "<td></td>"; }
 				if ($rowtipos["tpv"] == 0) {
 					if (strlen($row["nombre"]) > 70) {
-						echo "<td style=\"width:20%;\"><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
 					} else {
-						echo "<td style=\"width:20%;\"><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".quitarAcentos($row["nombre"])."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".quitarAcentos($row["nombre"])."</a></td>";
 					}
 					if ($rowtipos["v_subtipos"] == 1) {
 						echo "<td>";
@@ -243,25 +243,25 @@ function mostrarFacturas($row){
 							}
 						echo "</select>";
 						echo "</td>";
-					} else {echo "<td></td>";}
-				} else {echo "<td></td>";}
+					} else { echo "<td></td>"; }
+				} else { echo "<td></td>"; }
 				$sqldi = "select id,abrev from sgm_divisas where id=".$row["id_divisa"];
 				$resultdi = mysqli_query($dbhandle,convertSQL($sqldi));
 				$rowdi = mysqli_fetch_array($resultdi);
-				echo "<td style=\"text-align:right;\">".number_format($row["subtotal"],2,",",".")." ".$rowdi["abrev"]."</td>";
+				echo "<td style=\"text-align:right;\">".number_format($row["subtotaldescuento"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				echo "<td style=\"text-align:right;\">".number_format($row["total"],2,",",".")." ".$rowdi["abrev"]."</td>";
 				if ($rowtipos["v_recibos"] == 1)  {
 					$sqlr = "select SUM(total) as total from sgm_recibos where visible=1 and id_factura=".$row["id"]." order by numero desc, numero_serie desc";
 					$resultr = mysqli_query($dbhandle,convertSQL($sqlr));
 					$rowr = mysqli_fetch_array($resultr);
 					echo "<td style=\"text-align:right;\">".number_format(($row["total"]-$rowr["total"]),2,",",".")." ".$rowdi["abrev"]."</td>";
-				} else {echo "<td></td>";}
+				} else { echo "<td></td>"; }
 				if ($rowdiv["id"] == $rowdi["id"]){
-					$totalSenseIVA += $row["subtotal"];
+					$totalSenseIVA += $row["subtotaldescuento"];
 					$totalSensePagar += $row["total"];
 					$totalPagat += ($row["total"]-$rowr["total"]);
 				} else {
-					$totalSenseIVA += $row["subtotal"]*$row["div_canvi"];
+					$totalSenseIVA += $row["subtotaldescuento"]*$row["div_canvi"];
 					$totalSensePagar += $row["total"]*$row["div_canvi"];
 					$totalPagat += ($row["total"]-$rowr["total"])*$row["div_canvi"];
 				}
@@ -280,7 +280,7 @@ function mostrarFacturas($row){
 					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=30&id=".$row["id"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Recibos."\"></td>";
 					echo "</form>";
-				} else {echo "<td></td>";}
+				}
 				if ($rowtipos["aprovado"] == 1) {
 					if ($row["aprovado"] == 0)  {
 						echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=50&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
@@ -316,6 +316,7 @@ function mostrarFacturas($row){
 						echo "<input type=\"Hidden\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\">";
 						echo "<input type=\"Hidden\" name=\"data_desde1\" value=\"".$_POST["data_desde1"]."\">";
 						echo "<input type=\"Hidden\" name=\"data_fins1\" value=\"".$_POST["data_fins1"]."\">";
+						echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$_POST["codigo"]."\">";
 						echo "<input type=\"Hidden\" name=\"articulo\" value=\"".$_POST["articulo"]."\">";
 						echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Plegar."\"></td>";
@@ -327,6 +328,7 @@ function mostrarFacturas($row){
 						echo "<input type=\"Hidden\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\">";
 						echo "<input type=\"Hidden\" name=\"data_desde1\" value=\"".$_POST["data_desde1"]."\">";
 						echo "<input type=\"Hidden\" name=\"data_fins1\" value=\"".$_POST["data_fins1"]."\">";
+						echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$_POST["codigo"]."\">";
 						echo "<input type=\"Hidden\" name=\"articulo\" value=\"".$_POST["articulo"]."\">";
 						echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
 						echo "<input type=\"Hidden\" name=\"todo\" value=\"2\">";
@@ -345,6 +347,7 @@ function mostrarFacturas($row){
 			if ($_POST["data_fins1"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins1"])."'"; }
 			if ($_POST["data_desde2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision>='".cambiarFormatoFechaYMD($_POST["data_desde2"])."'"; }
 			if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
+			if ($_POST["codigo"] != '') { $sqlxx = $sqlxx." AND codigo like '%".$_POST["codigo"]."%'"; }
 			if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
 			$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
 			$rowxx = mysqli_fetch_array($resultxx);
@@ -371,6 +374,7 @@ function mostrarFacturas($row){
 							if ($_POST["data_fins1"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins1"])."'"; }
 							if ($_POST["data_desde2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision>='".cambiarFormatoFechaYMD($_POST["data_desde2"])."'"; }
 							if ($_POST["data_fins2"] != 0) { $sqlxx = $sqlxx." AND fecha_prevision<='".cambiarFormatoFechaYMD($_POST["data_fins2"])."'"; }
+							if ($_POST["codigo"] != '') { $sqlxx = $sqlxx." AND codigo like '%".$_POST["codigo"]."%'"; }
 							if ($_POST["articulo"] != '') { $sqlxx = $sqlxx." AND nombre like '%".$_POST["articulo"]."%'"; }
 							$sqlxx = $sqlxx." order by linea";
 							$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
