@@ -194,3 +194,48 @@ a.menu_select{
 	color: blue;
 }
 
+
+header, nav, section, article, footer {
+  display: block;
+}
+
+ul, ol {
+	list-style:none;
+}
+
+.menu1 > li {
+	float:left;
+}
+
+.menu1 li a {
+	background-color:#33339f;
+	color:#fff;
+	text-decoration:none;
+	padding:5px 20px;
+	display:block;
+	font-weight: bold;
+}
+
+.menu1 li a:hover {
+	background-color:#fff;
+	color:black;
+}
+
+.menu1 li ul {
+	display:none;
+	position:absolute;
+	min-width:140px;
+}
+
+.menu1 li:hover > ul {
+	display:block;
+}
+
+.menu1 li ul li {
+	position:relative;
+}
+
+.menu1 li ul li ul {
+	right:-140px;
+	top:0px;
+}

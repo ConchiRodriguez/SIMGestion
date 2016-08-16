@@ -37,7 +37,7 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/sim\" target=\"_blank\">SIMGestion</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/clientes\" target=\"_blank\">Area Clientes</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.solucions-im.net/mediawiki/\" target=\"_blank\">MediaWiki</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.20/faqs/\" target=\"_blank\">PHPmyFAQ</a></td></tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://op5.solucions-im.com\" target=\"_blank\">Blog op5</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://nagios.solucions-im.com\" target=\"_blank\">Blog Nagios</a></td></tr>";
@@ -60,7 +60,7 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 		echo "<td style=\"vertical-align:top;text-align:center;width:15%;\">";
 			echo "<table style=\"font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;font-size: 10px;\">";
 				echo "<tr><td><h3>Desenvolupament</h3></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.solucions-im.net/sim\" target=\"_blank\">SIMGestion</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.solucions-im.net/sim\" target=\"_blank\">SIMGestion DES</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.solucions-im.com/sim_pre\" target=\"_blank\">SIMGestion PRE</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.solucions-im.net/clientes\" target=\"_blank\">Area Clientes</a></td></tr>";
 			echo "</table>";
@@ -86,7 +86,7 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 			echo "<table style=\"font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;font-size: 10px;\">";
 				echo "<tr><td><h3>Labs</h3></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.17/nagios/\" target=\"_blank\">Cerberus Nagios</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.16:8000\" target=\"_blank\">Atlas Splunk</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.16\" target=\"_blank\">Atlas Splunk</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.18\" target=\"_blank\">Tea SIMges</a></td></tr>";
 			echo "</table>";
 		echo "</td>";

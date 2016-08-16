@@ -592,6 +592,18 @@ ALTER TABLE `sgm_contratos_servicio` ADD `codigo_catalogo` varchar(55) NOT NULL 
 ALTER TABLE `sgm_contratos_servicio` ADD `auto_email` tinyint(1) NOT NULL default '0' AFTER `codigo_catalogo`;
 ALTER TABLE `sgm_contratos_servicio` ADD `funcion` varchar(55) NOT NULL default '' AFTER `auto_email`;
 ALTER TABLE `sgm_contratos_servicio` ADD `id_servicio_origen` int(11) NOT NULL default '0' AFTER `funcion`;
+ALTER TABLE `sgm_contratos_servicio` ADD `prefijo_notificacion` varchar(55) NOT NULL default '' AFTER `id_servicio_origen`;
+
+CREATE TABLE `sgm_contratos_servicio_notificacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_servicio` int(11) NOT NULL default '0' AFTER `id_contrato`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_servicio`;
+
+CREATE TABLE `sgm_contratos_servicio_notificacion_condicion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `id_servicio_notificacion` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `id_usuario_origen` int(11) NOT NULL default '0' AFTER `id_servicio_notificacion`;
+ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `tipo_edicion_incidencia` int(11) NOT NULL default '0' AFTER `id_usuario_origen`;
+
 /*
 INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);

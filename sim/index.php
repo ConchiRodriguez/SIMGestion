@@ -140,7 +140,9 @@ lopd($userid,$username,$option,$soption);
 		}
 
 		function desplegableCombinado2(){
-			if (document.getElementById('id_cliente').value!=0){document.getElementById('id_servicio').value=0;}
+			if (document.getElementById('id_cliente').value!=0){
+				document.getElementById('id_servicio').value=0;
+			}
 			document.forms.form1.action='';
 			document.forms.form1.method='POST';
 			document.forms.form1.submit();
@@ -148,6 +150,13 @@ lopd($userid,$username,$option,$soption);
 
 		function desplegableCombinado3($service2){
 			if ($service2!=0){document.getElementById('id_servicio').value=0;}
+			document.forms.form1.action='';
+			document.forms.form1.method='POST';
+			document.forms.form1.submit();
+		}
+
+		function desplegableCombinado4($id_usuario_origen){
+			if ($id_usuario_origen!=0){document.getElementById('id_servicio').value=0;}
 			document.forms.form1.action='';
 			document.forms.form1.method='POST';
 			document.forms.form1.submit();
@@ -234,13 +243,45 @@ if (($option == 900) or ($option == 600)) {
 		echo "<tr>";
 			echo "<td class=\"maestra\">";
 				echo "<table style=\"width:100%;\"><tr>";
-					echo "<td style=\"color:white;width:90%;\">";
+					echo "<td style=\"color:white;width:20%;\">";
 						if ($user == true) {
-							echo $Bienvenido." <strong>".$username."</strong>&nbsp;&nbsp;(id.<strong>".$userid.")</strong>";
+							echo "<strong>".$Bienvenido." <strong>".$username."</strong>&nbsp;&nbsp;(id.<strong>".$userid.")</strong>";
 						} else {
 							echo "<a href=\"index.php?op=100\" style=\"color : white;\"><strong>[ ".$Identificarse." ]</strong></a>";
 						}
 						echo "&nbsp;&nbsp;&nbsp;&nbsp;<strong>".date("d/m/Y")."&nbsp;&nbsp;&nbsp;&nbsp;".date("H:i")."</strong>";
+				echo "</td>";
+				echo "<td style=\"color:white;width:65%;\">";
+					if ($sgm == 1) {
+						echo "<ul class=\"menu1\">";
+							echo "<li><a href=\"index.php?op=200\">".$Panel_usuario."</a>";
+							$sqlu = "select * from sgm_users where id=".$userid;
+							$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+							$rowu = mysqli_fetch_array($resultu);
+								if ($rowu["sgm"] == 1) {
+									$sqlmg = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
+									$resultmg = mysqli_query($dbhandle,convertSQL($sqlmg));
+									while ($rowmg = mysqli_fetch_array($resultmg)) {
+
+										echo "<li><a href=\"#\">".$rowmg["nombre"]."</a>";
+											echo "<ul>";
+												$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$rowmg["id"]." order by nombre";
+												$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+												while ($rowm = mysqli_fetch_array($resultm)) {
+													echo "<li><a href=\"index.php?op=".$rowm["id_modulo"]."\">".$rowm["nombre"]."</a></li>";
+												}
+											echo "</ul>";
+										echo "</li>";
+									}
+								}
+						echo "</ul>";
+					}
+				echo "</td>";
+				echo "<td style=\"color:white;width:5%;\">";
+					echo "<a href=\"index.php?op=1008&sop=100\"><img src=\"mgestion/pics/icons-mini/group_add.png\" alt=\"Cliente\" border=\"0\"></a>";
+				echo "</td>";
+				echo "<td style=\"color:white;width:5%;\">";
+					echo "<a href=\"index.php?op=1018&sop=100&id_entrada=1\"><img src=\"mgestion/pics/icons-mini/telephone.png\" alt=\"Telefono\" border=\"0\"></a>";
 				echo "</td>";
 				echo "<td style=\"color:white;width:5%;\">";
 					if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\" style=\"color : white;\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\" style=\"color : white;\">Es</a>"; }
@@ -248,49 +289,6 @@ if (($option == 900) or ($option == 600)) {
 				echo "</td>";
 				echo "<td style=\"width:5%;text-align:right;vertical-align:middle;\"><a href=\"index.php?sop=666\"  style=\"color : white;\">[".$Salir."]</a></td>";
 				echo "</tr></table>";
-			echo "</td>";
-		echo "</tr>";
-		echo "<tr>";
-			echo "<td colspan=\"3\" class=\"maestra2\">";
-
-			if ($sgm == 1) {
-
-				if ($option <> 0) {
-					$sqlmodulo = "select * from sgm_users_permisos_modulos where id_modulo=".$option;
-					$resultmodulo = mysqli_query($dbhandle,convertSQL($sqlmodulo));
-					$rowmodulo = mysqli_fetch_array($resultmodulo);
-					$id_grupo = $rowmodulo["id_grupo"];
-				} else {
-					$id_grupo = $_GET["id_grupo"];
-				}
-
-				echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
-					if ($option == 200) {$class = "menu_select";} else {$class = "menu";}
-					echo "<td class=".$class."><a href=\"index.php?op=200&sop=0\" class=".$class.">".$Panel_usuario."</a></td>";
-					$sqlu = "select * from sgm_users where id=".$userid;
-					$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
-					$rowu = mysqli_fetch_array($resultu);
-						if ($rowu["sgm"] == 1) {
-							$sqlm = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
-							$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
-							while ($rowm = mysqli_fetch_array($resultm)) {
-								if ($rowm["id"] == $id_grupo) {$class = "menu_select";} else {$class = "menu";}
-								echo "<td class=".$class."><a href=\"index.php?id_grupo=".$rowm["id"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
-							}
-						}
-				echo "</tr></table>";
-
-	##			if ($option == 0) {
-					echo "<table cellpadding=\"0\" cellspacing=\"1\" class=\"lista\"><tr>";
-						$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$id_grupo." order by nombre";
-						$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
-						while ($rowm = mysqli_fetch_array($resultm)) {
-								if ($rowm["id_modulo"] == $option) {$class = "menu_select";} else {$class = "menu";}
-							echo "<td class=".$class."><a href=\"index.php?op=".$rowm["id_modulo"]."\" class=".$class.">".$rowm["nombre"]."</a></td>";
-						}
-					echo "</tr></table>";
-				}
-	##		}
 			echo "</td>";
 		echo "</tr>";
 		echo "<tr>";

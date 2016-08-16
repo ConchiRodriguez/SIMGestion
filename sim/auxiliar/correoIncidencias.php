@@ -2,10 +2,10 @@
 error_reporting(~E_ALL);
 
 function correoIncidencias(){
-	global $db,$dbhandle,$asunto;
+	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
 	
 	//Abre conexión IMAP
-	$imap = imap_open ("{mail.solucions-im.net:143/imap/notls}INBOX", "proves@solucions-im.net", "Proves15") or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
+	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
 	$checar = imap_check($imap);
 	// Detalles generales de todos los mensajes del buzón.
 	$resultados = imap_fetch_overview($imap,"1:{$checar->Nmsgs}",0);
@@ -161,11 +161,13 @@ function correoIncidencias(){
 //Busca si contiene codigo de incidencia en el asunto
 				list($idinci,$id_inc) = buscarCodigoIncidenciaEmail($asunto1,$id_cliente);
 				if ($idinci == 0) {list($idinci,$id_inc) = buscarEmailRespuesta($asunto1,$id_cliente);}
+				if ($idinci == 0) {list($idinci,$id_inc,$id_codigo_externo,$asunto2) = buscarCodigoExternoIncidencia($asunto1,$id_cliente,$mensaje);}
+				if (($asunto != $asunto2) and ($asunto2 != "")) {$asunto = $asunto2;}
 //si se encuentra una sola coincidencia inserta una nota de desarrollo, si es 0 o mas de 1 añade una incidencia nueva.
 				if ($idinci == 1){
 //Añadir nota a incidencia
-					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada";
-					$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0);
+					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada,codigo_externo";
+					$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id=".$id_inc;
@@ -193,9 +195,9 @@ function correoIncidencias(){
 						$id_servicio_con = 0;
 					}
 //Buscar si contiene codigo de incidencia del cliente
-					if ($id_servicio_con != 0){
-						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente,$asunto1);
-					}
+#					if ($id_servicio_con != 0){
+#						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente,$asunto1);
+#					}
 //Añadir incidencia
 					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo";
 					$datosInsert = array(0,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,'-1',3,$mensaje,$asunto,0,$id_servicio_con,$id_codigo_externo);

@@ -347,7 +347,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								}
 							}
 						echo "</tr>";
-						echo "<tr><td colspan=\"39\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:500px\"></td></tr>";
+						echo "<tr><td colspan=\"39\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:200px\"></td></tr>";
 					echo "</table>";
 					echo "</form>";
 				echo "</td><td style=\"text-align:left;vertical-align:top;width:15%;\">";
@@ -834,7 +834,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<strong>".$row["poblacion"]."</strong>";
 					if ($row["provincia"] != "") {echo " (".$row["provincia"].")";}
 					if ($row["telefono"] != "") { echo "<br>".$Telefono." : <strong>".$row["telefono"]."</strong>"; }
-					if ($row["mail"] != "") { echo "<br>".$Email." : <a href=\"mailto:".$row["email"]."\"><strong>".$row["mail"]."</strong></a>"; }
+					if ($row["mail"] != "") { echo "<br>".$Email." : <a href=\"mailto:".$row["mail"]."\"><strong>".$row["mail"]."</strong></a>"; }
 					if ($row["url"] != "") { echo "<br>".$Web." : <strong>".$row["url"]."</strong>"; }
 				echo "</td>";
 				echo "<td style=\"vertical-align:top\">";
@@ -862,7 +862,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "<h4>".$Nuevo." ".$Cliente."</h4>";
 			echo "<form action=\"index.php?op=1008&sop=100&ssop=1\"  method=\"post\">";
 		}
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"background-color:Silver;\">";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr><td></td><th>".$Datos_Fiscales."</th></tr>";
 			echo "<tr><th class=\"formclient\">*".$Nombre.": </th><td style=\"width:400px\"><input type=\"Text\" name=\"nombre\" value=\"".$row["nombre"]."\"  class=\"formclient\" required></td></tr>";
 			echo "<tr><th class=\"formclient\">".$Apellido." 1: </th><td><input type=\"Text\" name=\"cognom1\" value=\"".$row["cognom1"]."\" class=\"formclient\"></td></tr>";
@@ -882,12 +882,12 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo ">Sin&nbsp;&nbsp;";
 			echo "</td></tr>";
 			echo "<tr><th class=\"formclient\">".$Numero.": </th><td><input type=\"Text\" name=\"nif\" value=\"".$row["nif"]."\"  class=\"formclient\"></td></tr>";
-			echo "<tr><th class=\"formclient\" style=\"vertical-align:top;\">*".$Direccion.": </th><td><textarea name=\"direccion\" class=\"formclient\" rows=\"3\" required>".$row["direccion"]."</textarea></td></tr>";
-			echo "<tr><th class=\"formclient\">*".$CP.": </th><td><input type=\"Text\" name=\"cp\" value=\"".$row["cp"]."\"  class=\"formclient\" required></td></tr>";
-			echo "<tr><th class=\"formclient\">*".$Poblacion.": </th><td><input type=\"Text\" name=\"poblacion\" value=\"".$row["poblacion"]."\"  class=\"formclient\" required></td></tr>";
-			echo "<tr><th class=\"formclient\">*".$Provincia.": </th><td><input type=\"Text\" name=\"provincia\" value=\"".$row["provincia"]."\"  class=\"formclient\" required></td></tr>";
+			echo "<tr><th class=\"formclient\" style=\"vertical-align:top;\">*".$Direccion.": </th><td><textarea name=\"direccion\" class=\"formclient\" rows=\"3\">".$row["direccion"]."</textarea></td></tr>";
+			echo "<tr><th class=\"formclient\">*".$CP.": </th><td><input type=\"Text\" name=\"cp\" value=\"".$row["cp"]."\"  class=\"formclient\"></td></tr>";
+			echo "<tr><th class=\"formclient\">*".$Poblacion.": </th><td><input type=\"Text\" name=\"poblacion\" value=\"".$row["poblacion"]."\"  class=\"formclient\"></td></tr>";
+			echo "<tr><th class=\"formclient\">*".$Provincia.": </th><td><input type=\"Text\" name=\"provincia\" value=\"".$row["provincia"]."\"  class=\"formclient\"></td></tr>";
 			echo "<tr><th class=\"formclient\">*".$Pais.": </th>";
-				echo "<td><select name=\"id_pais\" class=\"formclient\" required>";
+				echo "<td><select name=\"id_pais\" class=\"formclient\">";
 				echo "<option></option>";
 				$sqlo = "select id,pais from sim_paises where visible=1 order by pais";
 				$resulto = mysqli_query($dbhandle,convertSQL($sqlo));
@@ -931,11 +931,11 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "<tr><th class=\"formclient\">".$Organo_gestor.": </th><td><input type=\"Text\" name=\"dir3_organo_gestor\" value=\"".$row["dir3_organo_gestor"]."\"  class=\"formclient\"></td></tr>";
 			echo "<tr><th class=\"formclient\">".$Unidad_tramitadora.": </th><td><input type=\"Text\" name=\"dir3_unidad_tramitadora\" value=\"".$row["dir3_unidad_tramitadora"]."\"  class=\"formclient\"></td></tr>";
 			echo "<tr><td></td><th>".$Obligatorio.":</th></tr>";
-			echo "<tr><th class=\"formclient\">*".$Alias."</th><td><input type=\"Text\" name=\"alias\" value=\"".$row["alias"]."\" class=\"formclient\" required></td></tr>";
+			echo "<tr><th class=\"formclient\">*".$Alias."</th><td><input type=\"Text\" name=\"alias\" value=\"".$row["alias"]."\" class=\"formclient\"></td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			echo "<tr><td class=\"submit\" colspan=\"2\">";
-				if ($id_client > 0) { echo "<input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100%;height:50px\">"; }
-				if ($id_client <= 0) {	echo "<input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100%;height:50px\">"; }
+			echo "<tr><td></td><td>";
+				if ($id_client > 0) { echo "<input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\">"; }
+				if ($id_client <= 0) {	echo "<input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\">"; }
 			echo "</td></tr>";
 		echo "</table>";
 		echo "</form>";
@@ -1081,8 +1081,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "<form action=\"index.php?op=1008&sop=105&ssop=1&id=".$id_client."\"  method=\"post\">";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 			echo "<tr>";
-				echo "<td class=\"submit\" colspan=\"4\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"height:30px;width:100%;\"></td>";
-			echo "</tr><tr><td>&nbsp;</td></tr><tr>";
 				echo "<td style=\"vertical-align:top;width:20%;\">";
 					echo "<table class=\"formclient\">";
 						echo "<tr><td></td><th>".$Datos_Adicionales."</th></tr>";
@@ -1444,7 +1442,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "</table>";
 				echo "</td>";
 			echo "</tr><tr><td>&nbsp;</td></tr><tr>";
-				echo "<td class=\"submit\" colspan=\"4\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"height:30px;width:100%;\"></td>";
+				echo "<td class=\"submit\" colspan=\"4\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
 			echo "</tr>";
 		echo "</table>";
 		echo "<br><br>";
@@ -1945,8 +1943,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$row = mysqli_fetch_array($result);
 					echo "<td>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 					echo "<td>".$rowcc["descripcion"]."</td>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=141&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a></td>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=142&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_get.png\" alt=\"Subir\" border=\"0\"></a></td>";
+					echo boton_form("op=1008&sop=141&id=".$_GET["id"]."&id_con=".$rowcc["id"],$Editar);
+					echo boton_form("op=1008&sop=145&id=".$_GET["id"]."&id_con=".$rowcc["id"],$Archivo);
 				echo "</tr>";
 			}
 		echo "</table>";
@@ -1956,20 +1954,16 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 141) {
 		echo "<h4>".$Contrato." : </h4>";
 		echo boton(array("op=1008&sop=140&id=".$_GET["id"]),array("&laquo; ".$Volver));
-		mostrarContrato ($_GET["id_con"],$_GET["id"],142,143);
+		mostrarContrato ($_GET["id_con"],$_GET["id"]);
+		echo "<br><br>";
+		mostrarServicio ($_GET["id_con"],$_GET["id"],142);
+
 	}
 
 	if ($soption == 142) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1008&sop=141&ssop=4&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"],"op=1008&sop=141&id=".$_GET["id"]),array($Si,$No));
-		echo "</center>";
-	}
-
-	if ($soption == 143) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1008&sop=141&ssop=12&id=".$_GET["id"]."&id_fact=".$_GET["id_fact"],"op=1008&sop=141&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 

@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit_contra) {
-	global $db,$dbhandle,$Contrasenas,$Contrato,$Aplicacion,$Buscar,$Acceso,$Usuario,$Contrasena,$Descripcion,$userid,$ssoption,$simclau,$ErrorPass,$PassIncorrecto,$id_aplicacion,$id_contrato;
+	global $db,$dbhandle,$Contrasenas,$Contrato,$Aplicacion,$Buscar,$Acceso,$Usuario,$Contrasena,$Descripcion,$userid,$ssoption,$simclau,$ErrorPass,$PassIncorrecto,$id_aplicacion,$id_contrato,$Editar;
 		if ($ssoption == 1) {
 			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") {
 				echo mensaje_error($PassIncorrecto);
@@ -73,6 +73,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 		while ($rowcc = mysqli_fetch_array($resultcc)){
 			$url_enlace = "";
+			echo "<form action=\"index.php?".$link_edit."&id_con=".$rowcc["id"]."\" method=\"post\">";
 			echo "<tr>";
 				echo "<td style=\"text-align:center;\"><a href=\"index.php?".$link_del."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 				$sql = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and id=".$rowcc["id_contrato"];
@@ -86,14 +87,15 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 				$resultam = mysqli_query($dbhandle,convertSQL($sqlam));
 				$rowam = mysqli_fetch_array($resultam);
 				echo "<td>".$rowam["aplicacion"]."</td>";
-				echo "<td>".$rowcc["acceso"]."</td>";
-				echo "<td><a href=\"index.php?".$link_edit."&id_con=".$rowcc["id"]."\">".$rowcc["usuario"]."</a></td>";
+				echo "<td><a href=\"".$rowcc["acceso"]."\" target=\"_blank\">".$rowcc["acceso"]."</td>";
+				echo "<td>".$rowcc["usuario"]."</td>";
 				echo "<td style=\"text-align:left;\">";
-				echo "<a href=\"index.php?".$link_veure_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a>&nbsp;&nbsp;";
 				echo "<a href=\"index.php?".$link_edit_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a>";
 				echo "</td>";
 				echo "<td>".$rowcc["descripcion"]."</td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
 			echo "</tr>";
+			echo "</form>";
 		}
 		echo "</table>";
 }
