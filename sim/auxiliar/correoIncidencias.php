@@ -180,7 +180,7 @@ function correoIncidencias(){
 					$rowser = mysqli_fetch_array($resultser);
 //enviar notificación nueva nota en la incidencia
 					if ($rowser["auto_email"] == 1){
-						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],'',2);
+						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2);
 					}
 				} else {
 //Buscar si contiene codigo de catalogo de servicio

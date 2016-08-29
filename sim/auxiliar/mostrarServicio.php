@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
-	global $db,$dbhandle,$Prefijo,$Notificacion,$option,$soption,$ssoption,$Servicios,$Contrato,$Volver,$Servicio,$Obligatorio,$Extranet,$Incidencias,$Duracion,$Cobertura,$Tiempo,$NBD,$SLA,$Precio,$Codigo,$Catalogo,$AutoEmail,$Funcion,$Origen,$Si,$No,$Anadir,$Modificar,$Total,$ayudaServicios;
+	global $db,$dbhandle,$idioma;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 		if ($ssoption == 2) {
 			$sql = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." and servicio='".comillas($_POST["servicio"])."'";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -34,20 +38,20 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th></th>";
 				echo "<th>".$Servicio."</th>";
-				echo "<th>".$Codigo." ".$Catalogo."</th>";
+				echo "<th>".$Codigo." ".$Catalogo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios9."\"></th>";
 				echo "<th>".$Prefijo." ".$Notificacion."</th>";
-				echo "<th>".$Obligatorio."</th>";
-				echo "<th>".$Extranet."</th>";
-				echo "<th>".$Incidencias."</th>";
-				echo "<th>".$Duracion."</th>";
-				echo "<th>".$Cobertura."</th>";
-				echo "<th>".$Tiempo."</th>";
-				echo "<th>".$NBD."</th>";
-				echo "<th>".$SLA." %</th>";
+				echo "<th>".$Obligatorio."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios1."\"></th>";
+				echo "<th>".$Extranet."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios2."\"></th>";
+				echo "<th>".$Incidencias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios3."\"></th>";
+				echo "<th>".$Duracion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios4."\"></th>";
+				echo "<th>".$Cobertura."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios5."\"></th>";
+				echo "<th>".$Tiempo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios6."\"></th>";
+				echo "<th>".$NBD."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios7."\"></th>";
+				echo "<th>".$SLA." %<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios8."\"></th>";
 				echo "<th>".$Precio."</th>";
-				echo "<th>".$AutoEmail."</th>";
-				echo "<th>".$Funcion."</th>";
-				echo "<th>".$Origen."</th>";
+				echo "<th>".$AutoEmail."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios10."\"></th>";
+				echo "<th>".$Funcion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios11."\"></th>";
+				echo "<th>".$Origen."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios12."\"></th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
 				echo "<td></td>";
@@ -111,7 +115,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$option."&sop=".$sop_delete."&id=".$contrato_adress."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$option."&sop=".$sop_delete."&id=".$contrato_adress."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=".$option."&sop=".$soption."&ssop=3&id=".$contrato_adress."&id_ser=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["servicio"]."\" style=\"width:250px\" name=\"servicio\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["codigo_catalogo"]."\" style=\"width:100px\" name=\"codigo_catalogo\"></td>";
@@ -231,7 +235,6 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			echo "</tr>";
 		echo "</table></center>";
 		echo "<br><br>";
-		echo $ayudaServicios;
 }
 
 ?>

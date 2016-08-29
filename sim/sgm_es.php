@@ -5,6 +5,7 @@ $Abreviatura = "Abreviatura";
 $Abrir = "Abrir";
 $Acceso = "Acceso";
 $Acciones = "Acciones";
+$Activa = "Activa";
 $Activar = "Activar";
 $Activo = "Activo";
 $Activos = "Activos";
@@ -270,6 +271,7 @@ $Extranjero = "Extranjero";
 
 $Fabricante = "Fabricante";
 $Factura = "Factura";
+$Facturar = "Facturar";
 $Facturas = "Facturas";
 $Facturacion = "Facturaci&oacute;n";
 $FACTURADO = "FACTURADO";
@@ -469,6 +471,7 @@ $Parada = "Parada";
 $Parametros = "Parametros";
 $Parcial = "Parcial";
 $Pasillo = "Pasillo";
+$Pausada = "Pausada";
 $Pausadas = "Pausadas";
 $Pausar = "Pausar";
 $Pedido = "Pedido";
@@ -511,6 +514,7 @@ $Principal = "Principal";
 $Privada = "Privada";
 $Propietario = "Propietario";
 $proveedor = "proveedor";
+$Proveedor = "Proveedor";
 $Proveedores = "Proveedores";
 $Provincia = "Provincia";
 $provisional = "provisional";
@@ -580,6 +584,7 @@ $SIN = "SIN";
 $Sin = "Sin";
 $SinAsunto = "Sin Asunto";
 $SinCliente = "Sin Cliente";
+$SinContrato = "Sin Contrato";
 $Sincronizaciones = "Sincronizaciones";
 $Sincronizar = "Sincronizar";
 $Sin_clasificar = "Sin Clasificar";
@@ -604,8 +609,10 @@ $Tabla = "Tabla";
 $Tamano = "Tama&ntilde;o";
 $Tarea = "Tarea";
 $Tareas = "Tareas";
+$Tarifa = "Tarifa";
 $Tarifas = "Tarifas";
 $Tecnico = "T&eacute;cnico";
+$Tecnicos = "T&eacute;cnicos";
 $Telefono = "Tel&eacute;fono";
 $Telefonica = "Telef&oacute;nica";
 $Temario = "Temario";
@@ -786,24 +793,33 @@ $ayudaPanelUserPass = "M&aacute;x. 10 car&aacute;cteres";
 $ayudaPanelUserPass2 = "Si no pudiera hacer correctamente el login de nuevo, borre las cookies referentes a solucions-im.com de su navegador.";
 $errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
 
-$Ayuda_alias = "El <em>Alias</em> es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
-$Ayuda_vip = "El <em>Cliente VIP</em> es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
-
 $ErrorServicio = "Un servicio con el mismo nombre ya existe en este contrato";
-$ayudaServicios = "<strong>Obligatorio</strong>: Si para aquellos servicios que van incluidos en el contrato y no son seleccionables por el cliente.<br>
-<strong>Extranet</strong>: Si el servicio es visible para el cliente en la extranet, secci&oacute;n contratos.<br>
-<strong>Incidencias</strong>: Si el cliente puede abrir incidencias sobre este servicio.<br>
-<strong>Duraci&oacute;n </strong>: Si el cliente puede ver la duraci&oacute;n de las incidencias.<br>
-<strong>Cobertura</strong>: Horas de cobertura del servicio.<br>
-<strong>Tiempo</strong>: Tiempo m&aacute;ximo de resoluci&oacute;n de incidencias del servicio en SLA.<br>
-<strong>NBD</strong>: Next Bussines Day, Si las incidencias hay que resolverlas dentro del horario laboral.<br>
-<strong>SLA</strong>: Porcentage de incidencias que se deben resolver dentro del máximo de horas de SLA.<br>
-<strong>Codigo Catalogo</strong>: identificador &uacute;nico del servicio en el sistema.<br>
-<strong>AutoEmail</strong>: Envio autom&aacute;tico de email en el modulo de incidencias.<br>
-<strong>Funcion</strong>: nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.<br>
-<strong>Origen</strong>: codigo de quien abre incidencias relacionadas con este servicio.<br>
-";
 
 $OkActualizacionCliente = "El tipo de los clientes se ha actualizado con &eacute;xito";
 $ErrorActualizacionCliente = "El tipo de los clientes no se ha actualizado correctamente";
+
+$ayudaIncidenciaCliente = "Acceso al formulario de inserción de contacto";
+$ayudaIncidenciaContrasena = "Acceso a las contrase&ntilde;as del cliente";
+$ayudaIncidenciaContrato = "Acceso a los contratos del cliente";
+
+$info_contrato_notificaciones = "Gesti&oacute;n de las notificaciones de los servicios. Se enviar&aacute;n notificaciones al usuario escogido cuando la incidencia tenga el servicio y el usuario de origen escogido, y cuando se realize una de las acciones escogidas sobre ella.";
+$info_contrato_archivos = "El archivo a subir es el contrato escaneado una vez firmado por ambas partes";
+$info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
+$info_contrato_servicios1 = "Si para aquellos servicios que van incluidos en el contrato y no son seleccionables por el cliente.";
+$info_contrato_servicios2 = "Si el servicio es visible para el cliente en la extranet, secci&oacute;n contratos.";
+$info_contrato_servicios3 = "Si el cliente puede abrir incidencias sobre este servicio.";
+$info_contrato_servicios4 = "Si el cliente puede ver la duraci&oacute;n de las incidencias.";
+$info_contrato_servicios5 = "Horas de cobertura del servicio.";
+$info_contrato_servicios6 = "Tiempo m&aacute;ximo de resoluci&oacute;n de incidencias del servicio en SLA.";
+$info_contrato_servicios7 = "(Next Bussines Day) Si las incidencias hay que resolverlas dentro del horario laboral.";
+$info_contrato_servicios8 = "Porcentage m&iacute;nimo de incidencias que se deben resolver en el tiempo y la cobertura asociados.";
+$info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el sistema.";
+$info_contrato_servicios10 = "Envio autom&aacute;tico de email en el modulo de incidencias.";
+$info_contrato_servicios11 = "Nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.";
+$info_contrato_servicios12 = "Codigo de quien abre incidencias relacionadas con este servicio.";
+
+$info_cliente_alias = "El Alias es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
+$info_cliente_vip = "El Cliente VIP es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
+
+
 ?>

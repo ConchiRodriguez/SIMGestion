@@ -119,7 +119,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					$sqlcab = "select id from sgm_cabezera where visible=1 and id_contrato=".$rowc["id"]." order by id desc";
 					$resultcab = mysqli_query($dbhandle,convertSQL($sqlcab));
 					$rowcab = mysqli_fetch_array($resultcab);
-					$sqlcu = "select * from sgm_cuerpo where idfactura=".$rowca["id"];
+					$sqlcu = "select nombre,pvp,fecha_prevision,total from sgm_cuerpo where idfactura=".$rowca["id"];
 					$resultcu = mysqli_query($dbhandle,convertSQL($sqlcu));
 					while ($rowcu = mysqli_fetch_array($resultcu)) {
 	#						insertCuerpo($rowcab["id"],1,0,$rowcu["nombre"],0,$rowcu["total"],1,$rowcu["fecha_prevision"],0,0,$rowcu["fecha_prevision_propia"]);
@@ -236,7 +236,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
 					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
@@ -285,8 +285,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 			$rowcc = mysqli_fetch_array($resultcc);
 			if (!$rowcc){
-				$camposInsert = "id_contrato_tipo,id_cliente,id_cliente_final,num_contrato,fecha_ini,fecha_fin,descripcion,id_responsable,id_tecnico";
-				$datosInsert = array($_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["num_contrato"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"]);
+				$camposInsert = "id_contrato_tipo,id_cliente,id_cliente_final,num_contrato,fecha_ini,fecha_fin,descripcion,id_responsable,id_tecnico,id_tarifa";
+				$datosInsert = array($_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["num_contrato"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"]);
 				insertFunction ("sgm_contratos",$camposInsert,$datosInsert);
 
 				$sqlc = "select id from sgm_contratos where num_contrato='".$_POST["num_contrato"]."' and visible=1";
@@ -315,8 +315,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=100&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Datos." ".$Contrato."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=110&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Servicios."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=120&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Facturas."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=160&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Gastos."</a></td>";
 						echo "</tr>";
 						echo "<tr>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=150&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Tecnicos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=130&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Archivos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=140&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Notificaciones."</a></td>";
 							echo "<td></td>";
@@ -348,7 +350,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 100) {
 		echo "<h4>".$Datos." ".$Contrato." : </h4>";
-		mostrarContrato ($id_contrato,0);
+		mostrarContrato ($id_contrato,0,$_GET["id_cli"]);
 	}
 
 	if ($soption == 110) {
@@ -365,10 +367,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 120) {
 		if ($ssoption == 1) {
-			$datosInsert = array('fecha' => $_POST["fecha"], 'fecha_prevision' => $_POST["fecha_prevision"], 'id_cliente' => $_POST["id_cliente"], 'id_contrato' => $_GET["id"]);
+			$datosInsert = array('fecha' => $_POST["fecha"], 'fecha_prevision' => $_POST["fecha_prevision"], 'id_cliente' => $_POST["id_cliente"], 'id_contrato' => $_GET["id"], 'tipo' => $_POST["id_tipo"]);
 			insertCabezera($datosInsert);
 
-			$sql = "select id from sgm_cabezera where visible=1 and id_contrato=".$_POST["id_contrato"]." order by id desc";
+			$sql = "select id from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." order by id desc";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
 			$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
@@ -386,8 +388,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$datosInsert = array($_GET["id_fact"],$userid,$row["fecha_prevision"],$_POST["fecha_prevision"]);
 				insertFunction ("sgm_factura_canvi_data_prevision",$camposInsert,$datosInsert);
 			}
-			$camposUpdate = array("fecha","fecha_prevision");
-			$datosUpdate = array($_POST["fecha"],$_POST["fecha_prevision"]);
+			$camposUpdate = array("fecha","fecha_prevision","id_cliente","tipo");
+			$datosUpdate = array($_POST["fecha"],$_POST["fecha_prevision"],$_POST["id_cliente"],$_POST["id_tipo"]);
 			updateFunction ("sgm_cabezera",$_GET["id_fact"],$camposUpdate,$datosUpdate);
 			$data = date("Y-m-d");
 			$hora = date("H:i:s");
@@ -423,6 +425,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th></th>";
+				echo "<th>".$Tipo."</th>";
 				echo "<th>".$Fecha."</th>";
 				echo "<th>".$Fecha." ".$Prevision."</th>";
 				echo "<th>".$Concepto."</th>";
@@ -432,6 +435,13 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "<form action=\"index.php?op=1011&sop=120&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowcontrato["id_cliente"]."\">";
+				echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
+					$sqltipos = "select id,tipo from sgm_factura_tipos where visible=1 and contabilidad='1' order by orden";
+					$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+					while ($rowtipos = mysqli_fetch_array($resulttipos)) {
+						echo "<option value=\"".$rowtipos["id"]."\">".$rowtipos["tipo"]."</option>";
+					}
+				echo "</select></td>";
 				$date = date("Y-m-d", mktime(0,0,0,date("m"),date("d"),date("Y")));
 				echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$date."\"></td>";
 				echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$date."\"></td>";
@@ -441,15 +451,26 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select id,fecha,fecha_prevision from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]."";
+			$sql = "select id,fecha,fecha_prevision,tipo from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where visible=1 and contabilidad=1)";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				$sqlcu = "select nombre,pvp from sgm_cuerpo where idfactura=".$row["id"]."";
 				$resultcu = mysqli_query($dbhandle,convertSQL($sqlcu));
 				$rowcu = mysqli_fetch_array($resultcu);
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=121&id=".$_GET["id"]."&id_fact=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=121&id=".$_GET["id"]."&id_fact=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1011&sop=120&ssop=2&id=".$_GET["id"]."&id_fact=".$row["id"]."\" method=\"post\">";
+					echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
+						$sqltipos = "select id,tipo from sgm_factura_tipos where visible=1 and contabilidad='1' order by orden,descripcion";
+						$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+						while ($rowtipos = mysqli_fetch_array($resulttipos)) {
+							if ($row["tipo"] == $rowtipos["id"]){
+								echo "<option value=\"".$rowtipos["id"]."\" selected>".$rowtipos["tipo"]."</option>";
+							} else {
+								echo "<option value=\"".$rowtipos["id"]."\">".$rowtipos["tipo"]."</option>";
+							}
+						}
+					echo "</select></td>";
 					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$row["fecha"]."\"></td>";
 					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$row["fecha_prevision"]."\"></td>";
 					echo "<td><input style=\"text-align:left;width:400px\" type=\"Text\" name=\"concepto\" value=\"".$rowcu["nombre"]."\"></td>";
@@ -498,16 +519,16 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"width:70%;vertical-align:top;\">";
-					echo "<h4>".$Archivos." :</h4>";
+					echo "<h4>".$Archivos." : <img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_archivos."\"></h4>";
 					echo "<table>";
-					$sql = "select * from sgm_files_tipos order by nombre";
+					$sql = "select id,nombre from sgm_files_tipos order by nombre";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
-						$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=3 and id_elemento=".$_GET["id_con"];
+						$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=3 and id_elemento=".$_GET["id_con"];
 						$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
 						while ($rowele = mysqli_fetch_array($resultele)) {
 							echo "<tr>";
-								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=131&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=131&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 								echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
 								echo "<td><a href=\"".$urloriginal."/archivos/contratos/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
 								echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
@@ -522,7 +543,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<table>";
 						echo "<tr>";
 							echo "<td><select name=\"id_tipo\" style=\"width:300px\">";
-								$sql = "select * from sgm_files_tipos order by nombre";
+								$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
 								$result = mysqli_query($dbhandle,convertSQL($sql));
 								while ($row = mysqli_fetch_array($result)) {
 									echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
@@ -547,26 +568,44 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 140) {
 		if ($ssoption == 1) {
-			$camposInsert = "id_contrato,id_servicio,id_usuario";
-			$datosInsert = array($_GET["id"],$_POST["id_servicio"],$_POST["id_usuario"]);
+			$camposInsert = "id_contrato,id_servicio,id_usuario,id_usuario_origen,tipo_edicion_todas,tipo_edicion_anadir,tipo_edicion_modificar,tipo_edicion_cerrar";
+			$datosInsert = array($_GET["id"],$_POST["id_servicio"],$_POST["id_usuario"],$_POST["id_usuario_origen"],$_POST["todas"],$_POST["anadir"],$_POST["modificar"],$_POST["cerrar"]);
 			insertFunction ("sgm_contratos_servicio_notificacion",$camposInsert,$datosInsert);
 		}
+		if ($ssoption == 2) {
+			$camposUpdate = array("id_contrato","id_servicio","id_usuario","id_usuario_origen","tipo_edicion_todas","tipo_edicion_anadir","tipo_edicion_modificar","tipo_edicion_cerrar");
+			$datosUpdate = array($_GET["id"],$_POST["id_servicio"],$_POST["id_usuario"],$_POST["id_usuario_origen"],$_POST["todas"],$_POST["anadir"],$_POST["modificar"],$_POST["cerrar"]);
+			updateFunction ("sgm_contratos_servicio_notificacion",$_GET["id_not"],$camposUpdate,$datosUpdate);
+		}
 		if ($ssoption == 3) {
-			deleteFunction ("sgm_contratos_servicio_notificacion",$_GET["id"]);
+			deleteFunction ("sgm_contratos_servicio_notificacion",$_GET["id_not"]);
 		}
 
-		echo "<h4>".$Notificaciones." : </h4>";
+		echo "<h4>".$Notificaciones." : <img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_notificaciones."\"></h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th></th>";
+				echo "<th></th>";
+				echo "<th></th>";
+				echo "<th></th>";
+				echo "<th colspan=\"4\" style=\"text-align:center;\">".$Tipo." ".$Edicion." ".$Incidencia."</th>";
+				echo "<th></th>";
+			echo "</tr>";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th></th>";
 				echo "<th>".$Servicio."</th>";
 				echo "<th>".$Usuario."</th>";
+				echo "<th>".$Usuarios." ".$Origen." ".$Incidencia."</th>";
+				echo "<th>".$Todos."</th>";
+				echo "<th>".$Anadir."</th>";
+				echo "<th>".$Modificar."</th>";
+				echo "<th>".$Cerrar."</th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
 			echo "<form action=\"index.php?op=1011&sop=140&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><select name=\"id_servicio\" style=\"width:300px\">";
-					$sql = "select id,servicio from sgm_contratos_servicio where id_contrato=".$_GET["id"]." order by servicio";
+					$sql = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." order by servicio";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)) {
 						echo "<option value=\"".$row["id"]."\">".$row["servicio"]."</option>";
@@ -579,6 +618,19 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<option value=\"".$row["id"]."\">".$row["usuario"]."</option>";
 					}
 				echo "</select></td>";
+				echo "<td><select name=\"id_usuario_origen\" style=\"width:300px\">";
+					echo "<option value=\"-1\">".$Todos."</option>";
+					$sql = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcontrato["id_cliente"].") order by usuario";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
+						echo "<option value=\"".$row["id"]."\">".$row["usuario"]."</option>";
+					}
+				echo "</select></td>";
+
+				echo "<td><input type=\"Checkbox\" name=\"todas\" value=\"1\"></td>";
+				echo "<td><input type=\"Checkbox\" name=\"anadir\" value=\"1\"></td>";
+				echo "<td><input type=\"Checkbox\" name=\"modificar\" value=\"1\"></td>";
+				echo "<td><input type=\"Checkbox\" name=\"cerrar\" value=\"1\"></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 			echo "</tr>";
@@ -586,18 +638,60 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$sql = "select * from sgm_contratos_servicio_notificacion where id_contrato=".$_GET["id"]."";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
-				$sqls = "select servicio from sgm_contratos_servicio where id=".$row["id_servicio"]."";
-				$results = mysqli_query($dbhandle,convertSQL($sqls));
-				$rows = mysqli_fetch_array($results);
-				$sqlu = "select usuario from sgm_users where id=".$row["id_usuario"]."";
-				$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
-				$rowu = mysqli_fetch_array($resultu);
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=141&id=".$_GET["id"]."&id_not=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=145&id=".$_GET["id"]."&id_not=".$row["id"]."\" method=\"post\">";
-					echo "<td>".$rows["servicio"]."</td>";
-					echo "<td>".$rowu["usuario"]."</td>";
-					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=141&id=".$_GET["id"]."&id_not=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1011&sop=140&ssop=2&id=".$_GET["id"]."&id_not=".$row["id"]."\" method=\"post\">";
+					echo "<td><select name=\"id_servicio\" style=\"width:300px\">";
+					$sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." order by servicio";
+					$results = mysqli_query($dbhandle,convertSQL($sqls));
+					while ($rows = mysqli_fetch_array($results)) {
+						if ($row["id_servicio"] == $rows["id"]){
+							echo "<option value=\"".$rows["id"]."\" selected>".$rows["servicio"]."</option>";
+						} else {
+							echo "<option value=\"".$rows["id"]."\">".$rows["servicio"]."</option>";
+						} 
+					}
+					echo "</select></td>";
+				echo "<td><select name=\"id_usuario\" style=\"width:300px\">";
+					$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcontrato["id_cliente"].") order by usuario";
+					$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+					while ($rowu = mysqli_fetch_array($resultu)) {
+						if ($row["id_usuario"] == $rowu["id"]){
+							echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["usuario"]."</option>";
+						} else {
+							echo "<option value=\"".$rowu["id"]."\">".$rowu["usuario"]."</option>";
+						} 
+					}
+				echo "</select></td>";
+				echo "<td><select name=\"id_usuario_origen\" style=\"width:300px\">";
+					if ($row["id_usuario_origen"] == '-1'){
+						echo "<option value=\"-1\" selected>".$Todos."</option>";
+					} else {
+						echo "<option value=\"-1\">".$Todos."</option>";
+					} 
+					$sqlu2 = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcontrato["id_cliente"].") order by usuario";
+					$resultu2 = mysqli_query($dbhandle,convertSQL($sqlu2));
+					while ($rowu2 = mysqli_fetch_array($resultu2)) {
+						if ($row["id_usuario_origen"] == $rowu2["id"]){
+							echo "<option value=\"".$rowu2["id"]."\" selected>".$rowu2["usuario"]."</option>";
+						} else {
+							echo "<option value=\"".$rowu2["id"]."\">".$rowu2["usuario"]."</option>";
+						} 
+					}
+				echo "</select></td>";
+					echo "<td><input type=\"Checkbox\" name=\"todas\" value=\"1\"";
+					if ($row["tipo_edicion_todas"] == 1){ echo "checked";}
+					echo "></td>";
+					echo "<td><input type=\"Checkbox\" name=\"anadir\" value=\"1\"";
+					if ($row["tipo_edicion_anadir"] == 1){ echo "checked";}
+					echo "></td>";
+					echo "<td><input type=\"Checkbox\" name=\"modificar\" value=\"1\"";
+					if ($row["tipo_edicion_modificar"] == 1){ echo "checked";}
+					echo "></td>";
+					echo "<td><input type=\"Checkbox\" name=\"cerrar\" value=\"1\"";
+					if ($row["tipo_edicion_cerrar"] == 1){ echo "checked";}
+					echo "></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -611,172 +705,197 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
-	if ($soption == 145) {
-		$todos_contactos = -1;
+	if ($soption == 150) {
 		if ($ssoption == 1) {
-			$sql = "select id from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcontrato["id_cliente"].")";
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			while ($row = mysqli_fetch_array($result)) {
-				$tipo_edit = array("anadir","modificar","cerrar","todos");
-				for ($i=0;$i<=count($tipo_edit);$i++){
-					$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=".($i+1);
-					$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-					$rowcs = mysqli_fetch_array($resultcs);
-					if (($rowcs["total"] == 0) and($_POST[$tipo_edit[$i]."_".$row["id"]])){
-						$camposInsert = "id_servicio_notificacion,id_usuario_origen,tipo_edicion_incidencia";
-						$datosInsert = array($_GET["id_not"],$row["id"],($i+1));
-						insertFunction ("sgm_contratos_servicio_notificacion_condicion",$camposInsert,$datosInsert);
-					}
-					if (($rowcs["total"] == 1) and(!$_POST[$tipo_edit[$i]."_".$row["id"]])){
-						$sql = "delete from sgm_contratos_servicio_notificacion_condicion WHERE id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=".($i+1);
-						mysqli_query($dbhandle,convertSQL($sql));
-						echo $sql;
-					}
-				}
-			}
-			$tipo_edit = array("anadir","modificar","cerrar","todos");
-			for ($i=0;$i<=count($tipo_edit);$i++){
-				$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=".($i+1);
-				$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-				$rowcs = mysqli_fetch_array($resultcs);
-				if (($rowcs["total"] == 0) and($_POST[$tipo_edit[$i]."_".$todos_contactos])){
-					$camposInsert = "id_servicio_notificacion,id_usuario_origen,tipo_edicion_incidencia";
-					$datosInsert = array($_GET["id_not"],$todos_contactos,($i+1));
-					insertFunction ("sgm_contratos_servicio_notificacion_condicion",$camposInsert,$datosInsert);
-				}
-				if (($rowcs["total"] == 1) and(!$_POST[$tipo_edit[$i]."_".$todos_contactos])){
-					$sql = "delete from sgm_contratos_servicio_notificacion_condicion WHERE id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=".($i+1);
-					mysqli_query($dbhandle,convertSQL($sql));
-					echo $sql;
-				}
-			}
+			$camposInsert = "id_contrato,id_usuario";
+			$datosInsert = array($_GET["id"],$_POST["id_usuario"]);
+			insertFunction ("sgm_contratos_usuarios",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 3) {
+			deleteFunction ("sgm_contratos_usuarios",$_GET["id_con_user"]);
 		}
 
-		$sql = "select * from sgm_contratos_servicio_notificacion where id=".$_GET["id_not"]."";
-		$result = mysqli_query($dbhandle,convertSQL($sql));
-		$row = mysqli_fetch_array($result);
-		$sqls = "select servicio from sgm_contratos_servicio where id=".$row["id_servicio"]."";
-		$results = mysqli_query($dbhandle,convertSQL($sqls));
-		$rows = mysqli_fetch_array($results);
-		$sqlu = "select id,usuario from sgm_users where id=".$row["id_usuario"]."";
-		$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
-		$rowu = mysqli_fetch_array($resultu);
-
-		echo "<h4>".$Notificaciones." ".$Codiciones." :</h4>";
-		echo "<table cellpadding=\"10\" cellspacing=\"0\" class=\"lista\">";
+		echo "<h4>".$Tecnicos." : <img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_tecnicos."\"></h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th></th>";
-				echo "<th>".$Servicio." : ".$rows["servicio"]."</th>";
-				echo "<th>".$Usuario." : ".$rowu["usuario"]."</th>";
+				echo "<th>".$Usuario."</th>";
 				echo "<th></th>";
-			echo "<tr>";
-		echo "</table>";
-		echo "<br><br>";
-		echo "<table cellpadding=\"2\" cellspacing=\"0\" class=\"lista\" style=\"min-width:200px;\">";
-			echo "<tr style=\"background-color:silver\">";
-				echo "<th>".$Usuarios." ".$Origen."</th>";
-				echo "<th>".$Acciones."</th>";
-			echo "</tr>";
-		echo "<form action=\"index.php?op=1011&sop=145&ssop=1&id=".$_GET["id"]."&id_not=".$_GET["id_not"]."\" method=\"post\">";
-			echo "<tr>";
-				echo "<td style=\"vertical-align:top;\">".$Todos."</td>";
-				echo "<td style=\"vertical-align:top;\">";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr>";
-							echo "<td><input type=\"Checkbox\" name=\"todos_".$todos_contactos."\" value=\"4\"";
-							$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=4";
-							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-							$rowcs = mysqli_fetch_array($resultcs);
-							if ($rowcs["total"] == 1){ echo "checked";}
-							echo "></td>";
-							echo "<td>".$Todos."</td>";
-						echo "</tr>";
-						echo "<tr>";
-							echo "<td><input type=\"Checkbox\" name=\"anadir_".$todos_contactos."\" value=\"1\"";
-							$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=1";
-							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-							$rowcs = mysqli_fetch_array($resultcs);
-							if ($rowcs["total"] == 1){ echo "checked";}
-							echo "></td>";
-							echo "<td>".$Anadir."</td>";
-						echo "</tr>";
-						echo "<tr>";
-							echo "<td><input type=\"Checkbox\" name=\"modificar_".$todos_contactos."\" value=\"2\"";
-							$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=2";
-							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-							$rowcs = mysqli_fetch_array($resultcs);
-							if ($rowcs["total"] == 1){ echo "checked";}
-							echo "></td>";
-							echo "<td>".$Modificar."</td>";
-						echo "</tr>";
-						echo "<tr>";
-							echo "<td><input type=\"Checkbox\" name=\"cerrar_".$todos_contactos."\" value=\"3\"";
-							$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$todos_contactos." and tipo_edicion_incidencia=3";
-							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-							$rowcs = mysqli_fetch_array($resultcs);
-							if ($rowcs["total"] == 1){ echo "checked";}
-							echo "></td>";
-							echo "<td>".$Cerrar."</td>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td>";
+			echo "</tr><tr>";
+			echo "<form action=\"index.php?op=1011&sop=150&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td><select name=\"id_usuario\" style=\"width:300px\">";
+					$sql = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1 order by usuario";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
+						echo "<option value=\"".$row["id"]."\">".$row["usuario"]."</option>";
+					}
+				echo "</select></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-		$sql = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcontrato["id_cliente"].") order by usuario";
-		$result = mysqli_query($dbhandle,convertSQL($sql));
-		while ($row = mysqli_fetch_array($result)) {
-			if ($rowu["id"] != $row["id"]){
+			$sql = "select * from sgm_contratos_usuarios where id_contrato=".$_GET["id"]."";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"vertical-align:top;\">".$row["usuario"]."</td>";
-					echo "<td style=\"vertical-align:top;\">";
-						echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-							echo "<tr>";
-								echo "<td><input type=\"Checkbox\" name=\"todos_".$row["id"]."\" value=\"4\"";
-								$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=4";
-								$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-								$rowcs = mysqli_fetch_array($resultcs);
-								if ($rowcs["total"] == 1){ echo "checked";}
-								echo "></td>";
-								echo "<td>".$Todos."</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td><input type=\"Checkbox\" name=\"anadir_".$row["id"]."\" value=\"1\"";
-								$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=1";
-								$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-								$rowcs = mysqli_fetch_array($resultcs);
-								if ($rowcs["total"] == 1){ echo "checked";}
-								echo "></td>";
-								echo "<td>".$Anadir."</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td><input type=\"Checkbox\" name=\"modificar_".$row["id"]."\" value=\"2\"";
-								$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=2";
-								$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-								$rowcs = mysqli_fetch_array($resultcs);
-								if ($rowcs["total"] == 1){ echo "checked";}
-								echo "></td>";
-								echo "<td>".$Modificar."</td>";
-							echo "</tr>";
-							echo "<tr>";
-								echo "<td><input type=\"Checkbox\" name=\"cerrar_".$row["id"]."\" value=\"3\"";
-								$sqlcs = "select count(*) as total from sgm_contratos_servicio_notificacion_condicion where id_servicio_notificacion=".$_GET["id_not"]." and id_usuario_origen=".$row["id"]." and tipo_edicion_incidencia=3";
-								$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-								$rowcs = mysqli_fetch_array($resultcs);
-								if ($rowcs["total"] == 1){ echo "checked";}
-								echo "></td>";
-								echo "<td>".$Cerrar."</td>";
-							echo "</tr>";
-						echo "</table>";
-					echo "</td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=151&id=".$_GET["id"]."&id_con_user=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1 and id=".$row["id_usuario"];
+					$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+					$rowu = mysqli_fetch_array($resultu);
+					echo "<td>".$rowu["usuario"]."</td>";
 				echo "</tr>";
-				echo "<tr><td>&nbsp;</td></tr>";
 			}
-		}
-			echo "<tr>";
-				echo "<td></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td>";
-			echo "</tr>";
-			echo "</form>";
 		echo "</table>";
+	}
+
+	if ($soption == 151) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1011&sop=150&ssop=3&id=".$_GET["id"]."&id_con_user=".$_GET["id_con_user"],"op=1011&sop=150&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 160) {
+		if ($ssoption == 1) {
+			$datosInsert = array('fecha' => $_POST["fecha"], 'fecha_prevision' => $_POST["fecha_prevision"], 'id_cliente' => $_POST["id_cliente"], 'id_contrato' => $_GET["id"], 'tipo' => $_POST["id_tipo"]);
+			insertCabezera($datosInsert);
+
+			$sql = "select id from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." order by id desc";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			$camposInsert = "idfactura,nombre,pvp,unidades,fecha_prevision,fecha_prevision_propia,total";
+			$datosInsert = array($row["id"],$_POST["concepto"],$_POST["importe"],1,$_POST["fecha_prevision"],$_POST["fecha_prevision"],$_POST["importe"]);
+			insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
+			refactura($row["id"]);
+
+		}
+		if ($ssoption == 2) {
+			$sql = "select fecha_prevision from sgm_cabezera where visible=1 and id=".$_GET["id_fact"];
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			if ($row["fecha_prevision"] != $_POST["fecha_prevision"]){
+				$camposInsert = "id_factura,id_usuario,fecha_ant,data";
+				$datosInsert = array($_GET["id_fact"],$userid,$row["fecha_prevision"],$_POST["fecha_prevision"]);
+				insertFunction ("sgm_factura_canvi_data_prevision",$camposInsert,$datosInsert);
+			}
+			$camposUpdate = array("fecha","fecha_prevision","id_cliente","tipo");
+			$datosUpdate = array($_POST["fecha"],$_POST["fecha_prevision"],$_POST["id_cliente"],$_POST["id_tipo"]);
+			updateFunction ("sgm_cabezera",$_GET["id_fact"],$camposUpdate,$datosUpdate);
+			$data = date("Y-m-d");
+			$hora = date("H:i:s");
+			$camposInsert = "id_factura, id_usuario, data, hora";
+			$datosInsert = array($_GET["id_fact"],$userid,$data,$hora);
+			insertFunction ("sgm_factura_modificacio",$camposInsert,$datosInsert);
+	#			updateCabezera($_GET["id_fact"],0,0,0,0,0,0,$_POST["fecha"],$_POST["fecha_prevision"],0,0,$_POST["id_cliente"],$_POST["id_contrato"],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
+			$sql = "select id,fecha_prevision from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			$camposUpdate = array("nombre","pvp","fecha_prevision","fecha_prevision_propia","total");
+			$datosUpdate = array($_POST["concepto"],$_POST["importe"],$_POST["fecha_prevision"],$_POST["fecha_prevision"],$_POST["importe"]);
+			updateFunction ("sgm_cuerpo",$row["id"],$camposUpdate,$datosUpdate);
+			if ($row["fecha_prevision"] != $_POST["fecha_prevision"]){
+				$fecha = date("Y-m-d");
+				$camposInsert = "id_factura,id_usuario,fecha_ant,data,id_cuerpo";
+				$datosInsert = array($_GET["id_fact"],$userid,$row["fecha_prevision"],$fecha,$row["id"]);
+				insertFunction ("sgm_factura_canvi_data_prevision_cuerpo",$camposInsert,$datosInsert);
+			}
+	#			updateCuerpo($row["id"],$_GET["id_fact"],$row["linea"],$row["codigo"],$_POST["concepto"],$row["pvd"],$_POST["importe"],1,$_POST["fecha_prevision"],$row["id_article"],$row["stock"],$_POST["fecha_prevision"],$row["descuento"],$row["descuento_absoluto"]);
+			refactura($_GET["id_fact"]);
+		}
+		if ($ssoption == 3) {
+			deleteFunction("sgm_cabezera",$_GET["id_fact"]);
+			$sql = "select id from sgm_cuerpo where idfactura=".$_GET["id_fact"]."";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			deleteCuerpo($row["id"],$_GET["id_fact"]);
+		}
+
+		echo "<h4>".$Gastos." : </h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th></th>";
+				echo "<th>".$Tipo."</th>";
+				echo "<th>".$Fecha."</th>";
+				echo "<th>".$Fecha." ".$Prevision."</th>";
+				echo "<th>".$Proveedor."</th>";
+				echo "<th>".$Concepto."</th>";
+				echo "<th>".$Importe."</th>";
+				echo "<th></th>";
+			echo "</tr><tr>";
+			echo "<form action=\"index.php?op=1011&sop=160&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
+					$sqltipos = "select id,tipo from sgm_factura_tipos where visible=1 and contabilidad='-1' order by orden";
+					$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+					while ($rowtipos = mysqli_fetch_array($resulttipos)) {
+						echo "<option value=\"".$rowtipos["id"]."\">".$rowtipos["tipo"]."</option>";
+					}
+				echo "</select></td>";
+				$date = date("Y-m-d", mktime(0,0,0,date("m"),date("d"),date("Y")));
+				echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$date."\"></td>";
+				echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$date."\"></td>";
+				echo "<td><select style=\"width:250px\" name=\"id_cliente\">";
+					$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
+						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><input style=\"text-align:left;width:400px\" type=\"Text\" name=\"concepto\"></td>";
+				echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"1\" step=\"any\" name=\"importe\" value=\"0\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+			echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select id,fecha,fecha_prevision,tipo,id_cliente from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where visible=1 and contabilidad='-1')";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				$sqlcu = "select nombre,pvp from sgm_cuerpo where idfactura=".$row["id"]."";
+				$resultcu = mysqli_query($dbhandle,convertSQL($sqlcu));
+				$rowcu = mysqli_fetch_array($resultcu);
+				echo "<tr>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=161&id=".$_GET["id"]."&id_fact=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1011&sop=160&ssop=2&id=".$_GET["id"]."&id_fact=".$row["id"]."\" method=\"post\">";
+					echo "<td><select style=\"width:100px\" name=\"id_tipo\">";
+						$sqltipos = "select id,tipo from sgm_factura_tipos where visible=1 and contabilidad='-1' order by orden,descripcion";
+						$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
+						while ($rowtipos = mysqli_fetch_array($resulttipos)) {
+							if ($row["tipo"] == $rowtipos["id"]){
+								echo "<option value=\"".$rowtipos["id"]."\" selected>".$rowtipos["tipo"]."</option>";
+							} else {
+								echo "<option value=\"".$rowtipos["id"]."\">".$rowtipos["tipo"]."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha\" value=\"".$row["fecha"]."\"></td>";
+					echo "<td><input style=\"text-align:center;width:100px\" type=\"Text\" name=\"fecha_prevision\" value=\"".$row["fecha_prevision"]."\"></td>";
+					echo "<td><select style=\"width:250px\" name=\"id_cliente\">";
+						$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
+						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+						while ($rowc = mysqli_fetch_array($resultc)) {
+							if ($row["id_cliente"] == $rowc["id"]){
+								echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							} else {
+								echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><input style=\"text-align:left;width:400px\" type=\"Text\" name=\"concepto\" value=\"".$rowcu["nombre"]."\"></td>";
+					echo "<td><input style=\"text-align:right;width:70px\" type=\"number\" min=\"1\" step=\"any\" name=\"importe\" value=\"".$rowcu["pvp"]."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 161) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1011&sop=160&ssop=3&id=".$_GET["id"]."&id_fact=".$_GET["id_fact"],"op=1011&sop=160&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
 	}
 
 	if ($soption == 210) {
@@ -791,7 +910,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			echo boton(array("op=1011&sop=510","op=1011&sop=520","op=1011&sop=530","op=1011&sop=540"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA,$Plantillas." ".$Contrato,$Origen." ".$Servicios));
+			echo boton(array("op=1011&sop=510","op=1011&sop=520","op=1011&sop=530","op=1011&sop=540","op=1011&sop=580"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA,$Plantillas." ".$Contrato,$Origen." ".$Servicios,$Tarifas));
 		}
 		if ($admin == false) {
 			echo $UseNoAutorizado;
@@ -843,7 +962,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1011&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
@@ -899,7 +1018,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=521&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=521&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1011&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
@@ -953,7 +1072,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
 			$rown = mysqli_fetch_array($resultn);
 			$numeroc = ($rown["num_contrato"]+ 1);
-			$sqlcc = "select * from sgm_contratos where visible=1 and id=".$_GET["id"]."";
+			$sqlcc = "select id from sgm_contratos where visible=1 and id=".$_GET["id"]."";
 			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 			$rowcc = mysqli_fetch_array($resultcc);
 			if ($rowcc){
@@ -1019,7 +1138,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			while ($rowcc = mysqli_fetch_array($resultcc)){
 				echo "<tr>";
 				echo "<form action=\"index.php?op=1011&sop=530&ssop=2&id=".$rowcc["id"]."&act=".$_GET["act"]."\" method=\"post\">";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=531&id=".$rowcc["id"]."&act=".$_GET["act"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=531&id=".$rowcc["id"]."&act=".$_GET["act"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<td><input style=\"width:100px\" type=\"Text\" name=\"num_contrato\" value=\"".$rowcc["num_contrato"]."\"></td>";
 					echo "<td><select style=\"width:500px\" name=\"id_contrato_tipo\">";
 						$sql = "select * from sgm_contratos_tipos where visible=1 order by nombre";
@@ -1119,7 +1238,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=541&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=541&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 					echo "<form action=\"index.php?op=1011&sop=540&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["codigo_origen"]."\" style=\"width:150px\" name=\"codigo_origen\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion_origen"]."\" style=\"width:350px\" name=\"descripcion_origen\"></td>";
@@ -1134,6 +1253,82 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1011&sop=540&ssop=3&id=".$_GET["id"],"op=1011&sop=540"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if ($soption == 580) {
+		if ($ssoption == 1) {
+			$camposInsert = "nombre,porcentage,descuento";
+			$datosInsert = array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
+			insertFunction ("sgm_tarifas",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('nombre','porcentage','descuento');
+			$datosUpdate=array($_POST["nombre"],$_POST["porcentage"],$_POST["descuento"]);
+			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposUpdate=array('visible');
+			$datosUpdate=array(0);
+			updateFunction("sgm_tarifas",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Tarifas."</h4>";
+		echo boton(array("op=1011&sop=500"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "</tr>";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Descuento."/".$Incremento."</th>";
+				echo "<th>".$Nombre."</th>";
+				echo "<th>".$Porcentage."</th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1011&sop=580&ssop=1\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td>";
+					echo "<select name=\"descuento\" style=\"width:150px\">";
+						echo "<option value=\"1\" selected>".$Descuento." ".$PVP."</option>";
+						echo "<option value=\"0\">".$Incremento." ".$PVD."</option>";
+					echo "</select>";
+				echo "</td>";
+				echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select * from sgm_tarifas where visible=1";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=581&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<form action=\"index.php?op=1011&sop=580&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td>";
+						echo "<select name=\"descuento\" style=\"width:150px\">";
+							if ($row["descuento"] == 0) {
+								echo "<option value=\"1\">".$Descuento." PVP</option>";
+								echo "<option value=\"0\" selected>".$Incremento." PVD</option>";
+							}
+							if ($row["descuento"] == 1) {
+								echo "<option value=\"1\" selected>".$Descuento." PVP</option>";
+								echo "<option value=\"0\">".$Incremento." PVD</option>";
+							}
+						echo "</select>";
+					echo "</td>";
+					echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:200px\" value=\"".$row["nombre"]."\"></td>";
+					echo "<td><input type=\"number\" min=\"1\" name=\"porcentage\" style=\"width:70px\" value=\"".$row["porcentage"]."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 581) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1011&sop=580&ssop=3&id=".$_GET["id"],"op=1011&sop=580"),array($Si,$No));
 		echo "</center>";
 	}
 

@@ -427,11 +427,6 @@ ALTER TABLE `sgm_clients_servidors_param` ADD `mem` int(11) NOT NULL AFTER `cpu`
 ALTER TABLE `sgm_clients_servidors_param` ADD `memswap` int(11) NOT NULL AFTER `mem`;
 ALTER TABLE `sgm_clients_servidors_param` ADD `hd` int(11) NOT NULL AFTER `memswap`;
 
-CREATE TABLE `sgm_clients_tarifas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_clients_tarifas` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_clients_tarifas` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `id_cliente`;
-ALTER TABLE `sgm_clients_tarifas` ADD `predeterminado` tinyint(1) NOT NULL default '1' AFTER `id_tarifa`;
-
 CREATE TABLE `sgm_clients_tratos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_tratos` ADD `trato` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_clients_tratos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `trato`;
@@ -564,16 +559,12 @@ ALTER TABLE `sgm_contratos` ADD `id_tecnico` int(11) NOT NULL default '0' AFTER 
 ALTER TABLE `sgm_contratos` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `id_tecnico`;
 ALTER TABLE `sgm_contratos` ADD `id_plantilla` int(11) NOT NULL default '0' AFTER `renovado`;
 ALTER TABLE `sgm_contratos` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id_plantilla`;
+ALTER TABLE `sgm_contratos` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `id_contrato`;
 
 CREATE TABLE `sgm_contratos_sla_cobertura` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_sla_cobertura` ADD `nombre` varchar(55) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_contratos_sla_cobertura` ADD `descripcion` longtext AFTER `nombre`;
 ALTER TABLE `sgm_contratos_sla_cobertura` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
-
-CREATE TABLE `sgm_contratos_tipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_contratos_tipos` ADD `nombre` varchar(255) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_contratos_tipos` ADD `descripcion` longtext AFTER `nombre`;
-ALTER TABLE `sgm_contratos_tipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 
 CREATE TABLE `sgm_contratos_servicio` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_servicio` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
@@ -598,11 +589,20 @@ CREATE TABLE `sgm_contratos_servicio_notificacion` ( `id` int(11) NOT NULL auto_
 ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_servicio` int(11) NOT NULL default '0' AFTER `id_contrato`;
 ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_servicio`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `id_usuario_origen` int(11) NOT NULL default '0' AFTER `id_usuario`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `tipo_edicion_todas` int(11) NOT NULL default '0' AFTER `id_usuario_origen`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `tipo_edicion_anadir` int(11) NOT NULL default '0' AFTER `tipo_edicion_todas`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `tipo_edicion_modificar` int(11) NOT NULL default '0' AFTER `tipo_edicion_anadir`;
+ALTER TABLE `sgm_contratos_servicio_notificacion` ADD `tipo_edicion_cerrar` int(11) NOT NULL default '0' AFTER `tipo_edicion_modificar`;
 
-CREATE TABLE `sgm_contratos_servicio_notificacion_condicion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `id_servicio_notificacion` int(11) NOT NULL default '0' AFTER `id`;
-ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `id_usuario_origen` int(11) NOT NULL default '0' AFTER `id_servicio_notificacion`;
-ALTER TABLE `sgm_contratos_servicio_notificacion_condicion` ADD `tipo_edicion_incidencia` int(11) NOT NULL default '0' AFTER `id_usuario_origen`;
+CREATE TABLE `sgm_contratos_tipos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_contratos_tipos` ADD `nombre` varchar(255) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sgm_contratos_tipos` ADD `descripcion` longtext AFTER `nombre`;
+ALTER TABLE `sgm_contratos_tipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
+
+CREATE TABLE `sgm_contratos_usuarios` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sgm_contratos_usuarios` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_contratos_usuarios` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_contrato`;
 
 /*
 INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);

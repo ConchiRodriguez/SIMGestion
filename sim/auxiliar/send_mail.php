@@ -21,7 +21,11 @@ function send_mail($destinatario,$asunto,$email,$cuerpo){
 	$cabecera .= "X-Mailer: PHP/". phpversion().$UN_SALTO;
 	$cabecera .= "X-Priority: 3".$UN_SALTO; 
 #	$cabecera .= "Content-Type: text/html; charset=UTF-8".$UN_SALTO; 
-	$cabecera .= "Content-Type: text/html"; 
+	if ($destinatario == "it.usat.support@mango.com"){
+		$cabecera .= "Content-Type: text/html"; 
+	} else {
+		$cabecera .= "Content-Type: text/html; charset=ISO-8859-1".$UN_SALTO; 
+	}
 	$cabecera .= " boundary=".$separador."".$DOS_SALTOS; 
 
 	if (mail($destinatario, $titulo, $mensaje, $cabecera)){

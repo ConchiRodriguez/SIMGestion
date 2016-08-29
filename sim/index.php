@@ -243,15 +243,15 @@ if (($option == 900) or ($option == 600)) {
 		echo "<tr>";
 			echo "<td class=\"maestra\">";
 				echo "<table style=\"width:100%;\"><tr>";
-					echo "<td style=\"color:white;width:20%;\">";
+					echo "<td style=\"color:white;width:17%;\">";
 						if ($user == true) {
-							echo "<strong>".$Bienvenido." <strong>".$username."</strong>&nbsp;&nbsp;(id.<strong>".$userid.")</strong>";
+							echo "<strong>".$Bienvenido." <strong>".$username."</strong>&nbsp;&nbsp; (id.<strong>".$userid.")</strong>";
 						} else {
 							echo "<a href=\"index.php?op=100\" style=\"color : white;\"><strong>[ ".$Identificarse." ]</strong></a>";
 						}
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;<strong>".date("d/m/Y")."&nbsp;&nbsp;&nbsp;&nbsp;".date("H:i")."</strong>";
+						echo "&nbsp;&nbsp;&nbsp;&nbsp; <strong>".date("d/m/Y")."&nbsp;&nbsp;&nbsp;&nbsp;".date("H:i")."</strong>";
 				echo "</td>";
-				echo "<td style=\"color:white;width:65%;\">";
+				echo "<td style=\"color:white;width:70%;\">";
 					if ($sgm == 1) {
 						echo "<ul class=\"menu1\">";
 							echo "<li><a href=\"index.php?op=200\">".$Panel_usuario."</a>";
@@ -277,17 +277,19 @@ if (($option == 900) or ($option == 600)) {
 						echo "</ul>";
 					}
 				echo "</td>";
-				echo "<td style=\"color:white;width:5%;\">";
-					echo "<a href=\"index.php?op=1008&sop=100\"><img src=\"mgestion/pics/icons-mini/group_add.png\" alt=\"Cliente\" border=\"0\"></a>";
+				echo "<td style=\"color:white;width:3%;\">";
+					echo "<a href=\"index.php?op=1008&sop=100\"><img src=\"mgestion/pics/icons-mini/group_add.png\" alt=\"Cliente\" title=\"".$Anadir." ".$Cliente."\" border=\"0\"></a>";
 				echo "</td>";
-				echo "<td style=\"color:white;width:5%;\">";
-					echo "<a href=\"index.php?op=1018&sop=100&id_entrada=1\"><img src=\"mgestion/pics/icons-mini/telephone.png\" alt=\"Telefono\" border=\"0\"></a>";
+				echo "<td style=\"color:white;width:3%;\">";
+					echo "<a href=\"index.php?op=1018&sop=100&id_entrada=1\"><img src=\"mgestion/pics/icons-mini/telephone.png\" alt=\"Telefono\" title=\"".$Incidencia." ".$Telefono."\" border=\"0\"></a>";
 				echo "</td>";
-				echo "<td style=\"color:white;width:5%;\">";
+				echo "<td style=\"color:white;width:4%;\">";
 					if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\" style=\"color : white;\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\" style=\"color : white;\">Es</a>"; }
 					if ($idioma == "es") {	echo "<a href=\"index.php?i=cat\" style=\"color : white;\">Cat</a> | <a href=\"index.php?i=es\" style=\"color : white;\"><strong>Es</strong></a>"; }
 				echo "</td>";
-				echo "<td style=\"width:5%;text-align:right;vertical-align:middle;\"><a href=\"index.php?sop=666\"  style=\"color : white;\">[".$Salir."]</a></td>";
+				echo "<td style=\"color:white;width:3%;\">";
+					echo "<a href=\"index.php?sop=666\"><img src=\"mgestion/pics/icons-mini/door_out.png\" alt=\"Logout\" title=\"".$Salir."\" border=\"0\"></a>";
+				echo "</td>";
 				echo "</tr></table>";
 			echo "</td>";
 		echo "</tr>";

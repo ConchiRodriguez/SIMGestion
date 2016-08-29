@@ -1,21 +1,22 @@
 <?php
 error_reporting(~E_ALL);
 
-
 function insertCabezera($datosInsert){
 	global $db,$dbhandle,$userid,$errorFacturaCrear;
 #	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
-		$sqltipo = "select * from sgm_factura_tipos where v_recibos=1";
-		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
-		$rowtipo = mysqli_fetch_array($resulttipo);
-		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
-		$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
-		$rowxx = mysqli_fetch_array($resultxx);
-		$numero = $rowxx["numero"] + 1;
-		$tipo = $rowtipo["id"];
-		$version = 0;
-		$v_recibos=$rowtipo["v_recibos"];
+		if (array_key_exists('tipo', $datosInsert)){
+			$sqltipo = "select * from sgm_factura_tipos where id=".$datosInsert['tipo'];
+			$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+			$rowtipo = mysqli_fetch_array($resulttipo);
+			$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
+			$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+			$rowxx = mysqli_fetch_array($resultxx);
+			$numero = $rowxx["numero"] + 1;
+			$tipo = $rowtipo["id"];
+			$version = 0;
+			$v_recibos=$rowtipo["v_recibos"];
+		}
 	} else {
 		$numero = $datosInsert['numero'];
 		$tipo = $datosInsert['tipo'];
@@ -32,7 +33,7 @@ function insertCabezera($datosInsert){
 		$sql = "select * from sgm_clients where id=".$datosInsert['id_cliente'];
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
-		$sqlta = "select * from sgm_tarifas where id=(select id_tarifa from sgm_tarifas_clients where id_cliente=".$row["id"]." and predeterminado=1)";
+		$sqlta = "select * from sgm_tarifas where id=(select id_tarifa from sgm_contratos where id=".$datosInsert['id_contrato'].")";
 		$resultta = mysqli_query($dbhandle,convertSQL($sqlta));
 		$rowta = mysqli_fetch_array($resultta);
 		$sqltipos = "select * from sgm_factura_tipos where id=".$tipo;

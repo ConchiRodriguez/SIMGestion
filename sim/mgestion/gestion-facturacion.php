@@ -1299,7 +1299,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 													echo "<select name=\"id_contrato\">";
 												}
 												echo "<option value=\"0\">-</option>";
-												$sql1a = "select id,descripcion from sgm_contratos where activo=1 and id_cliente=".$row["id_cliente"];
+												$sql1b = "select count(*) as total from sgm_contratos where activo=1 and id_cliente=".$row["id_cliente"];
+												$result1b = mysqli_query($dbhandle,convertSQL($sql1b));
+												$row1b = mysqli_fetch_array($result1b);
+												if ($row1b["total"] > 0){
+													$sql1a = "select id,descripcion from sgm_contratos where activo=1 and id_cliente=".$row["id_cliente"];
+												} else {
+													$sql1a = "select id,descripcion from sgm_contratos where activo=1 and visible=1";
+												}
 												$result1a = mysqli_query($dbhandle,convertSQL($sql1a));
 												while ($row1a = mysqli_fetch_array($result1a)) {
 													if ($row["id_contrato"] == $row1a["id"]) { 

@@ -3,8 +3,12 @@ error_reporting(~E_ALL);
 
 
 function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit_contra) {
-	global $db,$dbhandle,$Contrasenas,$Contrato,$Aplicacion,$Buscar,$Acceso,$Usuario,$Contrasena,$Descripcion,$userid,$ssoption,$simclau,$ErrorPass,$PassIncorrecto,$id_aplicacion,$id_contrato,$Editar;
-		if ($ssoption == 1) {
+	global $db,$dbhandle,$idioma,$userid,$ssoption,$simclau,$id_aplicacion,$id_contrato;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
+	if ($ssoption == 1) {
 			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") {
 				echo mensaje_error($PassIncorrecto);
 			} else {
@@ -75,7 +79,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 			$url_enlace = "";
 			echo "<form action=\"index.php?".$link_edit."&id_con=".$rowcc["id"]."\" method=\"post\">";
 			echo "<tr>";
-				echo "<td style=\"text-align:center;\"><a href=\"index.php?".$link_del."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+				echo "<td style=\"text-align:center;\"><a href=\"index.php?".$link_del."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 				$sql = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and id=".$rowcc["id_contrato"];
 				$result = mysqli_query($dbhandle,convertSQL($sql));
 				$row = mysqli_fetch_array($result);

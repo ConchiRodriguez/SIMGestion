@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
-	global $db,$dbhandle,$Usuario,$Gestion,$Validado,$Activo,$Ultima,$Conexion,$Modificar,$ssoption,$Permisos,$Clientes,$UsuarioYaReg,$NombreIncorrecto,$MailYaReg,$MailIncorrecto,$PassIncorrecto,$CompletaCorrect,$Si,$No;
+	global $db,$dbhandle,$idioma,$ssoption;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 	if ($ssoption == 1) {
 		$camposUpdate = array("sgm","activo","validado");
 		$datosUpdate = array($_POST["sgm"],$_POST["activo"],$_POST["validado"]);

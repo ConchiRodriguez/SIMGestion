@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function mostrarContrasenya(){
-	global $db,$dbhandle,$Contrasena,$Cliente,$Aplicacion,$Ver,$userid,$simclau;
+	global $db,$dbhandle,$idioma,$userid,$simclau;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 		?><script>setTimeout ("redireccionar()", 10000);</script><?php
 		$sqlc = "select id_contrato,id_aplicacion,pass from sgm_contrasenyes where id=".$_GET["id_con"];
 		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));

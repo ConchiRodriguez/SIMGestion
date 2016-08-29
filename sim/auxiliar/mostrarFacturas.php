@@ -2,7 +2,10 @@
 error_reporting(~E_ALL);
 
 function mostrarFacturas($row){
-	global $db,$dbhandle,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles,$Linea,$Fecha,$Codigo,$Nombre,$Unidades,$PVD,$PVP,$Total,$Desplegar,$Plegar,$Cerrar,$Recibos,$Imprimir,$Editar,$Opciones,$Abrir,$Aprobar,$Desaprobar;
+	global $db,$dbhandle,$idioma,$soption,$rowdiv,$totalPagat,$totalSenseIVA,$totalSensePagar,$totalArticles;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
 	
 	$sqltipos = "select * from sgm_factura_tipos where id=".$row["tipo"];
 	$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));

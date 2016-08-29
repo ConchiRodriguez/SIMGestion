@@ -3,14 +3,17 @@ error_reporting(~E_ALL);
 
 
 function mostrarContrato ($id_contrato,$id_cliente){
-	global $db,$dbhandle,$option,$soption,$ssoption,$Numero,$Contrato,$Volver,$Tipo,$Cliente,$Final,$Descripcion,$Fecha,$Inicio,$Fin,$Responsable_cliente,$Responsable_tecnico,$Editar,$Anadir,$Desactivar,$Activar,$Renovar,$Facturas,$Prevision,$Concepto,$Importe,$Modificar;
+	global $db,$dbhandle,$option,$soption,$ssoption,$idioma;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
 
 	if ($id_cliente > 0){ $contrato_adress = $id_cliente."&id_con=".$id_contrato;} else { $contrato_adress = $id_contrato;}
 	$contract = $id_contrato;
 	
 	if ($ssoption == 2) {
-		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico");
-		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"]);
+		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico","id_tarifa");
+		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"]);
 		updateFunction ("sgm_contratos",$_POST["id_contrato"],$camposUpdate,$datosUpdate);
 	}
 
@@ -40,6 +43,21 @@ function mostrarContrato ($id_contrato,$id_cliente){
 						echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." - ".$row["descripcion"]."</option>";
 					} else {
 						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." - ".$row["descripcion"]."</option>";
+					}
+				}
+			echo "</td>";
+		echo "</tr>";
+		echo "<tr>";
+			echo "<td style=\"text-align:right;\">".$Tarifa.": </td>";
+			echo "<td><select style=\"width:500px\" name=\"id_tarifa\">";
+				echo "<option value=\"0\">-</option>";
+				$sqlt = "select id,nombre from sgm_tarifas where visible=1";
+				$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+				while ($rowt = mysqli_fetch_array($resultt)){
+					if ($rowt["id"] == $rowc["id_tarifa"]){
+						echo "<option value=\"".$rowt["id"]."\" selected>".$rowt["nombre"]."</option>";
+					} else {
+						echo "<option value=\"".$rowt["id"]."\">".$rowt["nombre"]."</option>";
 					}
 				}
 			echo "</td>";

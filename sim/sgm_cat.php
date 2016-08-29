@@ -5,6 +5,7 @@ $Abreviatura = "Abreviatura";
 $Abrir = "Obrir";
 $Acceso = "Acc&eacute;s";
 $Acciones = "Accions";
+$Activa = "Activa";
 $Activar = "Activar";
 $Activo = "Actiu";
 $Activos = "Actius";
@@ -266,6 +267,7 @@ $Extranjero = "Estranger";
 
 $Fabricante = "Fabricant";
 $Factura = "Factura";
+$Facturar = "Facturar";
 $Facturas = "Factures";
 $Facturacion = "Facturaci&oacute;";
 $FACTURADO = "FACTURAT";
@@ -465,6 +467,7 @@ $Parada = "Parada";
 $Parametros = "Parametres";
 $Parcial = "Parcial";
 $Pasillo = "Pasad&iacute;s";
+$Pausada = "Pausada";
 $Pausadas = "Pausades";
 $Pausar = "Pausar";
 $Pedido = "Comanda";
@@ -578,6 +581,7 @@ $Sin = "Sense";
 $SinAsunto = "Sense Asumpte";
 $Sin_clasificar = "Sense Classificar";
 $SinCliente = "Sense Client";
+$SinContrato = "Sense Contracte";
 $Sincronizaciones = "Sincronitzacions";
 $Sincronizar = "Sincronitzar";
 $Sin_dependencias = "Sense Depend&egrave;ncia";
@@ -597,11 +601,13 @@ $Sumar = "Sumar";
 $Superior = "Superior";
 
 $Tabla = "Taula";
+$Tarifa = "Tarifa";
 $Tarifas = "Tarifes";
 $Tamano = "Tamany";
 $Tarea = "Tasca";
 $Tareas = "Tasques";
 $Tecnico = "T&eacute;cnic";
+$Tecnicos = "T&eacute;cnics";
 $Telefonica = "Telef&oacute;nica";
 $Telefono = "Tel&eacute;fon";
 $Temario = "Temari";
@@ -781,25 +787,32 @@ $ayudaPanelUserPass = "M&agrave;x. 10 car&agrave;cters";
 $ayudaPanelUserPass2 = "Si no pogues fer correctament el login de nou, esborri les cookies referents a solucions-im.com del seu navegador.";
 $errorPanelUserPass = "Error al introduir les contrasenyes.";
 
-$Ayuda_alias = "L'<em>Alias</em> es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
-$Ayuda_vip = "El <em>Client VIP</em> es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
-
 $ErrorServicio = "Un servei amb el mateix nom ja existeix en aquest contracte";
-$ayudaServicios = "<strong>Obligatori</strong>: Si per aquells serveis que estan inclosos en el contracte i no son seleccionables pel client.<br>
-<strong>Extranet</strong>: Si el servei es visible per el client en la extranet, secci&oacute; contractes.<br>
-<strong>Incid&egrave;ncies</strong>: Si el client pot obrir incid&egrave;ncies sobre aquest servei.<br>
-<strong>Durada</strong>: Si el client pot veure la durada de les incid&egrave;ncies.<br>
-<strong>Cobertura</strong>: Hores de cobertura del servei.<br>
-<strong>Temps</strong>: Temps m&agrave;xim de resoluci&oacute; de incid&egrave;ncies del servei en SLA.<br>
-<strong>NBD</strong>: Next Bussines Day, Si les incid&egrave;ncies han de resoldre-las dins del horari laboral.<br>
-<strong>SLA</strong>: Porcentatge de incid&egrave;ncies que s'han de resoldre dins del m&agrave;xim d'hores de SLA.<br>
-<strong>Codi Cat&agrave;leg</strong>: identificador &uacute;nic del servei en el sistema.<br>
-<strong>AutoEmail</strong>: Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.<br>
-<strong>Funci&oacute;</strong>: nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.<br>
-<strong>Origen</strong>: codi de qui obre incid&egrave;ncies relacionades amb aquest servei.<br>
-";
 
 $OkActualizacionCliente = "El tipus dels clients s'ha actualitzat correctament";
 $ErrorActualizacionCliente = "El tipus dels clients no s'ha actualitzat correctament";
+
+$ayudaIncidenciaCliente = "Acc&egrave;s al formulari d'inserci&oacute; de contactes";
+$ayudaIncidenciaContrasena = "Acc&egrave;s a les contrase&ntilde;es del client";
+$ayudaIncidenciaContrato = "Acc&egrave;s als contractes del client";
+
+$info_contrato_notificaciones = "Gesti&oacute; de les notificacions dels serveis. S'enviar&agrave;n notificacions a l'usuari escollit quan la incid&egrave;ncia tingui el servei i l'usuari d'origen escollit, i quan es realitzi una de les accions escollides sobre ella.";
+$info_contrato_archivos = "L'arxiu a pujar és el contracte escanejat un cop signat per les dues parts.";
+$info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
+$info_contrato_servicios1 = "Si per aquells serveis que estan inclosos en el contracte i no son seleccionables pel client.";
+$info_contrato_servicios2 = "Si el servei es visible per el client en la extranet, secci&oacute; contractes.";
+$info_contrato_servicios3 = "Si el client pot obrir incid&egrave;ncies sobre aquest servei.";
+$info_contrato_servicios4 = "Si el client pot veure la durada de les incid&egrave;ncies.";
+$info_contrato_servicios5 = "Hores de cobertura del servei.";
+$info_contrato_servicios6 = "Temps m&agrave;xim de resoluci&oacute; de incid&egrave;ncies del servei en SLA.";
+$info_contrato_servicios7 = "(Next Bussines Day) Si les incid&egrave;ncies han de resoldre-las dins del horari laboral.";
+$info_contrato_servicios8 = "Porcentatge m&iacute;nim d'incid&egrave;ncias que s'han de resoldre en el temps i la cobertura associats.";
+$info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el sistema.";
+$info_contrato_servicios10 = "Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.";
+$info_contrato_servicios11 = "Nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.";
+$info_contrato_servicios12 = "Codi de qui obre incid&egrave;ncies relacionades amb aquest servei.";
+
+$info_cliente_alias = "L'Alias es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
+$info_cliente_vip = "El Client VIP es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
 
 ?>
