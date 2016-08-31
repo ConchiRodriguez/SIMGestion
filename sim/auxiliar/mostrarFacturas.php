@@ -156,7 +156,7 @@ function mostrarFacturas($row){
 		}
 
 		echo "<tr style=\"background-color:".$color."\">";
-			echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=10&id=".$rowtipos["id"]."&id_fact=".$row["id"]."\">";
+			echo "<form method=\"post\" action=\"index.php?op=1003&sop=10&id=".$rowtipos["id"]."&id_fact=".$row["id"]."\">";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Opciones."\"></td>";
 			echo "</form>";
 			if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
@@ -268,11 +268,11 @@ function mostrarFacturas($row){
 					$totalSensePagar += $row["total"]*$row["div_canvi"];
 					$totalPagat += ($row["total"]-$rowr["total"])*$row["div_canvi"];
 				}
-				echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=100&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+				echo "<form method=\"post\" action=\"index.php?op=1003&sop=100&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
 				echo "</form>";
 				if ($rowtipos["tpv"] == 0) {
-					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=20&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=20&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 				} else {
 					echo "<form method=\"post\" action=\"".$urlmgestion."/sim/mgestion/gestion-facturacion-tiquet-print-pdf.php?id=".$row["id"]."\" target=\"_blank\">";
 				}
@@ -280,27 +280,27 @@ function mostrarFacturas($row){
 					echo "</form>";
 #					echo "<td style=\"background-color : ".$color.";\"><table cellpadding=\"0\" cellspacing=\"0\"><tr>";
 				if ($rowtipos["v_recibos"] == 1)  {
-					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=30&id=".$row["id"]."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=30&id=".$row["id"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Recibos."\"></td>";
 					echo "</form>";
 				}
 				if ($rowtipos["aprovado"] == 1) {
 					if ($row["aprovado"] == 0)  {
-						echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=50&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+						echo "<form method=\"post\" action=\"index.php?op=1003&sop=50&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Aprobar."\"></td>";
 						echo "</form>";
 					} elseif ($row["aprovado"] == 1) {
-						echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=51&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+						echo "<form method=\"post\" action=\"index.php?op=1003&sop=51&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Desaprobar."\"></td>";
 						echo "</form>";
 					}
 				}
 				if ($row["cerrada"] == 1){
-					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=41&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=41&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Abrir."\"></td>";
 					echo "</form>";
 				} elseif ($row["cerrada"] == 0) {
-					echo "<form method=\"post\" action=\"index.php?op=".$_GET["op"]."&sop=40&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
+					echo "<form method=\"post\" action=\"index.php?op=1003&sop=40&id=".$row["id"]."&id_tipo=".$row["tipo"]."\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Cerrar."\"></td>";
 					echo "</form>";
 				}

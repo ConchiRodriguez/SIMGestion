@@ -267,6 +267,7 @@ $Extranjero = "Estranger";
 
 $Fabricante = "Fabricant";
 $Factura = "Factura";
+$Facturado = "Facturat";
 $Facturar = "Facturar";
 $Facturas = "Factures";
 $Facturacion = "Facturaci&oacute;";
@@ -334,6 +335,7 @@ $HISTORICO = "HIST&Oacute;RIC";
 $Historico = "Hist&oacute;ric";
 $Hoja = "Fulla";
 $Hojas = "Fulles";
+$Hora = "Hora";
 $Hora_Inicio = "Hora Inici";
 $Hora_Fin = "Hora Fi";
 $Horario = "Horari";

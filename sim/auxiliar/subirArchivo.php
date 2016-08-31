@@ -44,11 +44,6 @@ function subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_ty
 				$camposInsert = "id_tipo,name,type,size,id_elemento,tipo_id_elemento";
 				$datosInsert = array($tipo,$archivo_name,$archivo_type,$archivo_size,$id,$id_tipo);
 				insertFunction ("sgm_files",$camposInsert,$datosInsert);
-			} else {
-				$errors= error_get_last();
-				echo "COPY ERROR: ".$errors['type'];
-				echo "<br />\n".$errors['message'];
-#				var_dump($errors);
 			}
 		}else{
 			echo mensageError($errorSubirArchivoTamany);

@@ -149,7 +149,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 					} else {
 						$fecha_prev = cambiarFormatoFechaYMD($_POST["fecha"]);
 					}
-					$datosInsert = array('numero'=>$_POST["numero"],'tipo'=>$_POST["tipo"],'subtipo'=>$_POST["subtipo"],'version'=>$_POST["version"],'numero_rfq'=>$_POST["numero_rfq"],'numero_cliente'=>$_POST["numero_cliente"],'fecha'=>$fecha,'fecha_prevision'=>$fecha_prev,'id_cliente'=>$_POST["id_cliente"]);
+					if ($_POST["fecha_vencimiento"] > 0) {
+						$fecha_ven = cambiarFormatoFechaYMD($_POST["fecha_vencimiento"]);
+					} else {
+						$fecha_ven = cambiarFormatoFechaYMD($_POST["fecha"]);
+					}
+					$datosInsert = array('numero'=>$_POST["numero"],'tipo'=>$_POST["tipo"],'subtipo'=>$_POST["subtipo"],'version'=>$_POST["version"],'numero_rfq'=>$_POST["numero_rfq"],'numero_cliente'=>$_POST["numero_cliente"],'fecha'=>$fecha,'fecha_prevision'=>$fecha_prev,'fecha_vencimiento'=>$fecha_ven,'id_cliente'=>$_POST["id_cliente"]);
 					insertCabezera($datosInsert);
 				}
 			}

@@ -1442,21 +1442,49 @@ if (($option == 1018) AND ($autorizado == true)) {
 #añadir incidencias fi#
 
 	if ($soption == 110){
-		echo "<br>".$Documentos." ".$Adjuntos." :";
+		echo "<h4>".$Documentos." ".$Adjuntos."</h4>";
+		echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver;\">";
+				echo "<th>".$Archivos."</th>";
+			echo "</tr>";
 		$sqlfiles = "select name from sgm_files where visible=1 and id_elemento=".$row["id"];
 		$resultfiles = mysqli_query($dbhandle,convertSQL($sqlfiles));
 		while ($rowfiles = mysqli_fetch_array($resultfiles)){
-			echo "<br><a href=\"".$urlmgestion."/archivos/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a>";
+			echo "<tr>";
+				echo "<td><a href=\"".$urlmgestion."/archivos/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a></td>";
+			echo "</tr>";
 		}
+		echo "</table>";
 	}
 
 	if ($soption == 120){
-		echo "<br>".$Notificaciones." ".$Enviadas." :";
+		echo "<h4>".$Notificaciones." ".$Enviadas."</h4>";
+		echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver;\">";
+				echo "<th>".$Fecha."</th>";
+				echo "<th>".$Destinatario."</th>";
+				echo "<th>".$Tipo."</th>";
+				echo "<th>".$Asunto."</th>";
+			echo "</tr>";
 		$sqlice = "select * from sgm_incidencias_correos_enviados where id_incidencia=".$row["id"];
 		$resultice = mysqli_query($dbhandle,convertSQL($sqlice));
 		while ($rowice = mysqli_fetch_array($resultice)){
-			echo "<br>".date("Y-m-d",$rowice["fecha"])."  ".$rowice["destinatario"];
+			if ($rowice["tipo"] == 1) { $tipo = "incidencia nueva externa";}
+			if ($rowice["tipo"] == 2) { $tipo = "nota de incidencia externa";}
+			if ($rowice["tipo"] == 3) { $tipo = "incidencia nueva interna";}
+			if ($rowice["tipo"] == 4) { $tipo = "nota de incidencia interna";}
+			if ($rowice["tipo"] == 5) { $tipo = "cierre incidencia";}
+			if ($rowice["tipo"] == 6) { $tipo = "reabrir incidencia";}
+			if ($rowice["tipo"] == 7) { $tipo = "relacionar incidencia";}
+			if ($rowice["tipo"] == 8) { $tipo = "eliminar incidencia";}
+			echo "<tr>";
+				echo "<td>".date("Y-m-d",$rowice["fecha"])."</td>";
+				echo "<td>".$rowice["destinatario"]."</td>";
+				echo "<td>".$tipo."</td>";
+				echo "<td>".$rowice["asunto"]."</td>";
+			echo "</tr>";
 		}
+		echo "</table>";
 	}
 
 #indicadores#

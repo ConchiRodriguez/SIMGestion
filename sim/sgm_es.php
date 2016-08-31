@@ -271,6 +271,7 @@ $Extranjero = "Extranjero";
 
 $Fabricante = "Fabricante";
 $Factura = "Factura";
+$Facturado = "Facturado";
 $Facturar = "Facturar";
 $Facturas = "Facturas";
 $Facturacion = "Facturaci&oacute;n";
@@ -338,6 +339,7 @@ $HISTORICO = "HIST&Oacute;RICO";
 $Historico = "Hist&oacute;rico";
 $Hoja = "Hoja";
 $Hojas = "Hojas";
+$Hora = "Hora";
 $Hora_Inicio = "Hora Inicio";
 $Hora_Fin = "Hora Fin";
 $Horario = "Horario";

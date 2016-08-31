@@ -5,18 +5,16 @@ function insertCabezera($datosInsert){
 	global $db,$dbhandle,$userid,$errorFacturaCrear;
 #	print_r($datosInsert);
 	if (!array_key_exists('numero', $datosInsert)){
-		if (array_key_exists('tipo', $datosInsert)){
-			$sqltipo = "select * from sgm_factura_tipos where id=".$datosInsert['tipo'];
-			$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
-			$rowtipo = mysqli_fetch_array($resulttipo);
-			$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
-			$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
-			$rowxx = mysqli_fetch_array($resultxx);
-			$numero = $rowxx["numero"] + 1;
-			$tipo = $rowtipo["id"];
-			$version = 0;
-			$v_recibos=$rowtipo["v_recibos"];
-		}
+		$sqltipo = "select * from sgm_factura_tipos where v_recibos=1";
+		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+		$rowtipo = mysqli_fetch_array($resulttipo);
+		$sqlxx = "select * from sgm_cabezera where visible=1 AND tipo=".$rowtipo["id"]." order by numero desc";
+		$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+		$rowxx = mysqli_fetch_array($resultxx);
+		$numero = $rowxx["numero"] + 1;
+		$tipo = $rowtipo["id"];
+		$version = 0;
+		$v_recibos=$rowtipo["v_recibos"];
 	} else {
 		$numero = $datosInsert['numero'];
 		$tipo = $datosInsert['tipo'];
@@ -26,7 +24,7 @@ function insertCabezera($datosInsert){
 		$rowtipo = mysqli_fetch_array($resulttipo);
 		$v_recibos=$rowtipo["v_recibos"];
 	}
-	$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and version=".$version." and tipo=".$tipo;
+	echo $sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$numero." and version=".$version." and tipo=".$tipo;
 	$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 	$rowcc = mysqli_fetch_array($resultcc);
 	if ($rowcc["total"] == 0){
@@ -47,7 +45,9 @@ function insertCabezera($datosInsert){
 			$fecha_entrega = $datosInsert['fecha'];
 		}
 		if ($rowtipos["v_fecha_vencimiento"] == 1) {
-			$fecha_vencimiento = calcular_fecha_vencimiento($datosInsert['id_cliente'],$datosInsert['fecha']);
+			$fecha_vencimiento = calculDataVencimientFact($datosInsert['id_cliente'],$datosInsert['fecha']);
+		} elseif (array_key_exists('fecha_vencimiento', $datosInsert)) {
+			$fecha_vencimiento = $datosInsert['fecha_vencimiento'];
 		} else {
 			$fecha_vencimiento = $datosInsert['fecha'];
 		}

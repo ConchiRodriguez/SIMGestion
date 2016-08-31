@@ -810,7 +810,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=100&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Fiscales."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=105&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Administrativos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=110&id=".$row["id"]."\" style=\"color:white;\">".$Datos_Facturacion."</a></td>";
-							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=160&id=".$row["id"]."\" style=\"color:white;\">".$Estado." de ".$Cuentas."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=160&id=".$row["id"]."\" style=\"color:white;\">".$Facturacion."</a></td>";
 						echo "</tr>";
 						echo "<tr>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:white;\">".$Contratos."</a></td>";
@@ -1987,7 +1987,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 
 #Facturació
 	if ($soption == 160) {
-		echo "<h4>".$Estado_de_Cuentas."</h4>";
+		echo "<h4>".$Facturacion."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"2\" class=\"lista\">";
 			echo "<tr>";
 			$sqltipos2 = "select id,tipo from sgm_factura_tipos where visible=1 and id in (select tipo from sgm_cabezera where visible=1 and id_cliente=".$_GET["id"].") order by orden,descripcion";
@@ -2043,9 +2043,9 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
 				echo "<input type=\"Hidden\" name=\"todo\" value=\"1\">";
 				if ($_GET["filtra"] == 0){
-					echo "<td class=\"submit\" colspan=\"5\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
+					echo "<td colspan=\"3\"></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Desplegar." ".$Todo."\"></td>";
 				} else {
-					echo "<td class=\"submit\" colspan=\"5\" style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
+					echo "<td colspan=\"3\"></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Plegar." ".$Todo."\"></td>";
 				}
 				echo "</form>";
 			echo "</tr>";
@@ -2091,7 +2091,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 	if ($soption == 180) {
 		if ($ssoption == 1) {
 			$duracion = 0;
-			echo "aa<br>";
 			$sql = "select id from sgm_incidencias where visible=1";
 			if ($_POST["id_servicio"] != 0){ $sql = $sql." and id_servicio=".$_POST["id_servicio"];}
 			if (($_POST["mes"] != 0) or ($_GET["m"] != 0)){
@@ -2103,17 +2102,18 @@ if (($option == 1008) AND ($autorizado == true)) {
 			if (($_POST["id_usuario"] != 0) or ($_GET["u"] != 0)) { $sql = $sql." and id_usuario=".$_POST["id_usuario"].$_GET["u"]; }
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
-			echo "bb<br>";
 				if ($_POST["facturada".$row["id"]] == 1){
-			echo "cc<br>";
 					$sqli = "select sum(duracion) as total_horas from sgm_incidencias where visible=1 and id_incidencia=".$row["id"];
 					$resulti = mysqli_query($dbhandle,convertSQL($sqli));
 					$rowi = mysqli_fetch_array($resulti);
-					echo $duracion += $rowi["total_horas"];
+					$duracion += $rowi["total_horas"];
+
+					$camposUpdate = array("facturada");
+					$datosUpdate = array(1);
+					updateFunction ("sgm_incidencias",$row["id"],$camposUpdate,$datosUpdate);
 				}
 			}
 			if ($duracion > 0){
-			echo "dd<br>";
 				$date = date("Y-m-d", mktime(0,0,0,date("m"),date("d"),date("Y")));
 				$datosInsert = array('fecha' => $date, 'fecha_prevision' => $date, 'id_cliente' => $_GET["id"], 'tipo' => 1);
 				insertCabezera($datosInsert);
@@ -2126,6 +2126,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$datosInsert = array($row2["id"],$duracion,$date,$date,$_POST["nombre"],$_POST["pvp"]);
 				insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 			}
+			refactura($row2["id"]);
 		}
 
 		echo "<h4>".$Incidencias." : </h4>";
@@ -2202,6 +2203,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "<th>".$Asunto."</th>";
 					echo "<th>".$Cliente." ".$Final."</th>";
 					echo "<th>".$Contrato." - ".$Servicio."</th>";
+					echo "<th>".$Duracion."</th>";
 					echo "<th>".$Usuario."</th>";
 					echo "<th></th>";
 				echo "</tr>";
@@ -2212,15 +2214,10 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "<input type=\"Hidden\" name=\"mes\" value=\"".$_POST["mes"]."\">";
 			$sql = "select * from sgm_incidencias where visible=1";
 			if ($_POST["id_servicio"] != 0){ $sql = $sql." and id_servicio=".$_POST["id_servicio"];}
-			if (($_POST["mes"] != 0) or ($_GET["m"] != 0)){
-				$mes = $_POST["mes"].$_GET["m"];
-				if ($_GET["d"] != 0){
-					$data1 = date(U, mktime(0, 0, 0, $mes, $_GET["d"], 2013));
-					$data2 = date(U, mktime(0, 0, 0, $mes, $_GET["d"]+1, 2013));
-				} else {
-					$data1 = date(U, mktime(0, 0, 0, $mes, 1, 2013));
-					$data2 = date(U, mktime(0, 0, 0, $mes, 31, 2013));
-				}
+			if ($_POST["mes"] != 0){
+				$mes = $_POST["mes"];
+				$data1 = date(U, mktime(0, 0, 0, $mes, 1, 2013));
+				$data2 = date(U, mktime(0, 0, 0, $mes, 31, 2013));
 				$sql = $sql." and id in (select id_incidencia from sgm_incidencias_notas_desarrollo where data_registro2 between ".$data1." and ".$data2.")";
 			}
 			if (($_POST["id_usuario"] != 0) or ($_GET["u"] != 0)) { $sql = $sql." and id_usuario=".$_POST["id_usuario"].$_GET["u"]; }
@@ -2243,7 +2240,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$sqlu = "select usuario from sgm_users where id=".$row["id_usuario_destino"];
 				$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 				$rowu = mysqli_fetch_array($resultu);
-				$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1";
+				$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$row["id"]." and visible=1";
 				$resultd = mysqli_query($dbhandle,convertSQL($sqld));
 				$rowd = mysqli_fetch_array($resultd);
 				$hora = $rowd["total"]/60;
@@ -2289,6 +2286,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					}
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]."</td>";
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rows["descripcion"]." - ".$rowc["servicio"]."</td>";
+					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$horas[0]."h. ".$minutos."m.</td>";
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rowu["usuario"]."</td>";
 					echo "<td style=\"text-align:center;vertical-align:top;\">";
 						echo "<a href=\"index.php?op=1018&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" style=\"border:0px;\"><a>";
@@ -2296,13 +2294,17 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</tr>";
 			}
 			echo "<tr>";
+			echo "<td colspan=\"7\"><table><tr>";
 			if ($_POST["id_servicio"] == "-1"){
+				echo "<td>".$Concepto."</td>";
 				echo "<td><input type=\"text\" name=\"nombre\" style=\"width:250px;\" required></td>";
+				echo "<td>".$Precio."/".$Hora."</td>";
 				echo "<td><input type=\"number\" name=\"pvp\" style=\"width:50px;\" required></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Facturar."\"></td>";
 			}
 			echo "</form>";
 			echo "</tr>";
+			echo "</table></td></tr>";
 		echo "</table>";
 		}
 	}

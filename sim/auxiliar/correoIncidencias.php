@@ -180,7 +180,7 @@ function correoIncidencias(){
 					$rowser = mysqli_fetch_array($resultser);
 //enviar notificación nueva nota en la incidencia
 					if ($rowser["auto_email"] == 1){
-						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2);
+						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,'');
 					}
 				} else {
 //Buscar si contiene codigo de catalogo de servicio
@@ -221,7 +221,7 @@ function correoIncidencias(){
 					updateFunction ("sgm_incidencias",$rowin["id"],$camposUpdate,$datosUpdate);
 
 //enviar notificación nueva incidencia
-					enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1);
+					enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1,'');
 				}
 				// guardar ficheros adjuntos
 				if ($filename){

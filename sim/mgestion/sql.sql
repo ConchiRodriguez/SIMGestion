@@ -866,6 +866,7 @@ ALTER TABLE `sgm_incidencias` ADD `temps_pendent` int(15) NOT NULL default '0' A
 ALTER TABLE `sgm_incidencias` ADD `correo` int(15) NOT NULL default '0' AFTER `temps_pendent`;
 ALTER TABLE `sgm_incidencias` ADD `pausada_forzada` tinyint(1) NOT NULL default '0' AFTER `correo` ;
 ALTER TABLE `sgm_incidencias` ADD `codigo_externo` varchar(50) default NULL AFTER `pausada_forzada`;
+ALTER TABLE `sgm_incidencias` ADD `facturada` tinyint(1) NOT NULL default '0' AFTER `codigo_externo` ;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
@@ -876,6 +877,7 @@ ALTER TABLE `sgm_incidencias_correos_enviados` ADD `id_incidencia` int(11) NOT N
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `destinatario` varchar(100) NOT NULL default '' AFTER `id_incidencia`;
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `asunto` varchar(150) NOT NULL default '' AFTER `destinatario`;
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `fecha` int(15) NOT NULL default '0' AFTER `asunto`;
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `tipo` int(11) NOT NULL default '0' AFTER `fecha`;
 
 CREATE TABLE `sgm_incidencias_estados` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_estados` ADD `estado` varchar(30) NOT NULL default '' AFTER `id`;

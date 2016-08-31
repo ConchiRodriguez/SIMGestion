@@ -37,26 +37,26 @@ if ($_GET['ssop'] != "") { $ssoption = $_GET['ssop']; } else { $ssoption = 0; }
 $user = false;
 $userid = 0;
 if ($soption == 666) {
-	setcookie("musername", "", time()-1, "/sim");
-	setcookie("mpassword", "", time()-1, "/sim");
+	setcookie("musername", "", time()-1, $url_raiz);
+	setcookie("mpassword", "", time()-1, $url_raiz);
 	unset($_COOKIE["musername"]); 
 	unset($_COOKIE["mpassword"]); 
 	header("Location: ".$urlmgestion);
 }
 
 if ($option == 667) {
-	setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, "/sim", $domain);
+	setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, $url_raiz, $domain);
 	header("Location: ".$urlmgestion);
 }
 
 
 if ($_GET["i"] != "") {
 	$idioma = $_GET["i"];
-	setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, "/sim", $domain);
+	setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, $url_raiz, $domain);
 } else {
 	if ($_COOKIE["idioma"] == "") {
 		$idioma = "es";
-		setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, "/sim", $domain);
+		setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, $url_raiz, $domain);
 	} else { $idioma = $_COOKIE["idioma"]; }
 }
 
@@ -77,8 +77,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/sim");
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/sim");
+				setcookie("musername", $_POST["user"], time()+60*$cookiestime, $url_raiz);
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
 				header("Location: ".$urlmgestion."/index.php?op=200");
 			}
 		}
@@ -92,8 +92,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $row["usuario"], time()+60*$cookiestime, "/sim");
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/sim");
+				setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz);
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
 				header("Location: ".$urlmgestion."/index.php?op=200&sop=70");
 			}
 		}
@@ -111,8 +111,8 @@ if ($_COOKIE["musername"] == "") {
 			$username = $row["usuario"];
 			$userid = $row["id"];
 			$sgm = $row["sgm"];
-			setcookie("musername", $row["usuario"], time()+60*$cookiestime, "/sim");
-			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/sim");
+			setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz);
+			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
 		}
 	}
 }
@@ -297,15 +297,21 @@ if (($option == 900) or ($option == 600)) {
 			echo "<td  class=\"maestra2\">";
 				$veure_peu = 1;
 				include ("mgestion/indice.php");
-				if ($option == 0) { }
+#				if ($option == 0) { }
 			echo "</td>";
 		echo "</tr>";
-		if ($veure_peu != 0){
+#		if ($veure_peu != 0){
 		echo "<tr>";
 			echo "<td class=\"maestra\" style=\"color:white;\">&copy;".date('Y')." Solucions-im.com</td>";
 		echo "</tr>";
-		}
+#		}
 	echo "</table>";
+
+	$errors= error_get_last();
+	echo "COPY ERROR: ".$errors['type'];
+	echo "<br />\n".$errors['message'];
+#	var_dump($errors);
+
 }
 ?>
 </center>
