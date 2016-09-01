@@ -350,7 +350,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<tr><td>".$Facturado."</td><td style=\"text-align:right;\">".$rowfact2["total_fact2"]." ".$rowdiv["abrev"]."</td></tr>";
 						$fact_pendiente = $rowfact["total_fact"] - $rowfact2["total_fact2"];
 						echo "<tr><td>".$Pendiente."</td><td style=\"text-align:right;\">".$fact_pendiente." ".$rowdiv["abrev"]."</td></tr>";
-						$sqlfact3 = "select sum(total) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and id_cliente=".$rowcontrato["id_cliente"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
+						$sqlfact3 = "select sum(total) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
 						$resultfact3 = mysqli_query($dbhandle,convertSQL($sqlfact3));
 						$rowfact3 = mysqli_fetch_array($resultfact3);
 						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".$rowfact3["total_fact"]." ".$rowdiv["abrev"]."</td></tr>";

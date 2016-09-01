@@ -1,7 +1,7 @@
 <?php
 error_reporting(~E_ALL);
 
-#function mail365(){
+function mail365(){
 
 	//Abre conexión IMAP
 	$imap = imap_open ("{outlook.office365.com:993/imap/ssl/novalidate-cert}INBOX", "conchi.rodriguez@solucionsim.onmicrosoft.com", "9501Conchi") or die("No Se Pudo Conectar Al Servidor:" . imap_last_error());
@@ -59,7 +59,7 @@ error_reporting(~E_ALL);
 		echo $uid."-".$destinatario."-".$asunto."-".$remitente."-".$message."<br>";
 
 	}
-#}
+}
 
 function getPart($connection, $messageNumber, $partNumber, $encoding) {
 	$data = imap_fetchbody($connection, $messageNumber, $partNumber);

@@ -1475,7 +1475,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<th class=\"formclient\">".$Dia." ".$Facturacion."</td>";
 				echo "<td class=\"formclient2\">";
 					$i = 1;
-					echo "<select name=\"dia_facturacion\">";
+					echo "<select name=\"dia_facturacion\" style=\"width:50px\">";
 						echo "<option value=\"0\">-</option>";
 						for ($x = 1; $x < 32; $x++) {
 							if ($row["dia_facturacion"] == $x) {
@@ -1490,7 +1490,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<th class=\"formclient\">".$Dia." ".$Recibo."</td>";
 				echo "<td class=\"formclient2\">";
 					$i = 1;
-					echo "<select name=\"dia_recibo\">";
+					echo "<select name=\"dia_recibo\" style=\"width:50px\">";
 						echo "<option value=\"0\">-</option>";
 						for ($x = 1; $x < 32; $x++) {
 							if ($row["dia_recibo"] == $x) {
@@ -1504,7 +1504,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "</tr><tr>";
 				echo "<th class=\"formclient\">".$Dias." ".$Vencimiento."</td>";
 				echo "<td class=\"formclient2\"><input type=\"numbre\" name=\"dias_vencimiento\" style=\"width:50px\" value=\"".$row["dias_vencimiento"]."\">";
-					echo "<select name=\"dias\">";
+					echo "<select name=\"dias\" style=\"width:50px\">";
 						if ($row["dias"] == 1) {
 							echo "<option value=\"1\" selected>".$Dias."</option>";
 							echo "<option value=\"0\">".$Meses."</option>";
@@ -1516,7 +1516,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "</select>";
 			echo "</tr><tr>";
 				echo "<th class=\"formclient\">".$Dia." del ".$Mes."</td>";
-				echo "<td class=\"formclient2\"><select name=\"dia\">";
+				echo "<td class=\"formclient2\"><select name=\"dia\" style=\"width:50px\">";
 					echo "<option value=\"0\">-</option>";
 					for ($x = 1; $x < 32; $x++) {
 						if ($rowdv["dia"] == $x) {
@@ -1677,8 +1677,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "<th style=\"width:100px;text-align:center;\">".$Telefono."</th>";
 				echo "<th style=\"width:100px;text-align:center;\">".$Movil."</th>";
 				echo "<th></th>";
-				echo "<th style=\"width:30px;text-align:center;\">".$Ver."</th>";
-				echo "<th style=\"width:30px;text-align:center;\">".$Editar."</th>";
+				echo "<th style=\"width:100px;text-align:center;\"></th>";
 			echo "</tr>";
 			$sql = "select * from sgm_clients_contactos where id_client=".$_GET["id"]." and visible=1 order by nombre";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -1686,8 +1685,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$color = "white";
 				$colorl = "black";
 				if ($row["pred"] == 1) { $color = "#FF4500"; $colorl = "white";}
-					echo "<tr style=\"background-color : ".$color."\">";
-						echo "<td class=\"submit\">";
+				echo "<tr style=\"background-color : ".$color."\">";
+					echo "<td class=\"submit\">";
 					if ($row["pred"] == 1) {
 						echo "<form action=\"index.php?op=1008&sop=120&ssop=5&id=".$_GET["id"]."&id_contacto=".$row["id"]."\" method=\"post\">";
 						echo "<input type=\"Submit\" value=\"".$Despredeterminar."\">";
@@ -1700,18 +1699,19 @@ if (($option == 1008) AND ($autorizado == true)) {
 					}
 					echo "</td>";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=121&id=".$row["id_client"]."&id_contacto=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-						$sqlt = "select trato from sgm_clients_tratos where id=".$row["id_trato"];
-						$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
-						$rowt = mysqli_fetch_array($resultt);
-						echo "<td style=\"color:".$colorl.";\">".$rowt["trato"]." ".$row["nombre"]." ".$row["apellido1"]." ".$row["apellido2"]."</td>";
-						echo "<td style=\"color:".$colorl.";\">".$row["carrec"]."</td>";
-						echo "<td style=\"color:".$colorl.";\">".$row["telefono"]."</td>";
-						echo "<td style=\"text-align:center;color:".$colorl.";\">".$row["movil"]."</td>";
-						echo "<td style=\"text-align:center;color:".$colorl.";\">";
-							if ($row["mail"] != "") { echo "<a href=\"mailto:".$row["mail"]."\"><img src=\"mgestion/pics/icons-mini/email_link.png\" style=\"border:0px\"></a>"; }
-						echo "</td>";
-					echo "<td style=\"text-align:center;color:".$colorl.";\"><a href=\"index.php?op=1008&sop=122&ssop=0&id=".$row["id_client"]."&id_contacto=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" style=\"border:0px\"></a></td>";
-					echo "<td style=\"text-align:center;color:".$colorl.";\"><a href=\"index.php?op=1008&sop=122&ssop=2&id=".$row["id_client"]."&id_contacto=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" style=\"border:0px\"></a></td>";
+					$sqlt = "select trato from sgm_clients_tratos where id=".$row["id_trato"];
+					$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+					$rowt = mysqli_fetch_array($resultt);
+					echo "<td style=\"color:".$colorl.";\">".$rowt["trato"]." ".$row["nombre"]." ".$row["apellido1"]." ".$row["apellido2"]."</td>";
+					echo "<td style=\"color:".$colorl.";\">".$row["carrec"]."</td>";
+					echo "<td style=\"color:".$colorl.";\">".$row["telefono"]."</td>";
+					echo "<td style=\"text-align:center;color:".$colorl.";\">".$row["movil"]."</td>";
+					echo "<td style=\"text-align:center;color:".$colorl.";\">";
+						if ($row["mail"] != "") { echo "<a href=\"mailto:".$row["mail"]."\"><img src=\"mgestion/pics/icons-mini/email_link.png\" style=\"border:0px\"></a>"; }
+					echo "</td>";
+					echo "<form action=\"index.php?op=1008&sop=122&ssop=2&id=".$row["id_client"]."&id_contacto=".$row["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "</form>";
 				echo "</tr>";
 			}
 		echo "</table>";
@@ -1744,7 +1744,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				if ($ssoption == 1) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>"; }
-				if (($ssoption == 2) or ($ssoption == 4)) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>"; }
+				if ($ssoption == 2) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>"; }
 			echo "</tr><tr>";
 				echo "<th>".$Trato.": </th>";
 				echo "<td><select name=\"id_trato\" style=\"width:50px\">";
@@ -1813,10 +1813,10 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</select></td>";
 			echo "</tr><tr>";
 				echo "<th style=\";vertical-align:top;\">".$Notas."</th>";
-				echo "<td><textarea name=\"notas\" class=\"px400\" rows=\"9\">".$rowc["notas"]."</textarea></td>";
+				echo "<td><textarea name=\"notas\" rows=\"3\">".$rowc["notas"]."</textarea></td>";
 			echo "</tr><tr>";
 			if ($ssoption == 1) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>"; }
-			if (($ssoption == 2) or ($ssoption == 4)) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>"; }
+			if ($ssoption == 2) { echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>"; }
 			echo "</tr>";
 		echo "</table>";
 		echo "</form>";
@@ -1865,10 +1865,13 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
 					echo "<td>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
-					echo "<td>".$rowcc["descripcion"]."</td>";
-					echo "<td>";
-						echo boton(array("op=1008&sop=141&id=".$_GET["id"]."&id_con=".$rowcc["id"],"op=1008&sop=145&id=".$_GET["id"]."&id_con=".$rowcc["id"]),array($Editar,$Archivo));
-					echo "</td>";
+					echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\">".$rowcc["descripcion"]."</a></td>";
+					echo "<form action=\"index.php?op=1008&sop=141&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "</form>";
+					echo "<form action=\"index.php?op=1008&sop=145&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Archivo."\"></td>";
+					echo "</form>";
 				echo "</tr>";
 			}
 		echo "</table>";

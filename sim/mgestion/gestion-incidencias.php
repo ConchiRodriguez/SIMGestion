@@ -93,7 +93,6 @@ if (($option == 1018) AND ($autorizado == true)) {
 <?php
 		}
 #		if ($soption == 1) { echo "<h4>".$Historico."</h4>";}
-		if ($soption == 200) { echo "<h4>".$Buscador."</h4>";}
 		if ($soption != 200){
 			echo "<table cellspacing=\"2\" cellpadding=\"0\" class=\"lista\" style=\"width:100%;\">";
 				echo "<tr>";
@@ -214,13 +213,14 @@ if (($option == 1018) AND ($autorizado == true)) {
 		}
 
 		if ($soption == 200){
+			echo "<h4>".$Buscador."</h4>";
 			echo "<table cellspacing=\"1\" cellpadding=\"0\" style=\"background-color:silver;\" class=\"lista\">";
 				echo "<form action=\"index.php?op=1018&sop=200&filtra=1\" method=\"post\" name=\"form1\">";
 				echo "<tr>";
-					echo "<th colspan=\"4\" style=\"text-align:left;vertical-align:top;\">".$Cliente."</th>";
+					echo "<th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Cliente."</th>";
 					echo "<th colspan=\"3\" style=\"text-align:left;vertical-align:top;\">".$Servicio."</th>";
 				echo "</tr><tr>";
-					echo "<td colspan=\"4\"><select name=\"id_cliente\" id=\"id_cliente\" style=\"width:500px\" onchange=\"desplegableCombinado2()\">";
+					echo "<td colspan=\"3\"><select name=\"id_cliente\" id=\"id_cliente\" style=\"width:500px\" onchange=\"desplegableCombinado2()\">";
 						echo "<option value=\"0\">-</option>";
 						$sqlcl1 = "select id,nombre from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
 						$resultcl1 = mysqli_query($dbhandle,convertSQL($sqlcl1));
@@ -269,33 +269,21 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "</tr>";
 #				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr>";
-					echo "<th style=\"width:70px\">".$Fecha." (".$Mes.")</th>";
-					echo "<th style=\"width:70px\">".$Fecha." (".$Ano.")</th>";
+					echo "<th style=\"width:140px\">".$Fecha."</th>";
 					echo "<th style=\"width:180px\">".$Estado."</th>";
 					echo "<th style=\"width:180px\">".$Usuario."</th>";
 					echo "<th style=\"width:100px\">ID</th>";
 					echo "<th style=\"width:300px\">".$Texto."</th>";
 					echo "<th style=\"width:100px\"></th>";
 				echo "</tr><tr>";
-					echo "<td><select name=\"mes\" style=\"width:70px\">";
+					echo "<td><select name=\"fecha\" style=\"width:140px\">";
 						echo "<option value=\"0\" selected>-</option>";
-						for ($j=1;$j<=12;$j++){
-							if (($j == $_POST["mes"]) or ($j == $_GET["m"])){
-								echo "<option value=\"".$j."\" selected>".$j."</option>";
-							} else {
-								echo "<option value=\"".$j."\">".$j."</option>";
-							}
-						}
-					echo "</select></td>";
-					echo "<td><select name=\"any\" style=\"width:70px\">";
-						echo "<option value=\"0\" selected>-</option>";
-						for ($k=2013;$k<=date("Y");$k++){
-							if (($k == $_POST["any"]) or ($k == $_GET["a"])){
-								echo "<option value=\"".$k."\" selected>".$k."</option>";
-							} else {
-								echo "<option value=\"".$k."\">".$k."</option>";
-							}
-						}
+						if ($_POST["fecha"] == 1){echo "<option value=\"1\" selected>".$Ayer."</option>";} else {echo "<option value=\"1\">".$Ayer."</option>";}
+						if ($_POST["fecha"] == 2){echo "<option value=\"2\" selected>".$Ultima." ".$Semana."</option>";} else {echo "<option value=\"2\">".$Ultima." ".$Semana."</option>";}
+						if ($_POST["fecha"] == 3){echo "<option value=\"3\" selected>".$Ultimos." 15 ".$Dias."</option>";} else {echo "<option value=\"3\">".$Ultimos." 15 ".$Dias."</option>";}
+						if ($_POST["fecha"] == 4){echo "<option value=\"4\" selected>".$Ultimo." ".$Mes."</option>";} else {echo "<option value=\"4\">".$Ultimo." ".$Mes."</option>";}
+						if ($_POST["fecha"] == 5){echo "<option value=\"5\" selected>".$Ultimos." 3 ".$Meses."</option>";} else {echo "<option value=\"5\">".$Ultimos." 3 ".$Meses."</option>";}
+						if ($_POST["fecha"] == 6){echo "<option value=\"6\" selected>".$Ultimos." 6 ".$Meses."</option>";} else {echo "<option value=\"6\">".$Ultimos." 6 ".$Meses."</option>";}
 					echo "</select></td>";
 					echo "<td><select name=\"id_estado\" style=\"width:180px\">";
 							echo "<option value=\"0\" selected>Todos</option>";
@@ -344,7 +332,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			}
 #			echo var_dump($id_relacio);
 		for ($i = 0; $i<=4;$i++){
-			if (($soption == 0) or ($soption == 1) or (($soption == 200) and ($_GET["filtra"] == 1) and (($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0) or ($_POST["id_cliente"] != 0) or ($_POST["id_servicio"] != 0) or ($_POST["id_usuario"] != 0) or ($_POST["texto"] != "") or ($_POST["id_incidencia"] != "") or ($_POST["id_estado"] != "")))) {
+			if (($soption == 0) or ($soption == 1) or (($soption == 200) and ($_GET["filtra"] == 1) and (($_GET["m"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0) or ($_POST["id_cliente"] != 0) or ($_POST["id_servicio"] != 0) or ($_POST["id_usuario"] != 0) or ($_POST["texto"] != "") or ($_POST["id_incidencia"] != "") or ($_POST["id_estado"] != "")))) {
 				if ($i == 0) {
 					echo "<tr style=\"background-color:silver;\">";
 						echo "<th></th>";
@@ -357,7 +345,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<th><a href=\"index.php?op=1018&fil=2\">".$Cliente."</a></th>";
 		#				echo "<th>".$Servicio."</th>";
 						echo "<th><a href=\"index.php?op=1018&fil=3\">".$Usuario." ".$Destino."</a></th>";
-					if (($_POST["dia"] != 0) or ($_GET["d"] != 0) or ($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0)){
+					if (($_POST["dia"] != 0) or ($_GET["d"] != 0) or ($_POST["fecha"] != 0) or ($_GET["m"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0)){
 						echo "<th>".$Tiempo."/".$Tiempo." ".$Total."</th>";
 					} else {
 						echo "<th>".$Tiempo."</th>";
@@ -369,21 +357,29 @@ if (($option == 1018) AND ($autorizado == true)) {
 				}
 				$sqli = "select id,id_usuario_destino,id_servicio,id_cliente,id_estado,fecha_registro_cierre,fecha_prevision,fecha_inicio,pausada,asunto,temps_pendent from sgm_incidencias where visible=1 and id_incidencia=0";
 			}
-			if (($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0)){
-				$mes = $_POST["mes"].$_GET["m"];
-				$any = $_POST["any"].$_GET["a"];
+			if (($_GET["m"] != 0) or ($_GET["a"] != 0)){
 				if ($_GET["d"] != 0){
-					$data1 = date(U, mktime(0, 0, 0, $mes, $_GET["d"], $any));
-					$data2 = date(U, mktime(0, 0, 0, $mes, $_GET["d"]+1, $any));
+					$data1 = date(U, mktime(0, 0, 0, $_GET["m"], $_GET["d"], $_GET["a"]));
+					$data2 = date(U, mktime(0, 0, 0, $_GET["m"], $_GET["d"]+1, $_GET["a"]));
 				} else {
-					if (($_GET["m"] != 0) or ($_POST["mes"] != 0)){
-						$data1 = date(U, mktime(0, 0, 0, $mes, 1, $any));
-						$data2 = date(U, mktime(0, 0, 0, $mes+1,1, $any));
+					if ($_GET["m"] != 0){
+						$data1 = date(U, mktime(0, 0, 0, $_GET["m"], 1, $_GET["a"]));
+						$data2 = date(U, mktime(0, 0, 0, $_GET["m"]+1,1, $_GET["a"]));
 					} else {
-						$data1 = date(U, mktime(0, 0, 0, 1, 1, $any));
-						$data2 = date(U, mktime(0, 0, 0, 12, 31, $any));
+						$data1 = date(U, mktime(0, 0, 0, 1, 1, $_GET["a"]));
+						$data2 = date(U, mktime(0, 0, 0, 12, 31, $_GET["a"]));
 					}
 				}
+				$sqli = $sqli." and id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$data1." and ".$data2." and visible=1)";
+			}
+			if ($_POST["fecha"] != 0){
+				$data2 = date(U);
+				if ($_POST["fecha"] == 1) { $data1 = date(U, mktime(0, 0, 0, date("n"), date("j")-1, date("Y")));}
+				if ($_POST["fecha"] == 2) { $data1 = date(U, mktime(0, 0, 0, date("n"), date("j")-7, date("Y")));}
+				if ($_POST["fecha"] == 3) { $data1 = date(U, mktime(0, 0, 0, date("n"), date("j")-15, date("Y")));}
+				if ($_POST["fecha"] == 4) { $data1 = date(U, mktime(0, 0, 0, date("n")-1, date("j"), date("Y")));}
+				if ($_POST["fecha"] == 5) { $data1 = date(U, mktime(0, 0, 0, date("n")-3, date("j"), date("Y")));}
+				if ($_POST["fecha"] == 6) { $data1 = date(U, mktime(0, 0, 0, date("n")-6, date("j"), date("Y")));}
 				$sqli = $sqli." and id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$data1." and ".$data2." and visible=1)";
 			}
 			if (($_GET["u"] != 0) or ($_POST["id_usuario"] != 0)) { $sqli = $sqli." and (id_usuario_destino=".$_GET["u"].$_POST["id_usuario"]." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and id_usuario_registro=".$_GET["u"].$_POST["id_usuario"]."))"; }

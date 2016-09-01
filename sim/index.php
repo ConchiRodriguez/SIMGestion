@@ -4,22 +4,7 @@
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Madrid');
 
-### BUSCA SI ES UNA IP LOCAL
-#$accesolocal = true;
-#$ip = $_SERVER['REMOTE_ADDR'];
-#$subxarxa = "192.168.1.";
-#$x = 0;
-#for ($x = 0 ; $x < strlen($subxarxa) ; $x++) {
-#	if ($ip[$x] != $subxarxa[$x]) { $accesolocal = false ; }
-#}
-#if ($accesolocal == true) {	include ("config.php"); }
-#if ($accesolocal == false) { include ("config2.php"); }
-
-
 include ("config.php");
-### CONEXION
-#$dbhandle = mysql_connect($dbhost, $dbuname, $dbpass ) or die("Couldn't connect to SQL Server on $dbhost");
-#$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
@@ -29,6 +14,10 @@ foreach (glob("auxiliar/*.php") as $filename)
     include ($filename);
 }
 
+foreach (glob("pantallas/*.php") as $filename2)
+{
+    include ($filename2);
+}
 
 if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 if ($_GET['sop'] != "") { $soption = $_GET['sop']; } else { $soption = 0; }
@@ -37,8 +26,8 @@ if ($_GET['ssop'] != "") { $ssoption = $_GET['ssop']; } else { $ssoption = 0; }
 $user = false;
 $userid = 0;
 if ($soption == 666) {
-	setcookie("musername", "", time()-1, $url_raiz);
-	setcookie("mpassword", "", time()-1, $url_raiz);
+	setcookie("musername", "", time()-1, $url_raiz, $domain);
+	setcookie("mpassword", "", time()-1, $url_raiz, $domain);
 	unset($_COOKIE["musername"]); 
 	unset($_COOKIE["mpassword"]); 
 	header("Location: ".$urlmgestion);
@@ -77,8 +66,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $_POST["user"], time()+60*$cookiestime, $url_raiz);
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
+				setcookie("musername", $_POST["user"], time()+60*$cookiestime, $url_raiz, $domain);
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
 				header("Location: ".$urlmgestion."/index.php?op=200");
 			}
 		}
@@ -92,8 +81,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz);
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
+				setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
 				header("Location: ".$urlmgestion."/index.php?op=200&sop=70");
 			}
 		}
@@ -111,8 +100,8 @@ if ($_COOKIE["musername"] == "") {
 			$username = $row["usuario"];
 			$userid = $row["id"];
 			$sgm = $row["sgm"];
-			setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz);
-			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz);
+			setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
+			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
 		}
 	}
 }
@@ -130,107 +119,6 @@ lopd($userid,$username,$option,$soption);
 		<title>SIMGESTION 3.0</title>
 
 		<?php include ("functions-js.php"); ?>
-		<script>
-		function desplegableCombinado(){
-			if (document.getElementById('id_servicio2').value!=0){document.getElementById('id_cliente').value=0;}
-			if (document.getElementById('id_cliente').value!=0){document.getElementById('id_cliente').value=0;}
-			document.forms.form1.action='';
-			document.forms.form1.method='POST';
-			document.forms.form1.submit();
-		}
-
-		function desplegableCombinado2(){
-			if (document.getElementById('id_cliente').value!=0){
-				document.getElementById('id_servicio').value=0;
-			}
-			document.forms.form1.action='';
-			document.forms.form1.method='POST';
-			document.forms.form1.submit();
-		}
-
-		function desplegableCombinado3($service2){
-			if ($service2!=0){document.getElementById('id_servicio').value=0;}
-			document.forms.form1.action='';
-			document.forms.form1.method='POST';
-			document.forms.form1.submit();
-		}
-
-		function desplegableCombinado4($id_usuario_origen){
-			if ($id_usuario_origen!=0){document.getElementById('id_servicio').value=0;}
-			document.forms.form1.action='';
-			document.forms.form1.method='POST';
-			document.forms.form1.submit();
-		}
-
-		function desplegableCombinado5(){
-			document.forms.form2.action='';
-			document.forms.form2.target='';
-			document.forms.form2.method='POST';
-			document.forms.form2.submit();
-		}
-		</script>
-		<script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
-		<script type="text/javascript">
-			tinymce.init({
-			  selector: '#mytextarea',
-			  height: 500,
-			  plugins: [
-				"advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
-				"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-				"table contextmenu directionality emoticons template textcolor paste fullpage textcolor colorpicker textpattern"
-			  ],
-
-			  toolbar1: "newdocument fullpage | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
-			  toolbar2: "cut copy paste | searchreplace | bullist numlist | outdent indent blockquote | undo redo | link unlink anchor image media code | insertdatetime preview | forecolor backcolor",
-			  toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | print fullscreen | ltr rtl | spellchecker | visualchars visualblocks nonbreaking template pagebreak restoredraft",
-
-			  menubar: false,
-			  toolbar_items_size: 'small',
-
-			  style_formats: [{
-				title: 'Bold text',
-				inline: 'b'
-			  }, {
-				title: 'Red text',
-				inline: 'span',
-				styles: {
-				  color: '#ff0000'
-				}
-			  }, {
-				title: 'Red header',
-				block: 'h1',
-				styles: {
-				  color: '#ff0000'
-				}
-			  }, {
-				title: 'Example 1',
-				inline: 'span',
-				classes: 'example1'
-			  }, {
-				title: 'Example 2',
-				inline: 'span',
-				classes: 'example2'
-			  }, {
-				title: 'Table styles'
-			  }, {
-				title: 'Table row 1',
-				selector: 'tr',
-				classes: 'tablerow1'
-			  }],
-
-			  templates: [{
-				title: 'Test template 1',
-				content: 'Test 1'
-			  }, {
-				title: 'Test template 2',
-				content: 'Test 2'
-			  }],
-			  content_css: [
-				'//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-				'//www.tinymce.com/css/codepen.min.css'
-			  ]
-			});
-		</script>
   </head>
 <body>
 <center>

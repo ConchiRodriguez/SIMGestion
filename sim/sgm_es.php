@@ -64,6 +64,7 @@ $Auditoria = "Auditoria";
 $AutoEmail = "AutoEmail";
 $Auxiliares = "Auxiliares";
 $Aviso = "Aviso";
+$Ayer = "Ayer";
 $Ayuda = "Ayuda";
 
 $Bancaria = "Bancaria";
