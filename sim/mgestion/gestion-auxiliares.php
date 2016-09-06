@@ -83,7 +83,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td><input type=\"Text\" name=\"idioma\" style=\"width:50px\"></td>";
 				echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:150px\"></td>";
 				echo "<td><input type=\"Text\" name=\"imagen\" style=\"width:100px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			$sql = "select * from sgm_idiomas where visible=1";
@@ -92,16 +92,16 @@ if (($option == 1023) AND ($autorizado == true)) {
 					$color = "white";
 					if ($row["predefinido"] == 1) { $color = "#FF4500"; }
 						echo "<tr style=\"background-color : ".$color."\">";
-						echo "<td>";
+						echo "<td class=\"submit\">";
 					if ($row["predefinido"] == 1) {
 						echo "<form action=\"index.php?op=1023&sop=130&ssop=5&id=".$row["id"]."\" method=\"post\">";
-						echo "<input type=\"Submit\" value=\"".$Despre."\" style=\"width:100px\">";
+						echo "<input type=\"Submit\" value=\"".$Despredeterminar."\">";
 						echo "</form>";
 						echo "<td></td>";
 					}
 					if ($row["predefinido"] == 0) {
 						echo "<form action=\"index.php?op=1023&sop=130&ssop=4&id=".$row["id"]."\" method=\"post\">";
-						echo "<input type=\"Submit\" value=\"".$Predet."\" style=\"width:100px\">";
+						echo "<input type=\"Submit\" value=\"".$Predeterminar."\">";
 						echo "</form>";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=131&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					}
@@ -109,7 +109,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 					echo "<td><input type=\"Text\" name=\"idioma\" style=\"width:50px\" value=\"".$row["idioma"]."\"></td>";
 					echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:150px\" value=\"".$row["descripcion"]."\"></td>";
 					echo "<td><input type=\"Text\" name=\"imagen\" style=\"width:100px\" value=\"".$row["imagen"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -161,7 +161,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 			$file = $_FILES[csv][tmp_name];
 			$handle = fopen($file,"r");
 			//loop through the csv file and insert into database
-			while ($data = fgetcsv($handle,1000,",","'")){
+			while ($data = fgetcsv($handle,1000,";","'")){
 				if ($data[0]) {
 					$camposInsert = "pais,siglas";
 					$datosInsert = array(utf8_decode($data[0]),$data[1]);
@@ -188,7 +188,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 							echo "<td></td>";
 							echo "<td><input type=\"Text\" name=\"pais\" style=\"width:200px\"></td>";
 							echo "<td><input type=\"Text\" name=\"siglas\" style=\"width:50px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -198,23 +198,23 @@ if (($option == 1023) AND ($autorizado == true)) {
 								$color = "white";
 								if ($row["predefinido"] == 1) { $color = "#FF4500"; }
 									echo "<tr style=\"background-color : ".$color."\">";
-									echo "<td>";
+									echo "<td class=\"submit\">";
 								if ($row["predefinido"] == 1) {
 									echo "<form action=\"index.php?op=1023&sop=140&ssop=5&id=".$row["id"]."\" method=\"post\">";
-									echo "<input type=\"Submit\" value=\"".$Despre."\" style=\"width:100px\">";
+									echo "<input type=\"Submit\" value=\"".$Despredeterminar."\">";
 									echo "</form>";
 									echo "</td><td></td>";
 								}
 								if ($row["predefinido"] == 0) {
 									echo "<form action=\"index.php?op=1023&sop=140&ssop=4&id=".$row["id"]."\" method=\"post\">";
-									echo "<input type=\"Submit\" value=\"".$Predet."\" style=\"width:100px\">";
+									echo "<input type=\"Submit\" value=\"".$Predeterminar."\">";
 									echo "</form>";
 									echo "</td><td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=141&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 								}
 								echo "<form action=\"index.php?op=1023&sop=140&ssop=2&id=".$row["id"]."\" method=\"post\">";
 								echo "<td><input type=\"Text\" name=\"pais\" style=\"width:200px\" value=\"".$row["pais"]."\"></td>";
 								echo "<td><input type=\"Text\" name=\"siglas\" style=\"width:50px\" value=\"".$row["siglas"]."\"></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						}
@@ -229,8 +229,8 @@ if (($option == 1023) AND ($autorizado == true)) {
 						echo "</tr>";
 						echo "<tr>";
 							echo "<form action=\"index.php?op=1023&sop=140\" method=\"post\" enctype=\"multipart/form-data\" name=\"form1\" id=\"form1\">";
-							echo "<th><input name=\"csv\" type=\"file\" id=\"csv\"></th>";
-							echo "<th><input type=\"submit\" value=\"".$Subir."\"></th>";
+							echo "<td><input name=\"csv\" type=\"file\" id=\"csv\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Subir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -309,7 +309,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 							echo "<td></td>";
 							echo "<td><input type=\"Text\" name=\"comunidad_autonoma\" style=\"width:200px\"></td>";
 							echo "<td><input type=\"Text\" name=\"siglas\" style=\"width:50px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -319,23 +319,23 @@ if (($option == 1023) AND ($autorizado == true)) {
 								$color = "white";
 								if ($row["predefinido"] == 1) { $color = "#FF4500"; }
 									echo "<tr style=\"background-color : ".$color."\">";
-									echo "<td>";
+									echo "<td class=\"submit\">";
 								if ($row["predefinido"] == 1) {
 									echo "<form action=\"index.php?op=1023&sop=150&ssop=5&id=".$row["id"]."\" method=\"post\">";
-									echo "<input type=\"Submit\" value=\"".$Despre."\" style=\"width:100px\">";
+									echo "<input type=\"Submit\" value=\"".$Despredeterminar."\">";
 									echo "</form>";
 									echo "</td><td></td>";
 								}
 								if ($row["predefinido"] == 0) {
 									echo "<form action=\"index.php?op=1023&sop=150&ssop=4&id=".$row["id"]."\" method=\"post\">";
-									echo "<input type=\"Submit\" value=\"".$Predet."\" style=\"width:100px\">";
+									echo "<input type=\"Submit\" value=\"".$Predeterminar."\">";
 									echo "</form>";
 									echo "</td><td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=151&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 								}
 								echo "<form action=\"index.php?op=1023&sop=150&ssop=2&id=".$row["id"]."\" method=\"post\">";
 								echo "<td><input type=\"Text\" name=\"comunidad_autonoma\" style=\"width:200px\" value=\"".$row["comunidad_autonoma"]."\"></td>";
 								echo "<td><input type=\"Text\" name=\"siglas\" style=\"width:50px\" value=\"".$row["siglas"]."\"></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						}
@@ -348,8 +348,8 @@ if (($option == 1023) AND ($autorizado == true)) {
 						echo "</tr>";
 						echo "<tr>";
 							echo "<form action=\"index.php?op=1023&sop=150\" method=\"post\" enctype=\"multipart/form-data\" name=\"form1\" id=\"form1\">";
-							echo "<th><input name=\"csv\" type=\"file\" id=\"csv\"></th>";
-							echo "<th><input type=\"submit\" value=\"".$Subir."\"></th>";
+							echo "<td><input name=\"csv\" type=\"file\" id=\"csv\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Subir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -412,7 +412,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 							echo "<td></td>";
 							echo "<td></td>";
 							echo "<td><input type=\"Text\" name=\"provincia\" style=\"width:200px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -424,7 +424,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=161&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 								echo "<form action=\"index.php?op=1023&sop=160&ssop=2&id=".$row["id"]."\" method=\"post\">";
 								echo "<td><input type=\"Text\" name=\"provincia\" style=\"width:200px\" value=\"".$row["provincia"]."\"></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						}
@@ -437,8 +437,8 @@ if (($option == 1023) AND ($autorizado == true)) {
 						echo "</tr>";
 						echo "<tr>";
 							echo "<form action=\"index.php?op=1023&sop=160\" method=\"post\" enctype=\"multipart/form-data\" name=\"form1\" id=\"form1\">";
-							echo "<th><input name=\"csv\" type=\"file\" id=\"csv\"></th>";
-							echo "<th><input type=\"submit\" value=\"".$Subir."\"></th>";
+							echo "<td><input name=\"csv\" type=\"file\" id=\"csv\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Subir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -484,7 +484,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"region\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -496,7 +496,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=171&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					echo "<form action=\"index.php?op=1023&sop=170&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"Text\" name=\"region\" style=\"width:200px\" value=\"".$row["region"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -540,7 +540,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"medio_comunicacion\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -552,7 +552,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=181&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					echo "<form action=\"index.php?op=1023&sop=180&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"Text\" name=\"medio_comunicacion\" style=\"width:200px\" value=\"".$row["medio_comunicacion"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -596,7 +596,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"formato_documento\" style=\"width:200px\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -608,7 +608,7 @@ if (($option == 1023) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=191&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					echo "<form action=\"index.php?op=1023&sop=190&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"Text\" name=\"formato_documento\" style=\"width:200px\" value=\"".$row["formato_documento"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}

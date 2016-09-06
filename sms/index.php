@@ -4,7 +4,7 @@
         if (empty($_POST['msisdn']) || empty($_POST['message'])) {
             $message = 'All fields need to be filled in';
         } else {
-            $url = 'http://www.solucions-im.net/api/';
+		$url = 'http://api.labsmobile.com/clients/acct01client/';
             $username = 'conchi.rodriguez';
             $password = '95019501';
             $sms = '<sms>

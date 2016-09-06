@@ -325,7 +325,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<tr><th style=\"text-align:right;\">".$Pais.": </th><td colspan=\"3\">";
 							echo "<select name=\"id_pais\" style=\"width:350px;\">";
 							echo "<option value=\"0\">-</option>";
-							$sqlo = "select id,pais from sgm_paises where visible=1 order by pais";
+							$sqlo = "select id,pais from sim_paises where visible=1 order by pais";
 							$resulto = mysqli_query($dbhandle,convertSQL($sqlo));
 							while ($rowo = mysqli_fetch_array($resulto)) {
 								if ($_GET["id"] == 0){

@@ -19,29 +19,16 @@ if (($option == 200) and ($user == false)) {
 		echo "</td><td style=\"width:85%;vertical-align : top;text-align:left;\">";
 			echo "<table>";
 				echo "<tr>";
-		#			echo "<td class=menu>";
-		#				echo "<a href=\"index.php?op=200&sop=10&id=".$rowuser["id"]."\" style=\"color:white;\">Datos Usuario</a>";
-		#			echo "</td>";
 					echo "<td class=menu>";
-						echo "<a href=\"index.php?op=200&sop=70&id=".$rowuser["id"]."\" style=\"color:white;\">".$Cambio." ".$Contrasena."</a>";
+						echo "<a href=\"index.php?op=200&sop=10&id=".$rowuser["id"]."\" style=\"color:white;\">".$Cambio." ".$Contrasena."</a>";
 					echo "</td>";
-#					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-#					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
-#					$rowp = mysqli_fetch_array($resultp);
-#					if ($rowp["total"] == 1) {
-#						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo=1003 and visible=1";
-#						$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
-#						$rowpe = mysqli_fetch_array($resultpe);
-#						$sqlp = "select * from sgm_users_permisos WHERE id_modulo=1003";
-#						$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
-#						while ($rowp = mysqli_fetch_array($resultp)){
-#							if ($rowp["id_user"] == $rowuser["id"]){
-#										echo "<td class=menu>";
-#											echo "<a href=\"index.php?op=200&sop=30&id=".$rowuser["id"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
-#										echo "</td>";
-#							}
-#						}
-#					}
+						$sqlpe = "select * from sgm_users_permisos_modulos WHERE id_modulo in (select id_modulo from sgm_users_permisos WHERE id_user=".$userid.") and visible=1";
+						$resultpe = mysqli_query($dbhandle,convertSQL($sqlpe));
+						while ($rowpe = mysqli_fetch_array($resultpe)){
+							echo "<td class=menu>";
+								echo "<a href=\"index.php?op=200&sop=0&id=".$rowpe["id_modulo"]."\" style=\"color:white;\">".$rowpe["nombre"]."</a>";
+							echo "</td>";
+						}
 #					$sqlp = "select count(*) as total from sgm_users_permisos_modulos WHERE id_modulo=1006 and visible=1";
 #					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
 #					$rowp = mysqli_fetch_array($resultp);
@@ -89,6 +76,35 @@ if (($option == 200) and ($user == false)) {
 	echo "<table class=\"principal\"><tr><td>";
 
 	if ($soption == 0) {
+
+	}
+
+	if ($soption == 10) {
+		echo "<h4>".$Cambio." ".$Contrasena."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<form action=\"index.php?op=200&sop=11\" method=\"post\">";
+			echo "<tr><th>".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass1\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
+			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass2\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
+			echo "<tr><td></td><td><input type=\"submit\" value=\"".$Modificar."\"></td>";
+			echo "</tr>";
+			echo "</form>";
+		echo "</table>";
+	}
+
+	if ($soption == 11) {
+		if (($_POST["pass1"] == $_POST["pass2"]) AND ($_POST["pass1"] != "")) {
+			$contrasena = crypt($_POST["pass1"]);
+			$sql = "update sgm_users set ";
+			$sql = $sql."pass='".$contrasena."'";
+			$sql = $sql." WHERE id=".$userid."";
+			mysqli_query($dbhandle,convertSQL($sql));
+			echo "<center>";
+			echo "<br><br>".$ayudaPanelUserPass2;
+			echo boton(array("op=0&sop=666"),array($Salir));
+			echo "</center>";
+		} else {
+			echo mensageError($errorPanelUserPass);
+		}
 	}
 
 	if ($soption == 5) {
@@ -145,7 +161,7 @@ if (($option == 200) and ($user == false)) {
 		echo "</center>";
 	}
 
-	if ($soption == 10) {
+	if ($soption == 12) {
 		echo "<center>";
 			echo "<table><tr><td style=\"vertical-align:top;\">";
 				echo "Datos del usuario : <strong><em>".$username."</em></strong><br><br>";
@@ -165,7 +181,7 @@ if (($option == 200) and ($user == false)) {
 		echo "</center>";
 	}
 
-	if ($soption == 11) {
+	if ($soption == 13) {
 		$sqlx = "select count(*) as total from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$userid;
 		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
 		$rowx = mysqli_fetch_array($resultx);
@@ -890,32 +906,6 @@ if (($option == 200) and ($user == false)) {
 			echo "</table>";
 			echo "</center>";
 		}
-	}
-
-	if ($soption == 70) {
-		echo "<h4>".$Cambio." ".$Contrasena."</h4>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<form action=\"index.php?op=200&sop=71\" method=\"post\">";
-			echo "<tr><th>".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass1\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
-			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass2\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
-			echo "<tr><td></td><td><input type=\"submit\" value=\"".$Modificar."\"></td>";
-			echo "</tr>";
-			echo "</form>";
-		echo "</table>";
-	}
-
-	if ($soption == 71) {
-		if (($_POST["pass1"] == $_POST["pass2"]) AND ($_POST["pass1"] != "")) {
-			$contrasena = crypt($_POST["pass1"]);
-			$sql = "update sgm_users set ";
-			$sql = $sql."pass='".$contrasena."'";
-			$sql = $sql." WHERE id=".$userid."";
-			mysqli_query($dbhandle,convertSQL($sql));
-			echo "<center>";
-			echo "<br><br>".$ayudaPanelUserPass2;
-			echo boton(array("op=0&sop=666"),array($Salir));
-			echo "</center>";
-		} else { echo mensageError($errorPanelUserPass); }
 	}
 
 	if ($soption == 72) {

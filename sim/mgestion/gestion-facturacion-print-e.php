@@ -41,7 +41,7 @@ function factura_print_e($id)
 		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
 		$rowx = mysqli_fetch_array($resultx);
 
-		$sqlsys = "select siglas from sgm_paises where id=".$rowx["id_pais"];
+		$sqlsys = "select siglas from sim_paises where id=".$rowx["id_pais"];
 		$resultsys = mysqli_query($dbhandle,convertSQL($sqlsys));
 		$rowsys = mysqli_fetch_array($resultsys);
 

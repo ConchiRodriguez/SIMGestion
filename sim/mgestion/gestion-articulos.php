@@ -106,7 +106,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td></td>";
 					echo "<td></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Buscar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			} elseif ($soption == 0) {
@@ -129,7 +129,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td></td>";
 					echo "<td></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 				$subgrupo = -1;
@@ -167,8 +167,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				$sqlst = "select pvd,pvp,id_divisa_pvd,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$row["id"]."";
 				$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
 				$rowst = mysqli_fetch_array($resultst);
-				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"3\"></th></tr>"; $subgrupo = 0;}
-				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"3\"></th></tr>";}
+				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"4\"></th></tr>"; $subgrupo = 0;}
+				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"4\"></th></tr>";}
 				$subgrupo = $rowsg["id"];
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1004&sop=1&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
@@ -191,7 +191,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
 					$rowd = mysqli_fetch_array($resultd);
 					echo "<td style=\"text-align:right;\">".$rowst["pvp"]." ".$rowd["abrev"]."</td>";
-					echo "<td><a href=\"index.php?op=1004&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1004&sop=100&id=".$row["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "</form>";
 				echo "</tr>";
 			}
 		}
@@ -328,7 +330,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 							}
 						echo "</select></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Descripcion."</th><td><textarea name=\"notas\" style=\"width:300px\" rows=\"5\">".$rowa["notas"]."</textarea></td></tr>";
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:300px\"></td></tr>";
+						echo "<tr><td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 						echo "</form>";
 					echo "</table>";
 				echo "</td><td style=\"width:100px\">&nbsp;</td><td style=\"vertical-align:top;text-align:left;\">";
@@ -352,7 +354,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 									echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>";
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+							echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 						echo "</tr>";
 						echo "</form>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -371,7 +373,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 										else { echo "<option value=\"".$rowg1["id"]."\">".$rowg1["nombre"]."</option>"; }
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 							echo "</tr>";
 							echo "</form>";
 						}
@@ -600,67 +602,6 @@ if (($option == 1004) AND ($autorizado == true)) {
 			$camposInsert = "id_escandall,id_article,unitats,visible";
 			$datosInsert = array($rowart["id"],$rowes["id_article"],$rowes["unitats"],$rowes["visible"]);
 			insertFunction ("sgm_articles_escandall",$camposInsert,$datosInsert);
-		}
-
-		$sqlcl = "select id_client,stock_max,stock_min from sgm_articles_clients where id_article=".$_GET["id"];
-		$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
-		while ($rowcl = mysqli_fetch_array($resultcl)) {
-			$camposInsert = "id_client,id_article,stock_max,stock_min";
-			$datosInsert = array($rowcl["id_client"],$rowart["id"],$rowcl["stock_max"],$rowcl["stock_min"]);
-			insertFunction ("sgm_articles_clients",$camposInsert,$datosInsert);
-		}
-
-		$sqlco = "select * from sgm_articles_costos where visible=1 and id_article=".$_GET["id"];
-		$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
-		while ($rowco = mysqli_fetch_array($resultco)) {
-			$camposInsert = "id_article,preu_cost,pes_cost,visible,descripcio,temps,fecha,id_cuerpo,aprovat";
-			$datosInsert = array($rowart["id"],$rowco["preu_cost"],$rowco["pes_cost"],$rowco["visible"],$rowco["descripcio"],$rowco["temps"],$rowco["fecha"],$rowco["id_cuerpo"],$rowco["aprovat"]);
-			insertFunction ("sgm_articles_costos",$camposInsert,$datosInsert);
-
-			$sqlcost = "select id from sgm_articles_costos order by id desc";
-			$resultcost = mysqli_query($dbhandle,convertSQL($sqlcost));
-			$rowcost = mysqli_fetch_array($resultcost);
-
-
-			$sqlfr = "select * from sgm_articles_fases_recursos where visible=1 and id_coste=".$rowco["id"];
-			$resultfr = mysqli_query($dbhandle,convertSQL($sqlfr));
-			while ($rowfr = mysqli_fetch_array($resultfr)) {
-				$camposInsert = "id_fase,id_recurso,id_coste,temps,ordre,visible,preu_fases,calc_temps";
-				$datosInsert = array($rowfr["id_fase"],$rowfr["id_recurso"],$rowcost["id"],$rowfr["temps"],$rowfr["ordre"],$rowfr["visible"],$rowfr["preu_fases"],$rowfr["calc_temps"]);
-				insertFunction ("sgm_articles_fases_recursos",$camposInsert,$datosInsert);
-
-				$sqlfare = "select id from sgm_articles_fases_recursos order by id desc";
-				$resultfare = mysqli_query($dbhandle,convertSQL($sqlfare));
-				$rowfare = mysqli_fetch_array($resultfare);
-
-				$sqlest = "select orden,descripcio,visible from sgm_articles_estacada where visible=1 and id_fase_recurso=".$rowfr["id"];
-				$resultest = mysqli_query($dbhandle,convertSQL($sqlest));
-				while ($rowest = mysqli_fetch_array($resultest)) {
-					$camposInsert = "id_fase_recurso,orden,descripcio,visible";
-					$datosInsert = array($rowfare["id"],$rowest["orden"],$rowest["descripcio"],$rowest["visible"]);
-					insertFunction ("sgm_articles_estacada",$camposInsert,$datosInsert);
-
-					$sqlesta = "select id from sgm_articles_estacada order by id desc";
-					$resultesta = mysqli_query($dbhandle,convertSQL($sqlesta));
-					$rowesta = mysqli_fetch_array($resultesta);
-
-					$sqlop = "select * from sgm_articles_operaciones visible=1 and where id_estacada=".$rowest["id"];
-					$resultop = mysqli_query($dbhandle,convertSQL($sqlop));
-					while ($rowop = mysqli_fetch_array($resultop)) {
-						$camposInsert = "id_operacion,id_estacada,temps,descripcio,visible";
-						$datosInsert = array($rowop["id_operacion"],$rowesta["id"],$rowop["temps"],$rowop["descripcio"],$rowop["visible"]);
-						insertFunction ("sgm_articles_operaciones",$camposInsert,$datosInsert);
-					}
-				}
-			}
-		}
-
-		$sqlse = "select * from sgm_articles_seccions where visible=1 and id_article=".$_GET["id"];
-		$resultse = mysqli_query($dbhandle,convertSQL($sqlse));
-		while ($rowse = mysqli_fetch_array($resultse)) {
-			$camposInsert = "id_article,id_seccion,id_estanteria,id_pasillo,id_almacen,visible";
-			$datosInsert = array($rowse["id_article"],$rowse["id_seccion"],$rowse["id_estanteria"],$rowse["id_pasillo"],$rowse["id_almacen"],$rowse["visible"]);
-			insertFunction ("sgm_articles_seccions",$camposInsert,$datosInsert);
 		}
 
 		$sqlca = "select id_valor,valor from sgm_articles_rel_caracteristicas where id_articulo=".$_GET["id"];
@@ -1024,83 +965,6 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "</table>";
 	}
 
-	if ($soption == 135) {
-		if ($ssoption == 1) {
-			$camposInsert = "id_article,id_client,stock_min,stock_max";
-			$datosInsert = array($_GET["id"],$_POST["id_client"],$_POST["stock_min"],$_POST["stock_max"]);
-			insertFunction ("sgm_articles_clients",$camposInsert,$datosInsert);
-		}
-		if ($ssoption == 2) {
-			$camposUpdate = array("id_client","stock_min","stock_max");
-			$datosUpdate = array($_POST["id_client"],$_POST["stock_min"],$_POST["stock_max"]);
-			updateFunction ("sgm_articles_clients",$_GET["id_stock"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 3){
-			deleteFunction ("sgm_articles_clients",$_GET["id_stock"]);
-		}
-
-		echo "<h4>".$Stock." ".$Clientes." : </h4>";
-		echo boton(array("op=1004&sop=130&id=".$_GET["id"]),array("&laquo; ".$Volver));
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr style=\"background-color: Silver;\">";
-				echo "<th></th>";
-				echo "<th>".$Cliente."</th>";
-				echo "<th>".$Stock." ".$Minimo."</th>";
-				echo "<th>".$Stock." ".$Maximo."</th>";
-				echo "<th></th>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<form action=\"index.php?op=1004&sop=135&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-				echo "<td></td>";
-				echo "<td><select name=\"id_client\" type=\"Text\" style=\"width:400px\">";
-					echo "<option value=\"0\">-</option>";
-					$sqlp= "select id,nombre from sgm_clients";
-					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
-					while ($rowp = mysqli_fetch_array($resultp)){
-						echo "<option value=\"".$rowp["id"]."\">".$rowp["nombre"]."</option>";
-					}
-				echo "</select></td>";
-				echo "<td><input name=\"stock_min\" type=\"Text\" value=\"0\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input name=\"stock_max\" type=\"Text\" value=\"0\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
-				echo "<td></td>";
-				echo "</form>";
-			echo "</tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
-			$sql= "select id,id_client,stock_min,stock_max from sgm_articles_clients";
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			while ($row = mysqli_fetch_array($result)){
-				echo "<tr>";
-				echo "<td><a href=\"index.php?op=1004&sop=136&id_stock=".$row["id"]."&id=".$_GET["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
-				echo "<form action=\"index.php?op=1004&sop=135&ssop=2&id_stock=".$row["id"]."&id=".$_GET["id"]."\" method=\"post\">";
-				echo "<td><select name=\"id_client\" type=\"Text\" style=\"width:400px\">";
-					echo "<option value=\"0\">-</option>";
-					$sqlp= "select  id,nombre from sgm_clients";
-					$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
-					while ($rowp = mysqli_fetch_array($resultp)){
-						if ($row["id_client"] == $rowp["id"]){
-							echo "<option value=\"".$rowp["id"]."\" selected>".$rowp["nombre"]."</option>";
-						}else{
-							echo "<option value=\"".$rowp["id"]."\">".$rowp["nombre"]."</option>";
-						}
-					}
-				echo "</select></td>";
-				echo "<td><input name=\"stock_min\" type=\"Text\" value=\"".$row["stock_min"]."\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input name=\"stock_max\" type=\"Text\" value=\"".$row["stock_max"]."\" style=\"width:75px; text-align:right\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-				echo "</form>";
-				echo "</tr>";
-			}
-		echo "</table>";
-	}
-
-	if ($soption == 136) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1004&sop=135&ssop=3&id_stock=".$_GET["id_stock"]."&id=".$_GET["id"],"op=1004&sop=135&id=".$_GET["id"]),array($Si,$No));
-		echo "</center>";
-	}
-
 	if ($soption == 140) {
 		if ($ssoption == 1) {
 			$sqls = "select id_estanteria,id from sgm_stock_almacenes_pasillo_estanteria_seccion where id=".$_POST["id_seccion"];
@@ -1325,7 +1189,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<option value=\"1\" selected>".$Si."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1350,7 +1214,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><input name=\"codigo\" type=\"Text\" style=\"width:70px\"></td>";
 				echo "<td><input name=\"unitats\" type=\"Text\" style=\"width:70px\"></td>";
 				echo "<td colspan=\"5\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1376,7 +1240,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><input name=\"pvp_forzat\" type=\"Text\" value=\"".$rowe["pvp_forzat"]."\" style=\"width:70px;text-align:right;\"></td>";
 					$_total=$rowe["unitats"]*$rowe["pvp_forzat"];
 					echo "<td style=\"text-align:right;width:70px;\">".number_format($_total, 3, '.', ',')."</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					$total=$total+$_total;
 				echo "</tr>";
@@ -1418,7 +1282,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 									}
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
+							echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -1508,7 +1372,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<th></th>";
 				echo "<th><input type=\"Text\" name=\"codigo\" style=\"width:50px\" maxlength=\"5\"></th>";
 				echo "<th><input type=\"Text\" name=\"grupo\" style=\"width:150px\" maxlength=\"30\"></th>";
-				echo "<th><input type=\"Submit\" value=\"".$Anadir." ".$Familias."\" style=\"width:150px\"></th>";
+				echo "<th class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir." ".$Familias."\"></th>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr style=\"background-color: Silver;\">";
@@ -1522,7 +1386,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "</select></th>";
 				echo "<th><input type=\"Text\" name=\"codigo\" style=\"width:50px\" maxlength=\"5\"></th>";
 				echo "<th><input type=\"Text\" name=\"subgrupo\" style=\"width:150px\" maxlength=\"30\"></th>";
-				echo "<th><input type=\"Submit\" value=\"".$Anadir." ".$Subfamilias."\" style=\"width:150px\"></th>";
+				echo "<th class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir." ".$Subfamilias."\"></th>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1530,7 +1394,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<caption>".$Listado." ".$Familias."</caption>";
 			echo "<form action=\"index.php?op=1004&sop=510&ssop=2\" method=\"post\">";
-			echo "<tr><td colspan=\"8\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:300px\"></td></tr>";
+			echo "<tr><td colspan=\"8\" style=\"text-align:center;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td></tr>";
 			$sql = "select id,codigo,grupo from sgm_articles_grupos order by codigo";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
@@ -1568,7 +1432,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</tr>";
 				}
 			}
-			echo "<tr><td colspan=\"8\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:300px\"></td></tr>";
+			echo "<tr><td colspan=\"8\" style=\"text-align:center;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td></tr>";
 			echo "</form>";
 		echo "</table>";
 	}
@@ -1617,7 +1481,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1689,7 +1553,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row["unidad"]."\"></td>";
 			echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row["unidad_abr"]."\"></td>";
 			echo "<td><input type=\"text\" name=\"valor\" value=\"".$row["valor"]."\"></td>";
-			echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+			echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 		echo "</tr>";
 		echo "<tr><td>&nbsp;</td></tr>";
@@ -1715,7 +1579,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row["unidad"]."\"></td>";
 				echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row["unidad_abr"]."\"></td>";
 				echo "<td><input type=\"text\" name=\"valor\" value=\"".$row["valor"]."\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				if ($row["valor"] == "") {
 					$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row["id"]." and visible=1";
@@ -1756,7 +1620,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td><input type=\"text\" name=\"unidad\" value=\"".$row1["unidad"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"unidad_abr\" value=\"".$row1["unidad_abr"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"valor\" value=\"".$row1["valor"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					if ($row1["valor"] == "") {
 						$sqlg = "select count(*) as total from sgm_articles_caracteristicas_tablas where id_caracteristica=".$row1["id"]." and visible=1";
@@ -1913,9 +1777,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<tr><td>".$Telefono."</td><td><input type=\"Text\" name=\"telefono\" style=\"width:400px\" value=\"".$row["telefono"]."\"></td></tr>";
 					echo "<tr><td>".$Notas."</td><td><textarea name=\"notas\" style=\"width:400px\" rows=\"3\">".$row["notas"]."</textarea></td></tr>";
 					if ($_GET["id"] == 0) {
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Anadir."\"></td></tr>";
+						echo "<tr><td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td></tr>";
 					} else {
-						echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
+						echo "<tr><td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 					}
 					echo "</form>";
 				echo "</table>";
@@ -1997,7 +1861,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 				echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
-				echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td colspan=\"2\" class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td></td>";
@@ -2012,7 +1876,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1004&sop=532&ssop=2&id=".$_GET["id"]."&id_pasillo=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$row["orden"]."\"></td>";
 					echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$row["nombre"]."\"></td>";
-					echo "<td colspan=\"2\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td colspan=\"2\" class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 					echo "<td></td>";
 					echo "<td></td>";
@@ -2033,7 +1897,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td></td>";
 					echo "<td style=\"text-align:right;\" colspan=\"2\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 					echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "<td></td>";
 					echo "<td></td>";
 					echo "</form>";
@@ -2049,7 +1913,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<form action=\"index.php?op=1004&sop=532&ssop=20&id=".$_GET["id"]."&id_estanteria=".$rowpe["id"]."\" method=\"post\">";
 						echo "<td style=\"text-align:right;width:40px\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$rowpe["orden"]."\"></td>";
 						echo "<td colspan=\"2\"><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$rowpe["nombre"]."\"></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 						echo "</form>";
 						echo "<td></td>";
 						echo "<td></td>";
@@ -2073,7 +1937,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<td style=\"text-align:right;\" colspan=\"2\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"0\"></td>";
 						echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:150px\"></td>";
 						echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:100px\" value=\"0\"></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 						echo "</form>";
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
@@ -2090,7 +1954,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 							echo "<td style=\"text-align:right;width:40px\"><input type=\"Text\" name=\"orden\" style=\"width:40px\" value=\"".$rowpes["orden"]."\"></td>";
 							echo "<td><input type=\"Text\" name=\"nombre\" style=\"width:150px\" value=\"".$rowpes["nombre"]."\"></td>";
 							echo "<td><input type=\"Text\" name=\"porcentage\" style=\"width:100px\" value=\"".$rowpes["porcentage"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+							echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					}

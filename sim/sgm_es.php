@@ -20,6 +20,7 @@ $Admin = "Admin.";
 $Administracion = "Administraci&oacute;n";
 $Administrador = "Administrador";
 $Administrar = "Administrar";
+$Administrativo = "Administrativo";
 $a_efecto = "a efecto";
 $AGENDA = "AGENDA";
 $Agenda = "Agenda";

@@ -895,23 +895,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sqlc = "select nombre,apellido1,apellido2,mail,telefono from sgm_clients_contactos where pred=1 and id_client=".$_POST['id_cliente'];
 			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 			$rowc = mysqli_fetch_array($resultc);
-			if ($row["id_direccion_envio"] == 0) {
-				$edireccion= $row["direccion"];
-				$epoblacion= $row["poblacion"];
-				$ecp= $row["cp"];
-				$eprovincia= $row["provincia"];
-			}
-			if ($row["id_direccion_envio"] <> 0) {
-				$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
-				$result3 = mysqli_query($dbhandle,convertSQL($sql3));
-				$row3 = mysqli_fetch_array($result3);
-				$edireccion= $row3["direccion"];
-				$epoblacion= $row3["poblacion"];
-				$ecp= $row3["cp"];
-				$eprovincia= $row3["provincia"];
-			}
 			$camposUpdate = array("nombre","nif","direccion","poblacion","cp","provincia","mail","telefono","id_cliente","edireccion","epoblacion","ecp","eprovincia","cnombre","cmail","ctelefono");
-			$datosUpdate = array($row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["mail"],$row["telefono"],$row["id"],$edireccion,$epoblacion,$ecp,$eprovincia,$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"]);
+			$datosUpdate = array($row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["mail"],$row["telefono"],$row["id"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"]);
 			updateFunction ("sgm_cabezera",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 2) {
@@ -926,23 +911,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$sql = "select * from sgm_clients where id=".$_GET["id_cliente"];
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-			if ($row["id_direccion_envio"] == 0) {
-				$edireccion= $row["direccion"];
-				$epoblacion= $row["poblacion"];
-				$ecp= $row["cp"];
-				$eprovincia= $row["provincia"];
-			}
-			if ($row["id_direccion_envio"] <> 0) {
-				$sql3 = "select * from sgm_clients_envios where id=".$row["id_direccion_envio"];
-				$result3 = mysqli_query($dbhandle,convertSQL($sql3));
-				$row3 = mysqli_fetch_array($result3);
-				$edireccion= $row3["direccion"];
-				$epoblacion= $row3["poblacion"];
-				$ecp= $row3["cp"];
-				$eprovincia= $row3["provincia"];
-			}
 			$camposUpdate = array("edireccion","epoblacion","ecp","eprovincia");
-			$datosUpdate = array($edireccion,$epoblacion,$ecp,$eprovincia);
+			$datosUpdate = array($row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"]);
 			updateFunction ("sgm_cabezera",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 4) {
