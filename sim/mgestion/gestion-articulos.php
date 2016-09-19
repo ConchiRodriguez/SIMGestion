@@ -43,6 +43,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 			$datosUpdate=array(0);
 			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
+		if ($ssoption == 4) {
+			$camposUpdate=array('descatalogat');
+			$datosUpdate=array(1);
+			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 5) {
+			$camposUpdate=array('descatalogat');
+			$datosUpdate=array(0);
+			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
 		if ($soption == 0) {
 			echo "<h4>".$Articulos."</h4>";
 			echo "<table><tr>";
@@ -136,7 +146,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 			}
 				echo "<tr><td>&nbsp;</td></tr>";
 		if (($soption == 0) or (($soption == 200) and (($_POST["codigo"] != 0) or ($_POST["nombre"] != 0) or ($_POST["notas"] != 0) or ($_POST["id_subgrupo"] != 0)))) {
-			$sql = "select id,id_subgrupo,codigo,nombre from sgm_articles where visible=1";
+			$sql = "select id,id_subgrupo,codigo,nombre,descatalogat from sgm_articles where visible=1";
 			if ($_POST["id_subgrupo"] < 0) {$subgrupo = $_POST["id_subgrupo"]; }
 			if ($soption == 0){
 				if ($_GET["ver"] == 1) {$sql .= " and descatalogat=1";} else {$sql .= " and descatalogat=0";}
@@ -167,8 +177,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 				$sqlst = "select pvd,pvp,id_divisa_pvd,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$row["id"]."";
 				$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
 				$rowst = mysqli_fetch_array($resultst);
-				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"4\"></th></tr>"; $subgrupo = 0;}
-				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"4\"></th></tr>";}
+				if ($subgrupo < 0) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$Sin_clasificar."</th><th colspan=\"6\"></th></tr>"; $subgrupo = 0;}
+				if ($rowsg["id"] != $subgrupo) {echo "<tr style=\"background-color:silver;\"><th colspan=\"2\"></th><th>".$rowg["grupo"]." - ".$rowsg["subgrupo"]."</th><th colspan=\"6\"></th></tr>";}
 				$subgrupo = $rowsg["id"];
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1004&sop=1&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
@@ -193,6 +203,18 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:right;\">".$rowst["pvp"]." ".$rowd["abrev"]."</td>";
 					echo "<form action=\"index.php?op=1004&sop=100&id=".$row["id"]."\" method=\"post\">";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "</form>";
+					if ($row["descatalogat"] == 0){
+						echo "<form action=\"index.php?op=1004&sop=0&ssop=4&id=".$row["id"]."\" method=\"post\">";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Descatalogar."\"></td>";
+						echo "</form>";
+					} elseif ($row["descatalogat"] == 1){
+						echo "<form action=\"index.php?op=1004&sop=0&ssop=5&id=".$row["id"]."\" method=\"post\">";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Catalogar."\"></td>";
+						echo "</form>";
+					}
+					echo "<form action=\"index.php?op=1004&sop=106&id=".$row["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Duplicar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -503,17 +525,16 @@ if (($option == 1004) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 105) {
-		if ($ssoption == 1) {
+		if ($ssoption == 4) {
 			$camposUpdate=array('descatalogat');
 			$datosUpdate=array(1);
 			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-		if ($ssoption == 2) {
+		if ($ssoption == 5) {
 			$camposUpdate=array('descatalogat');
 			$datosUpdate=array(0);
 			updateFunction("sgm_articles",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
-
 		echo "<h4>".$Opciones."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"1\" class=\"lista\">";
 			echo "<tr>";
@@ -551,7 +572,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<td style=\"width:400px\">".$descatalogarArticulo."</td>";
 					echo "</tr></table><table class=\"lista\"><tr>";
 						echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-							echo "<a href=\"index.php?op=1004&sop=105&ssop=1&id=".$_GET["id"]."\" style=\"color:white;\">".$Descatalogar."</a>";
+							echo "<a href=\"index.php?op=1004&sop=105&ssop=4&id=".$_GET["id"]."\" style=\"color:white;\">".$Descatalogar."</a>";
 						echo "</td>";
 					echo "</tr><tr><td>&nbsp;</td>";
 					echo "</tr></table>";
@@ -563,7 +584,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<td style=\"width:400px\">".$catalogarArticulo."</td>";
 					echo "</tr></table><table class=\"lista\"><tr>";
 						echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
-							echo "<a href=\"index.php?op=1004&sop=105&ssop=2&id=".$_GET["id"]."\" style=\"color:white;\">".$Catalogar."</a>";
+							echo "<a href=\"index.php?op=1004&sop=105&ssop=5&id=".$_GET["id"]."\" style=\"color:white;\">".$Catalogar."</a>";
 						echo "</td>";
 					echo "</tr><tr><td>&nbsp;</td>";
 					echo "</tr></table>";
@@ -577,19 +598,9 @@ if (($option == 1004) AND ($autorizado == true)) {
 		$sql = "select * from sgm_articles where id=".$_GET["id"];
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
-		$sqlgc = "select codigo from sgm_articles where codigo<>'' order by codigo desc";
-		$resultgc = mysqli_query($dbhandle,convertSQL($sqlgc));
-		$rowgc = mysqli_fetch_array($resultgc);
-		$codigo = $rowgc["codigo"]+1;
-		if ($codigo < 10) { $codigo = "00000".$codigo; }
-		if (($codigo < 100) and ($codigo > 9)) { $codigo = "0000".$codigo; }
-		if (($codigo < 1000) and ($codigo > 99)) { $codigo = "000".$codigo; }
-		if (($codigo < 10000) and ($codigo > 999)) { $codigo = "00".$codigo; }
-		if (($codigo < 100000) and ($codigo > 9999)) { $codigo = "0".$codigo; }
-		if ($codigo > 99999) { $codigo = $codigo; }
 
-		$camposInsert = "codigo,nombre,id_subgrupo,img1,img2,img3,notas,escandall,recalc_escandall,stock_max,stock_min,codigoext,descatalogat,pvd,pvp,id_divisa";
-		$datosInsert = array($codigo,$row["nombre"],$row["id_subgrupo"],$row["img1"],$row["img2"],$row["img3"],$row["notas"],$row["escandall"],$row["recalc_escandall"],$row["stock_max"],$row["stock_min"],$row["codigoext"],$row["descatalogat"],$row["pvd"],$row["pvp"],$row["id_divisa"]);
+		$camposInsert = "codigo,nombre,id_subgrupo,img1,img2,img3,notas,escandall,recalc_escandall,stock_max,stock_min,codigoext,descatalogat,id_divisa";
+		$datosInsert = array($row["codigo"],$row["nombre"],$row["id_subgrupo"],$row["img1"],$row["img2"],$row["img3"],$row["notas"],$row["escandall"],$row["recalc_escandall"],$row["stock_max"],$row["stock_min"],$row["codigoext"],$row["descatalogat"],$row["id_divisa"]);
 		insertFunction ("sgm_articles",$camposInsert,$datosInsert);
 
 		$sqlart = "select id from sgm_articles where visible=1 order by id desc";
@@ -623,8 +634,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 		$sqlst = "select * from sgm_stock where id_article=".$_GET["id"];
 		$resultst = mysqli_query($dbhandle,convertSQL($sqlst));
 		while ($rowst = mysqli_fetch_array($resultst)) {
-			$camposInsert = "id_article,id_almacen,unidades,pvd,pvp,web,vigente,fecha,id_user,id_compte_entradas";
-			$datosInsert = array($rowart["id"],$rowst["id_almacen"],$rowst["unidades"],$rowst["pvd"],$rowst["pvp"],$rowst["web"],$rowst["vigente"],$rowst["fecha"],$rowst["id_user"],$rowst["id_compte_entradas"]);
+			$camposInsert = "id_article,id_almacen,unidades,pvd,pvp,web,vigente,fecha,id_user,id_compte_entradas,id_divisa_pvp,id_divisa_pvd";
+			$datosInsert = array($rowart["id"],$rowst["id_almacen"],$rowst["unidades"],$rowst["pvd"],$rowst["pvp"],$rowst["web"],$rowst["vigente"],$rowst["fecha"],$rowst["id_user"],$rowst["id_compte_entradas"],$rowst["id_divisa_pvp"],$rowst["id_divisa_pvd"]);
 			insertFunction ("sgm_stock",$camposInsert,$datosInsert);
 		}
 		echo "<center>";

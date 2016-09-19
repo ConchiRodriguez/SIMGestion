@@ -148,7 +148,8 @@ ALTER TABLE `sgm_cabezera` ADD `retenciones` decimal(11,3) NOT NULL default '0.0
 CREATE TABLE `sgm_calendario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_calendario` ADD `dia` int(11) NOT NULL default '0' AFTER `id` ;
 ALTER TABLE `sgm_calendario` ADD `mes` int(11) NOT NULL default '0' AFTER `dia` ;
-ALTER TABLE `sgm_calendario` ADD `descripcio` varchar(255) NOT NULL default '' AFTER `mes`;
+ALTER TABLE `sgm_calendario` ADD `ano` int(11) NOT NULL default '0' AFTER `mes` ;
+ALTER TABLE `sgm_calendario` ADD `descripcio` varchar(255) NOT NULL default '' AFTER `ano`;
 
 CREATE TABLE `sgm_calendario_horario` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_calendario_horario` ADD `dia` varchar(55) NOT NULL default '' AFTER `id`;
@@ -166,7 +167,7 @@ ALTER TABLE `sgm_clients` ADD `cognom2` varchar(55) NOT NULL default '' AFTER `c
 ALTER TABLE `sgm_clients` ADD `tipo_identificador` tinyint(1) NOT NULL default '1' AFTER `alias`;
 /*tipo_identificador: 1 nif; 2 VAT; 3 extrangero; 4 sin numero*/
 ALTER TABLE `sgm_clients` ADD `nif` varchar(15) NOT NULL default '' AFTER `nombre`;
-ALTER TABLE `sgm_clients` ADD `direccion` varchar(255) NOT NULL default '' AFTER `cvia`;
+ALTER TABLE `sgm_clients` ADD `direccion` varchar(255) NOT NULL default '' AFTER `nif`;
 ALTER TABLE `sgm_clients` ADD `poblacion` varchar(50) NOT NULL default '' AFTER `direccion`;
 ALTER TABLE `sgm_clients` ADD `cp` varchar(5) NOT NULL default '' AFTER `poblacion`;
 ALTER TABLE `sgm_clients` ADD `provincia` varchar(15) NOT NULL default '' AFTER `cpais`;
@@ -195,7 +196,6 @@ ALTER TABLE `sgm_clients` ADD `cuentabancaria` varchar(30) default NULL AFTER `c
 ALTER TABLE `sgm_clients` ADD `dias_vencimiento` int(11) NOT NULL default '0' AFTER `domiciliobancario`;
 ALTER TABLE `sgm_clients` ADD `dia_mes_vencimiento` int(11) NOT NULL default '0' AFTER `dias_vencimiento`;
 ALTER TABLE `sgm_clients` ADD `dias` tinyint(1) NOT NULL default '1' AFTER `dias_vencimiento`;
-
 ALTER TABLE `sgm_clients` ADD `dia_facturacion` int(11) NOT NULL default '0' AFTER `dias`;
 ALTER TABLE `sgm_clients` ADD `dia_recibo` int(11) NOT NULL default '0' AFTER `dia_facturacion`;
 ALTER TABLE `sgm_clients` ADD `id_medio_facturacion` int(11) NOT NULL default '0' AFTER `dia_recibo`;
@@ -282,9 +282,9 @@ CREATE TABLE `sgm_clients_origen` ( `id` int(11) NOT NULL auto_increment, PRIMAR
 ALTER TABLE `sgm_clients_origen` ADD `origen` varchar(30) NOT NULL default '' AFTER `id`;
 
 CREATE TABLE `sgm_clients_rel_origen` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_clients_rel_origen` ADD `id_cliente` int(11) NOT NULL default '' AFTER `id`;
-ALTER TABLE `sgm_clients_rel_origen` ADD `id_origen` int(11) NOT NULL AFTER `id_cliente`;
-ALTER TABLE `sgm_clients_rel_origen` ADD `tipo_origen` int(11) NOT NULL AFTER `id_origen`;
+ALTER TABLE `sgm_clients_rel_origen` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_clients_rel_origen` ADD `id_origen` int(11) NOT NULL default '0' AFTER `id_cliente`;
+ALTER TABLE `sgm_clients_rel_origen` ADD `tipo_origen` int(11) NOT NULL default '0' AFTER `id_origen`;
 ALTER TABLE `sgm_clients_rel_origen` ADD `otro_origen` varchar(30) NOT NULL default '' AFTER `tipo_origen`;
 /*tipo_origen: 1 origen; 2 cliente; 3 contacto; 4 empleado; 5 otros*/
 
@@ -557,6 +557,12 @@ CREATE TABLE `sgm_contratos_usuarios` ( `id` int(11) NOT NULL auto_increment, PR
 ALTER TABLE `sgm_contratos_usuarios` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_contratos_usuarios` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_contrato`;
 
+CREATE TABLE `sim_control_versiones` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_control_versiones` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `id`;
+ALTER TABLE `sim_control_versiones` ADD `comentarios` longtext AFTER `fecha`;
+ALTER TABLE `sim_control_versiones` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `comentarios`;
+ALTER TABLE `sim_control_versiones` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `visible`;
+
 CREATE TABLE `sgm_cuerpo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_cuerpo` ADD `id_origen` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_cuerpo` ADD `linea` int(11) NOT NULL default '0' AFTER `id_origen`;
@@ -614,6 +620,7 @@ ALTER TABLE `sgm_dades_origen_factura_iban` ADD `entidad_bancaria` varchar(50) N
 ALTER TABLE `sgm_dades_origen_factura_iban` ADD `iban` varchar(50) NOT NULL default '' AFTER `entidad_bancaria`;
 ALTER TABLE `sgm_dades_origen_factura_iban` ADD `descripcion` varchar(150) NOT NULL default '' AFTER `iban`;
 ALTER TABLE `sgm_dades_origen_factura_iban` ADD `predefinido` tinyint(1) NOT NULL default '0' AFTER `descripcion`;
+ALTER TABLE `sgm_dades_origen_factura_iban` ADD `swift_bic` varchar(11) NOT NULL default '' AFTER `predefinido`;
 
 CREATE TABLE `sgm_divisas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_divisas` ADD `divisa` varchar(255) NOT NULL default '' AFTER `id`;
@@ -785,6 +792,7 @@ ALTER TABLE `sgm_incidencias` ADD `correo` int(15) NOT NULL default '0' AFTER `t
 ALTER TABLE `sgm_incidencias` ADD `pausada_forzada` tinyint(1) NOT NULL default '0' AFTER `correo` ;
 ALTER TABLE `sgm_incidencias` ADD `codigo_externo` varchar(50) default NULL AFTER `pausada_forzada`;
 ALTER TABLE `sgm_incidencias` ADD `facturada` tinyint(1) NOT NULL default '0' AFTER `codigo_externo` ;
+ALTER TABLE `sgm_incidencias` ADD `control_version` tinyint(1) NOT NULL default '0' AFTER `facturada` ;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
@@ -864,7 +872,7 @@ ALTER TABLE `sim_licencias` ADD `fecha_ini` date NOT NULL default '0000-00-00' A
 ALTER TABLE `sim_licencias` ADD `fecha_fin` date NOT NULL default '0000-00-00' AFTER `fecha_ini`;
 ALTER TABLE `sim_licencias` ADD `num_elementos` int(11) NOT NULL default '0' AFTER `fecha_fin`;
 ALTER TABLE `sim_licencias` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_elementos`;
-ALTER TABLE `sgm_licencias` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sim_licencias` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sim_licencias` ADD `facturado` tinyint(1) NOT NULL default '0' AFTER `renovado`;
 
 CREATE TABLE `sim_licencias_articulos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
@@ -1014,6 +1022,9 @@ ALTER TABLE `sgm_rrhh_formacion_plan` ADD `visible` tinyint(1) NOT NULL default 
 
 CREATE TABLE `sgm_rrhh_jornada_anual` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_jornada_anual` ADD `num_horas_any` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_rrhh_jornada_anual` ADD `num_dias_vac` int(11) NOT NULL default '0' AFTER `num_horas_any`;
+ALTER TABLE `sgm_rrhh_jornada_anual` ADD `num_dias_lib` int(11) NOT NULL default '0' AFTER `num_dias_vac`;
+
 
 CREATE TABLE `sgm_rrhh_puesto_trabajo` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `puesto` varchar(255) default NULL AFTER `id`;
@@ -1026,12 +1037,6 @@ ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `habilidades` longtext NOT NULL AFTER 
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `habilidades`;
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `activo` tinyint(1) NOT NULL default '1' AFTER `visible`;
 ALTER TABLE `sgm_rrhh_puesto_trabajo` ADD `numero` int(15) NOT NULL default '0' AFTER `visible`;
-
-CREATE TABLE `sgm_rrhh_num_dias_vacaciones` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_rrhh_num_dias_vacaciones` ADD `num_dias_vac` int(11) NOT NULL default '0' AFTER `id`;
-
-CREATE TABLE `sgm_rrhh_num_dias_libres` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_rrhh_num_dias_libres` ADD `num_dias_lib` int(11) NOT NULL default '0' AFTER `id`;
 
 CREATE TABLE `sgm_stock` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_stock` ADD `id_article` int(11) NOT NULL default '0' AFTER `id`;
@@ -1181,4 +1186,3 @@ ALTER TABLE `sgm_users_tipus` ADD `visible` tinyint(1) NOT NULL default '1' AFTE
 CREATE TABLE `sim_usuarios_tipos_departamentos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY (`id`));
 ALTER TABLE `sim_usuarios_tipos_departamentos` ADD `id_tipo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_usuarios_tipos_departamentos` ADD `id_departamento` int(11) NOT NULL default '0' AFTER `id_tipo`;
-

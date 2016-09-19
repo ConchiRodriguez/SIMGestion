@@ -37,6 +37,7 @@ $Ambito = "&Agrave;mbit";
 $Ambito_geografico = "&Agrave;mbito Geogr&agrave;fic";
 $Anadir = "Afegir";
 $Anadir_Contacto = "Afegir Contacte";
+$Anadir_version = "Afegir Control Versi&oacute;";
 $AnadiryEliminarIncompatibles = "Afegir i Eliminar Incompatibles";
 $Ancho = "Ample";
 $Ano = "Any";
@@ -127,7 +128,9 @@ $Cobrado = "Cobrat";
 $Codificado = "Codificat";
 $Codigo = "Codi";
 $Color = "Color";
+$Colores = "Colors";
 $Coincidencias = "Coincid&egrave;ncies";
+$Comentarios = "Comentaris";
 $Comercial = "Comercial";
 $Completa = "Completa";
 $Completo = "Complet";
@@ -152,6 +155,7 @@ $Contrasena = "Contrasenya";
 $Contrasenas = "Contrasenyas";
 $Contrato = "Contracte";
 $Contratos = "Contractes";
+$Control = "Control";
 $Controles_de_calidad = "Controls de qualitat";
 $Convertir = "Convertir";
 $ConvertirAArticulo = "Convertir a Article";
@@ -547,6 +551,7 @@ $Relaciones = "Relacions";
 $Remitente = "Remitent";
 $Remoto = "Remot";
 $Remunerado = "Remunerat";
+$Renovar = "Renovar";
 $Repetir = "Repetir";
 $Reports = "Reports";
 $Responsable = "Responsable";
@@ -589,6 +594,7 @@ $SinContrato = "Sense Contracte";
 $Sincronizaciones = "Sincronitzacions";
 $Sincronizar = "Sincronitzar";
 $Sin_dependencias = "Sense Depend&egrave;ncia";
+$Sistema = "Sistema";
 $Situacion = "Situaci&oacute;";
 $SLA = "SLA";
 $Sobre = "Sobre";
@@ -665,6 +671,7 @@ $Ver_Todos = "Veure Tots";
 $Ver_Todos_Personales = "Veure Tots Personals";
 $Ver_Por_Tipo = "Veure Per Tipo";
 $Ver_Por_Usuario = "Veure Per Usuario";
+$Versiones = "Versions";
 $Vigente = "Vigent";
 $Visible = "Visible";
 $Visualitzar = "Visualitzar";
@@ -693,24 +700,8 @@ $Octubre = "Octubre";
 $Noviembre = "Novembre";
 $Diciembre = "Decembre";
 
-#errores
-$UsuarioNoAutorizado = "USUARI NO AUTORITZAT";
-$error_incidencia_busqueda = "Per cercar per dates, es necessari mes i any.";
-
-$UseNoAutorizado = "<br><center><table><tr><td>Usuari no autoritzat.</td></tr></table></center>";
-$UsuarioYaReg = "<br>Nom d'usuario ja registrat.";
-$NombreIncorrecto = "<br>Valor en el camp nom d'usuario incorrecte.";
-$MailYaReg = "<br>Direcci&oacute; e-mail ja registrada.";
-$MailIncorrecto = "<br>Valor en el camp e-mail incorrecte.";
-$PassIncorrecto = "<br>Valor en els camps passwords incorrecte.";
-$CompletaCorrect = "Completa correctament tots els camps obligatoris.";
-$InvalidarUsuario = "<br><br>¿Segur que desitja invalidar aquest usuari?";
-$ErrorPass = "<br><br>Error a l'introduir les contrasenyes<br><br>";
-$NotasDes = "No es pot introduir una incidencia sense text";
-$cambiarDatos = "Si desitja canviar les dades de l'empresa, posis en contacte amb ";
-
-$definicionesIncompatibles = "La definici&oacute; de client es incompatible amb les ja existents per aquest client. ¿Que desitja fer?";
-
+#Mensajes
+#Articulos
 $ValorDefectoCaracteristicaArt = "Si existeix un valor per defecte s'ignorar&agrave; la taula d'opcions d'aquesta caracter&iacute;stica.";
 $ErrorEscandallo = "No es posible incluir un article en s&iacute; mateix.";
 $ErrorAnadirArticulo = "No es posible afegir l'article. El codi o el nom de l'article ja existeixen.";
@@ -718,35 +709,40 @@ $duplicarArticulo = "Es duplicar&agrave; l'article i totes les dades relacionade
 $eliminarArticulo = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessible.";
 $descatalogarArticulo = "L'article estar&agrave; descatalogat, per&ograve ser&agrave; accessible tant a ell com a les dades relacionades.";
 $catalogarArticulo = "L'article tornar&agrave; al cat&agrave;leg habitual d'articles amb totes les seves funcions i dades relacionades.";
-
-$errorSubirArchivoDuplicado = "No es pot afegir l'archiu per que ja existeix un amb el mateix nom.";
-$errorSubirArchivoTamany = "No es pot transferir l'archiu.<br>No pot excedir el tamany indicat";
-$errorSubirArchivo = "No es pot transferir l'archiu.";
-
-$CambioPassCorrecto = "La contrasenya s'ha modificat correctament";
-
-$ErrorRelacion = "El valor introduit no es num&egrave;ric o no pertany a un ID d'una incid&egrave;ncia existent";
-$ErrorSinTextoDuracion = "No es pot introduir una incid&egrave;ncia sense text i/o duraci&oacute;";
-$ErrorSinServicioCliente = "No es pot introduir una incid&egrave;ncia sense servei SIM o client";
-$ErrorSinAsunto = "No es pot introduir una incid&egrave;ncia sense asumpte";
-$ErrorFinalizacion = "No es pot finalitzar una incid&egrave;ncia sense notes de conclusi&oacute;, sense servei o pausada";
-$ErrorBusqueda = "Per cercar per dates, es necessari mes i any.";
-
-$Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta.";
-$ContrasenyaAppErrorEliminar = "No es pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
-
-$Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
-$Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
-
-$pregunta_eliminar = "¿Desitja eliminar l'element seleccionat?";
-$mesaje_modificar = "S'ha modificat correctament";
-
+#Auxiliares
 $ayuda_iso_idioma = "L'idioma ha de cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
-
+#Clientes
+$OkActualizacionCliente = "El tipus dels clients s'ha actualitzat correctament";
+$ErrorActualizacionCliente = "El tipus dels clients no s'ha actualitzat correctament";
+$info_cliente_alias = "L'Alias es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
+$info_cliente_vip = "El Client VIP es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
+#Contrasenas
+$CambioPassCorrecto = "La contrasenya s'ha modificat correctament";
+$Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta.";
+$ContrasenyaAppErrorEliminar = "No es pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
+#Contratos
+$Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
+$Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
 $ContratoErrorEliminar = "No es pot eliminar aquest contracte, per que existeixen incidencies associades.";
 $ContratoTipoErrorEliminar = "No es pot eliminar aquest tipus de contracte, per que existeixen contractes associats.";
-
+$ErrorServicio = "Un servei amb el mateix nom ja existeix en aquest contracte";
+$info_contrato_notificaciones = "Gesti&oacute; de les notificacions dels serveis. S'enviar&agrave;n notificacions a l'usuari escollit quan la incid&egrave;ncia tingui el servei i l'usuari d'origen escollit, i quan es realitzi una de les accions escollides sobre ella.";
+$info_contrato_archivos = "L'arxiu a pujar &eacute;s el contracte escanejat un cop signat per les dues parts.";
+$info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
+$info_contrato_servicios1 = "Si per aquells serveis que estan inclosos en el contracte i no son seleccionables pel client.";
+$info_contrato_servicios2 = "Si el servei es visible per el client en la extranet, secci&oacute; contractes.";
+$info_contrato_servicios3 = "Si el client pot obrir incid&egrave;ncies sobre aquest servei.";
+$info_contrato_servicios4 = "Si el client pot veure la durada de les incid&egrave;ncies.";
+$info_contrato_servicios5 = "Hores de cobertura del servei.";
+$info_contrato_servicios6 = "Temps m&agrave;xim de resoluci&oacute; de incid&egrave;ncies del servei en SLA.";
+$info_contrato_servicios7 = "(Next Bussines Day) Si les incid&egrave;ncies han de resoldre-las dins del horari laboral.";
+$info_contrato_servicios8 = "Porcentatge m&iacute;nim d'incid&egrave;ncias que s'han de resoldre en el temps i la cobertura associats.";
+$info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el sistema.";
+$info_contrato_servicios10 = "Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.";
+$info_contrato_servicios11 = "Nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.";
+$info_contrato_servicios12 = "Codi de qui obre incid&egrave;ncies relacionades amb aquest servei.";
+#Facturas
 $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els diferents tipus en el llistat superior.
 <br><strong>Plantilla</strong> - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.
 <br><strong>Dies</strong> - La periocitat en dies en que s'ha de regenerar una nova plantilla.
@@ -762,7 +758,6 @@ $ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els di
 <br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualitza n&uacute;mero RFQ.
 <br><strong>Caixa</strong> - Indica com aquest tipus influeix en la caixa.
 ";
-
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
 $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 $ayudaFacturaCerrar = "Es tancar&agrave; la factura i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";
@@ -770,53 +765,109 @@ $ayudaFacturaAbrir = "S'obrir&agrave; la factura i tornar&agrave; a ser visible.
 $errorFacturaCrear = "Atenci&oacute; : La data de la factura es superior a la data actual.";
 $ayudaFacturaAprobar = "S'aprobar&agrave; el document i se podr&agrave; facturar.";
 $ayudaFacturaDesaprobar = "Es desaprobar&agrave; el document i no se podr&agrave; facturar.";
-
 $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
 $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";
-
 $pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
-
-$ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
-$ErrorEmpleadoCalendario = "Les dates no son correctas";
-$ErrorPuestoDasactivar = "No es pot desactivar un lloc de treball amb un empleat assignat";
-
+$InfoCambioFormaPagoTPV = "Forma de pagament canviada correctament.";
+$InfoCambioFormaPagoTPV2 = "Ha realizat un altre canvio en la forma de pagament.";
+#General
+$UsuarioNoAutorizado = "USUARI NO AUTORITZAT";
+$error_incidencia_busqueda = "Per cercar per dates, es necessari mes i any.";
+$pregunta_eliminar = "¿Desitja eliminar l'element seleccionat?";
+$mesaje_modificar = "S'ha modificat correctament";
+$errorSubirArchivoDuplicado = "No es pot afegir l'archiu per que ja existeix un amb el mateix nom.";
+$errorSubirArchivoTamany = "No es pot transferir l'archiu.<br>No pot excedir el tamany indicat";
+$errorSubirArchivo = "No es pot transferir l'archiu.";
+#Incidencias
+$ErrorRelacion = "El valor introduit no es num&egrave;ric o no pertany a un ID d'una incid&egrave;ncia existent";
+$ErrorSinTextoDuracion = "No es pot introduir una incid&egrave;ncia sense text i/o duraci&oacute;";
+$ErrorSinServicioCliente = "No es pot introduir una incid&egrave;ncia sense servei SIM o client";
+$ErrorSinAsunto = "No es pot introduir una incid&egrave;ncia sense asumpte";
+$ErrorFinalizacion = "No es pot finalitzar una incid&egrave;ncia sense notes de conclusi&oacute;, sense servei o pausada";
+$ErrorBusqueda = "Per cercar per dates, es necessari mes i any.";
+$ayudaIncidenciaCliente = "Acc&egrave;s al formulari d'inserci&oacute; de contactes";
+$ayudaIncidenciaContrasena = "Acc&egrave;s a les contrase&ntilde;es del client";
+$ayudaIncidenciaContrato = "Acc&egrave;s als contractes del client";
+#Login
 $ayudaLogin = "Has oblidat l'usuari i/o la contrasenya?";
 $asuntoMensajeRecuperacion = "Missatge de recuperaci&oacute; de contrasenya.";
 $textoMensajeRecuperacion1 = "Segueixi el link per restaurar la contrasenya";
 $textoMensajeRecuperacion2 = "No respongui aquest e-mail";
 $ayudaMensajeRecuperacion = "S'ha enviat un e-mail per la recuperaci&oacute; de l'usuari i la contrasenya a : ";
 $errorMensajeRecuperacion = "Aquesta direcci&oacute; d'e-mail no esta registrada";
-
+#Panel Usuario
 $ayudaPanelUserPass = "M&agrave;x. 10 car&agrave;cters";
 $ayudaPanelUserPass2 = "Si no pogues fer correctament el login de nou, esborri les cookies referents a solucions-im.com del seu navegador.";
 $errorPanelUserPass = "Error al introduir les contrasenyes.";
+#RRHH
+$ErrorEmpleadoHorario = "Les dates o les hores introduides no son correctes";
+$ErrorEmpleadoCalendario = "Les dates no son correctas";
+$ErrorPuestoDasactivar = "No es pot desactivar un lloc de treball amb un empleat assignat";
+#Usuarios
+$UseNoAutorizado = "<br><center><table><tr><td>Usuari no autoritzat.</td></tr></table></center>";
+$UsuarioYaReg = "<br>Nom d'usuario ja registrat.";
+$NombreIncorrecto = "<br>Valor en el camp nom d'usuario incorrecte.";
+$MailYaReg = "<br>Direcci&oacute; e-mail ja registrada.";
+$MailIncorrecto = "<br>Valor en el camp e-mail incorrecte.";
+$PassIncorrecto = "<br>Valor en els camps passwords incorrecte.";
+$CompletaCorrect = "Completa correctament tots els camps obligatoris.";
+$InvalidarUsuario = "<br><br>¿Segur que desitja invalidar aquest usuari?";
+$ErrorPass = "<br><br>Error a l'introduir les contrasenyes<br><br>";
+$NotasDes = "No es pot introduir una incidencia sense text";
+$cambiarDatos = "Si desitja canviar les dades de l'empresa, posis en contacte amb ";
 
-$ErrorServicio = "Un servei amb el mateix nom ja existeix en aquest contracte";
 
-$OkActualizacionCliente = "El tipus dels clients s'ha actualitzat correctament";
-$ErrorActualizacionCliente = "El tipus dels clients no s'ha actualitzat correctament";
+#Texto
+$FacturasAyudaColores = "
+	<p>En el llistat general, les factures es mostren en diferents colors per diferenciar-les segons diferents motius.</p>
+	<ul>
+		<li>&bull; Vermell: si no esta pagada i ha pasat la data de vencimient.</li>
+		<li>&bull; Taronja: si no esta pagada i faltan menys de 30 dies per la data de vencimient.</li>
+		<li>&bull; Blanc: si no esta pagada i faltan mes de 30 dies per la data de vencimient o esta tancada.</li>
+		<li>&bull; Verd: si esta pagada.</li>
+	</ul>
+";
 
-$ayudaIncidenciaCliente = "Acc&egrave;s al formulari d'inserci&oacute; de contactes";
-$ayudaIncidenciaContrasena = "Acc&egrave;s a les contrase&ntilde;es del client";
-$ayudaIncidenciaContrato = "Acc&egrave;s als contractes del client";
+$IncidenciasAyudaColores = "
+	<p>Los botones sobre els listado hacen referencia a cada uno de los clientes que tienes incidencias abiertas. En cada bot&oacute;n aparece el \"alias\" del cliente y la cantidad de incidencias de cada tipo que tiene abiertas.</p>
+	<ul>
+		<li>&bull; Taronja: numero d'incid&egrave;ncies amb menys de 4 hores para quedar fora de SLA.</li>
+		<li>&bull; Vermell: numero d'incid&egrave;ncies fora de SLA.</li>
+		<li>&bull; Gris: numero d'incid&egrave;ncies pausades.</li>
+		<li>&bull; Grog: numero d'incid&egrave;ncies amb nova nota de desenvolupament del client.</li>
+	</ul>
+	<p>En el llistat general, les incid&egrave;ncies es mostren en diferents colors per diferenciar-les segons diferents motius.</p>
+	<ul>
+		<li>&bull; Negre: si la incid&egrave;ncia no te el campo “(Contracte) Servicio” informat.</li>
+		<li>&bull; Gris: si la incid&egrave;ncia esta pausada.</li>
+		<li>&bull; Vermell: si la incid&egrave;ncia esta fora de SLA.</li>
+		<li>&bull; Taronja: si la incid&egrave;ncia te menys de 4 hores para quedar fora de SLA.</li>
+		<li>&bull; Blanc: si no te SLA o te m&eacute;s de 4 hores para quedar fora de SLA.</li>
+	</ul>
+";
 
-$info_contrato_notificaciones = "Gesti&oacute; de les notificacions dels serveis. S'enviar&agrave;n notificacions a l'usuari escollit quan la incid&egrave;ncia tingui el servei i l'usuari d'origen escollit, i quan es realitzi una de les accions escollides sobre ella.";
-$info_contrato_archivos = "L'arxiu a pujar és el contracte escanejat un cop signat per les dues parts.";
-$info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
-$info_contrato_servicios1 = "Si per aquells serveis que estan inclosos en el contracte i no son seleccionables pel client.";
-$info_contrato_servicios2 = "Si el servei es visible per el client en la extranet, secci&oacute; contractes.";
-$info_contrato_servicios3 = "Si el client pot obrir incid&egrave;ncies sobre aquest servei.";
-$info_contrato_servicios4 = "Si el client pot veure la durada de les incid&egrave;ncies.";
-$info_contrato_servicios5 = "Hores de cobertura del servei.";
-$info_contrato_servicios6 = "Temps m&agrave;xim de resoluci&oacute; de incid&egrave;ncies del servei en SLA.";
-$info_contrato_servicios7 = "(Next Bussines Day) Si les incid&egrave;ncies han de resoldre-las dins del horari laboral.";
-$info_contrato_servicios8 = "Porcentatge m&iacute;nim d'incid&egrave;ncias que s'han de resoldre en el temps i la cobertura associats.";
-$info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el sistema.";
-$info_contrato_servicios10 = "Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.";
-$info_contrato_servicios11 = "Nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.";
-$info_contrato_servicios12 = "Codi de qui obre incid&egrave;ncies relacionades amb aquest servei.";
-
-$info_cliente_alias = "L'Alias es el nom que tindr&agrave; la carpeta en el cloud on el client podr&agrave; consultar tota la seva documentaci&oacute; des de l'Area de Clientes";
-$info_cliente_vip = "El Client VIP es aquell client amb consideracions especials: Import&agrave;ncia estrat&egrave;gica per l'empresa";
+$IncidenciasAyudaNotificaciones = "
+	<p>Per poder realitzar les notificacions es necessari tenir el camp “usuari origen” informat en la incid&egrave;ncia. Les notificacions nom&eacute;s es realitzaran a usuaris que no siguin de Solucions-IM.</p>
+	<p>Cada vegada que realitzem una acci&oacute; referent a las incid&egrave;ncies se generar&agrave; una notificaci&oacute; cap al client de la incid&egrave;ncia en los següents casos:</p>
+	<ul>
+		<li>&bull; A l’insertar una incid&egrave;ncia nova.
+			<p>Quan un client envia un correu a l’adreça soporte@solucions-im.com, se genera una incid&egrave;ncia nova y s’envia un correu de resposta al client informant-li.</p>
+			<p>Si creem una incid&egrave;ncia des de SIMges e indiquem el ”usuari origen”, tamb&eacute; s’enviar&agrave; una notificaci&oacute; a aquest usuari.</p>
+		</li>
+		<li>&bull; A l’editar una incid&egrave;ncia.
+		<p>Nom&eacute;s s’envia una notificaci&oacute; al client quan:</p>
+		<ul>
+			<li>&bull; Si s’ha modificat el “usuari dest&iacute;”.</li>
+			<li>&bull; Si s’han modificat les notes de registre.</li>
+			<li>&bull; Si s’afegeix una nota de desenvolupament nova i el camp “visible client” es “si”.</li>
+			<li>&bull; Si s’ha modificat una nota de desenvolupament existent (solo el text) si el campo “visible client” es “si”.</li>
+			<li>&bull; Si es finalitza la incid&egrave;ncia.</li>
+			<li>&bull; Si es reobre una incid&egrave;ncia</li>
+			<li>&bull; Si es relaciona la incid&egrave;ncia amb una altre.</li>
+		</ul>
+		</li>
+		<li>&bull; A l’eliminar la incid&egrave;ncia.
+	</ul>
+";
 
 ?>

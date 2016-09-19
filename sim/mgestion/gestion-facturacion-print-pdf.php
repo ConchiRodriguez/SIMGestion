@@ -110,6 +110,7 @@ class PDF extends FPDF
 			$this->Cell(90,4, "Teléfono: ".$rowele["telefono"],0,0);
 			$this->Cell(90,4, "IBAN: ".$rowele2["iban"],0,1);
 			$this->Cell(90,4, "E-mail: ".$rowele["mail"],0,0);
+			$this->Cell(90,4, "SWIFT/BIC: ".$rowele2["swift_bic"],0,1);
 			$this->Cell(90,4,"",0,1);
 			$this->Cell(90,4,"",0,1);
 	
@@ -142,6 +143,7 @@ class PDF extends FPDF
 			$this->Cell(90,4, "Teléfono: ".$rowele["telefono"],0,1);
 			$this->Cell(90,4, "E-mail: ".$rowele["mail"],0,1);
 			$this->Cell(90,4, "IBAN: ".$rowele2["iban"],0,1);
+			$this->Cell(90,4, "SWIFT/BIC: ".$rowele2["swift_bic"],0,1);
 			$this->Cell(90,4,"",0,1);
 		
 			$this->SetXY(102,10);

@@ -8,7 +8,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 	if ($idioma == "es"){ include ("sgm_es.php");}
 	if ($idioma == "cat"){ include ("sgm_cat.php");}
 
-		if ($ssoption == 2) {
+		if ($_GET["ssop"] == 2) {
 			$sql = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." and servicio='".comillas($_POST["servicio"])."'";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
@@ -20,12 +20,12 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo $ErrorServicio;
 			}
 		}
-		if ($ssoption == 3) {
+		if ($_GET["ssop"] == 3) {
 			$camposUpdate = array("servicio","obligatorio","extranet","incidencias","id_cobertura","temps_resposta","nbd","sla","duracion","precio_hora","codigo_catalogo","auto_email","funcion","id_servicio_origen","prefijo_notificacion");
 			$datosUpdate = array($_POST["servicio"],$_POST["obligatorio"],$_POST["extranet"],$_POST["incidencias"],$_POST["id_cobertura"],$_POST["temps_resposta"],$_POST["nbd"],$_POST["sla"],$_POST["duracion"],$_POST["precio_hora"],$_POST["codigo_catalogo"],$_POST["auto_email"],$_POST["funcion"],$_POST["id_servicio_origen"],$_POST["prefijo_notificacion"]);
 			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
 		}
-		if ($ssoption == 4) {
+		if ($_GET["ssop"] == 4) {
 			$camposUpdate = array("visible");
 			$datosUpdate = array("0");
 			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
@@ -55,7 +55,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<th></th>";
 			echo "</tr><tr>";
 				echo "<td></td>";
-				echo "<form action=\"index.php?op=".$option."&sop=".$soption."&ssop=2&id=".$contrato_adress."\" method=\"post\">";
+				echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=2&id=".$contrato_adress."\" method=\"post\">";
 				echo "<td><input style=\"width:250px\" type=\"Text\" name=\"servicio\"></td>";
 				echo "<td><input style=\"width:100px\" type=\"Text\" name=\"codigo_catalogo\"></td>";
 				echo "<td><input style=\"width:100px\" type=\"Text\" name=\"prefijo_notificacion\"></td>";
@@ -115,8 +115,8 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$option."&sop=".$sop_delete."&id=".$contrato_adress."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=".$option."&sop=".$soption."&ssop=3&id=".$contrato_adress."&id_ser=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=".$_GET["op"]."&sop=".$sop_delete."&id=".$contrato_adress."&id_ser=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=3&id=".$contrato_adress."&id_ser=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["servicio"]."\" style=\"width:250px\" name=\"servicio\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["codigo_catalogo"]."\" style=\"width:100px\" name=\"codigo_catalogo\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["prefijo_notificacion"]."\" style=\"width:100px\" name=\"prefijo_notificacion\"></td>";

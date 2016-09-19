@@ -260,7 +260,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "</form>";
 						if ($rowcc["renovado"] == 0) {
 							echo "<form action=\"index.php?op=1011&sop=0&ssop=7&id=".$rowcc["id"]."\" method=\"post\">";
-							echo "<td class=\"submit\"><input type=\"Submit\" value=\"renovar".$Renovar."\"></td>";
+							echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Renovar."\"></td>";
 							echo "</form>";
 						} else {
 							echo "<td></td>";
@@ -340,17 +340,17 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$sqldiv = "select * from sgm_divisas where predefinido=1";
 						$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
 						$rowdiv = mysqli_fetch_array($resultdiv);
-						$sqlfact = "select sum(total) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and id_cliente=".$rowcontrato["id_cliente"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1)";
+						$sqlfact = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1)";
 						$resultfact = mysqli_query($dbhandle,convertSQL($sqlfact));
 						$rowfact = mysqli_fetch_array($resultfact);
 						echo "<tr><td>".$Total." ".$Contrato."</td><td style=\"text-align:right;\">".$rowfact["total_fact"]." ".$rowdiv["abrev"]."</td></tr>";
-						$sqlfact2 = "select sum(total) as total_fact2 from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and id_cliente=".$rowcontrato["id_cliente"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1)";
+						$sqlfact2 = "select sum(subtotal) as total_fact2 from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1)";
 						$resultfact2 = mysqli_query($dbhandle,convertSQL($sqlfact2));
 						$rowfact2 = mysqli_fetch_array($resultfact2);
 						echo "<tr><td>".$Facturado."</td><td style=\"text-align:right;\">".$rowfact2["total_fact2"]." ".$rowdiv["abrev"]."</td></tr>";
 						$fact_pendiente = $rowfact["total_fact"] - $rowfact2["total_fact2"];
-						echo "<tr><td>".$Pendiente."</td><td style=\"text-align:right;\">".$fact_pendiente." ".$rowdiv["abrev"]."</td></tr>";
-						$sqlfact3 = "select sum(total) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
+						echo "<tr><td>".$Pendiente."</td><td style=\"text-align:right;\">".number_format ($fact_pendiente,3,".","")." ".$rowdiv["abrev"]."</td></tr>";
+						$sqlfact3 = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
 						$resultfact3 = mysqli_query($dbhandle,convertSQL($sqlfact3));
 						$rowfact3 = mysqli_fetch_array($resultfact3);
 						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".$rowfact3["total_fact"]." ".$rowdiv["abrev"]."</td></tr>";
@@ -389,10 +389,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<h4>".$Facturacion."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"2\" class=\"lista\">";
 			echo "<tr>";
-			$sqltipos2 = "select id,tipo from sgm_factura_tipos where visible=1 and id in (select tipo from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"].") order by orden,descripcion";
+			echo $sqltipos2 = "select id,tipo from sgm_factura_tipos where visible=1 and id in (select tipo from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"].") order by orden,descripcion";
 			$resulttipos2 = mysqli_query($dbhandle,convertSQL($sqltipos2));
 			while ($rowtipos2 = mysqli_fetch_array($resulttipos2)) {
-				$sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
+				echo $sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
 				$resultpermiso = mysqli_query($dbhandle,convertSQL($sqlpermiso));
 				$rowpermiso = mysqli_fetch_array($resultpermiso);
 				if ($rowpermiso["total"] > 0) { 
@@ -787,7 +787,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"nombre\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -799,7 +799,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1011&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -843,7 +843,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"nombre\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -855,7 +855,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1011&sop=520&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["nombre"]."\" style=\"width:150px\" name=\"nombre\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -960,7 +960,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<td><input style=\"width:500px\" type=\"Text\" name=\"descripcion\"\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -985,19 +985,19 @@ if (($option == 1011) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<td><input style=\"width:500px\" type=\"Text\" name=\"descripcion\" value=\"".$rowcc["descripcion"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				if ($rowcc["activo"] == 1) {
 					echo "<form action=\"index.php?op=1011&sop=530&ssop=5&id=".$rowcc["id"]."&act=".$_GET["act"]."\" method=\"post\">";
-					echo "<td><input type=\"Submit\" value=\"".$Desactivar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Desactivar."\"></td>";
 				} else {
 					echo "<form action=\"index.php?op=1011&sop=530&ssop=6&id=".$rowcc["id"]."&act=".$_GET["act"]."\" method=\"post\">";
-					echo "<td><input type=\"Submit\" value=\"".$Activar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Activar."\"></td>";
 				}
 				echo "</form>";
 				if ($rowcc["renovado"] == 0) {
 					echo "<form action=\"index.php?op=1011&sop=530&ssop=7&id=".$rowcc["id"]."&act=".$_GET["act"]."\" method=\"post\">";
-					echo "<td><input type=\"Submit\" value=\"renovar".$Renovar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"renovar".$Renovar."\"></td>";
 					echo "</form>";
 				} else {
 					echo "<td></td>";
@@ -1063,7 +1063,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"codigo_origen\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion_origen\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1075,7 +1075,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1011&sop=540&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["codigo_origen"]."\" style=\"width:150px\" name=\"codigo_origen\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion_origen"]."\" style=\"width:350px\" name=\"descripcion_origen\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}

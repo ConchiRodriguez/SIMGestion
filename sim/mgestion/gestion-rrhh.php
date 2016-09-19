@@ -22,20 +22,6 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=1020&sop=500\" class=".$class.">".$Administrar."</a></td>";
 			echo "</tr></table></center>";
 			echo "<center><table><tr>";
-			if ($_GET["grup"] == 1){
-				if (($soption == 30) or ($soption == 31)) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=30&grup=1\" style=\"color: ".$lcolor."\">Organigrama</a></td>";
-				if ($soption == 90) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=90&grup=1\" style=\"color: ".$lcolor."\">Plantilla Actual</a></td>";
-				if ($soption == 110) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=110&grup=1\" style=\"color: ".$lcolor."\">Horarios</a></td>";
-			}
-			if ($_GET["grup"] == 2){
-				if ($soption == 10) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=10&grup=2\" style=\"color: ".$lcolor."\">Bolsa de Trabajadores</a></td>";
-				if (($soption == 1) or ($soption == 2)) {$color = "white"; $lcolor = "#4B53AF";} else {$color = "#4B53AF"; $lcolor = "white";}
-				echo "<td style=\"height:20px;width:150px;text-align:center;vertical-align:middle;background-color: ".$color.";color: white;border: 1px solid black\"><a href=\"index.php?op=1020&sop=1&grup=2\" style=\"color: ".$lcolor."\">Ofertas de Trabajo</a></td>";
-			}
 			echo "</tr></table></center>";
 	echo "</table><br>";
 	echo "<table style=\" border-bottom : 1px solid grey; border-left : 1px solid grey; border-right : 1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\" ><tr>";
@@ -129,7 +115,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "</td>";
 				echo "</tr>";
 				echo "<tr style=\"background-color:silver;\">";
-					echo "<td colspan=\"3\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:550px\"></td>";
+					echo "<td colspan=\"3\" style=\"text-align:center;\"><input type=\"submit\" value=\"".$Buscar."\" style=\"width:550px\"></td>";
 				echo "</form>";
 				echo "</tr>";
 			} else {
@@ -190,21 +176,24 @@ if (($option == 1020) AND ($autorizado == true)) {
 						while ($row = mysqli_fetch_array($result)) {
 							if ($contador==0){
 								echo "<tr style=\"background-color: Silver;\">";
+									echo "<th></th>";
 									echo "<th><a href=\"#indice\" name=\"".chr($i)."\" style=\"color:black;\">".chr($i)."</a></th>";
 									echo "<th>".$Nombre."</th>";
 									echo "<th style=\"width:150px;\">".$Puesto_trabajo."</th>";
 									echo "<th>".$Departamento."</th>";
+									echo "<th></th>";
 								echo "</tr>";
 								$contador++;
 							}
 							if ($cambio == 0) { $color = "white"; $cambio = 1; } else { $color = "#F5F5F5"; $cambio = 0; }
 							echo "<tr style=\"background-color:".$color."\">";
+								echo "<td style=\"vertical-align:top\"><a href=\"index.php?op=1020&sop=0&ssop=3&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 								if ((valida_nif_cif_nie($row["nif"]) <= 0) OR ($row["nombre"] == "") OR ($row["direccion"] == "") OR ($row["cp"] == "") OR ($row["poblacion"] == "") OR ($row["provincia"] == "")) { 
 									echo "<td style=\"vertical-align:top\"><img src=\"mgestion/pics/icons-mini/page_white_error.png\" alt=\"ERROR\" border=\"0\"></td>";
 								} else { 
 									echo "<td></td>"; 
 								}
-								echo "<td style=\"width:300px;vertical-align:top\"><a href=\"index.php?op=1020&sop=100&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
+								echo "<td style=\"width:300px;vertical-align:top\">".$row["nombre"]."</td>";
 								echo "<td colspan=\"2\"><table>";
 								$sqlp = "select id_departamento,puesto from sgm_rrhh_puesto_trabajo where visible=1 and id in (select id_puesto from sgm_rrhh_empleado_puesto where visible=1 and id_empleado=".$row["id"].")";
 								$resultp = mysqli_query($dbhandle,convertSQL($sqlp));
@@ -215,6 +204,9 @@ if (($option == 1020) AND ($autorizado == true)) {
 									echo "<tr><td style=\"width:150px;\">".$rowp["puesto"]."</td><td>".$rowd["departamento"]."</td></tr>";
 								}
 								echo "</table></td>";
+								echo "<form action=\"index.php?op=1020&sop=100&id=".$row["id"]."\" method=\"post\">";
+								echo "<td style=\"vertical-align:top\" class=\"submit\"><input type=\"submit\" value=\"".$Editar."\"></td>";
+								echo "</form>";
 							echo "</tr>";
 						}
 					}
@@ -388,8 +380,8 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			if ($_GET["id"] > 0) { echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100%\"></td></tr>"; }
-			if ($_GET["id"] == 0) {	echo "<tr><td colspan=\"3\"><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100%\"></td></tr>";	}
+			if ($_GET["id"] > 0) { echo "<tr><td colspan=\"3\"><input type=\"submit\" value=\"".$Guardar."\" style=\"width:100%\"></td></tr>"; }
+			if ($_GET["id"] == 0) {	echo "<tr><td colspan=\"3\"><input type=\"submit\" value=\"".$Anadir."\" style=\"width:100%\"></td></tr>";	}
 			echo "</form>";
 		echo "</table>";
 	}
@@ -542,7 +534,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<option value=\"".$i."\">".$dias[$i]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -578,7 +570,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -636,7 +628,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "</select></td>";
 				echo "<td><input type=\"text\" name=\"fecha_alta\" style=\"width:100px\" value=\"".date("Y-m-d")."\"></td>";
 				echo "<td><input type=\"text\" name=\"fecha_baja\" style=\"width:100px\" value=\"0000-00-00\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -652,7 +644,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<td>".$rowe["puesto"]."</td>";
 						echo "<td><input type=\"text\" name=\"fecha_alta\" style=\"width:100px\" value=\"".$rowpe["fecha_alta"]."\"></td>";
 						echo "<td><input type=\"text\" name=\"fecha_baja\" style=\"width:100px\" value=\"".$rowpe["fecha_baja"]."\"></td>";
-						echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+						echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					echo "</tr>";
 					echo "</form>";
 				}
@@ -700,7 +692,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 				echo "<td><input name=\"data_ini\" type=\"Text\" style=\"width:100px\" value=\"".date('d-m-Y')."\"></td>";
 				echo "<td><input name=\"data_fi\" type=\"Text\" style=\"width:100px\" value=\"".date('d-m-Y',time()+(30*24*60*60))."\"></td>";
 				echo "<td><input name=\"total\" type=\"Text\" style=\"width:150px\" value=\"0.00\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -717,7 +709,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						echo "<td><input name=\"data_fi\" type=\"Text\" style=\"width:100px\"></td>";
 					}
 					echo "<td><input name=\"total\" type=\"Text\" style=\"width:150px\" value=\"".$row["total"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -778,7 +770,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 								echo "<option value=\"0\">".$No."</option>";
 								echo "<option value=\"1\">".$Si."</option>";
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
@@ -813,16 +805,16 @@ if (($option == 1020) AND ($autorizado == true)) {
 										echo "<option value=\"1\" selected>".$Si."</option>";
 									}
 								echo "</select></td>";
-								echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+								echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						}
 					echo "</table>";
 				echo "</td><td style=\"vertical-align:top;width:50px;\">";
 				echo "</td><td  style=\"vertical-align:top;\">";
-					$sqlv = "select * from sgm_rrhh_num_dias_vacaciones";
-					$resultv = mysqli_query($dbhandle,convertSQL($sqlv));
-					$rowv = mysqli_fetch_array($resultv);
+				$sqlj = "select * from sgm_rrhh_jornada_anual";
+				$resultj = mysqli_query($dbhandle,convertSQL($sqlj));
+				$rowj = mysqli_fetch_array($resultj);
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th colspan=\"2\">".$Dias_vacaciones_any."</th>";
@@ -846,16 +838,13 @@ if (($option == 1020) AND ($autorizado == true)) {
 								}
 							}
 							echo "<tr>";
-								if($rowv["num_dias_vac"] < $dias_vac) { $color = "yellow"; } else { $color = "white"; }
-								echo "<td style=\"background-color:".$color.";text-align:right;\">".$dias_vac."</td><td> / ".$rowv["num_dias_vac"]." (".$i.")</td>";
+								if($rowj["num_dias_vac"] < $dias_vac) { $color = "yellow"; } else { $color = "white"; }
+								echo "<td style=\"background-color:".$color.";text-align:right;\">".$dias_vac."</td><td> / ".$rowj["num_dias_vac"]." (".$i.")</td>";
 							echo "</tr>";
 						}
 					echo "</table>";
 				echo "</td><td style=\"vertical-align:top;width:50px;\">";
 				echo "</td><td  style=\"vertical-align:top;\">";
-					$sqll = "select * from sgm_rrhh_num_dias_libres";
-					$resultl = mysqli_query($dbhandle,convertSQL($sqll));
-					$rowl = mysqli_fetch_array($resultl);
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th colspan=\"2\">".$Dias_libres_any."</th>";
@@ -872,8 +861,8 @@ if (($option == 1020) AND ($autorizado == true)) {
 								}
 							}
 							echo "<tr>";
-								if($rowl["num_dias_lib"] < $dias_lib) { $color = "yellow"; } else { $color = "white"; }
-								echo "<td style=\"background-color:".$color.";text-align:right;\">".$dias_lib."</td><td> / ".$rowl["num_dias_lib"]." (".$i.")</td>";
+								if($rowj["num_dias_lib"] < $dias_lib) { $color = "yellow"; } else { $color = "white"; }
+								echo "<td style=\"background-color:".$color.";text-align:right;\">".$dias_lib."</td><td> / ".$rowj["num_dias_lib"]." (".$i.")</td>";
 							echo "</tr>";
 						}
 					echo "</table>";
@@ -979,10 +968,11 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo $UseNoAutorizado;
 		}
 	}
+
 	if (($soption == 510) AND ($admin == true)) {
 		if ($ssoption == 1) {
-			$camposInsert = "dia,mes,descripcio";
-			$datosInsert = array($_POST["dia"],$_POST["mes"]+1,$_POST["descripcio"]);
+			$camposInsert = "dia,mes,ano,descripcio";
+			$datosInsert = array($_POST["dia"],$_POST["mes"]+1,$_POST["ano"],$_POST["descripcio"]);
 			insertFunction ("sgm_calendario",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
@@ -990,39 +980,18 @@ if (($option == 1020) AND ($autorizado == true)) {
 		}
 		if ($ssoption == 3) {
 			if ($_GET["id"] == 0){
-				$camposInsert = "num_dias_vac";
-				$datosInsert = array($_POST["num_dias_vac"]);
-				insertFunction ("sgm_rrhh_num_dias_vacaciones",$camposInsert,$datosInsert);
-			} else {
-				$camposUpdate=array('num_dias_vac');
-				$datosUpdate=array($_POST["num_dias_vac"]);
-				updateFunction("sgm_rrhh_num_dias_vacaciones",$_GET["id"],$camposUpdate,$datosUpdate);
-			}
-		}
-		if ($ssoption == 4) {
-			if ($_GET["id"] == 0){
-				$camposInsert = "num_dias_lib";
-				$datosInsert = array($_POST["num_dias_lib"]);
-				insertFunction ("sgm_rrhh_num_dias_libres",$camposInsert,$datosInsert);
-			} else {
-				$camposUpdate=array('num_dias_lib');
-				$datosUpdate=array($_POST["num_dias_lib"]);
-				updateFunction("sgm_rrhh_num_dias_libres",$_GET["id"],$camposUpdate,$datosUpdate);
-			}
-		}
-		if ($ssoption == 5) {
-			if ($_GET["id"] == 0){
-				$camposInsert = "num_horas_any";
-				$datosInsert = array($_POST["num_horas_any"]);
+				$camposInsert = "num_dias_vac,num_dias_lib,num_horas_any";
+				$datosInsert = array($_POST["num_dias_vac"],$_POST["num_dias_lib"],$_POST["num_horas_any"]);
 				insertFunction ("sgm_rrhh_jornada_anual",$camposInsert,$datosInsert);
 			} else {
-				$camposUpdate=array('num_horas_any');
-				$datosUpdate=array($_POST["num_horas_any"]);
+				$camposUpdate=array('num_dias_vac','num_dias_lib','num_horas_any');
+				$datosUpdate=array($_POST["num_dias_vac"],$_POST["num_dias_lib"],$_POST["num_horas_any"]);
 				updateFunction("sgm_rrhh_jornada_anual",$_GET["id"],$camposUpdate,$datosUpdate);
 			}
 		}
-		echo "<h4>".$Calendario." ".$$Laboral."</h4>";
+		echo "<h4>".$Calendario." ".$Laboral."</h4>";
 		echo boton(array("op=1020&sop=500"),array("&laquo; ".$Volver));
+		echo boton(array("op=1020&sop=515"),array($Historico));
 		
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
@@ -1032,6 +1001,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 							echo "<th>".$Eliminar."</th>";
 							echo "<th>".$Dia."</th>";
 							echo "<th>".$Mes."</th>";
+							echo "<th>".$Ano."</th>";
 							echo "<th>".$Festividad."</th>";
 							echo "<th></th>";
 						echo "</tr>";
@@ -1048,70 +1018,57 @@ if (($option == 1020) AND ($autorizado == true)) {
 									echo "<option value=\"".$i."\">".$meses[$i]."</option>";
 								}
 							echo "</select></td>";
+							echo "<td><select name=\"ano\" style=\"width:100px\">";
+								$year = date("Y");
+								for ($j=2012;$j<=date("Y")+1;$j++){
+									if ($j == $year){
+										echo "<option value=\"".$j."\" selected>".$j."</option>";
+									} else {
+										echo "<option value=\"".$j."\">".$j."</option>";
+									}
+								}
+							echo "</select></td>";
 							echo "<td><input name=\"descripcio\" type=\"Text\" style=\"width:150px\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 							echo "</form>";
 						echo "</tr>";
 						echo "<tr><td>&nbsp;</td></tr>";
-						$sql = "select * from sgm_calendario order by mes, dia";
+						$sql = "select * from sgm_calendario where ano=".date("Y")." order by ano,mes,dia";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						while ($row = mysqli_fetch_array($result)) {
 							echo "<tr>";
-								echo "<td style=\"text-align:center;width:40;\"><a href=\"index.php?op=1020&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+								echo "<td style=\"text-align:center;width:40px;\"><a href=\"index.php?op=1020&sop=511&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 								echo "<td>".$row["dia"]."</td>";
 								echo "<td>".$meses[$row["mes"]-1]."</td>";
+								echo "<td>".$row["ano"]."</td>";
 								echo "<td>".$row["descripcio"]."</td>";
 								echo "<td></td>";
 							echo "</tr>";
 						}
 					echo "</table>";
 				echo "</td><td style=\"vertical-align:top;width:50px;\">";
+				$sqlj = "select * from sgm_rrhh_jornada_anual";
+				$resultj = mysqli_query($dbhandle,convertSQL($sqlj));
+				$rowj = mysqli_fetch_array($resultj);
 				echo "</td><td style=\"vertical-align:top;\">";
-					$sqlv = "select * from sgm_rrhh_num_dias_vacaciones";
-					$resultv = mysqli_query($dbhandle,convertSQL($sqlv));
-					$rowv = mysqli_fetch_array($resultv);
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver;\">";
-							echo "<th colspan=\"2\">".$Dias_vacaciones_any."</th>";
+						echo "<form action=\"index.php?op=1020&sop=510&ssop=3&id=".$rowj["id"]."\" method=\"post\">";
+						echo "<tr>";
+							echo "<th>".$Dias_vacaciones_any."</th>";
+							echo "<td><input name=\"num_dias_vac\" type=\"Text\" style=\"width:100px;text-align:right;\" value=\"".$rowj["num_dias_vac"]."\"></td>";
 						echo "</tr>";
 						echo "<tr>";
-							echo "<form action=\"index.php?op=1020&sop=510&ssop=3&id=".$rowv["id"]."\" method=\"post\">";
-							echo "<td><input name=\"num_dias_vac\" type=\"Text\" style=\"width:50px\" value=\"".$rowv["num_dias_vac"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-							echo "</form>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"vertical-align:top;width:50px;\">";
-				echo "</td><td  style=\"vertical-align:top;\">";
-					$sqll = "select * from sgm_rrhh_num_dias_libres";
-					$resultl = mysqli_query($dbhandle,convertSQL($sqll));
-					$rowl = mysqli_fetch_array($resultl);
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver;\">";
-							echo "<th colspan=\"2\">".$Dias_libres_any."</th>";
+							echo "<th>".$Dias_libres_any."</th>";
+							echo "<td><input name=\"num_dias_lib\" type=\"Text\" style=\"width:100px;text-align:right;\" value=\"".$rowj["num_dias_lib"]."\"></td>";
 						echo "</tr>";
 						echo "<tr>";
-							echo "<form action=\"index.php?op=1020&sop=510&ssop=4&id=".$rowl["id"]."\" method=\"post\">";
-							echo "<td><input name=\"num_dias_lib\" type=\"Text\" style=\"width:50px\" value=\"".$rowl["num_dias_lib"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-							echo "</form>";
-						echo "</tr>";
-					echo "</table>";
-				echo "</td><td style=\"vertical-align:top;width:50px;\">";
-				echo "</td><td  style=\"vertical-align:top;\">";
-					$sqlj = "select * from sgm_rrhh_jornada_anual";
-					$resultj = mysqli_query($dbhandle,convertSQL($sqlj));
-					$rowj = mysqli_fetch_array($resultj);
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver;\">";
-							echo "<th colspan=\"2\">".$Jornada_anual." (".$Horas.")</th>";
+							echo "<th>".$Jornada_anual."</th>";
+							echo "<td><input name=\"num_horas_any\" type=\"Text\" style=\"width:100px;text-align:right;\" value=\"".$rowj["num_horas_any"]."\"></td>";
 						echo "</tr>";
 						echo "<tr>";
-							echo "<form action=\"index.php?op=1020&sop=510&ssop=5&id=".$rowj["id"]."\" method=\"post\">";
-							echo "<td><input name=\"num_horas_any\" type=\"Text\" style=\"width:50px\" value=\"".$rowj["num_horas_any"]."\"></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
-							echo "</form>";
+							echo "<td></td><td class=\"submit\"><input type=\"submit\" value=\"".$Guardar."\"></td>";
 						echo "</tr>";
+						echo "</form>";
 					echo "</table>";
 				echo "</td>";
 			echo "</tr>";
@@ -1123,6 +1080,37 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=510&ssop=2&id=".$_GET["id"],"op=1020&sop=510"),array($Si,$No));
 		echo "</center>";
+	}
+
+	if (($soption == 515) AND ($admin == true)) {
+		echo "<h4>".$Historico."</h4>";
+		echo boton(array("op=1020&sop=510"),array("&laquo; ".$Volver));
+		
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr>";
+				echo "<td style=\"vertical-align:top;\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th>".$Dia."</th>";
+							echo "<th>".$Mes."</th>";
+							echo "<th>".$Ano."</th>";
+							echo "<th>".$Festividad."</th>";
+						echo "</tr>";
+						echo "<tr><td>&nbsp;</td></tr>";
+						$sql = "select * from sgm_calendario where ano<>".date("Y")." order by ano,mes,dia";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							echo "<tr>";
+								echo "<td style=\"width:40px\">".$row["dia"]."</td>";
+								echo "<td style=\"width:100px\">".$meses[$row["mes"]-1]."</td>";
+								echo "<td style=\"width:100px\">".$row["ano"]."</td>";
+								echo "<td style=\"width:150px\">".$row["descripcio"]."</td>";
+							echo "</tr>";
+						}
+					echo "</table>";
+				echo "</td>";
+			echo "</tr>";
+		echo "</table>";
 	}
 
 	if (($soption == 520) AND ($admin == true)) {
@@ -1153,7 +1141,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					echo "<td>".$row["dia"]."</td>";
 					echo "<td><input name=\"hora_inicio\" type=\"number\" min=\"1\" value=\"".$hora_ini."\" style=\"width:60px\"></td>";
 					echo "<td><input name=\"hora_fin\" type=\"number\" min=\"1\" value=\"".$hora_fi."\" style=\"width:60px\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
+					echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				echo "</tr>";
 			}
@@ -1196,7 +1184,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 					}
 				echo "</select></td>";
 				echo "<td><input type=\"text\" name=\"departamento\" style=\"width:200px\" required></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1226,7 +1214,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<td><input type=\"text\" name=\"departamento\" style=\"width:200px\" value=\"".$row["departamento"]."\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				echo "</tr>";
 			}
@@ -1320,21 +1308,21 @@ if (($option == 1020) AND ($autorizado == true)) {
 								$rowp = mysqli_fetch_array($resultp);
 								echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1020&sop=100&id=".$rowp["id"]."\">".$rowp["nombre"]."</a></td>";
 								echo "<form action=\"index.php?op=1020&sop=540&id=".$row["id"]."&edit=2\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Editar."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Editar."\"></td>";
 								echo "</form>";
 								echo "<form action=\"index.php?op=1020&sop=542&id=".$row["id"]."\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Historico."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Historico."\"></td>";
 								echo "</form>";
 								echo "<form action=\"index.php?op=1020&sop=540&ssop=4&id=".$row["id"]."\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Duplicar."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Duplicar."\"></td>";
 								echo "</form>";
 								if ($row["activo"] == 1) {
 									echo "<form action=\"index.php?op=1020&sop=540&ssop=5&id=".$row["id"]."\" method=\"post\">";
-										echo "<td><input type=\"Submit\" value=\"".$Desactivar."\"></td>";
+										echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Desactivar."\"></td>";
 									echo "</form>";
 								} else {
 									echo "<form action=\"index.php?op=1020&sop=540&ssop=6&id=".$row["id"]."\" method=\"post\">";
-										echo "<td><input type=\"Submit\" value=\"".$Activar."\"></td>";
+										echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Activar."\"></td>";
 									echo "</form>";
 								}
 							echo "</tr>";
@@ -1494,13 +1482,13 @@ if (($option == 1020) AND ($autorizado == true)) {
 								echo "<td>".$row["nombre"]."</td>";
 								echo "<td>".$row["fecha_inicio"]."</td>";
 								echo "<form action=\"index.php?op=1020&sop=550&id=".$row["id"]."&edit=2\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Editar."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Editar."\"></td>";
 								echo "</form>";
 								echo "<form action=\"index.php?op=1020&sop=550&ssop=4&id=".$row["id"]."\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Duplicar."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Duplicar."\"></td>";
 								echo "</form>";
 								echo "<form action=\"index.php?op=1020&sop=552&id=".$row["id"]."\" method=\"post\">";
-									echo "<td><input type=\"Submit\" value=\"".$Anadir." ".$Empleados."\"></td>";
+									echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir." ".$Empleados."\"></td>";
 								echo "</form>";
 							echo "</tr>";
 						}
@@ -1644,7 +1632,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 									echo "<option value=\"".$row["id"]."\">".$row["nombre"]."</option>";
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
 							echo "</form>";
 						echo "</tr><tr>";
 							echo "<th>".$Departamentos."</th>";
@@ -1657,7 +1645,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 									echo "<option value=\"".$rowd["id"]."\">".$rowd["departamento"]."</option>";
 								}
 							echo "</select></td>";
-							echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
 							echo "</form>";
 						echo "</tr>";
 					echo "</table>";
@@ -1747,18 +1735,38 @@ function dif_dias_fechas($data1,$data2)
 { 
 	global $db,$dbhandle;
 	$data_1 = $data1;
+	$dif_dias = 0;
 	if ($data2 > 0) {
 		while ($data_1 < $data2){
-			$comprobar += comprobar_festivo2($data_1);
+			$comprobar += comprobarFestivo($data_1);
 			$data_1 = sumaDies($data_1,1);
 		}
 		$dif = ($data2-$data1);
 		$dif_dias = intval($dif/24/60/60)-$comprobar;
-	} else {
-		$dif_dias = 0;
 	}
 	return $dif_dias+1;
 }
 
+
+function comprobarFestivo($fecha)
+{
+	global $db,$dbhandle;
+	$festivo=0;
+	$dia_sem = date("w", ($fecha));
+	if ($dia_sem == 0){
+		$festivo=1;
+	}
+	if ($dia_sem == 6){
+		$festivo=1;
+	}
+	$sqlc = "select * from sgm_calendario where dia=".date("j", ($fecha))." and mes=".date("n", ($fecha))." and ano=".date("Y", ($fecha))."";
+	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+	$rowc = mysqli_fetch_array($resultc);
+	if ($rowc){
+		$festivo=1;
+	}
+#	echo $festivo."<br>";
+	return $festivo;
+}
 
 ?>

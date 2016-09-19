@@ -1,5 +1,8 @@
 <?php
 #32599E antiguo color
+$user = false;
+$userid = 0;
+$sgm = 0;
 
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Madrid');
@@ -23,8 +26,6 @@ if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 if ($_GET['sop'] != "") { $soption = $_GET['sop']; } else { $soption = 0; }
 if ($_GET['ssop'] != "") { $ssoption = $_GET['ssop']; } else { $ssoption = 0; }
 
-$user = false;
-$userid = 0;
 if ($soption == 666) {
 	setcookie("musername", "", time()-1, $url_raiz, $domain);
 	setcookie("mpassword", "", time()-1, $url_raiz, $domain);
@@ -124,7 +125,6 @@ lopd($userid,$username,$option,$soption);
 <center>
 <?php 
 if (($option == 900) or ($option == 600)) {
-	include ("mgestion/help/mail.php");
 	include ("mgestion/gestion-articulos-etiqueta-print.php");
 } else {
 	echo "<table class=\"maestra\">";
@@ -195,9 +195,9 @@ if (($option == 900) or ($option == 600)) {
 #		}
 	echo "</table>";
 
-	$errors= error_get_last();
-	echo "COPY ERROR: ".$errors['type'];
-	echo "<br />\n".$errors['message'];
+#	$errors= error_get_last();
+#	echo "COPY ERROR: ".$errors['type'];
+#	echo "<br />\n".$errors['message'];
 #	var_dump($errors);
 
 }

@@ -13,6 +13,10 @@ foreach (glob("../sim/auxiliar/*.php") as $filename)
 {
     include ($filename);
 }
+foreach (glob("../sim/pantallas/*.php") as $filename)
+{
+    include ($filename);
+}
 
 echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;margin-left:auto;margin-right:auto;\">";
 	echo "<tr><td>&nbsp;</td></tr>";

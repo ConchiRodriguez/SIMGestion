@@ -21,8 +21,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=1018&sop=300\" class=".$class.">".$Indicadores."</a></td>";
 				if ($soption == 400) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1018&sop=400\" class=".$class.">".$Informes."</a></td>";
-				if (($soption >= 500) and ($soption <= 600) and ($admin == true)) {$class = "menu_select";} else {$class = "menu";}
+				if (($soption >= 500) and ($soption < 600) and ($admin == true)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1018&sop=500\" class=".$class.">".$Administrar."</a></td>";
+ 				if ($soption == 600) {$class = "menu_select";} else {$class = "menu";}
+				echo "<td class=".$class."><a href=\"index.php?op=1018&sop=600\" class=".$class.">".$Ayuda."</a></td>";
  				echo "</tr>";
 			echo "</table>";
 		echo "</td></tr>";
@@ -109,7 +111,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$sqlip = "select count(*) as total from sgm_incidencias where visible=1 and id_estado<>-2 and pausada=1 and id_incidencia=0";
 								$resultip = mysqli_query($dbhandle,convertSQL($sqlip));
 								$rowip = mysqli_fetch_array($resultip);
-								$sqlind = "select * from sgm_incidencias where visible=1 and id_estado<>-2 and id_incidencia=0";
+								$novedades = 0;
+								$contador1 = 0;
+								$sqlind = "select * from sgm_incidencias where visible=1 and id_estado<>-2 and id_usuario_destino=".$userid." and id_incidencia=0";
 								$resultind = mysqli_query($dbhandle,convertSQL($sqlind));
 								while ($rowind = mysqli_fetch_array($resultind)){
 									$novedades = contarIncidenciasNovedades ($rowind["id"],$rowind["id_usuario_destino"]);
@@ -122,7 +126,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1\">".$rowiw["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2\">".$rowic["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3\">".$rowip["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:white;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."\">".$contador1."</a></td>";
+										echo "<td style=\"width:10px;background-color:yellow;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."\">".$contador1."</a></td>";
 									echo "</tr></table>";
 								echo "</td>";
 							echo "<td>&nbsp;&nbsp;</td>";
@@ -156,7 +160,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1&id_cli=".$rowcli["id"]."\">".$rowiw["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2&id_cli=".$rowcli["id"]."\">".$rowic["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3&id_cli=".$rowcli["id"]."\">".$rowip["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:white;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."\">".$contador1."</a></td>";
+										echo "<td style=\"width:10px;background-color:yellow;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."\">".$contador1."</a></td>";
 									echo "</tr></table>";
 								echo "</td>";
 								$counter++;
@@ -299,7 +303,16 @@ if (($option == 1018) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><select name=\"id_usuario\" style=\"width:180px\">";
 							echo "<option value=\"0\" selected>-</option>";
-						$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1";
+						$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1 order by usuario";
+						$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+						while ($rowu = mysqli_fetch_array($resultu)) {
+								if (($rowu["id"] == $_POST["id_usuario"]) or ($rowu["id"] == $_GET["u"]) or ($rowu["id"] == $userid)){
+									echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["usuario"]."</option>";
+								} else {
+									echo "<option value=\"".$rowu["id"]."\">".$rowu["usuario"]."</option>";
+								}
+						}
+						$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=0 order by usuario";
 						$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 						while ($rowu = mysqli_fetch_array($resultu)) {
 								if (($rowu["id"] == $_POST["id_usuario"]) or ($rowu["id"] == $_GET["u"])){
@@ -396,11 +409,12 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if ($_GET["bt"] == 1) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and fecha_prevision>0 and (temps_pendent<14400 and temps_pendent>0)";}
 					if ($_GET["bt"] == 2) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and fecha_prevision>0 and temps_pendent<0";}
 					if ($_GET["bt"] == 3) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and pausada=1";}
-					if ($_GET["bt"] == 4) { $sqli = $sqli." and id_usuario_destino=".$userid;}
+					if ($_GET["bt"] == 4) { $sqli = $sqli." and id_estado<>-2 and id_usuario_destino=".$userid;}
 				} else {
 					if ($_GET["bt"] == 1) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and (temps_pendent<14400 and temps_pendent>0)";}
 					if ($_GET["bt"] == 2) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and temps_pendent<0";}
 					if ($_GET["bt"] == 3) { $sqli = $sqli." and id_estado<>-2 and pausada=1";}
+					if ($_GET["bt"] == 4) { $sqli = $sqli." and id_estado<>-2 and id_usuario_destino=".$userid;}
 				}
 				$i = 4;
 			} else {
@@ -906,6 +920,30 @@ if (($option == 1018) AND ($autorizado == true)) {
 			$datosUpdate = array($sla_inc,$fecha_prevision);
 			updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
+		if (($soption == 100) and ($ssoption == 7)) {
+		#Añadir a control de versiones#
+			$sqlx = "select * from sgm_incidencias where id=".$_GET["id"];
+			$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+			$rowx = mysqli_fetch_array($resultx);
+			$comentarios = $rowx["asunto"]."\r\n".$rowx["notas_registro"]."\r\n";
+			$sqlx2 = "select * from sgm_incidencias where id_incidencia=".$rowx["id"];
+			$resultx2 = mysqli_query($dbhandle,convertSQL($sqlx2));
+			while ($rowx2 = mysqli_fetch_array($resultx2)){
+				if ($rowx["notas_registro"] != $rowx2["notas_desarrollo"]){
+					$comentarios .= $rowx2["notas_desarrollo"]."\r\n";
+				}
+			}
+			if ($rowx["notas_registro"] != $rowx["notas_conclusion"]){
+				$comentarios .= $rowx["notas_conclusion"]."\r\n";
+			}
+			$camposInsert = "fecha,comentarios,id_usuario";
+			$datosInsert = array(date("Y-m-d",$rowx["fecha_inicio"]),comillas($comentarios),$rowx["id_usuario_destino"]);
+			insertFunction ("sim_control_versiones",$camposInsert,$datosInsert);
+
+			$camposUpdate = array("control_version");
+			$datosUpdate = array("1");
+			updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
 		
 		if (($insertada==1) or ($editada>=1) or ($cerrada>=1)){
 			if ($id_servicio_noti == ''){$id_servicio_noti = $rowi["id_servicio"]; $id_usuario_registro_noti = $rowi["id_usuario_registro"]; $id_usuario_origen_noti = $rowi["id_usuario_origen"];}
@@ -1158,10 +1196,10 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "</select></td>";
 						echo "<tr>";
 						echo "</tr>";
-							echo "<th style=\"text-align:left;vertical-align:top;\">".$Servicio." :</th>";
+							echo "<th style=\"text-align:left;vertical-align:top;\">(".$Contrato.") ".$Servicio." : </th>";
 							echo "<td colspan=\"9\"><select name=\"id_servicio2\" id=\"id_servicio2\" style=\"width:100%;\">";
 									echo "<option value=\"0\">-</option>";
-									if ($_POST["id_servicio2"] == "-1"){
+									if (($_POST["id_servicio2"] == "-1") or ($row["id_servicio"] == "-1")){
 										echo "<option value=\"-1\" selected>".$SinContrato."</option>";
 									} else {
 										echo "<option value=\"-1\">".$SinContrato."</option>";
@@ -1320,7 +1358,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						if ($rowc["id_usuario_registro"] == $userid){
 							echo "<td><select name=\"id_usuario_registro\" style=\"width:150px\">";
 							echo "<option value=\"0\">-</option>";
-								$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1";
+								$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 order by usuario";
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)) {
 										if ($rowu["id"] == $rowc["id_usuario_registro"]){
@@ -1420,38 +1458,106 @@ if (($option == 1018) AND ($autorizado == true)) {
 					echo "</table>";
 				echo "</td><td style=\"text-align:right;vertical-align:top;width:70%;\">";
 					echo "<table cellspacing=\"0\" style=\"width:100%;\">";
-						echo "<tr><th style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Conclusion." :</th></tr>";
-						echo "<tr><td><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"4\" required>".$row["notas_conclusion"]."</textarea></td></tr>";
+						echo "<tr><th style=\"text-align:left;vertical-align:top;\" colspan=\"2\">".$Notas." ".$Conclusion." :</th></tr>";
+						echo "<tr><td colspan=\"2\"><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"4\" required>".$row["notas_conclusion"]."</textarea></td></tr>";
 						if ($row["id_estado"] == -2){
-							echo "<tr><td><input type=\"Submit\" value=\"".$Abrir."\" style=\"width:100px\"></td></tr>";
+							echo "<tr>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\" style=\"width:100px\"></td>";
+							echo "</form>";
+							if ($row["control_version"] == 0){
+								echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$row["id"]."\" method=\"post\">";
+									echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Anadir_version."\" style=\"width:200px\"></td>";
+								echo "</form>";
+								echo "</tr>";
+							}
 						} else {
-							echo "<tr><td><input type=\"Submit\" value=\"".$Finalizar."\" style=\"width:100px\"></td></tr>";
+							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\" style=\"width:100px\"></td></tr>";
+							echo "</form>";
 						}
 					echo "</table>";
 				echo "</td>";
 			echo "</tr>";
-			echo "</form>";
 			echo "<tr><td>&nbsp;</td></tr>";
 		}
 		echo "</table>";
 	}
 #añadir incidencias fi#
 
+#Archivos adjuntos a la incidencia
 	if ($soption == 110){
 		echo "<h4>".$Documentos." ".$Adjuntos."</h4>";
-		echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr style=\"background-color:silver;\">";
-				echo "<th>".$Archivos."</th>";
-			echo "</tr>";
-		$sqlfiles = "select name from sgm_files where visible=1 and id_elemento=".$row["id"];
-		$resultfiles = mysqli_query($dbhandle,convertSQL($sqlfiles));
-		while ($rowfiles = mysqli_fetch_array($resultfiles)){
-			echo "<tr>";
-				echo "<td><a href=\"".$urlmgestion."/archivos/incidencias/".$rowfiles["name"]."\" target=\"_blank\">".$rowfiles["name"]."</a></td>";
-			echo "</tr>";
+		if ($ssoption == 1) {
+			if (version_compare(phpversion(), "4.0.0", ">")) {
+				$archivo_name = $_FILES['archivo']['name'];
+				$archivo_size = $_FILES['archivo']['size'];
+				$archivo_type =  $_FILES['archivo']['type'];
+				$archivo = $_FILES['archivo']['tmp_name'];
+				$tipo = $_POST["id_tipo"];
+			}
+			if (version_compare(phpversion(), "4.0.1", "<")) {
+				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
+				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
+				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
+				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
+				$tipo = $HTTP_POST_VARS["id_tipo"];
+			}
+			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,4,$_GET["id"]);
 		}
-		echo "</table>";
+		if ($ssoption == 2) {
+			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
+			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
+			$rowf = mysqli_fetch_array($resultf);
+			deleteFunction ("sgm_files",$_GET["id_archivo"]);
+			$filepath = "archivos/incidencias/".$rowf["name"];
+			unlink($filepath);
+		}
+
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr>";
+				echo "<td style=\"width:70%;vertical-align:top;\">";
+					echo "<h4>".$Documentos." :</h4>";
+						echo "<table>";
+						$sql = "select id,nombre from sgm_files_tipos order by nombre";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=4 and id_elemento=".$_GET["id"];
+							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
+							while ($rowele = mysqli_fetch_array($resultele)) {
+								echo "<tr>";
+									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1018&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
+									echo "<td><a href=\"".$urloriginal."/archivos/incidencias/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
+									echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
+								echo "</tr>";
+							}
+						}
+						echo "</table>";
+				echo "</td><td style=\"width:200px;vertical-align:top;\">";
+					echo "<strong>".$Formulario_Subir_Archivo." :</strong><br><br>";
+					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1018&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+					echo "<center>";
+					echo "<select name=\"id_tipo\" style=\"width:200px\">";
+						$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
+						}
+					echo "</select>";
+					echo "<br><br>";
+					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
+					echo "<br><br><input type=\"submit\" value=\"".$Enviar." a la ".$carpeta." Archivos/incidencias/\" style=\"width:250px\">";
+					echo "</form>";
+					echo "</center>";
+			echo "</td></tr></table>";
 	}
+
+	if ($soption == 111) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1018&sop=110&ssop=2&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"],"op=1018&sop=110&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
+	}
+#Fin archivos adjuntos a la incidencia
 
 	if ($soption == 120){
 		echo "<h4>".$Notificaciones." ".$Enviadas."</h4>";
@@ -1496,7 +1602,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td><select name=\"id_usuario\" style=\"width:200px;\">";
 					if ($_POST["id_usuario"] == 0) {$id_usuari = $userid;} else {$id_usuari = $_POST["id_usuario"];}
-					$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
+					$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1 order by usuario";
 					$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 					while ($rowu = mysqli_fetch_array($resultu)) {
 							if ($rowu["id"] == $id_usuari){
@@ -1686,19 +1792,19 @@ if (($option == 1018) AND ($autorizado == true)) {
 	}
 #estados incidencias fin#
 
-#	if ($soption = 600){
-#		$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id_incidencia=0 and id_cliente=0";
-#		$resultinc = mysqli_query($dbhandle,convertSQL($sqlinc));
-#		while ($rowinc = mysqli_fetch_array($resultinc)){
-#			$sqlc = "select id_cliente from sgm_contratos where visible=1 and id=(select id_contrato from sgm_contratos_servicio where id=".$rowinc["id_servicio"].")";
-#			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-#			$rowc = mysqli_fetch_array($resultc);
-
-#			$camposUpdate = array("id_cliente");
-#			$datosUpdate = array($rowc["id_cliente"]);
-#			updateFunction ("sgm_incidencias",$rowinc["id"],$camposUpdate,$datosUpdate);
-#		}
-#	}
+#ayuda#
+	if ($soption == 600){
+		echo "<h4>".$Ayuda."</h4>";
+		echo "<div style=\"margin-left:10%;margin-right:10%;\">";
+			echo "<h4>".$Colores."</h4>";
+			echo $IncidenciasAyudaColores;
+		echo "</div>";
+		echo "<div style=\"margin-left:10%;margin-right:10%;margin-bottom:5%;\">";
+			echo "<h4>".$Notificaciones."</h4>";
+			echo $IncidenciasAyudaNotificaciones;
+		echo "</div>";
+	}
+#ayuda fin#
 
 	echo "</td></tr></table><br>";
 }

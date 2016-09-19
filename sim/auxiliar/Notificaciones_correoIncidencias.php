@@ -225,7 +225,9 @@ function correoIncidencias(){
 				}
 				// guardar ficheros adjuntos
 				if ($filename){
+					echo "<br><br>XXXXXX<br><br>";
 					subirArchivo(0,$file,$filename,$filesize,$filetipus,4,$incidencia_id);
+					subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,$id_tipo,$id)
 				}
 			}
 			//Marca el mensaje como leido en el buzón de correo

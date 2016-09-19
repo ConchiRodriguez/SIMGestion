@@ -94,7 +94,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 				echo "<td><a href=\"".$rowcc["acceso"]."\" target=\"_blank\">".$rowcc["acceso"]."</td>";
 				echo "<td>".$rowcc["usuario"]."</td>";
 				echo "<td style=\"text-align:left;\">";
-				echo "<a href=\"index.php?".$link_edit_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\"></a>";
+				echo "<a href=\"index.php?".$link_edit_contra."&id_con=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_magnify.png\" alt=\"Ver\" border=\"0\" title=\"".$Visualizar."\"></a>";
 				echo "</td>";
 				echo "<td>".$rowcc["descripcion"]."</td>";
 				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";

@@ -37,6 +37,7 @@ $Ambito = "&Aacute;mbito";
 $Ambito_geografico = "&Aacute;mbito Geogr&aacute;fico";
 $Anadir = "A&ntilde;adir";
 $Anadir_Contacto = "A&ntilde;adir Contacto";
+$Anadir_version = "A&ntilde;adir a Control Versi&oacute;n";
 $AnadiryEliminarIncompatibles = "A&ntilde;adir y Eliminar Incompatibles";
 $Ancho = "Ancho";
 $Ano = "A&ntilde;o";
@@ -129,6 +130,8 @@ $Cobrado = "Cobrado";
 $Codificado = "Codificado";
 $Codigo = "C&oacute;digo";
 $Color = "Color";
+$Colores = "Colores";
+$Comentarios = "Comentarios";
 $Comercial = "Comercial";
 $Completa = "Completa";
 $Completo = "Completo";
@@ -148,6 +151,7 @@ $Conexion = "Conexi&oacute;n";
 $Contacto = "Contacto";
 $CONTACTOS = "CONTACTOS";
 $Contactos = "Contactos";
+$Control = "Control";
 $Controles_de_calidad = "Controles de calidad";
 $Contenidos = "Contenidos";
 $Contenido = "Contenido";
@@ -551,6 +555,7 @@ $Relaciones = "Relaciones";
 $Remitente = "Remitente";
 $Remoto = "Remoto";
 $Remunerado = "Remunerado";
+$Renovar = "Renovar";
 $Repetir = "Repetir";
 $Reports = "Reports";
 $Residente = "Residente";
@@ -593,6 +598,7 @@ $Sincronizaciones = "Sincronizaciones";
 $Sincronizar = "Sincronizar";
 $Sin_clasificar = "Sin Clasificar";
 $Sin_dependencias = "Sin Dependencia";
+$Sistema = "Sistema";
 $Situacion = "Situaci&oacute;n";
 $SLA = "SLA";
 $Sobre = "Sobre";
@@ -670,6 +676,7 @@ $Ver_Todos = "Ver Todos";
 $Ver_Todos_Personales = "Ver Todos Personales";
 $Ver_Por_Tipo = "Ver Por Tipo";
 $Ver_Por_Usuario = "Ver Por Usuario";
+$Versiones = "Versiones";
 $Vigente = "Vigente";
 $Visible = "Visible";
 $Visualizar = "Visualizar";
@@ -699,24 +706,8 @@ $Octubre = "Octubre";
 $Noviembre = "Noviembre";
 $Diciembre = "Diciembre";
 
-#errores
-$UsuarioNoAutorizado = "USUARIO NO AUTORIZADO";
-$error_incidencia_busqueda = "Para buscar por fechas, es necesario mes y a&ntilde;o.";
-
-$UseNoAutorizado = "<br><center><table><tr><td>Usuario no autorizado.</td></tr></table></center>";
-$UsuarioYaReg = "<br>Nombre de usuario ya registrado.";
-$NombreIncorrecto = "<br>Valor en el campo nombre de usuario incorrecto.";
-$MailYaReg = "<br>Direcci&oacute;n e-mail ya registrada.";
-$MailIncorrecto = "<br>Valor en el campo e-mail incorrecto.";
-$PassIncorrecto = "<br>Valor en los campos passwords incorrecto.";
-$CompletaCorrect = "Completa correctamente todos los campos obligatorios.";
-$InvalidarUsuario = "<br><br>¿Seguro que desea invalidar este usuario?";
-$ErrorPass = "<br><br>Error al introducir las contrase&ntilde;as<br><br>";
-$NotasDes = "No se puede introducir una incidencia sin texto";
-$cambiarDatos = "Si desea cambiar los datos de la empresa, pongase en contacto con ";
-
-$definicionesIncompatibles = "La definici&oacute;n de cliente es incompatible con las ya existentes para este cliente. ¿Que desea hacer?";
-
+#Mensajes
+#Articulos
 $ValorDefectoCaracteristicaArt = "Si existe un valor por defecto se ignorar&aacute; la tabla de opciones de dicha caracter&iacute;stica.";
 $ErrorEscandallo = "No es posible incluir un articulo en s&iacute; mismo.";
 $ErrorAnadirArticulo = "No es posible a&ntilde;adir el articulo. El codigo o el nombre del articulo ya existen.";
@@ -724,88 +715,24 @@ $duplicarArticulo = "Se duplicar&aacute; el articulo y todos los datos relaciona
 $eliminarArticulo = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 $descatalogarArticulo = "El articulo estar&aacute; descatalogado, pero ser&aacute; accesible tanto a &eacute;l como a los datos relacionados.";
 $catalogarArticulo = "El articulo volver&aacute; al cat&aacute;logo habitual de articulos con todas sus funciones y datos relacionados.";
-
-$errorSubirArchivoDuplicado = "No se puede a&ntilde;adir el archivo por que ya existe uno con el mismo nombre.";
-$errorSubirArchivoTamany = "No ha podido transferirse el archivo.<br>No puede exceder el tama&ntilde;o indicado";
-$errorSubirArchivo = "No ha podido transferirse el archivo.";
-
-$CambioPassCorrecto = "La contrase&ntilde;a se ha modificado correctamente";
-
-$ErrorRelacion = "El valor introducido no es num&eacute;rico o no pertenece a un ID de una incidencia existente";
-$ErrorSinTextoDuracion = "No se puede introducir una incidencia sin texto y/o duraci&oacute;n";
-$ErrorSinServicioCliente = "No se puede introducir una incidencia sin servicio SIM o cliente";
-$ErrorSinAsunto = "No se puede introducir una incidencia sin asunto";
-$ErrorFinalizacion = "No se puede finalizar una incidencia sin notas de conclusi&oacute;n, sin servicio o pausada";
-$ErrorBusqueda = "Para buscar por fechas, es necesario mes y a&ntilde;o.";
-
-$Redireccion10seg = "En 10 segundos ser&aacute; redirigido por motivos de seguridad.";
-$ContrasenyaAppErrorEliminar = "No se puede eliminar esta aplicaci&oacute;n, ya que existen contrase&ntilde;as asociadas.";
-
-$Explicacion_cobertura = "El periodo de cobertura de un servicio es la disponibilidad para la recepci&oacute;n de incidencias. Siendo el primer valor las horas al dia y el segundo los dias a la semana. Ejemplo : 8x5 equivale a 8 horas al dia 5 dias a la semana.";
-$Explicacion_respuesta = "El tiempo de respuesta de una incidencia empieza a contar una vez recepcionada. Si es NBD, una vez fuera del horario laboral, la incidencia pasa al siguiente dia laboral.";
-
-$pregunta_eliminar = "¿Desea eliminar el elemento seleccionado?";
-$mesaje_modificar = "Se ha modificado correctamente";
-
+#Auxiliares
 $ayuda_iso_idioma = "El idioma tiene que cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
-
-$ContratoErrorEliminar = "No se puede eliminar este contrato, ya que existen incidencias asociadas.";
-$ContratoTipoErrorEliminar = "No se puede eliminar este tipo de contrato, ya que existen contratos asociados.";
-
-$ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los difrentes tipos en el listado superior.
-<br><strong>Plantilla</strong> - Hace referencia a si este tipo debe de poder facturarse de forma continua.
-<br><strong>D&iacute;as</strong> - La periocidad en d&iacute;as en que debe regenerarse una nueva plantilla.
-<br><strong>V.Prev</strong> - (Visualizar previsi&oacute;n) Visualiza en el listado la fecha de previsi&oacute;n (usado para pedidos de clientes/proveedores).
-<br><strong>D&iacute;as</strong> - D&iacute;as que suma de forma autom&aacute;tica a la previsi&oacute;n. Fecha de previsi&oacute;n = Fecha actual + D&iacute;as.
-<br><strong>V.Ven</strong> - (Visualizar Vencimiento) Visualiza en el listado el vencimiento de la factura. Fecha de vencimiento = Fecha actual + D&iacute;as de la ficha cliente.
-<br><strong>V.Ref</strong> - (Visualizar Referencia del Cliente) Visualiza en el listado n&uacute;mero de referencia del cliente y nombre del solicitante.
-<br><strong>V.Sub</strong> - (Visualizar Subtipos) Visualiza el subtipo (en caso de que existan).
-<br><strong>V.Rec</strong> - (Visualizar Recibos) Permite la gesti&oacute;n de recibos para el control del cobro.
-<br><strong>Presu</strong> - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.
-<br><strong>D&iacute;as</strong> - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.
-<br><strong>Aprobar</strong> - Dar aprovaci&oacute;n a un presupuesto.
-<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualita n&uacute;mero RFQ.
-<br><strong>Caja</strong> - Indica c&oacute;mo este tipo influye en la caja.
-";
-
-$ayudaFecturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
-$ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
-$ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
-$ayudaFacturaAbrir = "Se abrir&aacute; la factura y volver&aacute; a ser visible.";
-$errorFacturaCrear = "Atenci&oacute;n : La fecha de la factura es superior a la fecha actual.";
-$ayudaFacturaAprobar = "Se aprobar&aacute; el documento y se podr&aacute; facturar.";
-$ayudaFacturaDesaprobar = "Se desaprobar&aacute; el documento y no se podr&aacute; facturar.";
-
-$ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
-$ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";
-
-$pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta acci&oacute;n puede durar varios minutos, ya que se har&aacute; un rec&aacute;lculo total desde el 1 de Enero de 2012.";
-
-$ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
-$ErrorEmpleadoCalendario = "Las fechas no son correctas";
-$ErrorPuestoDasactivar = "No se puede desactivar un puesto de trabajo con un empleado asignado";
-
-$ayudaLogin = "¿Olvidaste el usuario y/o la contrase&ntilde;a?";
-$asuntoMensajeRecuperacion = "Mensaje de recuperaci&oacute;n de contrase&ntilde;a.";
-$textoMensajeRecuperacion1 = "Siga el link para restaurar la contrase&ntilde;a";
-$textoMensajeRecuperacion2 = "No responda este e-mail";
-$ayudaMensajeRecuperacion = "Se ha enviado un e-mail para la recuperaci&oacute;n del usuario y la contrase&ntilde;a a : ";
-$errorMensajeRecuperacion = "Esta direcci&oacute;n e-mail no esta registrada";
-
-$ayudaPanelUserPass = "M&aacute;x. 10 car&aacute;cteres";
-$ayudaPanelUserPass2 = "Si no pudiera hacer correctamente el login de nuevo, borre las cookies referentes a solucions-im.com de su navegador.";
-$errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
-
-$ErrorServicio = "Un servicio con el mismo nombre ya existe en este contrato";
-
+#Clientes
 $OkActualizacionCliente = "El tipo de los clientes se ha actualizado con &eacute;xito";
 $ErrorActualizacionCliente = "El tipo de los clientes no se ha actualizado correctamente";
-
-$ayudaIncidenciaCliente = "Acceso al formulario de inserción de contacto";
-$ayudaIncidenciaContrasena = "Acceso a las contrase&ntilde;as del cliente";
-$ayudaIncidenciaContrato = "Acceso a los contratos del cliente";
-
+$info_cliente_alias = "El Alias es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
+$info_cliente_vip = "El Cliente VIP es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
+#Contraseñas
+$CambioPassCorrecto = "La contrase&ntilde;a se ha modificado correctamente";
+$Redireccion10seg = "En 10 segundos ser&aacute; redirigido por motivos de seguridad.";
+$ContrasenyaAppErrorEliminar = "No se puede eliminar esta aplicaci&oacute;n, ya que existen contrase&ntilde;as asociadas.";
+#Contratos
+$ContratoErrorEliminar = "No se puede eliminar este contrato, ya que existen incidencias asociadas.";
+$ContratoTipoErrorEliminar = "No se puede eliminar este tipo de contrato, ya que existen contratos asociados.";
+$ErrorServicio = "Un servicio con el mismo nombre ya existe en este contrato";
+$Explicacion_cobertura = "El periodo de cobertura de un servicio es la disponibilidad para la recepci&oacute;n de incidencias. Siendo el primer valor las horas al dia y el segundo los dias a la semana. Ejemplo : 8x5 equivale a 8 horas al dia 5 dias a la semana.";
+$Explicacion_respuesta = "El tiempo de respuesta de una incidencia empieza a contar una vez recepcionada. Si es NBD, una vez fuera del horario laboral, la incidencia pasa al siguiente dia laboral.";
 $info_contrato_notificaciones = "Gesti&oacute;n de las notificaciones de los servicios. Se enviar&aacute;n notificaciones al usuario escogido cuando la incidencia tenga el servicio y el usuario de origen escogido, y cuando se realize una de las acciones escogidas sobre ella.";
 $info_contrato_archivos = "El archivo a subir es el contrato escaneado una vez firmado por ambas partes";
 $info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
@@ -821,9 +748,131 @@ $info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el siste
 $info_contrato_servicios10 = "Envio autom&aacute;tico de email en el modulo de incidencias.";
 $info_contrato_servicios11 = "Nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.";
 $info_contrato_servicios12 = "Codigo de quien abre incidencias relacionadas con este servicio.";
+#Facturacion
+$ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los difrentes tipos en el listado superior.
+<br><strong>Plantilla</strong> - Hace referencia a si este tipo debe de poder facturarse de forma continua.
+<br><strong>D&iacute;as</strong> - La periocidad en d&iacute;as en que debe regenerarse una nueva plantilla.
+<br><strong>V.Prev</strong> - (Visualizar previsi&oacute;n) Visualiza en el listado la fecha de previsi&oacute;n (usado para pedidos de clientes/proveedores).
+<br><strong>D&iacute;as</strong> - D&iacute;as que suma de forma autom&aacute;tica a la previsi&oacute;n. Fecha de previsi&oacute;n = Fecha actual + D&iacute;as.
+<br><strong>V.Ven</strong> - (Visualizar Vencimiento) Visualiza en el listado el vencimiento de la factura. Fecha de vencimiento = Fecha actual + D&iacute;as de la ficha cliente.
+<br><strong>V.Ref</strong> - (Visualizar Referencia del Cliente) Visualiza en el listado n&uacute;mero de referencia del cliente y nombre del solicitante.
+<br><strong>V.Sub</strong> - (Visualizar Subtipos) Visualiza el subtipo (en caso de que existan).
+<br><strong>V.Rec</strong> - (Visualizar Recibos) Permite la gesti&oacute;n de recibos para el control del cobro.
+<br><strong>Presu</strong> - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.
+<br><strong>D&iacute;as</strong> - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.
+<br><strong>Aprobar</strong> - Dar aprovaci&oacute;n a un presupuesto.
+<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualita n&uacute;mero RFQ.
+<br><strong>Caja</strong> - Indica c&oacute;mo este tipo influye en la caja.
+";
+$ayudaFacturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
+$ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
+$ayudaFacturaCerrar = "Se cerrar&aacute; la factura y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
+$ayudaFacturaAbrir = "Se abrir&aacute; la factura y volver&aacute; a ser visible.";
+$errorFacturaCrear = "Atenci&oacute;n : La fecha de la factura es superior a la fecha actual.";
+$ayudaFacturaAprobar = "Se aprobar&aacute; el documento y se podr&aacute; facturar.";
+$ayudaFacturaDesaprobar = "Se desaprobar&aacute; el documento y no se podr&aacute; facturar.";
+$ayudaCuerpoConvertir = "Convierte la linea del documento en un nuevo art&iacute;culo. Se traspasar&aacute; tambi&eacute;n el calculo de coste, si lo hay.";
+$ayudaCuerpoEliminar = "Se eliminar&aacute; la linea en todo el progama. Todos los datos relacionados con ella ser&aacute;n inaccesible.";
+$pregunta_recalculo = "¿Seguro que desea hacer un rec&aacute;lculo total? Esta acci&oacute;n puede durar varios minutos, ya que se har&aacute; un rec&aacute;lculo total desde el 1 de Enero de 2012.";
+$InfoCambioFormaPagoTPV = "Forma de pago cambiada correctamente.";
+$InfoCambioFormaPagoTPV2 = "Ha realizado otro cambio en la forma de pago.";
+#General
+$UsuarioNoAutorizado = "USUARIO NO AUTORIZADO";
+$error_incidencia_busqueda = "Para buscar por fechas, es necesario mes y a&ntilde;o.";
+$errorSubirArchivoDuplicado = "No se puede a&ntilde;adir el archivo por que ya existe uno con el mismo nombre.";
+$errorSubirArchivoTamany = "No ha podido transferirse el archivo.<br>No puede exceder el tama&ntilde;o indicado";
+$errorSubirArchivo = "No ha podido transferirse el archivo.";
+$pregunta_eliminar = "¿Desea eliminar el elemento seleccionado?";
+$mesaje_modificar = "Se ha modificado correctamente";
+#Incidencias
+$ErrorRelacion = "El valor introducido no es num&eacute;rico o no pertenece a un ID de una incidencia existente";
+$ErrorSinTextoDuracion = "No se puede introducir una incidencia sin texto y/o duraci&oacute;n";
+$ErrorSinServicioCliente = "No se puede introducir una incidencia sin servicio SIM o cliente";
+$ErrorSinAsunto = "No se puede introducir una incidencia sin asunto";
+$ErrorFinalizacion = "No se puede finalizar una incidencia sin notas de conclusi&oacute;n, sin servicio o pausada";
+$ErrorBusqueda = "Para buscar por fechas, es necesario mes y a&ntilde;o.";
+$ayudaIncidenciaCliente = "Acceso al formulario de inserci&oacute;n de contacto";
+$ayudaIncidenciaContrasena = "Acceso a las contrase&ntilde;as del cliente";
+$ayudaIncidenciaContrato = "Acceso a los contratos del cliente";
+#Login
+$ayudaLogin = "¿Olvidaste el usuario y/o la contrase&ntilde;a?";
+$asuntoMensajeRecuperacion = "Mensaje de recuperaci&oacute;n de contrase&ntilde;a.";
+$textoMensajeRecuperacion1 = "Siga el link para restaurar la contrase&ntilde;a";
+$textoMensajeRecuperacion2 = "No responda este e-mail";
+$ayudaMensajeRecuperacion = "Se ha enviado un e-mail para la recuperaci&oacute;n del usuario y la contrase&ntilde;a a : ";
+$errorMensajeRecuperacion = "Esta direcci&oacute;n e-mail no esta registrada";
+#Panel Usuario
+$ayudaPanelUserPass = "M&aacute;x. 10 car&aacute;cteres";
+$ayudaPanelUserPass2 = "Si no pudiera hacer correctamente el login de nuevo, borre las cookies referentes a solucions-im.com de su navegador.";
+$errorPanelUserPass = "Error al introducir las contrase&ntilde;as.";
+#RRHH
+$ErrorEmpleadoHorario = "Las fechas o las horas introducidas no son correctas";
+$ErrorEmpleadoCalendario = "Las fechas no son correctas";
+$ErrorPuestoDasactivar = "No se puede desactivar un puesto de trabajo con un empleado asignado";
+#Usuarios
+$UseNoAutorizado = "<br><center><table><tr><td>Usuario no autorizado.</td></tr></table></center>";
+$UsuarioYaReg = "<br>Nombre de usuario ya registrado.";
+$NombreIncorrecto = "<br>Valor en el campo nombre de usuario incorrecto.";
+$MailYaReg = "<br>Direcci&oacute;n e-mail ya registrada.";
+$MailIncorrecto = "<br>Valor en el campo e-mail incorrecto.";
+$PassIncorrecto = "<br>Valor en los campos passwords incorrecto.";
+$CompletaCorrect = "Completa correctamente todos los campos obligatorios.";
+$InvalidarUsuario = "<br><br>¿Seguro que desea invalidar este usuario?";
+$ErrorPass = "<br><br>Error al introducir las contrase&ntilde;as<br><br>";
+$NotasDes = "No se puede introducir una incidencia sin texto";
+$cambiarDatos = "Si desea cambiar los datos de la empresa, pongase en contacto con ";
 
-$info_cliente_alias = "El Alias es el nombre que tendra la carpeta en el cloud donde el cliente podra consultar toda su documentaci&oacute;n desde el Area de Clientes";
-$info_cliente_vip = "El Cliente VIP es aquel cliente con consideraciones especiales: Importancia estrat&eacute;gica para la empresa";
+#Texto
+$FacturasAyudaColores = "
+	<p>En el listado general, las factura se muestran en diferentes colores para diferenciarlas seg&uacute;n diferentes motivos.</p>
+	<ul>
+		<li>&bull; Rojo: si no esta pagada y ha pasado la fecha de vencimiento.</li>
+		<li>&bull; Naranja: si no esta pagada y faltan menos de 30 dias para la fecha de vencimiento.</li>
+		<li>&bull; Blanco: si no esta pagada y faltan m&aacute;s de 30 dias para la fecha de vencimiento o esta cerrada.</li>
+		<li>&bull; Verde: si esta pagada.</li>
+	</ul>
+";
 
+$IncidenciasAyudaColores = "
+	<p>Los botones sobre els listado hacen referencia a cada uno de los clientes que tienen incidencias abiertas. En cada bot&oacute;n aparece el \"alias\" del cliente y la cantidad de incidencias de cada tipo que tiene abiertas.</p>
+	<ul>
+		<li>&bull; Naranja: numero de incidencias con menos de 4 horas para quedar fuera de SLA.</li>
+		<li>&bull; Rojo: numero de incidencias fuera de SLA.</li>
+		<li>&bull; Gris: numero de incidencias pausadas.</li>
+		<li>&bull; Amarillo: numero de incidencias con nueva nota de desarrollo del cliente.</li>
+	</ul>
+	<p>En el listado general, las incidencias se muestran en diferentes colores para diferenciarlas seg&uacute;n diferentes motivos.</p>
+	<ul>
+		<li>&bull; Negro: si la incidencia no tiene el campo “(Contrato) Servicio” informado.</li>
+		<li>&bull; Gris: si la incidencia esta pausada.</li>
+		<li>&bull; Rojo: si la incidencia esta fuera de SLA.</li>
+		<li>&bull; Naranja: si la incidencia tiene menos de 4 horas para quedar fuera de SLA.</li>
+		<li>&bull; Blanco: si no tiene SLA o tiene m&aacute;s de 4 horas para quedar fuera de SLA.</li>
+	</ul>
+";
+
+$IncidenciasAyudaNotificaciones = "
+	<p>Para poder realizar las notificaciones es necesario tener el campo “usuario de origen” informado en la incidencia. Las notificaciones solo se realizar&aacute;n a usuarios que no sean de Solucions-IM.</p>
+	<p>Cada vez que realicemos una acci&oacute;n referente a las incidencias se generara una notificaci&oacute;n hacia el cliente de la incidencia en los siguientes casos:</p>
+	<ul>
+		<li>&bull; Al insertar una incidencia nueva.
+			<p>Cuando un cliente env&iacute;a un correo a la direcci&oacute;n soporte@solucions-im.com, se genera una incidencia nueva y se env&iacute;a un correo de respuesta al cliente inform&aacute;ndole.</p>
+			<p>Si creamos una incidencia desde SIMges e indicamos el usuario de origen, tambi&eacute;n se enviar&aacute; una notificaci&oacute;n a dicho usuario.</p>
+		</li>
+		<li>&bull; Al editar una incidencia.
+		<p>Solo se env&iacute;a una notificaci&oacute;n al cliente cuando:</p>
+		<ul>
+			<li>&bull; Si se ha modificado el usuario de destino.</li>
+			<li>&bull; Si se han modificado las notas de registro.</li>
+			<li>&bull; Si se añade una nota de desarrollo nueva y el campo “visible cliente” es “si”.</li>
+			<li>&bull; Si se modifica una nota de desarrollo existente (solo el texto) si el campo “visible cliente” es “si”.</li>
+			<li>&bull; Si se finaliza la incidencia.</li>
+			<li>&bull; Si se reabre una incidencia.</li>
+			<li>&bull; Si se relaciona la incidencia con otra.</li>
+		</ul>
+		</li>
+		<li>&bull; Al eliminar la incidencia.
+	</ul>
+";
 
 ?>

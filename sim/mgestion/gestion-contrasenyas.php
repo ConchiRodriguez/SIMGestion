@@ -142,7 +142,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"aplicacion\" required></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -154,7 +154,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1024&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["aplicacion"]."\" style=\"width:150px\" name=\"aplicacion\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
