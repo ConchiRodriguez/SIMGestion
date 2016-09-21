@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 function correoIncidencias(){
-	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass;
+	global $db,$dbhandle,$buzon_correo,$buzon_usuario,$buzon_pass,$urlmgestion;
 	
 	//Abre conexión IMAP
 	$imap = imap_open ($buzon_correo, $buzon_usuario, $buzon_pass) or die("No Se Pudo Conectar Al Servidor:".imap_last_error());
@@ -71,6 +71,7 @@ function correoIncidencias(){
 							$filesize = $part->bytes;
 							if($filename) {
 								$file = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
+								file_put_contents("../sim/archivos/incidencias/".$filename,$file);
 							}
 							break;
 					}
@@ -225,9 +226,20 @@ function correoIncidencias(){
 				}
 				// guardar ficheros adjuntos
 				if ($filename){
-					echo "<br><br>XXXXXX<br><br>";
-					subirArchivo(0,$file,$filename,$filesize,$filetipus,4,$incidencia_id);
-					subirArchivo($tipo, $archivo, $archivo_name, $archivo_size, $archivo_type,$id_tipo,$id)
+					$tipo1 = explode("/",$filetipus);
+					$sql = "select * from sgm_files_tipos where nombre like '%".$tipo1[1]."%'";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
+					if (!$row){
+						$sql = "select * from sgm_files_tipos where nombre like '%".$tipo1[0]."%'";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						$row = mysqli_fetch_array($result);
+					}
+					$tipo = $row["id"];
+
+					$camposInsert = "id_tipo,name,type,size,id_elemento,tipo_id_elemento";
+					$datosInsert = array($tipo,$filename,$filetipus,$filesize,$incidencia_id,4);
+					insertFunction ("sgm_files",$camposInsert,$datosInsert);
 				}
 			}
 			//Marca el mensaje como leido en el buzón de correo

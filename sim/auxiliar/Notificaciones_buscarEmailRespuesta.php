@@ -12,7 +12,7 @@ function buscarEmailRespuesta($asun,$id_cli){
 	if ($id_cli > 0) { $sqlinc .= " and id_cliente=".$id_cli; }
 	$resultinc = mysqli_query($dbhandle,$sqlinc);
 	while ($rowinc = mysqli_fetch_array($resultinc)){
-		if ((comillasInver($asun) == "RV: ".comillasInver($rowinc["asunto"])) or (comillasInver($asun) == "Rv: ".comillasInver($rowinc["asunto"])) or (comillasInver($asun) == "RE: ".comillasInver($rowinc["asunto"])) or (comillasInver($asun) == "Re: ".comillasInver($rowinc["asunto"])) or (comillasInver($asun) == "FWD: ".comillasInver($rowinc["asunto"])) or (comillasInver($asun) == "Fwd: ".comillasInver($rowinc["asunto"])) ){
+		if (strpos(comillasInver($asun),comillasInver($rowinc["asunto"])) !== false){
 			$x++;
 			$id_inc = $rowinc["id"];
 		}

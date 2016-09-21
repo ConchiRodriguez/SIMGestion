@@ -207,6 +207,7 @@ $Desmarcar = "Desmarcar";
 $Desplegar = "Desplegar";
 $Despredeterminar = "Despredeterminar";
 $Destino = "Desti";
+$Destinatario = "Destinatari";
 $Detalles = "Detalls";
 $Dia = "Dia";
 $diaas_naturales = "dia/es naturals";

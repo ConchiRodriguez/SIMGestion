@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function informesContratos(){
-	global $db,$dbhandle,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma;
+	global $db,$dbhandle,$urlmgestion,$idioma;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 	echo "<strong>".$Informes."</strong>";
 	echo "<br><br>";
 	echo "<center><table cellspacing=\"0\">";

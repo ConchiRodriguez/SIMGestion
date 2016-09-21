@@ -29,7 +29,7 @@ if (($option == 200) AND ($user == true)) {
 			echo "<form action=\"index.php?op=200&sop=11\" method=\"post\">";
 			echo "<tr><th>".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass1\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
 			echo "<tr><th>".$Repetir." ".$Contrasena."</th><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass2\" style=\"width:100px\" maxlength=\"10\" placeholder=\"".$ayudaPanelUserPass."\"></td></tr>";
-			echo "<tr><td></td><td><input type=\"submit\" value=\"".$Modificar."\"></td>";
+			echo "<tr><td></td><td class=\"Submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 			echo "</tr>";
 			echo "</form>";
 		echo "</table>";

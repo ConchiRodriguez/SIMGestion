@@ -345,8 +345,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 									echo " value=\"true\" style=\"border:0px solid black;width:55%\"></td>";
 								}
 							}
-						echo "</tr>";
-						echo "<tr><td colspan=\"39\" style=\"text-align:center;\"><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:200px\"></td></tr>";
+						echo "<td style=\"text-align:center;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td></tr>";
 					echo "</table>";
 					echo "</form>";
 				echo "</td><td style=\"text-align:left;vertical-align:top;width:15%;\">";
@@ -1630,69 +1629,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 115) {
-		if ($ssoption == 1) {
-			if (version_compare(phpversion(), "4.0.0", ">")) {
-				$archivo_name = $_FILES['archivo']['name'];
-				$archivo_size = $_FILES['archivo']['size'];
-				$archivo_type =  $_FILES['archivo']['type'];
-				$archivo = $_FILES['archivo']['tmp_name'];
-				$tipo = $_POST["id_tipo"];
-			}
-			if (version_compare(phpversion(), "4.0.1", "<")) {
-				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
-				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
-				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
-				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
-				$tipo = $HTTP_POST_VARS["id_tipo"];
-			}
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,2,$_GET["id"]);
-		}
-		if ($ssoption == 2) {
-			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
-			$rowf = mysqli_fetch_array($resultf);
-			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/clientes/".$rowf["name"];
-			unlink($filepath);
-		}
-
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr>";
-				echo "<td style=\"width:70%;vertical-align:top;\">";
-					echo "<h4>".$Documentos." :</h4>";
-						echo "<table>";
-						$sql = "select id,nombre from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=2 and id_elemento=".$_GET["id"];
-							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
-							while ($rowele = mysqli_fetch_array($resultele)) {
-								echo "<tr>";
-									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=116&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
-									echo "<td><a href=\"".$urloriginal."/archivos/clientes/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
-									echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
-								echo "</tr>";
-							}
-						}
-						echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<strong>".$Formulario_Subir_Archivo." :</strong><br><br>";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1008&sop=115&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<center>";
-					echo "<select name=\"id_tipo\" style=\"width:200px\">";
-						$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
-						}
-					echo "</select>";
-					echo "<br><br>";
-					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
-					echo "<br><br><input type=\"submit\" value=\"".$Enviar." a la ".$carpeta." Archivos/clientes/\" style=\"width:250px\">";
-					echo "</form>";
-					echo "</center>";
-			echo "</td></tr></table>";
+		echo "<h4>".$Archivos."</h4>";
+		anadirArchivo ($_GET["id"],2,"");
 	}
 
 	if ($soption == 116) {

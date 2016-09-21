@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function modificarPermisosUsuaris ($url_volver,$url){
-	global $db,$dbhandle,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption,$Si,$No;
+	global $db,$dbhandle,$idioma,$ssoption;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 	if ($ssoption == 1) {
 		$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre";
 		$result = mysqli_query($dbhandle,convertSQL($sql));

@@ -324,7 +324,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					echo "</select></td>";
 					echo "<td><input type=\"text\" name=\"id_incidencia\" value=\"".$_POST["id_incidencia"]."\" style=\"width:100px\"></td>";
 					echo "<td><input type=\"text\" name=\"texto\" value=\"".$_POST["texto"]."\" style=\"width:300px\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\" style=\"width:100px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Filtrar."\"></td>";
 				echo "</tr>";
 			echo "</form>";
 			echo "</table>";
@@ -555,7 +555,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					if (($soption == 0) or ($soption == 1)){
 						echo "<form action=\"index.php?op=1018&sop=3&id=".$rowi["id"]."&id_cli=".$_GET["id_cli"]."\" method=\"post\">";
 						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:50px;\"><input type=\"number\" name=\"id_inc_rel\" style=\"width:100%\" min=\"1\"></td>";
-						echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Relacion."\" class=\"submit\"></td>";
+						echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Relacion."\"></td>";
 						echo "</form>";
 					}
 	#					echo "<td style=\"text-align:center;vertical-align:top;\">";
@@ -1284,9 +1284,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "</tr>";
 						}
 						echo "<tr>";
-							echo "<td style=\"vertical-align:top;\">";
+							echo "<td style=\"vertical-align:top;\" class=\"Submit\">";
 								if ($row["id_estado"] != -2){
-									echo "<input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\">";
+									echo "<input type=\"Submit\" value=\"".$Guardar."\">";
 								}
 							echo "</td>";
 						echo "</tr>";
@@ -1329,7 +1329,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
 						}
 						if ($row["id_estado"] != -2){
-							echo "<tr><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";
+							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td></tr>";
 						}
 					echo "</table>";
 				echo "</td>";
@@ -1426,11 +1426,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 						$rowud = mysqli_fetch_array($resultud);
 						if (($row["id_estado"] != -2) and (($rowc["id_usuario_registro"] == $userid) or ($admin == true))){
 							echo "<tr>";
-								echo "<td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td>";
 							if ($rowc["id_usuario_registro"] == $userid){
 								echo "</form>";
 								echo "<form action=\"index.php?op=1018&sop=100&ssop=6&id=".$id_inc."&id_not=".$rowc["id"]."\" method=\"post\" name=\"form2\">";
-								echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Eliminar."\" style=\"width:100px\"></td>";
+								echo "<td style=\"text-align:right;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Eliminar."\"></td>";
 							}
 							echo "</tr>";
 						}
@@ -1462,7 +1462,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr><td colspan=\"2\"><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"4\" required>".$row["notas_conclusion"]."</textarea></td></tr>";
 						if ($row["id_estado"] == -2){
 							echo "<tr>";
-								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\" style=\"width:100px\"></td>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\"></td>";
 							echo "</form>";
 							if ($row["control_version"] == 0){
 								echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$row["id"]."\" method=\"post\">";
@@ -1471,7 +1471,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 								echo "</tr>";
 							}
 						} else {
-							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\" style=\"width:100px\"></td></tr>";
+							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\"></td></tr>";
 							echo "</form>";
 						}
 					echo "</table>";
@@ -1486,69 +1486,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 #Archivos adjuntos a la incidencia
 	if ($soption == 110){
 		echo "<h4>".$Documentos." ".$Adjuntos."</h4>";
-		if ($ssoption == 1) {
-			if (version_compare(phpversion(), "4.0.0", ">")) {
-				$archivo_name = $_FILES['archivo']['name'];
-				$archivo_size = $_FILES['archivo']['size'];
-				$archivo_type =  $_FILES['archivo']['type'];
-				$archivo = $_FILES['archivo']['tmp_name'];
-				$tipo = $_POST["id_tipo"];
-			}
-			if (version_compare(phpversion(), "4.0.1", "<")) {
-				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
-				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
-				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
-				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
-				$tipo = $HTTP_POST_VARS["id_tipo"];
-			}
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,4,$_GET["id"]);
-		}
-		if ($ssoption == 2) {
-			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
-			$rowf = mysqli_fetch_array($resultf);
-			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/incidencias/".$rowf["name"];
-			unlink($filepath);
-		}
-
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr>";
-				echo "<td style=\"width:70%;vertical-align:top;\">";
-					echo "<h4>".$Documentos." :</h4>";
-						echo "<table>";
-						$sql = "select id,nombre from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=4 and id_elemento=".$_GET["id"];
-							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
-							while ($rowele = mysqli_fetch_array($resultele)) {
-								echo "<tr>";
-									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1018&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
-									echo "<td><a href=\"".$urloriginal."/archivos/incidencias/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
-									echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
-								echo "</tr>";
-							}
-						}
-						echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<strong>".$Formulario_Subir_Archivo." :</strong><br><br>";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1018&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<center>";
-					echo "<select name=\"id_tipo\" style=\"width:200px\">";
-						$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
-						}
-					echo "</select>";
-					echo "<br><br>";
-					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
-					echo "<br><br><input type=\"submit\" value=\"".$Enviar." a la ".$carpeta." Archivos/incidencias/\" style=\"width:250px\">";
-					echo "</form>";
-					echo "</center>";
-			echo "</td></tr></table>";
+		anadirArchivo ($_GET["id"],4,"");
 	}
 
 	if ($soption == 111) {
@@ -1559,14 +1497,15 @@ if (($option == 1018) AND ($autorizado == true)) {
 	}
 #Fin archivos adjuntos a la incidencia
 
+#Lista de notificaciones enviadas
 	if ($soption == 120){
 		echo "<h4>".$Notificaciones." ".$Enviadas."</h4>";
 		echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
-				echo "<th>".$Fecha."</th>";
-				echo "<th>".$Destinatario."</th>";
-				echo "<th>".$Tipo."</th>";
-				echo "<th>".$Asunto."</th>";
+				echo "<th style=\"width:100px\">".$Fecha."</th>";
+				echo "<th style=\"width:100px\">".$Destinatario."</th>";
+				echo "<th style=\"width:150px\">".$Tipo."</th>";
+				echo "<th style=\"width:600px\">".$Asunto."</th>";
 			echo "</tr>";
 		$sqlice = "select * from sgm_incidencias_correos_enviados where id_incidencia=".$row["id"];
 		$resultice = mysqli_query($dbhandle,convertSQL($sqlice));
@@ -1588,6 +1527,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 		}
 		echo "</table>";
 	}
+#Fin lista de notificaciones enviadas
 
 #indicadores#
 	if ($soption == 300) {
@@ -1622,7 +1562,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						}
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:100px;\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 			echo "</tr>";
 			echo "</form>";
 		echo "</table>";
@@ -1753,7 +1693,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "<option value=\"0\">".$No."</option>";
 					echo "</select>";
 				echo "</td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:75px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "<td></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -1775,8 +1715,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 								echo "</select>";
 							}
 						echo "</td>";
-						echo "<td>";
-							if ($row["editable"] == 1) {echo "<input type=\"Submit\" value=\"Modificar\" style=\"width:75px\">";}
+						echo "<td class=\"Submit\">";
+							if ($row["editable"] == 1) {echo "<input type=\"Submit\" value=\"Modificar\">";}
 						echo "</td>";
 						echo "</form>";
 					echo "</tr>";

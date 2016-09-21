@@ -84,7 +84,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Filtrar."\"></td>";
 				echo "</tr>";
 			echo "</form>";
 			echo "</table>";
@@ -217,19 +217,19 @@ if (($option == 1026) AND ($autorizado == true)) {
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Fin.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_fin\" value=\"".$date2."\"></td></tr>";
 				if ($id_lic != "") {
 					if ($rowc["renovado"] == 0) {
-						echo "<td></td><td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
+						echo "<td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
 					} else {
 						echo "<td></td><td></td>";
 					}
 				} else {
-					echo "<td></td><td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+					echo "<td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				}
 			echo "</form>";
 			echo "<td></td>";
 			if ($id_lic != "") {
 				if ($rowc["renovado"] == 0) {
 					echo "<form action=\"index.php?op=1026&sop=100&ssop=3&id=".$id_lic."\" method=\"post\">";
-					echo "<td><input type=\"Submit\" value=\"renovar".$Renovar."\" style=\"width:100px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"renovar".$Renovar."\"></td>";
 					echo "</form>";
 				} else {
 					echo "<td></td>";
@@ -262,7 +262,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 								echo "<option value=\"".$row["id"]."\">".$rowg["subgrupo"]."(".$row["codigo"].") - ".$row["nombre"]."</option>";
 							}
 						echo "</td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
@@ -291,7 +291,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1026&sop=102&id=".$id_lic."\" method=\"post\">";
 						echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowc["id_cliente"]."\">";
 						echo "<input type=\"hidden\" name=\"id_licencia\" value=\"".$id_lic."\">";
-						echo "<td><input type=\"Submit\" value=\"".$Crear." ".$Factura."\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Crear." ".$Factura."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 				}
@@ -406,7 +406,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 						echo "<option value=\"".$row["id"]."\">".$row["grupo"]."</option>";
 					}
 				echo "</td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";

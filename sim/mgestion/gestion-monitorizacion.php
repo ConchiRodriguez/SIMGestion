@@ -89,7 +89,7 @@ if (($option == 1025) AND ($autorizado == true)) {
 			echo "<tr><td>Memoria</td><td><input name=\"mem\" type=\"Text\" value=\"".$row["mem"]."\" style=\"width:100px\"></td></tr>";
 			echo "<tr><td>Memoria Swap</td><td><input name=\"memswap\" type=\"Text\" value=\"".$row["memswap"]."\" style=\"width:100px\"></td></tr>";
 			echo "<tr><td>HD</td><td><input name=\"hd\" type=\"Text\" value=\"".$row["hd"]."\" style=\"width:100px\"></td></tr>";
-			echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td></tr>";
+			echo "<tr><td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
 			echo "</form>";
 		echo "</table></center>";
 	}

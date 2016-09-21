@@ -101,7 +101,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td><input value=\"".$Anadir."\" type=\"Submit\" style=\"width:100px;\"></td>";
+				echo "<td class=\"Submit\"><input value=\"".$Anadir."\" type=\"Submit\"></td>";
 			echo "</tr>";
 			echo "</form>";
 
@@ -127,7 +127,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<input type=\"Hidden\" name=\"id_client\" value=\"".$rowc["id"]."\">";
-					echo "<td><input value=\"".$Modificar."\" type=\"Submit\" style=\"width:100px;\"></td>";
+					echo "<td class=\"Submit\"><input value=\"".$Modificar."\" type=\"Submit\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -195,7 +195,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 				while ($row = mysqli_fetch_array($result)){
 					echo "<td><input type=\"Checkbox\" name=\"".$row["departamento"]."\" value=\"1\"></td>";
 				}
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px;\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</tr>";
 			echo "</form>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -211,7 +211,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 				while ($row = mysqli_fetch_array($result)){
 					echo "<td><input type=\"Checkbox\" name=\"".$row["departamento"]."\" value=\"1\"></td>";
 				}
-				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</form>";
 				echo "<td>";
 					echo boton_form("op=1002&sop=512&id=".$rowut["id"]."",$Permisos." ".$Tipo);

@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarServidors ($url,$url_del){
-	global $db,$dbhandle,$Volver,$Modificar,$Anadir,$Eliminar,$Cliente,$Servidor,$Descripcion,$Servidores,$ssoption;
+	global $db,$dbhandle,$idioma,$ssoption;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 	if ($ssoption == 1) {
 		$camposInsert = "id_client,servidor,descripcion";
 		$datosInsert = array($_POST["id_client"].$_GET["id"],comillas($_POST["servidor"]),comillas($_POST["descripcion"]));

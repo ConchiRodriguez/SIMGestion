@@ -215,6 +215,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</table>";
 		}
 	}
+
 	if (($soption >= 100) and ($soption < 200) and  (($_GET["id"] != 0) or ($ssoption == 1))) {
 		if (($soption == 100) and ($ssoption == 1)) {
 			$camposInsert="num_ins_segsoc,num_afil_segsoc,id_usuario,entidadbancaria,domiciliobancario,cuentabancaria,fecha_baja,fecha_incor,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,telefono2,notas";
@@ -287,6 +288,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "<table style=\"border-bottom:1px solid grey;border-left:1px solid grey;border-right:1px solid grey; border-top : 1px solid grey;text-align:center;width:100%\" cellpadding=\"2\" cellspacing=\"2\"><tr>";
 		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
 	}
+
 	if ($soption == 100) {
 		if ($id_empleado > 0) {
 			$sqlem = "select * from sgm_rrhh_empleado where id=".$id_empleado;
@@ -385,88 +387,26 @@ if (($option == 1020) AND ($autorizado == true)) {
 			echo "</form>";
 		echo "</table>";
 	}
+
 	if ($soption == 101) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=0&ssop=3&id=".$_GET["id"],"op=1020&sop=100&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
-	if ($soption == 110) {
-		if ($ssoption == 1) {
-			if (version_compare(phpversion(), "4.0.0", ">")) {
-				$archivo_name = $_FILES['archivo']['name'];
-				$archivo_size = $_FILES['archivo']['size'];
-				$archivo_type =  $_FILES['archivo']['type'];
-				$archivo = $_FILES['archivo']['tmp_name'];
-				$tipo = $_POST["id_tipo"];
-			}
-			if (version_compare(phpversion(), "4.0.1", "<")) {
-				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
-				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
-				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
-				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
-				$tipo = $HTTP_POST_VARS["id_tipo"];
-			}
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,6,$_GET["id"]);
-		}
-		if ($ssoption == 2) {
-			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
-			$rowf = mysqli_fetch_array($resultf);
-			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/empleados/".$rowf["name"];
-			unlink($filepath);
-		}
 
+	if ($soption == 110) {
 		echo "<h4>".$Archivos."</h4>";
-			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-				echo "<tr>";
-					echo "<td style=\"width:50%;vertical-align:top;\">";
-						echo "<h4>".$Archivos." :</h4>";
-						echo "<table>";
-						$sql = "select id,nombre from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=6 and id_elemento=".$_GET["id"];
-							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
-							while ($rowele = mysqli_fetch_array($resultele)) {
-								echo "<tr>";
-									echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1020&sop=111&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-									echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
-									echo "<td><a href=\"".$urloriginal."/archivos/empleados/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
-									echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
-								echo "</tr>";
-							}
-						}
-						echo "</table>";
-					echo "</td><td style=\"width:50%;vertical-align:top;\">";
-						echo "<h4>".$Formulario_Subir_Archivo." :</h4>";
-						echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1020&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-						echo "<table>";
-							echo "<tr>";
-								echo "<td><select name=\"id_tipo\" style=\"width:300px\">";
-									$sql = "select * from sgm_files_tipos order by nombre";
-									$result = mysqli_query($dbhandle,convertSQL($sql));
-									while ($row = mysqli_fetch_array($result)) {
-										echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
-									}
-								echo "</select></td>";
-							echo "</tr>";
-							echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"30px\"></td></tr>";
-							echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/empleados/\" style=\"width:300px\"></td></tr>";
-						echo "</table>";
-						echo "</form>";
-					echo "</td>";
-				echo "</tr>";
-			echo "</table>";
-		echo "<br><br>";
+		anadirArchivo ($_GET["id"],6,"");
 	}
+
 	if ($soption == 111) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1020&sop=110&ssop=2&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"],"op=1020&sop=110&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
+
 	if ($soption == 120){
 		echo "<h4>".$Formacion."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -486,6 +426,7 @@ if (($option == 1020) AND ($autorizado == true)) {
 		echo "</table>";
 		echo "<br>";
 	}
+
 	if ($soption == 130){
 		if ((($_POST["data_ini"] > $_POST["data_fi"]) and ($_POST["data_fi"] != "") and ($_POST["data_fi"] != "0000-00-00")) or ($_POST["hora_ini"] > $_POST["hora_fi"]) or ($_POST["hora_ini2"] > $_POST["hora_fi2"])){
 			echo $_POST["data_fi"].mensageError($ErrorEmpleadoHorario);

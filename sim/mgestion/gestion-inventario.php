@@ -104,7 +104,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 						}
 					echo "</td>";
 					echo "<td style=\"color:black;text-align:left;width:250px\"><input type=\"Text\" name=\"dada\" value=\"".$_POST["dada"]."\" style=\"width:250px\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:150px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			} elseif ($soption == 0) {
@@ -141,7 +141,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 							echo "<option value=\"".$rowc["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 						}
 					echo "</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:150px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			}
@@ -223,7 +223,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"id_tipo2\" value=\"".$_POST["id_tipo"]."\">";
 					echo "<input type=\"Hidden\" name=\"dada2\" value=\"".$_POST["dada"]."\">";
 					echo "<input type=\"Hidden\" name=\"id_client2\" value=\"".$_POST["id_client2"]."\">";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 #					echo "<td><a href=\"index.php?op=1005&sop=100&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" border=\"0\"></a></td>";
 					echo "</form>";
 				echo "</tr>";
@@ -556,7 +556,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				echo "<td style=\"color:black;\">".$rowi["data_prevision"]."</td>";
 				echo "<td style=\"color:black;text-align:center;\">".$rowac["duracion"]." h.</td>";
 				if ($rowi["finalizada"] == 0) {
-					echo "<td><input type=\"Submit\" value=\"".$Finalizar."\" style=\"width:100px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\"></td>";
 				} else {
 					echo "<td></td>";
 				}
@@ -567,76 +567,8 @@ if (($option == 1005) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 130) {
-		if ($ssoption == 1) {
-			if (version_compare(phpversion(), "4.0.0", ">")) {
-				$archivo_name = $_FILES['archivo']['name'];
-				$archivo_size = $_FILES['archivo']['size'];
-				$archivo_type =  $_FILES['archivo']['type'];
-				$archivo = $_FILES['archivo']['tmp_name'];
-				$tipo = $_POST["id_tipo"];
-			}
-			if (version_compare(phpversion(), "4.0.1", "<")) {
-				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
-				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
-				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
-				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
-				$tipo = $HTTP_POST_VARS["id_tipo"];
-			}
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,5,$_GET["id"]);
-		}
-		if ($ssoption == 2) {
-			$sqlf = "select * from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
-			$rowf = mysqli_fetch_array($resultf);
-			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/dispositivos/".$rowf["name"];
-			unlink($filepath);
-		}
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr>";
-				echo "<td style=\"width:70%;vertical-align:top;\">";
-					echo "<h4>".$Archivos." :</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr style=\"background-color:silver\">";
-							echo "<th style=\"width:100px\">".$Eliminar."</th>";
-							echo "<th style=\"width:100px\">".$Tipo."</th>";
-							echo "<th style=\"width:300px\">".$Nombre."</th>";
-							echo "<th style=\"width:100px\">".$Tamano."</th>";
-						echo "</tr>";
-						$sql = "select * from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							$sqlele = "select * from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=5 and id_elemento=".$_GET["id"];
-							$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
-							while ($rowele = mysqli_fetch_array($resultele)) {
-								echo "<tr>";
-									echo "<td><a href=\"index.php?op=1005&sop=131&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>";
-									echo "<td>".$row["nombre"]."</td>";
-									echo "<td><a href=\"".$urloriginal."/archivos/dispositivos/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong></td>";
-									echo "<td>".round(($rowele["size"]/1000), 1)." Kb</td>";
-								echo "</td>";
-							}
-						}
-						echo "</table>";
-				echo "</td><td style=\"width:200px;vertical-align:top;\">";
-					echo "<strong>".$Formulario_Subir_Archivo." :</strong><br><br>";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1005&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<center>";
-					echo "<input type=\"Hidden\" name=\"id_cuerpo\" value=\"".$_GET["id"]."\">";
-					echo "<select name=\"id_tipo\" style=\"width:200px\">";
-						$sql = "select * from sgm_files_tipos order by nombre";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)) {
-							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (".$Hasta." ".$row["limite_kb"]." Kb)</option>";
-						}
-					echo "</select>";
-					echo "<br><br>";
-					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
-					echo "<br><br><input type=\"submit\" value=\"".$Enviar." a la ".$carpeta." Archivos/dispositivos/\" style=\"width:200px\">";
-					echo "</form>";
-				echo "</td>";
-			echo "</tr>";
-		echo "</table>";
+		echo "<h4>".$Archivos."</h4>";
+		anadirArchivo ($_GET["id"],5,"");
 	}
 
 	if ($soption == 131) {
@@ -704,7 +636,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 				$fecha = date("Y-m-d H:i:s");
 				echo "<td><input type=\"text\" name=\"data_prevision\" value=\"".$fecha."\"></td>";
 				echo "<td></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:150px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -755,7 +687,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 					$resultac = mysqli_query($dbhandle,convertSQL($sqlac));
 					$rowac = mysqli_fetch_array($resultac);
 					echo "<td style=\"text-align:center;\">".$rowac["duracion"]." h.</td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -865,7 +797,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 #				echo "<td><input type=\"text\" style=\"width:100%\" name=\"orden\"></td>";
 #				echo "<td><input type=\"text\" style=\"width:100%\" name=\"codigo\"></td>";
 				echo "<td><input type=\"text\" style=\"width:100%\" name=\"tipo\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "<td></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -879,7 +811,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 #					echo "<td><input type=\"text\" value=\"".$row["orden"]."\" style=\"width:100%\" name=\"orden\"></td>";
 #					echo "<td><input type=\"text\" value=\"".$row["codigo"]."\" style=\"width:100%\" name=\"codigo\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["tipo"]."\" style=\"width:100%\" name=\"tipo\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:150px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 #					echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:#4B53AF;border:1px solid black\">";
 #						echo "<a href=\"index.php?op=1005&sop=515&id=".$row["id"]."\" style=\"color:white;\">".$Atributos."</a>";
@@ -925,7 +857,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:200px\" name=\"atributo\"></td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:150px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "</form>";
@@ -936,7 +868,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1005&sop=516&id=".$_GET["id"]."&id_atri=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 					echo "<form action=\"index.php?op=1005&sop=515&ssop=2&id=".$_GET["id"]."&id_atri=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["atributo"]."\" style=\"width:200px\" name=\"atributo\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -986,7 +918,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
 				echo "<td><input type=\"text\" style=\"width:50px\" name=\"duracion\">";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "</form>";
@@ -1007,7 +939,7 @@ if (($option == 1005) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<td><input type=\"text\" value=\"".$row["duracion"]."\" style=\"width:50px\" name=\"duracion\"></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}

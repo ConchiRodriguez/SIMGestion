@@ -465,73 +465,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 130) {
-		if ($ssoption == 1) {
-			if (version_compare(phpversion(), "4.0.0", ">")) {
-				$archivo_name = $_FILES['archivo']['name'];
-				$archivo_size = $_FILES['archivo']['size'];
-				$archivo_type =  $_FILES['archivo']['type'];
-				$archivo = $_FILES['archivo']['tmp_name'];
-				$tipo = $_POST["id_tipo"];
-			}
-			if (version_compare(phpversion(), "4.0.1", "<")) {
-				$archivo_name = $HTTP_POST_FILES['archivo']['name'];
-				$archivo_size = $HTTP_POST_FILES['archivo']['size'];
-				$archivo_type =  $HTTP_POST_FILES['archivo']['type'];
-				$archivo = $HTTP_POST_FILES['archivo']['tmp_name'];
-				$tipo = $HTTP_POST_VARS["id_tipo"];
-			}
-			echo $archivo.",".$archivo_name.",".$archivo_size.",".$archivo_type.".";
-			echo subirArchivo($tipo,$archivo,$archivo_name,$archivo_size,$archivo_type,3,$_GET["id"]);
-		}
-		if ($ssoption == 2) {
-			$sqlf = "select name from sgm_files where id=".$_GET["id_archivo"];
-			$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
-			$rowf = mysqli_fetch_array($resultf);
-			deleteFunction ("sgm_files",$_GET["id_archivo"]);
-			$filepath = "archivos/contratos/".$rowf["name"];
-			unlink($filepath);
-		}
 		echo "<h4>".$Archivos." : <img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_archivos."\"></h4>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr>";
-				echo "<td style=\"width:50%;vertical-align:top;\">";
-					echo "<h4>".$Formulario_Subir_Archivo." :</h4>";
-					echo "<form enctype=\"multipart/form-data\" action=\"index.php?op=1011&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<table>";
-						echo "<tr>";
-							echo "<td><select name=\"id_tipo\" style=\"width:300px\">";
-								$sql = "select id,nombre,limite_kb from sgm_files_tipos order by nombre";
-								$result = mysqli_query($dbhandle,convertSQL($sql));
-								while ($row = mysqli_fetch_array($result)) {
-									echo "<option value=\"".$row["id"]."\">".$row["nombre"]." (hasta ".$row["limite_kb"]." Kb)</option>";
-								}
-							echo "</select></td>";
-						echo "</tr>";
-						echo "<tr><td><input type=\"file\" name=\"archivo\" size=\"30px\"></td></tr>";
-						echo "<tr><td><input type=\"submit\" value=\"Enviar a la carpeta /archivos/contratos/\" style=\"width:300px\"></td></tr>";
-					echo "</table>";
-					echo "</form>";
-				echo "</td>";
-				echo "<td style=\"width:50%;vertical-align:top;\">";
-					echo "<table>";
-					$sql = "select id,nombre from sgm_files_tipos order by nombre";
-					$result = mysqli_query($dbhandle,convertSQL($sql));
-					while ($row = mysqli_fetch_array($result)) {
-						$sqlele = "select id,name,size from sgm_files where id_tipo=".$row["id"]." and tipo_id_elemento=3 and id_elemento=".$_GET["id"];
-						$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
-						while ($rowele = mysqli_fetch_array($resultele)) {
-							echo "<tr>";
-								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=131&id=".$_GET["id"]."&id_archivo=".$rowele["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
-								echo "<td style=\"text-align:right;\">".$row["nombre"]."</td>";
-								echo "<td><a href=\"".$urloriginal."/archivos/contratos/".$rowele["name"]."\" target=\"_blank\"><strong>".$rowele["name"]."</a></strong>";
-								echo "</td><td style=\"text-align:right;\">".round(($rowele["size"]/1000), 1)." Kb</td>";
-							echo "</tr>";
-						}
-					}
-					echo "</table>";
-				echo "</td>";
-			echo "</tr>";
-		echo "</table>";
+		anadirArchivo ($_GET["id"],3,"");
 	}
 
 	if ($soption == 131) {

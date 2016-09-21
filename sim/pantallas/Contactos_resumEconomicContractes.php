@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 	
 function resumEconomicContractes($id){
-	global $db,$dbhandle,$Enero,$Febrero,$Marzo,$Abril,$Mayo,$Junio,$Julio,$Agosto,$Septiembre,$Octubre,$Noviembre,$Ano,$Total,$meses;
+	global $db,$dbhandle,$idioma;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 
 	$sqldiv = "select * from sgm_divisas where visible=1 and predefinido=1";
 	$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));

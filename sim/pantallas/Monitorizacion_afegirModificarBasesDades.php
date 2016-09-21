@@ -3,7 +3,11 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarBasesDades ($url,$url_del){
-	global $db,$dbhandle,$Volver,$Modificar,$Anadir,$Eliminar,$Cliente,$Bases_Datos,$Descripcion,$Usuario,$Contrasena,$ssoption,$simclau;
+	global $db,$dbhandle,$simclau,$idioma,$ssoption;
+
+	if ($idioma == "es"){ include ("sgm_es.php");}
+	if ($idioma == "cat"){ include ("sgm_cat.php");}
+
 	if ($ssoption == 1) {
 		$clau = encrypt($_POST["pass"],$simclau);
 		$camposInsert = "id_client,base,ip,usuario,pass,descripcion";
