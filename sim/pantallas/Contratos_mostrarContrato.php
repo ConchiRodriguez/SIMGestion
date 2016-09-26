@@ -12,8 +12,8 @@ function mostrarContrato ($id_contrato,$id_cliente){
 	$contract = $id_contrato;
 	
 	if ($ssoption == 2) {
-		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico","id_tarifa");
-		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"]);
+		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico","id_tarifa","pack_horas","num_horas");
+		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"],$_POST["pack_horas"],$_POST["num_horas"]);
 		updateFunction ("sgm_contratos",$_POST["id_contrato"],$camposUpdate,$datosUpdate);
 	}
 
@@ -89,6 +89,20 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			echo "</td>";
 		echo "</tr>";
 		echo "<tr><td style=\"text-align:right;\">".$Descripcion.": </td><td><input style=\"width:500px\" type=\"Text\" name=\"descripcion\" value=\"".$rowc["descripcion"]."\"></td></tr>";
+		echo "<tr><td style=\"text-align:right;\">".$Bolsa." ".$Horas.": </td>";
+			echo "<td><select style=\"width:50px\" name=\"pack_horas\">";
+				if ($rowc["pack_horas"] == 1){
+					echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<option value=\"0\">".$No."</option>";
+				} else {
+					echo "<option value=\"1\">".$Si."</option>";
+					echo "<option value=\"0\" selected>".$No."</option>";
+				}
+			echo "</td>";
+		echo "</tr>";
+		echo "<tr>";
+			echo "<td style=\"text-align:right;\">".$Numero." ".$Horas.": </td><td><input style=\"width:100px\" type=\"Text\" name=\"num_horas\" value=\"".$rowc["num_horas"]."\"></td>";
+		echo "</tr>";
 		if ($id_contrato != "") {
 			$date1 = $rowc["fecha_ini"];
 			$date2 = $rowc["fecha_fin"];

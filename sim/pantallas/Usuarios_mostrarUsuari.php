@@ -48,7 +48,7 @@ function mostrarUsuari ($sql_usuaris,$link_edit,$link_permisos,$link_clientes){
 		}
 	}
 	if ($ssoption == 3) {
-		$sqlx = "select id_tipus from sgm_users WHERE mail='".$_POST["mail"]."' AND id<>".$_GET["id_user"];
+		$sqlx = "select id_tipus from sgm_users where mail='".$_POST["mail"]."' and activo=1 and id<>".$_GET["id_user"];
 		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
 		$rowx = mysqli_fetch_array($resultx);
 		if (!$rowx){

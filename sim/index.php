@@ -117,7 +117,7 @@ lopd($userid,$username,$option,$soption);
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<title>SIMGESTION 3.0</title>
+		<title>SIMGESTION DES</title>
 
 		<?php include ("functions-js.php"); ?>
   </head>
@@ -131,53 +131,63 @@ if (($option == 900) or ($option == 600)) {
 		echo "<tr>";
 			echo "<td class=\"maestra\">";
 				echo "<table style=\"width:100%;\"><tr>";
-					echo "<td style=\"color:white;width:17%;\">";
+#				echo "<table border=1><tr>";
+					echo "<td style=\"color:white;width:300px;\">";
 						if ($user == true) {
 							echo "<strong>".$Bienvenido." <strong>".$username."</strong>&nbsp;&nbsp; (id.<strong>".$userid.")</strong>";
 						} else {
-							echo "<a href=\"index.php?op=100\" style=\"color : white;\"><strong>[ ".$Identificarse." ]</strong></a>";
+							echo "<a href=\"index.php?op=100\" style=\"color:white;\"><strong>[ ".$Identificarse." ]</strong></a>";
 						}
 						echo "&nbsp;&nbsp;&nbsp;&nbsp; <strong>".date("d/m/Y")."&nbsp;&nbsp;&nbsp;&nbsp;".date("H:i")."</strong>";
-				echo "</td>";
-				echo "<td style=\"color:white;width:70%;\">";
-					if ($sgm == 1) {
-						echo "<ul class=\"menu1\">";
-							echo "<li><a href=\"index.php?op=200\">".$Panel_usuario."</a>";
-							$sqlu = "select * from sgm_users where id=".$userid;
-							$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
-							$rowu = mysqli_fetch_array($resultu);
-								if ($rowu["sgm"] == 1) {
-									$sqlmg = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
-									$resultmg = mysqli_query($dbhandle,convertSQL($sqlmg));
-									while ($rowmg = mysqli_fetch_array($resultmg)) {
+					echo "</td>";
+					echo "<td style=\"color:white;width:900px;\">";
+						if ($sgm == 1) {
+							echo "<ul class=\"menu1\">";
+								echo "<li><a href=\"index.php?op=200\">".$Panel_usuario."</a>";
+								$sqlu = "select * from sgm_users where id=".$userid;
+								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+								$rowu = mysqli_fetch_array($resultu);
+									if ($rowu["sgm"] == 1) {
+										$sqlmg = "select * from sgm_users_permisos_modulos_grupos where visible=1 order by nombre";
+										$resultmg = mysqli_query($dbhandle,convertSQL($sqlmg));
+										while ($rowmg = mysqli_fetch_array($resultmg)) {
 
-										echo "<li><a href=\"#\">".$rowmg["nombre"]."</a>";
-											echo "<ul>";
-												$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$rowmg["id"]." order by nombre";
-												$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
-												while ($rowm = mysqli_fetch_array($resultm)) {
-													echo "<li><a href=\"index.php?op=".$rowm["id_modulo"]."\">".$rowm["nombre"]."</a></li>";
-												}
-											echo "</ul>";
-										echo "</li>";
+											echo "<li><a href=\"#\">".$rowmg["nombre"]."</a>";
+												echo "<ul>";
+													$sqlm = "select * from sgm_users_permisos_modulos where visible=1 and id_grupo=".$rowmg["id"]." order by nombre";
+													$resultm = mysqli_query($dbhandle,convertSQL($sqlm));
+													while ($rowm = mysqli_fetch_array($resultm)) {
+														echo "<li><a href=\"index.php?op=".$rowm["id_modulo"]."\">".$rowm["nombre"]."</a></li>";
+													}
+												echo "</ul>";
+											echo "</li>";
+										}
 									}
-								}
-						echo "</ul>";
-					}
-				echo "</td>";
-				echo "<td style=\"color:white;width:3%;\">";
-					echo "<a href=\"index.php?op=1008&sop=100\"><img src=\"mgestion/pics/icons-mini/group_add.png\" alt=\"Cliente\" title=\"".$Anadir." ".$Cliente."\" border=\"0\"></a>";
-				echo "</td>";
-				echo "<td style=\"color:white;width:3%;\">";
-					echo "<a href=\"index.php?op=1018&sop=100&id_entrada=1\"><img src=\"mgestion/pics/icons-mini/telephone.png\" alt=\"Telefono\" title=\"".$Incidencia." ".$Telefono."\" border=\"0\"></a>";
-				echo "</td>";
-				echo "<td style=\"color:white;width:4%;\">";
-					if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\" style=\"color : white;\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\" style=\"color : white;\">Es</a>"; }
-					if ($idioma == "es") {	echo "<a href=\"index.php?i=cat\" style=\"color : white;\">Cat</a> | <a href=\"index.php?i=es\" style=\"color : white;\"><strong>Es</strong></a>"; }
-				echo "</td>";
-				echo "<td style=\"color:white;width:3%;\">";
-					echo "<a href=\"index.php?sop=666\"><img src=\"mgestion/pics/icons-mini/door_out.png\" alt=\"Logout\" title=\"".$Salir."\" border=\"0\"></a>";
-				echo "</td>";
+							echo "</ul>";
+						}
+					echo "</td>";
+					echo "<td style=\"vertical-align:middle;text-align:center;width:300px;\" nowrap>";
+						echo "<form method=get action=\"http://www.google.com/search\" target=\"_blank\">";
+						echo "<input type=\"text\" name=\"q\" style=\"width:200px\" value=\"\" autofocus>";
+						echo "<input type=\"hidden\" name=\"hl\" value=\"es\">";
+						echo "<input type=\"submit\" name=\"btnG\" value=\"".$Busqueda." Google\" style=\"width:100px\">";
+						echo "</form>";
+					echo "</td>";
+				if ($sgm == 1) {
+					echo "<td style=\"color:white;width:30px;\">";
+						echo "<a href=\"index.php?op=1008&sop=100\"><img src=\"mgestion/pics/icons-mini/group_add.png\" alt=\"Cliente\" title=\"".$Anadir." ".$Cliente."\" border=\"0\"></a>";
+					echo "</td>";
+					echo "<td style=\"color:white;width:30px;\">";
+						echo "<a href=\"index.php?op=1018&sop=100&id_entrada=1\"><img src=\"mgestion/pics/icons-mini/telephone.png\" alt=\"Telefono\" title=\"".$Incidencia." ".$Telefono."\" border=\"0\"></a>";
+					echo "</td>";
+				}
+					echo "<td style=\"color:white;width:60px;\">";
+						if ($idioma == "cat") {	echo "<a href=\"index.php?i=cat\" style=\"color:white;\"><strong>Cat</strong></a> | <a href=\"index.php?i=es\" style=\"color:white;\">Es</a>"; }
+						if ($idioma == "es") {	echo "<a href=\"index.php?i=cat\" style=\"color:white;\">Cat</a> | <a href=\"index.php?i=es\" style=\"color:white;\"><strong>Es</strong></a>"; }
+					echo "</td>";
+					echo "<td style=\"color:white;width:30px;\">";
+						echo "<a href=\"index.php?sop=666\"><img src=\"mgestion/pics/icons-mini/door_out.png\" alt=\"Logout\" title=\"".$Salir."\" border=\"0\"></a>";
+					echo "</td>";
 				echo "</tr></table>";
 			echo "</td>";
 		echo "</tr>";

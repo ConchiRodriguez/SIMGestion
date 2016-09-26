@@ -937,7 +937,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$comentarios .= $rowx["notas_conclusion"]."\r\n";
 			}
 			$camposInsert = "fecha,comentarios,id_usuario";
-			$datosInsert = array(date("Y-m-d",$rowx["fecha_inicio"]),comillas($comentarios),$rowx["id_usuario_destino"]);
+			$datosInsert = array(date("Y-m-d",$rowx["fecha_cierre"]),comillas($comentarios),$rowx["id_usuario_destino"]);
 			insertFunction ("sim_control_versiones",$camposInsert,$datosInsert);
 
 			$camposUpdate = array("control_version");
@@ -1286,7 +1286,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<td style=\"vertical-align:top;\" class=\"Submit\">";
 								if ($row["id_estado"] != -2){
-									echo "<input type=\"Submit\" value=\"".$Guardar."\">";
+									echo "<input type=\"Submit\" value=\"".$Guardar."\" >";
 								}
 							echo "</td>";
 						echo "</tr>";
@@ -1329,7 +1329,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
 						}
 						if ($row["id_estado"] != -2){
-							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td></tr>";
+							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";
 						}
 					echo "</table>";
 				echo "</td>";
@@ -1426,11 +1426,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 						$rowud = mysqli_fetch_array($resultud);
 						if (($row["id_estado"] != -2) and (($rowc["id_usuario_registro"] == $userid) or ($admin == true))){
 							echo "<tr>";
-								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\"></td>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
 							if ($rowc["id_usuario_registro"] == $userid){
 								echo "</form>";
 								echo "<form action=\"index.php?op=1018&sop=100&ssop=6&id=".$id_inc."&id_not=".$rowc["id"]."\" method=\"post\" name=\"form2\">";
-								echo "<td style=\"text-align:right;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Eliminar."\"></td>";
+								echo "<td style=\"text-align:right;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Eliminar."\" style=\"width:100px\"></td>";
 							}
 							echo "</tr>";
 						}
@@ -1462,16 +1462,16 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr><td colspan=\"2\"><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"4\" required>".$row["notas_conclusion"]."</textarea></td></tr>";
 						if ($row["id_estado"] == -2){
 							echo "<tr>";
-								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\"></td>";
+								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\" style=\"width:100px\"></td>";
 							echo "</form>";
 							if ($row["control_version"] == 0){
 								echo "<form action=\"index.php?op=1018&sop=100&ssop=7&id=".$row["id"]."\" method=\"post\">";
-									echo "<td style=\"text-align:right;\"><input type=\"Submit\" value=\"".$Anadir_version."\" style=\"width:200px\"></td>";
+									echo "<td style=\"text-align:right;\" class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir_version."\" style=\"width:200px\"></td>";
 								echo "</form>";
 								echo "</tr>";
 							}
 						} else {
-							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\"></td></tr>";
+							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Finalizar."\" style=\"width:100px\"></td></tr>";
 							echo "</form>";
 						}
 					echo "</table>";

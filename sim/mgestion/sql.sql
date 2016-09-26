@@ -494,6 +494,8 @@ ALTER TABLE `sgm_contratos` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER
 ALTER TABLE `sgm_contratos` ADD `id_plantilla` int(11) NOT NULL default '0' AFTER `renovado`;
 ALTER TABLE `sgm_contratos` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id_plantilla`;
 ALTER TABLE `sgm_contratos` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `id_contrato`;
+ALTER TABLE `sgm_contratos` ADD `pack_horas` tinyint(1) NOT NULL default '0' AFTER `id_tarifa`;
+ALTER TABLE `sgm_contratos` ADD `num_horas` int(11) NOT NULL default '0' AFTER `pack_horas`;
 
 CREATE TABLE `sgm_contratos_servicio` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_servicio` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;

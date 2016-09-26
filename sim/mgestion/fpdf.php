@@ -1,384 +1,10 @@
-<?php
-/*******************************************************************************
-* FPDF                                                                         *
-*                                                                              *
-* Version: 1.6                                                                 *
-* Date:    2008-08-03                                                          *
-* Author:  Olivier PLATHEY                                                     *
-*******************************************************************************/
-
+<?php/******************************************************************************** FPDF                                                                         **                                                                              ** Version: 1.6                                                                 ** Date:    2008-08-03                                                          ** Author:  Olivier PLATHEY                                                     ********************************************************************************/
 define('FPDF_VERSION','1.6');
-
-class FPDF
-{
-var $page;               //current page number
-var $n;                  //current object number
-var $offsets;            //array of object offsets
-var $buffer;             //buffer holding in-memory PDF
-var $pages;              //array containing pages
-var $state;              //current document state
-var $compress;           //compression flag
-var $k;                  //scale factor (number of points in user unit)
-var $DefOrientation;     //default orientation
-var $CurOrientation;     //current orientation
-var $PageFormats;        //available page formats
-var $DefPageFormat;      //default page format
-var $CurPageFormat;      //current page format
-var $PageSizes;          //array storing non-default page sizes
-var $wPt,$hPt;           //dimensions of current page in points
-var $w,$h;               //dimensions of current page in user unit
-var $lMargin;            //left margin
-var $tMargin;            //top margin
-var $rMargin;            //right margin
-var $bMargin;            //page break margin
-var $cMargin;            //cell margin
-var $x,$y;               //current position in user unit
-var $lasth;              //height of last printed cell
-var $LineWidth;          //line width in user unit
-var $CoreFonts;          //array of standard font names
-var $fonts;              //array of used fonts
-var $FontFiles;          //array of font files
-var $diffs;              //array of encoding differences
-var $FontFamily;         //current font family
-var $FontStyle;          //current font style
-var $underline;          //underlining flag
-var $CurrentFont;        //current font info
-var $FontSizePt;         //current font size in points
-var $FontSize;           //current font size in user unit
-var $DrawColor;          //commands for drawing color
-var $FillColor;          //commands for filling color
-var $TextColor;          //commands for text color
-var $ColorFlag;          //indicates whether fill and text colors are different
-var $ws;                 //word spacing
-var $images;             //array of used images
-var $PageLinks;          //array of links in pages
-var $links;              //array of internal links
-var $AutoPageBreak;      //automatic page breaking
-var $PageBreakTrigger;   //threshold used to trigger page breaks
-var $InHeader;           //flag set when processing header
-var $InFooter;           //flag set when processing footer
-var $ZoomMode;           //zoom display mode
-var $LayoutMode;         //layout display mode
-var $title;              //title
-var $subject;            //subject
-var $author;             //author
-var $keywords;           //keywords
-var $creator;            //creator
-var $AliasNbPages;       //alias for total number of pages
-var $PDFVersion;         //PDF version number
-
-/*******************************************************************************
-*                                                                              *
-*                               Public methods                                 *
-*                                                                              *
-*******************************************************************************/
-function FPDF($orientation='P', $unit='mm', $format='A4')
-{
-	//Some checks
-	$this->_dochecks();
-	//Initialization of properties
-	$this->page=0;
-	$this->n=2;
-	$this->buffer='';
-	$this->pages=array();
-	$this->PageSizes=array();
-	$this->state=0;
-	$this->fonts=array();
-	$this->FontFiles=array();
-	$this->diffs=array();
-	$this->images=array();
-	$this->links=array();
-	$this->InHeader=false;
-	$this->InFooter=false;
-	$this->lasth=0;
-	$this->FontFamily='';
-	$this->FontStyle='';
-	$this->FontSizePt=12;
-	$this->underline=false;
-	$this->DrawColor='0 G';
-	$this->FillColor='0 g';
-	$this->TextColor='0 g';
-	$this->ColorFlag=false;
-	$this->ws=0;
-	//Standard fonts
-	$this->CoreFonts=array('courier'=>'Courier', 'courierB'=>'Courier-Bold', 'courierI'=>'Courier-Oblique', 'courierBI'=>'Courier-BoldOblique',
-		'helvetica'=>'Helvetica', 'helveticaB'=>'Helvetica-Bold', 'helveticaI'=>'Helvetica-Oblique', 'helveticaBI'=>'Helvetica-BoldOblique',
-		'times'=>'Times-Roman', 'timesB'=>'Times-Bold', 'timesI'=>'Times-Italic', 'timesBI'=>'Times-BoldItalic',
-		'symbol'=>'Symbol', 'zapfdingbats'=>'ZapfDingbats');
-	//Scale factor
-	if($unit=='pt')
-		$this->k=1;
-	elseif($unit=='mm')
-		$this->k=72/25.4;
-	elseif($unit=='cm')
-		$this->k=72/2.54;
-	elseif($unit=='in')
-		$this->k=72;
-	else
-		$this->Error('Incorrect unit: '.$unit);
-	//Page format
-	$this->PageFormats=array('a3'=>array(841.89,1190.55), 'a4'=>array(595.28,841.89), 'a5'=>array(420.94,595.28),
-		'letter'=>array(612,792), 'legal'=>array(612,1008));
-	if(is_string($format))
-		$format=$this->_getpageformat($format);
-	$this->DefPageFormat=$format;
-	$this->CurPageFormat=$format;
-	//Page orientation
-	$orientation=strtolower($orientation);
-	if($orientation=='p' || $orientation=='portrait')
-	{
-		$this->DefOrientation='P';
-		$this->w=$this->DefPageFormat[0];
-		$this->h=$this->DefPageFormat[1];
-	}
-	elseif($orientation=='l' || $orientation=='landscape')
-	{
-		$this->DefOrientation='L';
-		$this->w=$this->DefPageFormat[1];
-		$this->h=$this->DefPageFormat[0];
-	}
-	else
-		$this->Error('Incorrect orientation: '.$orientation);
-	$this->CurOrientation=$this->DefOrientation;
-	$this->wPt=$this->w*$this->k;
-	$this->hPt=$this->h*$this->k;
-	//Page margins (1 cm)
-	$margin=28.35/$this->k;
-	$this->SetMargins($margin,$margin);
-	//Interior cell margin (1 mm)
-	$this->cMargin=$margin/10;
-	//Line width (0.2 mm)
-	$this->LineWidth=.567/$this->k;
-	//Automatic page break
-	$this->SetAutoPageBreak(true,2*$margin);
-	//Full width display mode
-	$this->SetDisplayMode('fullwidth');
-	//Enable compression
-	$this->SetCompression(true);
-	//Set default PDF version number
-	$this->PDFVersion='1.3';
-}
-
-function SetMargins($left, $top, $right=null)
-{
-	//Set left, top and right margins
-	$this->lMargin=$left;
-	$this->tMargin=$top;
-	if($right===null)
-		$right=$left;
-	$this->rMargin=$right;
-}
-
-function SetLeftMargin($margin)
-{
-	//Set left margin
-	$this->lMargin=$margin;
-	if($this->page>0 && $this->x<$margin)
-		$this->x=$margin;
-}
-
-function SetTopMargin($margin)
-{
-	//Set top margin
-	$this->tMargin=$margin;
-}
-
-function SetRightMargin($margin)
-{
-	//Set right margin
-	$this->rMargin=$margin;
-}
-
-function SetAutoPageBreak($auto, $margin=0)
-{
-	//Set auto page break mode and triggering margin
-	$this->AutoPageBreak=$auto;
-	$this->bMargin=$margin;
-	$this->PageBreakTrigger=$this->h-$margin;
-}
-
-function SetDisplayMode($zoom, $layout='continuous')
-{
-	//Set display mode in viewer
-	if($zoom=='fullpage' || $zoom=='fullwidth' || $zoom=='real' || $zoom=='default' || !is_string($zoom))
-		$this->ZoomMode=$zoom;
-	else
-		$this->Error('Incorrect zoom display mode: '.$zoom);
-	if($layout=='single' || $layout=='continuous' || $layout=='two' || $layout=='default')
-		$this->LayoutMode=$layout;
-	else
-		$this->Error('Incorrect layout display mode: '.$layout);
-}
-
-function SetCompression($compress)
-{
-	//Set page compression
-	if(function_exists('gzcompress'))
-		$this->compress=$compress;
-	else
-		$this->compress=false;
-}
-
-function SetTitle($title, $isUTF8=false)
-{
-	//Title of document
-	if($isUTF8)
-		$title=$this->_UTF8toUTF16($title);
-	$this->title=$title;
-}
-
-function SetSubject($subject, $isUTF8=false)
-{
-	//Subject of document
-	if($isUTF8)
-		$subject=$this->_UTF8toUTF16($subject);
-	$this->subject=$subject;
-}
-
-function SetAuthor($author, $isUTF8=false)
-{
-	//Author of document
-	if($isUTF8)
-		$author=$this->_UTF8toUTF16($author);
-	$this->author=$author;
-}
-
-function SetKeywords($keywords, $isUTF8=false)
-{
-	//Keywords of document
-	if($isUTF8)
-		$keywords=$this->_UTF8toUTF16($keywords);
-	$this->keywords=$keywords;
-}
-
-function SetCreator($creator, $isUTF8=false)
-{
-	//Creator of document
-	if($isUTF8)
-		$creator=$this->_UTF8toUTF16($creator);
-	$this->creator=$creator;
-}
-
-function AliasNbPages($alias='{nb}')
-{
-	//Define an alias for total number of pages
-	$this->AliasNbPages=$alias;
-}
-
-function Error($msg)
-{
-	//Fatal error
-	die('<b>FPDF error:</b> '.$msg);
-}
-
-function Open()
-{
-	//Begin document
-	$this->state=1;
-}
-
-function Close()
-{
-	//Terminate document
-	if($this->state==3)
-		return;
-	if($this->page==0)
-		$this->AddPage();
-	//Page footer
-	$this->InFooter=true;
-	$this->Footer();
-	$this->InFooter=false;
-	//Close page
-	$this->_endpage();
-	//Close document
-	$this->_enddoc();
-}
-
-function AddPage($orientation='', $format='')
-{
-	//Start a new page
-	if($this->state==0)
-		$this->Open();
-	$family=$this->FontFamily;
-	$style=$this->FontStyle.($this->underline ? 'U' : '');
-	$size=$this->FontSizePt;
-	$lw=$this->LineWidth;
-	$dc=$this->DrawColor;
-	$fc=$this->FillColor;
-	$tc=$this->TextColor;
-	$cf=$this->ColorFlag;
-	if($this->page>0)
-	{
-		//Page footer
-		$this->InFooter=true;
-		$this->Footer();
-		$this->InFooter=false;
-		//Close page
-		$this->_endpage();
-	}
-	//Start new page
-	$this->_beginpage($orientation,$format);
-	//Set line cap style to square
-	$this->_out('2 J');
-	//Set line width
-	$this->LineWidth=$lw;
-	$this->_out(sprintf('%.2F w',$lw*$this->k));
-	//Set font
-	if($family)
-		$this->SetFont($family,$style,$size);
-	//Set colors
-	$this->DrawColor=$dc;
-	if($dc!='0 G')
-		$this->_out($dc);
-	$this->FillColor=$fc;
-	if($fc!='0 g')
-		$this->_out($fc);
-	$this->TextColor=$tc;
-	$this->ColorFlag=$cf;
-	//Page header
-	$this->InHeader=true;
-	$this->Header();
-	$this->InHeader=false;
-	//Restore line width
-	if($this->LineWidth!=$lw)
-	{
-		$this->LineWidth=$lw;
-		$this->_out(sprintf('%.2F w',$lw*$this->k));
-	}
-	//Restore font
-	if($family)
-		$this->SetFont($family,$style,$size);
-	//Restore colors
-	if($this->DrawColor!=$dc)
-	{
-		$this->DrawColor=$dc;
-		$this->_out($dc);
-	}
-	if($this->FillColor!=$fc)
-	{
-		$this->FillColor=$fc;
-		$this->_out($fc);
-	}
-	$this->TextColor=$tc;
-	$this->ColorFlag=$cf;
-}
-
-function Header()
-{
-	//To be implemented in your own inherited class
-}
-
-function Footer()
-{
-	//To be implemented in your own inherited class
-}
-
-function PageNo()
-{
-	//Get current page number
-	return $this->page;
-}
-
+class FPDF{var $page;               //current page numbervar $n;                  //current object numbervar $offsets;            //array of object offsetsvar $buffer;             //buffer holding in-memory PDFvar $pages;              //array containing pagesvar $state;              //current document statevar $compress;           //compression flagvar $k;                  //scale factor (number of points in user unit)var $DefOrientation;     //default orientationvar $CurOrientation;     //current orientationvar $PageFormats;        //available page formatsvar $DefPageFormat;      //default page formatvar $CurPageFormat;      //current page formatvar $PageSizes;          //array storing non-default page sizesvar $wPt,$hPt;           //dimensions of current page in pointsvar $w,$h;               //dimensions of current page in user unitvar $lMargin;            //left marginvar $tMargin;            //top marginvar $rMargin;            //right marginvar $bMargin;            //page break marginvar $cMargin;            //cell marginvar $x,$y;               //current position in user unitvar $lasth;              //height of last printed cellvar $LineWidth;          //line width in user unitvar $CoreFonts;          //array of standard font namesvar $fonts;              //array of used fontsvar $FontFiles;          //array of font filesvar $diffs;              //array of encoding differencesvar $FontFamily;         //current font familyvar $FontStyle;          //current font stylevar $underline;          //underlining flagvar $CurrentFont;        //current font infovar $FontSizePt;         //current font size in pointsvar $FontSize;           //current font size in user unitvar $DrawColor;          //commands for drawing colorvar $FillColor;          //commands for filling colorvar $TextColor;          //commands for text colorvar $ColorFlag;          //indicates whether fill and text colors are differentvar $ws;                 //word spacingvar $images;             //array of used imagesvar $PageLinks;          //array of links in pagesvar $links;              //array of internal linksvar $AutoPageBreak;      //automatic page breakingvar $PageBreakTrigger;   //threshold used to trigger page breaksvar $InHeader;           //flag set when processing headervar $InFooter;           //flag set when processing footervar $ZoomMode;           //zoom display modevar $LayoutMode;         //layout display modevar $title;              //titlevar $subject;            //subjectvar $author;             //authorvar $keywords;           //keywordsvar $creator;            //creatorvar $AliasNbPages;       //alias for total number of pagesvar $PDFVersion;         //PDF version number
+/********************************************************************************                                                                              **                               Public methods                                 **                                                                              ********************************************************************************/
+function FPDF($orientation='P', $unit='mm', $format='A4'){	//Some checks	$this->_dochecks();	//Initialization of properties	$this->page=0;	$this->n=2;	$this->buffer='';	$this->pages=array();	$this->PageSizes=array();	$this->state=0;	$this->fonts=array();	$this->FontFiles=array();	$this->diffs=array();	$this->images=array();	$this->links=array();	$this->InHeader=false;	$this->InFooter=false;	$this->lasth=0;	$this->FontFamily='';	$this->FontStyle='';	$this->FontSizePt=12;	$this->underline=false;	$this->DrawColor='0 G';	$this->FillColor='0 g';	$this->TextColor='0 g';	$this->ColorFlag=false;	$this->ws=0;	//Standard fonts	$this->CoreFonts=array('courier'=>'Courier', 'courierB'=>'Courier-Bold', 'courierI'=>'Courier-Oblique', 'courierBI'=>'Courier-BoldOblique',		'helvetica'=>'Helvetica', 'helveticaB'=>'Helvetica-Bold', 'helveticaI'=>'Helvetica-Oblique', 'helveticaBI'=>'Helvetica-BoldOblique',		'times'=>'Times-Roman', 'timesB'=>'Times-Bold', 'timesI'=>'Times-Italic', 'timesBI'=>'Times-BoldItalic',		'symbol'=>'Symbol', 'zapfdingbats'=>'ZapfDingbats');	//Scale factor	if($unit=='pt')		$this->k=1;	elseif($unit=='mm')		$this->k=72/25.4;	elseif($unit=='cm')		$this->k=72/2.54;	elseif($unit=='in')		$this->k=72;	else		$this->Error('Incorrect unit: '.$unit);	//Page format	$this->PageFormats=array('a3'=>array(841.89,1190.55), 'a4'=>array(595.28,841.89), 'a5'=>array(420.94,595.28),		'letter'=>array(612,792), 'legal'=>array(612,1008));	if(is_string($format))		$format=$this->_getpageformat($format);	$this->DefPageFormat=$format;	$this->CurPageFormat=$format;	//Page orientation	$orientation=strtolower($orientation);	if($orientation=='p' || $orientation=='portrait')	{		$this->DefOrientation='P';		$this->w=$this->DefPageFormat[0];		$this->h=$this->DefPageFormat[1];	}	elseif($orientation=='l' || $orientation=='landscape')	{		$this->DefOrientation='L';		$this->w=$this->DefPageFormat[1];		$this->h=$this->DefPageFormat[0];	}	else		$this->Error('Incorrect orientation: '.$orientation);	$this->CurOrientation=$this->DefOrientation;	$this->wPt=$this->w*$this->k;	$this->hPt=$this->h*$this->k;	//Page margins (1 cm)	$margin=28.35/$this->k;	$this->SetMargins($margin,$margin);	//Interior cell margin (1 mm)	$this->cMargin=$margin/10;	//Line width (0.2 mm)	$this->LineWidth=.567/$this->k;	//Automatic page break	$this->SetAutoPageBreak(true,2*$margin);	//Full width display mode	$this->SetDisplayMode('fullwidth');	//Enable compression	$this->SetCompression(true);	//Set default PDF version number	$this->PDFVersion='1.3';}function SetMargins($left, $top, $right=null){	//Set left, top and right margins	$this->lMargin=$left;	$this->tMargin=$top;	if($right===null)		$right=$left;	$this->rMargin=$right;}function SetLeftMargin($margin){	//Set left margin	$this->lMargin=$margin;	if($this->page>0 && $this->x<$margin)		$this->x=$margin;}function SetTopMargin($margin){	//Set top margin	$this->tMargin=$margin;}function SetRightMargin($margin){	//Set right margin	$this->rMargin=$margin;}function SetAutoPageBreak($auto, $margin=0){	//Set auto page break mode and triggering margin	$this->AutoPageBreak=$auto;	$this->bMargin=$margin;	$this->PageBreakTrigger=$this->h-$margin;}function SetDisplayMode($zoom, $layout='continuous'){	//Set display mode in viewer	if($zoom=='fullpage' || $zoom=='fullwidth' || $zoom=='real' || $zoom=='default' || !is_string($zoom))		$this->ZoomMode=$zoom;	else		$this->Error('Incorrect zoom display mode: '.$zoom);	if($layout=='single' || $layout=='continuous' || $layout=='two' || $layout=='default')		$this->LayoutMode=$layout;	else		$this->Error('Incorrect layout display mode: '.$layout);}function SetCompression($compress){	//Set page compression	if(function_exists('gzcompress'))		$this->compress=$compress;	else		$this->compress=false;}function SetTitle($title, $isUTF8=false){	//Title of document	if($isUTF8)		$title=$this->_UTF8toUTF16($title);	$this->title=$title;}function SetSubject($subject, $isUTF8=false){	//Subject of document	if($isUTF8)		$subject=$this->_UTF8toUTF16($subject);	$this->subject=$subject;}function SetAuthor($author, $isUTF8=false){	//Author of document	if($isUTF8)		$author=$this->_UTF8toUTF16($author);	$this->author=$author;}function SetKeywords($keywords, $isUTF8=false){	//Keywords of document	if($isUTF8)		$keywords=$this->_UTF8toUTF16($keywords);	$this->keywords=$keywords;}function SetCreator($creator, $isUTF8=false){	//Creator of document	if($isUTF8)		$creator=$this->_UTF8toUTF16($creator);	$this->creator=$creator;}function AliasNbPages($alias='{nb}'){	//Define an alias for total number of pages	$this->AliasNbPages=$alias;}function Error($msg){	//Fatal error	die('<b>FPDF error:</b> '.$msg);}function Open(){	//Begin document	$this->state=1;}function Close(){	//Terminate document	if($this->state==3)		return;	if($this->page==0)		$this->AddPage();	//Page footer	$this->InFooter=true;	$this->Footer();	$this->InFooter=false;	//Close page	$this->_endpage();	//Close document	$this->_enddoc();}function AddPage($orientation='', $format=''){	//Start a new page	if($this->state==0)		$this->Open();	$family=$this->FontFamily;	$style=$this->FontStyle.($this->underline ? 'U' : '');	$size=$this->FontSizePt;	$lw=$this->LineWidth;	$dc=$this->DrawColor;	$fc=$this->FillColor;	$tc=$this->TextColor;	$cf=$this->ColorFlag;	if($this->page>0)	{		//Page footer		$this->InFooter=true;		$this->Footer();		$this->InFooter=false;		//Close page		$this->_endpage();	}	//Start new page	$this->_beginpage($orientation,$format);	//Set line cap style to square	$this->_out('2 J');	//Set line width	$this->LineWidth=$lw;	$this->_out(sprintf('%.2F w',$lw*$this->k));	//Set font	if($family)		$this->SetFont($family,$style,$size);	//Set colors	$this->DrawColor=$dc;	if($dc!='0 G')		$this->_out($dc);	$this->FillColor=$fc;	if($fc!='0 g')		$this->_out($fc);	$this->TextColor=$tc;	$this->ColorFlag=$cf;	//Page header	$this->InHeader=true;	$this->Header();	$this->InHeader=false;	//Restore line width	if($this->LineWidth!=$lw)	{		$this->LineWidth=$lw;		$this->_out(sprintf('%.2F w',$lw*$this->k));	}	//Restore font	if($family)		$this->SetFont($family,$style,$size);	//Restore colors	if($this->DrawColor!=$dc)	{		$this->DrawColor=$dc;		$this->_out($dc);	}	if($this->FillColor!=$fc)	{		$this->FillColor=$fc;		$this->_out($fc);	}	$this->TextColor=$tc;	$this->ColorFlag=$cf;}function Header(){	//To be implemented in your own inherited class}
+function Footer(){	//To be implemented in your own inherited class}
+function PageNo(){	//Get current page number	return $this->page;}
 function SetDrawColor($r, $g=null, $b=null)
 {
 	//Set color for all stroking operations
@@ -1652,81 +1278,7 @@ function _putinfo()
 		$this->_out('/Creator '.$this->_textstring($this->creator));
 	$this->_out('/CreationDate '.$this->_textstring('D:'.@date('YmdHis')));
 }
-
-function _putcatalog()
-{
-	$this->_out('/Type /Catalog');
-	$this->_out('/Pages 1 0 R');
-	if($this->ZoomMode=='fullpage')
-		$this->_out('/OpenAction [3 0 R /Fit]');
-	elseif($this->ZoomMode=='fullwidth')
-		$this->_out('/OpenAction [3 0 R /FitH null]');
-	elseif($this->ZoomMode=='real')
-		$this->_out('/OpenAction [3 0 R /XYZ null null 1]');
-	elseif(!is_string($this->ZoomMode))
-		$this->_out('/OpenAction [3 0 R /XYZ null null '.($this->ZoomMode/100).']');
-	if($this->LayoutMode=='single')
-		$this->_out('/PageLayout /SinglePage');
-	elseif($this->LayoutMode=='continuous')
-		$this->_out('/PageLayout /OneColumn');
-	elseif($this->LayoutMode=='two')
-		$this->_out('/PageLayout /TwoColumnLeft');
-}
-
-function _putheader()
-{
-	$this->_out('%PDF-'.$this->PDFVersion);
-}
-
-function _puttrailer()
-{
-	$this->_out('/Size '.($this->n+1));
-	$this->_out('/Root '.$this->n.' 0 R');
-	$this->_out('/Info '.($this->n-1).' 0 R');
-}
-
-function _enddoc()
-{
-	$this->_putheader();
-	$this->_putpages();
-	$this->_putresources();
-	//Info
-	$this->_newobj();
-	$this->_out('<<');
-	$this->_putinfo();
-	$this->_out('>>');
-	$this->_out('endobj');
-	//Catalog
-	$this->_newobj();
-	$this->_out('<<');
-	$this->_putcatalog();
-	$this->_out('>>');
-	$this->_out('endobj');
-	//Cross-ref
-	$o=strlen($this->buffer);
-	$this->_out('xref');
-	$this->_out('0 '.($this->n+1));
-	$this->_out('0000000000 65535 f ');
-	for($i=1;$i<=$this->n;$i++)
-		$this->_out(sprintf('%010d 00000 n ',$this->offsets[$i]));
-	//Trailer
-	$this->_out('trailer');
-	$this->_out('<<');
-	$this->_puttrailer();
-	$this->_out('>>');
-	$this->_out('startxref');
-	$this->_out($o);
-	$this->_out('%%EOF');
-	$this->state=3;
-}
-//End of class
-}
-
-//Handle special IE contype request
-if(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT']=='contype')
-{
-	header('Content-Type: application/pdf');
-	exit;
-}
-
-?>
+function _putcatalog(){	$this->_out('/Type /Catalog');	$this->_out('/Pages 1 0 R');	if($this->ZoomMode=='fullpage')		$this->_out('/OpenAction [3 0 R /Fit]');	elseif($this->ZoomMode=='fullwidth')		$this->_out('/OpenAction [3 0 R /FitH null]');	elseif($this->ZoomMode=='real')		$this->_out('/OpenAction [3 0 R /XYZ null null 1]');	elseif(!is_string($this->ZoomMode))		$this->_out('/OpenAction [3 0 R /XYZ null null '.($this->ZoomMode/100).']');	if($this->LayoutMode=='single')		$this->_out('/PageLayout /SinglePage');	elseif($this->LayoutMode=='continuous')		$this->_out('/PageLayout /OneColumn');	elseif($this->LayoutMode=='two')		$this->_out('/PageLayout /TwoColumnLeft');}function _putheader(){	$this->_out('%PDF-'.$this->PDFVersion);}function _puttrailer(){	$this->_out('/Size '.($this->n+1));	$this->_out('/Root '.$this->n.' 0 R');	$this->_out('/Info '.($this->n-1).' 0 R');}
+function _enddoc(){	$this->_putheader();	$this->_putpages();	$this->_putresources();	//Info	$this->_newobj();	$this->_out('<<');	$this->_putinfo();	$this->_out('>>');	$this->_out('endobj');	//Catalog	$this->_newobj();	$this->_out('<<');	$this->_putcatalog();	$this->_out('>>');	$this->_out('endobj');	//Cross-ref	$o=strlen($this->buffer);	$this->_out('xref');	$this->_out('0 '.($this->n+1));	$this->_out('0000000000 65535 f ');	for($i=1;$i<=$this->n;$i++)		$this->_out(sprintf('%010d 00000 n ',$this->offsets[$i]));	//Trailer	$this->_out('trailer');	$this->_out('<<');	$this->_puttrailer();	$this->_out('>>');	$this->_out('startxref');	$this->_out($o);	$this->_out('%%EOF');	$this->state=3;}//End of class}
+//Handle special IE contype requestif(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT']=='contype')
+{	header('Content-Type: application/pdf');	exit;}?>
