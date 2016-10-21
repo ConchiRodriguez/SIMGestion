@@ -12,7 +12,7 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") {
 				echo mensaje_error($PassIncorrecto);
 			} else {
-				if ($_POST["id_contrato"] == '') {
+				if ($_POST["id_contrato"] == 0) {
 					echo mensaje_error($SinContrato);
 				} else {
 					$cadena = encrypt($_POST["pass1"],$simclau);
