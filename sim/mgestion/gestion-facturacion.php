@@ -993,6 +993,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$num++;
 				}
 			}
+			refactura($_GET["id"]);
 		}
 		if ($ssoption == 9) {
 			$sql = "select id,fecha_prevision from sgm_cuerpo where idfactura=".$_GET["id"]." order by id";

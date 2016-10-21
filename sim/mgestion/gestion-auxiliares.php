@@ -24,6 +24,8 @@ if (($option == 1023) AND ($autorizado == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=180\" class=".$class.">".$Medio." ".$Comunicacion."</a></td>";
 				if (($soption >= 190) and($soption < 200)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=190\" class=".$class.">".$Formato." ".$Documentos."</a></td>";
+				if (($soption >= 200) and($soption < 210)) {$class = "menu_select";} else {$class = "menu";}
+				echo "<td class=".$class."><a href=\"index.php?op=1023&sop=200\" class=".$class.">".$Modulos."</a></td>";
 				echo "</tr>";
 			echo "</table>";
 		echo "</td></tr>";
@@ -622,7 +624,179 @@ if (($option == 1023) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
+	if ($soption == 200){
+		if ($ssoption == 1) {
+			$camposInsert = "id_modulo,nombre_es,nombre_cat,descripcion,id_grupo,visible";
+			$datosInsert = array($_POST["id_modulo"],$_POST["nombre_es"],$_POST["nombre_cat"],$_POST["descripcion"],$_POST["id_grupo"],$_POST["visible"]);
+			insertFunction ("sgm_users_permisos_modulos",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('id_modulo','nombre_es','nombre_cat','descripcion','id_grupo','visible');
+			$datosUpdate=array($_POST["id_modulo"],$_POST["nombre_es"],$_POST["nombre_cat"],$_POST["descripcion"],$_POST["id_grupo"],$_POST["visible"]);
+			updateFunction("sgm_users_permisos_modulos",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposInsert = "nombre_es,nombre_cat";
+			$datosInsert = array($_POST["nombre_es"],$_POST["nombre_cat"]);
+			insertFunction ("sgm_users_permisos_modulos_grupos",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 4) {
+			$camposUpdate=array('nombre_es','nombre_cat');
+			$datosUpdate=array($_POST["nombre_es"],$_POST["nombre_cat"]);
+			updateFunction("sgm_users_permisos_modulos_grupos",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 5) {
+			$sqlg = "select count(*) as total from sgm_users_permisos_modulos where visible=1 and id_grupo=".$_GET["id"];
+			$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+			$rowg = mysqli_fetch_array($resultg);
+			if ($rowg["total"] > 0){
+				mensageError($errorEliminarGrupo);
+			} else {
+				$camposUpdate=array('visible');
+				$datosUpdate=array(0);
+				updateFunction("sgm_users_permisos_modulos_grupos",$_GET["id"],$camposUpdate,$datosUpdate);
+			}
+		}
+
+		echo "<h4>".$Modulos."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"display:inline;margin-left:30px;margin-right:30px;\">";
+			echo "<tr>";
+				echo "<th></th>";
+				echo "<th style=\"background-color:Silver;text-align:center;\" colspan=\"2\">".$Grupos." ".$Modulos."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Castellano."</th>";
+				echo "<th>".$Catalan."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<th></th>";
+				echo "<form action=\"index.php?op=1023&sop=200&ssop=3\" method=\"post\">";
+				echo "<td><input type=\"Text\" name=\"nombre_es\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"Text\" name=\"nombre_cat\" style=\"width:200px\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select id,nombre_es,nombre_cat from sgm_users_permisos_modulos_grupos where visible=1 order by nombre_".$idioma;
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<form action=\"index.php?op=1023&sop=200&ssop=4&id=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1023&sop=201&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<td><input type=\"Text\" name=\"nombre_es\" style=\"width:200px\" value=\"".$row["nombre_es"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"nombre_cat\" style=\"width:200px\" value=\"".$row["nombre_cat"]."\"></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"display:inline;margin-right:30px;\">";
+			echo "<tr>";
+				echo "<th></th>";
+				echo "<th style=\"background-color:Silver;text-align:center;\" colspan=\"2\">".$Modulo."</th>";
+				echo "<th></th>";
+				echo "<th></th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr style=\"background-color: Silver;\">";
+				echo "<th>Id</th>";
+				echo "<th>".$Castellano."</th>";
+				echo "<th>".$Catalan."</th>";
+				echo "<th>".$Descripcion."</th>";
+				echo "<th>".$Grupo."</th>";
+				echo "<th>".$Activo."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<form action=\"index.php?op=1023&sop=200&ssop=1\" method=\"post\">";
+				echo "<td><input type=\"Text\" name=\"id_modulo\" style=\"width:50px\"></td>";
+				echo "<td><input type=\"Text\" name=\"nombre_es\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"Text\" name=\"nombre_cat\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:400px\"></td>";
+				echo "<td><select style=\"width:200px\" name=\"id_grupo\">";
+					echo "<option value=\"0\">-</option>";
+					$sqlg = "select id,nombre_es,nombre_cat from sgm_users_permisos_modulos_grupos where visible=1 order by nombre_".$idioma;
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					while ($rowg = mysqli_fetch_array($resultg)) {
+						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre_".$idioma]."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><select style=\"width:70px\" name=\"visible\">";
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				echo "</select></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sql = "select * from sgm_users_permisos_modulos order by id_modulo";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<form action=\"index.php?op=1023&sop=200&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"Text\" name=\"id_modulo\" style=\"width:50px\" value=\"".$row["id_modulo"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"nombre_es\" style=\"width:200px\" value=\"".$row["nombre_es"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"nombre_cat\" style=\"width:200px\" value=\"".$row["nombre_cat"]."\"></td>";
+					echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:400px\" value=\"".$row["descripcion"]."\"></td>";
+					if ($row["id_modulo"] >= 2000) { $disable = "disabled"; }
+					echo "<td><select style=\"width:200px\" name=\"id_grupo\" ".$disable.">";
+						echo "<option value=\"0\">-</option>";
+						$sqls = "select id,nombre_".$idioma." from sgm_users_permisos_modulos_grupos where visible=1 order by nombre_".$idioma;
+						$results = mysqli_query($dbhandle,convertSQL($sqls));
+						while ($rows = mysqli_fetch_array($results)) {
+							if ($rows["id"] == $row["id_grupo"]){
+								echo "<option value=\"".$rows["id"]."\" selected>".$rows["nombre_".$idioma]."</option>";
+							} else {
+								echo "<option value=\"".$rows["id"]."\">".$rows["nombre_".$idioma]."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"visible\">";
+						if ($row["visible"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+	if ($soption == 201) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1023&sop=200&ssop=5&id=".$_GET["id"],"op=1023&sop=200"),array($Si,$No));
+		echo "</center>";
+	}
+
+#	if ($soption == 10000){
+#		$sql = "select * from sgm_users_permisos_modulos order by id_modulo";
+#		$result = mysqli_query($dbhandle,convertSQL($sql));
+#		while ($row = mysqli_fetch_array($result)) {
+#			$camposUpdate=array('nombre_es');
+#			$datosUpdate=array($row["nombre"]);
+#			updateFunction("sgm_users_permisos_modulos",$row["id"],$camposUpdate,$datosUpdate);
+#		}
+#		$sql = "select * from sgm_users_permisos_modulos_grupos order by id";
+#		$result = mysqli_query($dbhandle,convertSQL($sql));
+#		while ($row = mysqli_fetch_array($result)) {
+#			$camposUpdate=array('nombre_es');
+#			$datosUpdate=array($row["nombre"]);
+#			updateFunction("sgm_users_permisos_modulos_grupos",$row["id"],$camposUpdate,$datosUpdate);
+#		}
+#	}
+
 	echo "</td></tr></table><br>";
 }
+
+
 
 ?>

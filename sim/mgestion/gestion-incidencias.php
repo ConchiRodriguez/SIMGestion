@@ -73,8 +73,14 @@ if (($option == 1018) AND ($autorizado == true)) {
 			$sql = $sql."visible=0";
 			$sql = $sql." WHERE id_incidencia=".$_GET["id"]."";
 			mysqli_query($dbhandle,convertSQL($sql));
-			$eliminada = 1;
-			$tipo = 8;
+
+			$sqli2 = "select * from sgm_incidencias where id=".$_GET["id"];
+			$resulti2 = mysqli_query($dbhandle,convertSQL($sqli2));
+			$rowi2 = mysqli_fetch_array($resulti2);
+			if ($rowi2["visible_cliente"] == 1){
+				$eliminada = 1;
+				$tipo = 8;
+			}
 		}
 		if (($relacionada==1) or ($eliminada==1)){
 			$sqlinci = "select id,id_servicio,id_usuario_registro,id_usuario_origen from sgm_incidencias where id=".$_GET["id"];
@@ -655,8 +661,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 					$fecha_registro_inicio = time();
 					$fecha_inicio = date(U, strtotime($_POST["fecha_inicio"]));
 					$fecha_prevision = fecha_prevision($servicio, $fecha_inicio);
-					$camposInsert = "id_usuario_registro,id_usuario_destino,id_usuario_origen,id_servicio,fecha_registro_inicio,fecha_inicio,fecha_prevision,id_estado,id_entrada,notas_registro,asunto,id_cliente,pausada";
-					$datosInsert = array($userid,$_POST["id_usuario_destino"],$_POST["id_usuario_origen"],$servicio,$fecha_registro_inicio,$fecha_inicio,$fecha_prevision,"-1",$_POST["id_entrada"],$_POST["notas_registro"],$_POST["asunto"],$id_cliente,$_POST["pausada"]);
+					$camposInsert = "id_usuario_registro,id_usuario_destino,id_usuario_origen,id_servicio,fecha_registro_inicio,fecha_inicio,fecha_prevision,id_estado,id_entrada,notas_registro,asunto,id_cliente,pausada,visible_cliente";
+					$datosInsert = array($userid,$_POST["id_usuario_destino"],$_POST["id_usuario_origen"],$servicio,$fecha_registro_inicio,$fecha_inicio,$fecha_prevision,"-1",$_POST["id_entrada"],$_POST["notas_registro"],$_POST["asunto"],$id_cliente,$_POST["pausada"],$_POST["visible_cliente"]);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					$sql = "select id,id_servicio,id_usuario_registro,id_usuario_origen from sgm_incidencias where fecha_prevision=".$fecha_prevision." and id_incidencia=0 order by id desc";
@@ -738,24 +744,29 @@ if (($option == 1018) AND ($autorizado == true)) {
 
 					$notas_registro = str_replace("/","/ ",$_POST["notas_registro"]);
 					
-					$camposUpdate = array("id_usuario_origen","id_usuario_destino","fecha_inicio","id_entrada","notas_registro","id_servicio","asunto","fecha_prevision","duracion","id_cliente");
-					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$notas_registro,$servicio,$_POST["asunto"],$prevision,$duracion,$id_cliente);
+					$camposUpdate = array("id_usuario_origen","id_usuario_destino","fecha_inicio","id_entrada","notas_registro","id_servicio","asunto","fecha_prevision","duracion","id_cliente","visible_cliente");
+					$datosUpdate = array($_POST["id_usuario_origen"],$_POST["id_usuario_destino"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["id_entrada"],$notas_registro,$servicio,$_POST["asunto"],$prevision,$duracion,$id_cliente,$_POST["visible_cliente"]);
 					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
 
-					if ($_POST["id_usuario_destino"] != $rowi["id_usuario_destino"]){
-						$editada = 2;
-						$id_incidencia_noti = $_GET["id"];
-						$tipo = 4;
-					}
-					if ($notas_registro != $rowi["notas_registro"]){
-						$editada = 3;
-						$id_incidencia_noti = $_GET["id"];
-						$tipo = 4;
-					}
-					if (($_POST["id_usuario_destino"] != $rowi["id_usuario_destino"]) and ($notas_registro != $rowi["notas_registro"])) {
-						$editada = 4;
-						$id_incidencia_noti = $_GET["id"];
-						$tipo = 4;
+					$sqli2 = "select * from sgm_incidencias where id=".$_GET["id"];
+					$resulti2 = mysqli_query($dbhandle,convertSQL($sqli2));
+					$rowi2 = mysqli_fetch_array($resulti2);
+					if (($rowi2["visible_cliente"] == 1)){
+						if ($_POST["id_usuario_destino"] != $rowi["id_usuario_destino"]){
+							$editada = 2;
+							$id_incidencia_noti = $_GET["id"];
+							$tipo = 4;
+						}
+						if ($notas_registro != $rowi["notas_registro"]){
+							$editada = 3;
+							$id_incidencia_noti = $_GET["id"];
+							$tipo = 4;
+						}
+						if (($_POST["id_usuario_destino"] != $rowi["id_usuario_destino"]) and ($notas_registro != $rowi["notas_registro"])) {
+							$editada = 4;
+							$id_incidencia_noti = $_GET["id"];
+							$tipo = 4;
+						}
 					}
 
 					$sqlc = "select temps_resposta,id from sgm_contratos_servicio where id in (select id_servicio from sgm_incidencias where id=".$_GET["id"].")";
@@ -789,7 +800,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$sqlxx = "select * from sgm_incidencias where id=".$_GET["id"]." and id_estado='-1'";
 				$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
 				$rowxx = mysqli_fetch_array($resultxx);
-				if ($rowxx){
+
+				$sqli2 = "select * from sgm_incidencias where id=".$_GET["id"];
+				$resulti2 = mysqli_query($dbhandle,convertSQL($sqli2));
+				$rowi2 = mysqli_fetch_array($resulti2);
+				if (($rowxx) and ($rowi2["visible_cliente"] == 1)){
 					$cerrada = 2;
 					$id_incidencia_noti = $_GET["id"];
 					$tipo = 6;
@@ -819,7 +834,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 					$sqlxx = "select * from sgm_incidencias where id=".$_GET["id"]." and id_estado='-2'";
 					$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
 					$rowxx = mysqli_fetch_array($resultxx);
-					if ($rowxx){
+
+					$sqli2 = "select * from sgm_incidencias where id=".$_GET["id"];
+					$resulti2 = mysqli_query($dbhandle,convertSQL($sqli2));
+					$rowi2 = mysqli_fetch_array($resulti2);
+					if (($rowxx) and ($rowi2["visible_cliente"] == 1)){
 						$cerrada = 1;
 						$id_incidencia_noti = $_GET["id"];
 						$tipo = 5;
@@ -849,21 +868,26 @@ if (($option == 1018) AND ($autorizado == true)) {
 			} elseif (($_POST["id_cliente"] == 0) and ($_POST["id_servicio"] == 0)) {
 				mensageError($ErrorSinTextoDuracion);
 			}
-			if ($rowi["id_usuario_destino"] == 0){
-				$camposUpdate = array("id_usuario_destino");
-				$datosUpdate = array($userid);
-				updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
-				$editada = 2;
-				$id_incidencia_noti = $_GET["id"];
-				$tipo = 4;
-			}
 
-			if (($rowi["id_usuario_destino"] == 0) and ($_POST["notas_desarrollo"] != "")) {
-				$editada = 4;
-				$id_incidencia_noti = $rowii["id"];
-				$tipo = 4;
-			}
+			$sqli2 = "select * from sgm_incidencias where id=".$_GET["id"];
+			$resulti2 = mysqli_query($dbhandle,convertSQL($sqli2));
+			$rowi2 = mysqli_fetch_array($resulti2);
+			if ($rowi2["visible_cliente"] == 1){
+				if ($rowi["id_usuario_destino"] == 0){
+					$camposUpdate = array("id_usuario_destino");
+					$datosUpdate = array($userid);
+					updateFunction ("sgm_incidencias",$_GET["id"],$camposUpdate,$datosUpdate);
+					$editada = 2;
+					$id_incidencia_noti = $_GET["id"];
+					$tipo = 4;
+				}
 
+				if (($rowi["id_usuario_destino"] == 0) and ($_POST["notas_desarrollo"] != "")) {
+					$editada = 4;
+					$id_incidencia_noti = $rowii["id"];
+					$tipo = 4;
+				}
+			}
 			calculPausaIncidencia($_GET["id"]);
 
 			$sla_inc = calculSLA($_GET["id"],0);
@@ -1233,21 +1257,25 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<th style=\"text-align:left;vertical-align:top;\">".$Usuario." ".$Origen." :</th>";
 							echo "<td colspan=\"9\"><select name=\"id_usuario_origen\" id=\"id_usuario_origen\" style=\"width:100%\">";
-								if (($_POST["id_cliente"] == "") and ($row["id_cliente"] == "") and ($_GET["id_cli"] == "")){
+								if (($_POST["id_cliente"] == "") and ($row["id_cliente"] == "") and ($_GET["id_cli"] == "") and ($rowcli["id"] == "")){
 									echo "<option value=\"0\">-</option>";
 								}
-								if ($_POST["id_cliente"] != ""){
+								if ($_POST["id_cliente"] > 0){
 									$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$_POST["id_cliente"].") order by usuario";
-								} elseif ($row["id_cliente"] != ""){
+								} elseif ($row["id_cliente"] > 0){
 									$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$row["id_cliente"].") order by usuario";
-								} elseif ($_GET["id_cli"] != ""){
+								} elseif ($_GET["id_cli"] > 0){
 									$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$_GET["id_cliente"].") order by usuario";
+								} else {
+									$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and id in (select id_user from sgm_users_clients where id_client=".$rowcli["id"].") order by usuario";
 								}
 								$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 								while ($rowu = mysqli_fetch_array($resultu)) {
 									if ($rowu["id"] == $_POST["id_usuario_origen"]){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["usuario"]."</option>";
 									} elseif (($_POST["id_usuario_origen"] == "") and ($rowu["id"] == $row["id_usuario_origen"])){
+										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["usuario"]."</option>";
+									} elseif ($rowu["id"] == $userid){
 										echo "<option value=\"".$rowu["id"]."\" selected>".$rowu["usuario"]."</option>";
 									} else {
 										echo "<option value=\"".$rowu["id"]."\">".$rowu["usuario"]."</option>";
@@ -1280,6 +1308,20 @@ if (($option == 1018) AND ($autorizado == true)) {
 								echo "<td><select name=\"finalizar\" style=\"width:50px\">";
 									echo "<option value=\"0\" selected>".$No."</option>";
 									echo "<option value=\"1\">".$Si."</option>";
+								echo "</select></td>";
+							echo "</tr>";
+						}
+						if ($id_inc != ""){
+							echo "<tr>";
+								echo "<th style=\"text-align:left;vertical-align:top;\">".$Visible." ".$Cliente." :</th>";
+								echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
+								if ($row["visible_cliente"] == 0){
+									echo "<option value=\"0\" selected>".$No."</option>";
+									echo "<option value=\"1\">".$Si."</option>";
+								} else {
+									echo "<option value=\"0\">".$No."</option>";
+									echo "<option value=\"1\" selected>".$Si."</option>";
+								}
 								echo "</select></td>";
 							echo "</tr>";
 						}

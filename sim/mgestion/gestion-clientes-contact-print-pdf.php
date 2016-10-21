@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
 	$idioma = strtolower("es");
-	include ("/lenguajes/factura-print-".$idioma.".php");
+	include ("../../archivos_comunes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
@@ -48,7 +48,24 @@ error_reporting(E_ALL);
 	$pdf->SetFont('times','',10);
 	$pdf->Cell(40,10,"Datos Generales",0,1);
 	$pdf->SetFont('times','',8);
-	$pdf->Cell(0,5,"".$row["direccion"]." ".$row["telefono"]." ".$row["telefono2"]."",0,1);
+	if( $row["id_carrer"] == 0 ){
+		$direccion = $row["cvia"]." ".$row["direccion"];
+	} else {
+		$sqlt = "select * from sgm_clients_carrer_tipo where id=".$row["id_tipo_carrer"];
+		$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+		$rowt = mysqli_fetch_array($resultt);
+		$sqlc = "select * from sgm_clients_carrer where id=".$row["id_carrer"];
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
+		$sqlz = "select * from sgm_clients_sector_zf where id=".$row["id_sector_zf"];
+		$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
+		$rowz = mysqli_fetch_array($resultz);
+		$direccion = $rowt["nombre"]." ".$rowc["nombre"]."";
+		if ($row["numero"] > 0){ $direccion .= " num.";}
+		$direccion .= " ".$row["numero"]." ".$rowz["nombre"]."";
+	}
+
+	$pdf->Cell(0,5,"".$direccion." ".$row["telefono"]." ".$row["telefono2"]."",0,1);
 	$pdf->Cell(0,5,"".$row["poblacion"]." ".$row["cp"]." ".$row["fax1"]." ".$row["fax2"]."",0,1);
 	$pdf->Cell(0,5,"".$row["provincia"]." ".$row["mail"]."",0,1);
 	if ($row["id_agrupacio"] > 0){
@@ -71,12 +88,28 @@ error_reporting(E_ALL);
 	$sqlc = "select * from sgm_clients where visible=1 order by nombre";
 	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 	while ($rowc = mysqli_fetch_array($resultc)) {
+		if( $rowc["id_carrer"] < 0 ){
+			$direccion1 = $rowc["cvia"]." ".$rowc["direccion"];
+		} else {
+			$sqlt = "select * from sgm_clients_carrer_tipo where id=".$rowc["id_tipo_carrer"];
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
+			$sqlca = "select * from sgm_clients_carrer where id=".$rowc["id_carrer"];
+			$resultca = mysqli_query($dbhandle,convertSQL($sqlca));
+			$rowca = mysqli_fetch_array($resultca);
+			$sqlz = "select * from sgm_clients_sector_zf where id=".$rowc["id_sector_zf"];
+			$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
+			$rowz = mysqli_fetch_array($resultz);
+			$direccion1 = $rowt["nombre"]." ".$rowca["nombre"]."";
+			if ($row["numero"] > 0){ $direccion1 .= " num.";}
+			$direccion1 .= " ".$rowc["numero"]." ".$rowz["nombre"]."";
+		}
 		if ($row["id_agrupacio"] > 0) {
 			if (($rowc["id_agrupacio"] == $row["id_agrupacio"]) and ($rowc["id"] != $row["id"])) {
 				$pdf->SetFont('times','',8);
 				$pdf->Cell(0,5,"".$rowc["nombre"]."",0,1);
 				$pdf->Cell(0,5,"".$rowc["nif"]."",0,1);
-				$pdf->Cell(40,5,"".$rowc["direccion"]."");
+				$pdf->Cell(40,5,"".$direccion1."");
 				if ($rowc["cp"] != "") {
 					$pdf->Cell(0,5," (".$rowc["cp"].") ",0,1);
 				} else {
@@ -144,12 +177,28 @@ error_reporting(E_ALL);
 	$sqlc = "select * from sgm_clients where visible=1 order by nombre";
 	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 	while ($rowc = mysqli_fetch_array($resultc)) {
+		if( $rowc["id_carrer"] < 0 ){
+			$direccion2 = $rowc["cvia"]." ".$rowc["direccion"];
+		} else {
+			$sqlt = "select * from sgm_clients_carrer_tipo where id=".$rowc["id_tipo_carrer"];
+			$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+			$rowt = mysqli_fetch_array($resultt);
+			$sqlca = "select * from sgm_clients_carrer where id=".$rowc["id_carrer"];
+			$resultca = mysqli_query($dbhandle,convertSQL($sqlca));
+			$rowca = mysqli_fetch_array($resultca);
+			$sqlz = "select * from sgm_clients_sector_zf where id=".$rowc["id_sector_zf"];
+			$resultz = mysqli_query($dbhandle,convertSQL($sqlz));
+			$rowz = mysqli_fetch_array($resultz);
+			$direccion2 = $rowt["nombre"]." ".$rowca["nombre"]."";
+			if ($row["numero"] > 0){ $direccion2 .= " num.";}
+			$direccion2 .= " ".$rowc["numero"]." ".$rowz["nombre"]."";
+		}
 		if ($row["id_origen"] > 0) {
 			if (($rowc["id_origen"] == $row["id_origen"]) and ($rowc["id"] != $row["id"])) {
 				$pdf->SetFont('times','',8);
 				$pdf->Cell(0,5,"".$rowc["nombre"]."",0,1);
 				$pdf->Cell(0,5,"".$rowc["nif"]."",0,1);
-				$pdf->Cell(40,5,"".$rowc["direccion"]."");
+				$pdf->Cell(40,5,"".$direccion2."");
 				if ($rowc["cp"] != "") {
 					$pdf->Cell(0,5," (".$rowc["cp"].") ",0,1);
 				} else {

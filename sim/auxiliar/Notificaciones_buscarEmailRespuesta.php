@@ -7,7 +7,7 @@ function buscarEmailRespuesta($asun,$id_cli){
 	$x = 0;
 	$id_inc = 0;
 
-	//buscar en el mismo asunto en alguna incidencia abierta
+	//buscar el mismo asunto en alguna incidencia abierta
 	$sqlinc = "select asunto,id from sgm_incidencias where visible=1 and id_estado<>-2 and id_incidencia=0";
 	if ($id_cli > 0) { $sqlinc .= " and id_cliente=".$id_cli; }
 	$resultinc = mysqli_query($dbhandle,$sqlinc);

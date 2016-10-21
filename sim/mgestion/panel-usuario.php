@@ -23,6 +23,10 @@ if (($option == 200) AND ($user == true)) {
 
 
 	if ($soption == 0) {
+		$sqlx = "select id_tipus from sgm_users where sgm=1 and activo=1 and validado=1 and id=".$userid;
+		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+		$rowx = mysqli_fetch_array($resultx);
+
 		echo "<h4>".$Estado." ".$General."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
@@ -36,7 +40,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
 							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
-						$sqlch = "select * from sgm_contratos where visible=1 and pack_horas=1 order by fecha_ini desc";
+						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=1 order by fecha_ini desc";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
 						while ($rowch = mysqli_fetch_array($resultch)) {
 							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
@@ -68,6 +72,81 @@ if (($option == 200) AND ($user == true)) {
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
+					echo "<h4>&nbsp;</h4>";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<caption>".$Resumen." ".$Contratos."</caption>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:550px;\">".$Cliente."</th>";
+							echo "<th style=\"width:200px;\">".$Contrato."</th>";
+							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
+						echo "</tr>";
+						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=0 order by fecha_ini desc";
+						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
+						while ($rowch = mysqli_fetch_array($resultch)) {
+							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
+							$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+							$rowa = mysqli_fetch_array($resulta);
+
+							$total_horas = 0;
+							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowch["id"];
+							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+							while ($rowcs = mysqli_fetch_array($resultcs)) {
+								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and visible=1";
+								$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+								$rowd = mysqli_fetch_array($resultd);
+								$total_horas += $rowd["total"];
+							}
+							$hora = $total_horas/60;
+							$horas = explode(".",$hora);
+							$minutos = $total_horas % 60;
+							echo "<tr>";
+								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+							echo "</tr>";
+						}
+					echo "</table>";
+				echo "<td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<caption>".$Facturacion." ".$Mensual." ".$Horas."</caption>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:450px;\">".$Cliente."</th>";
+							echo "<th style=\"width:300px;\">".$Contrato."</th>";
+							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
+						echo "</tr>";
+						$sqlch = "select * from sgm_contratos where visible=1 and horas_mensual=1 order by fecha_ini desc";
+						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
+						while ($rowch = mysqli_fetch_array($resultch)) {
+							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
+							$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+							$rowa = mysqli_fetch_array($resulta);
+
+							$total_horas = 0;
+							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowch["id"];
+							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+							while ($rowcs = mysqli_fetch_array($resultcs)) {
+								$ultimaDiaMes = date("d",(mktime(0,0,0,date("m")+1,1,date("Y"))-1));
+								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and fecha_inicio between ".date("U",mktime(0,0,0,date("m"),1,date("Y")))." and ".date("U",mktime(23,59,59,date("m"),$ultimaDiaMes,date("Y")))." and visible=1";
+								$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+								$rowd = mysqli_fetch_array($resultd);
+								$total_horas += $rowd["total"];
+							}
+							$hora = $total_horas/60;
+							$horas = explode(".",$hora);
+							$minutos = $total_horas % 60;
+							echo "<tr>";
+								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+							echo "</tr>";
+						}
+					echo "</table>";
+				echo "<td>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
 				echo "<td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -78,9 +157,11 @@ if (($option == 200) AND ($user == true)) {
 						echo "<caption>".$Facturar." 15 ".$Dias."</caption>";
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
-							echo "<th style=\"width:250px;\">".$Fecha."</th>";
+							echo "<th style=\"width:150px;\">".$Fecha."</th>";
 							echo "<th style=\"width:500px;\">".$Cliente."</th>";
+							echo "<th style=\"width:100px;\">".$Total."</th>";
 						echo "</tr>";
+						$total_factura = 0;
 						$sqlc = "select * from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1)";
 						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 						while ($rowc = mysqli_fetch_array($resultc)){
@@ -90,23 +171,96 @@ if (($option == 200) AND ($user == true)) {
 								$rowa = mysqli_fetch_array($resulta);
 								echo "<tr>";
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
-									echo "<td>".$rowc["fecha"]."</td>";
+									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
 								echo "</tr>";
+								$total_factura += $rowc["total"];
 							}
 						}
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+						echo "</tr>";
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Cobro." 15 ".$Dias."</caption>";
+						echo "<caption>".$Presupuesto." ".$Aprobado."</caption>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
+							echo "<th style=\"width:150px;\">".$Fecha."</th>";
+							echo "<th style=\"width:500px;\">".$Cliente."</th>";
+							echo "<th style=\"width:100px;\">".$Total."</th>";
+						echo "</tr>";
+						$total_factura = 0;
+						$sqlc = "select * from sgm_cabezera where visible=1 and aprovado=1 and cerrada=0 and tipo in (select id from sgm_factura_tipos where contabilidad=0)";
+						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+						while ($rowc = mysqli_fetch_array($resultc)){
+							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowc["id_cliente"];
+							$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+							$rowa = mysqli_fetch_array($resulta);
+							echo "<tr>";
+								echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
+								echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
+								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+								echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+							echo "</tr>";
+							$total_factura += $rowc["total"];
+						}
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+						echo "</tr>";
+					echo "</table>";
+				echo "<td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<caption>".$Pagos." 15 ".$Dias."</caption>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
+							echo "<th style=\"width:150px;\">".$Fecha."</th>";
+							echo "<th style=\"width:500px;\">".$Cliente."</th>";
+							echo "<th style=\"width:100px;\">".$Total."</th>";
+						echo "</tr>";
+						$total_factura = 0;
+						$sqlc = "select * from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=-1)";
+						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+						while ($rowc = mysqli_fetch_array($resultc)){
+							if ((date("U", strtotime($rowc["fecha_vencimiento"])) >= date("U")) and date("U", strtotime($rowc["fecha_vencimiento"])) <= (date("U",mktime(0,0,0,date("m"),date("d")+15,date("Y"))))){
+								$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowc["id_cliente"];
+								$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+								$rowa = mysqli_fetch_array($resulta);
+								echo "<tr>";
+									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
+									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
+									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+								echo "</tr>";
+								$total_factura += $rowc["total"];
+							}
+						}
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+						echo "</tr>";
+					echo "</table>";
+				echo "<td>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<caption>".$Cobros." 15 ".$Dias."</caption>";
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:100px;\">".$Numero." ".$Factura."</th>";
-							echo "<th style=\"width:150px;\">".$Fecha."</th>";
-							echo "<th style=\"width:150px;\">".$Fecha." ".$Vencimiento."</th>";
+							echo "<th style=\"width:100px;\">".$Fecha."</th>";
+							echo "<th style=\"width:100px;\">".$Fecha." ".$Vencimiento."</th>";
 							echo "<th style=\"width:500px;\">".$Cliente."</th>";
+							echo "<th style=\"width:100px;\">".$Total."</th>";
 						echo "</tr>";
+						$total_factura = 0;
 						$sqlc = "select * from sgm_cabezera where visible=1 and cobrada=0 and tipo in (select id from sgm_factura_tipos where contabilidad=1)";
 						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 						while ($rowc = mysqli_fetch_array($resultc)){
@@ -116,12 +270,18 @@ if (($option == 200) AND ($user == true)) {
 								$rowa = mysqli_fetch_array($resulta);
 								echo "<tr>";
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
-									echo "<td>".$rowc["fecha"]."</td>";
-									echo "<td>".$rowc["fecha_vencimiento"]."</td>";
+									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
+									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha_vencimiento"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
 								echo "</tr>";
+								$total_factura += $rowc["total"];
 							}
 						}
+						echo "<tr>";
+							echo "<th colspan=\"4\" style=\"border-top:1px solid black;\"></th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+						echo "</tr>";
 					echo "</table>";
 				echo "<td>";
 			echo "</tr>";
@@ -132,9 +292,9 @@ if (($option == 200) AND ($user == true)) {
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<caption>".$Sin." ".$Contrato."</caption>";
 						echo "<tr style=\"background-color:silver;\">";
-							echo "<th style=\"width:500px;\">".$Cliente."</th>";
-							echo "<th style=\"width:250px;\">".$Asunto."</th>";
-							echo "<th style=\"width:150px;\">".$Numero." ".$Horas."</th>";
+							echo "<th style=\"width:400px;\">".$Cliente."</th>";
+							echo "<th style=\"width:400px;\">".$Asunto."</th>";
+							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
 						echo "</tr>";
 						$sqlin = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_servicio=-1 and facturada=0 order by fecha_inicio desc";
 						$resultin = mysqli_query($dbhandle,convertSQL($sqlin));

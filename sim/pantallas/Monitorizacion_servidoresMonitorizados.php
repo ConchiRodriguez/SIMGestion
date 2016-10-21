@@ -3,11 +3,7 @@ error_reporting(~E_ALL);
 
 
 function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
-	global $db,$dbhandle,$simclau,$idioma;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$Uso,$Memoria,$simclau;
 	echo "<tr>";
 	$i = 1;
 	$sqlcs2 = "select * from sgm_clients_servidors where id_client in (".$id_cliente.") and visible=1";

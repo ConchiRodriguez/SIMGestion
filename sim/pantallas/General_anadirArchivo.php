@@ -15,6 +15,7 @@ function anadirArchivo ($id_elemento,$tipo_elemento,$url_adicional){
 	if ($tipo_elemento == 4) {$adress = "incidencias/";}
 	if ($tipo_elemento == 5) {$adress = "dispositivos/";}
 	if ($tipo_elemento == 6) {$adress = "empleados/";}
+	if ($tipo_elemento == 7) {$adress = "comercial/";}
 
 	if ($ssoption == 1) {
 		if (version_compare(phpversion(), "4.0.0", ">")) {

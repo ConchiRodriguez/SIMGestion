@@ -46,7 +46,7 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://op5.solucions-im.com\" target=\"_blank\">Blog op5</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://nagios.solucions-im.com\" target=\"_blank\">Blog Nagios</a></td></tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://www.na-cloud.com\" target=\"_blank\">Na-Cloud.com</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://jornada.solucions-im.com\" target=\"_blank\">Web Jornada</a></td></tr>";
 			echo "</table>";
 		echo "</td>";
 		echo "<td style=\"vertical-align:top;text-align:center;width:15%;\">";
@@ -72,8 +72,8 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 		echo "<td style=\"vertical-align:top;text-align:center;width:15%;\">";
 			echo "<table style=\"font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;font-size: 10px;\">";
 				echo "<tr><td><h3>Bases de dades</h3></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qnc882.dbname.net\" target=\"_blank\">SIMGestion</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qqk106.dbname.net\" target=\"_blank\">SIMGestion Desenvolupament</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qnc882.dbname.net\" target=\"_blank\">SIMGestion PRO</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qqk106.dbname.net\" target=\"_blank\">SIMGestion DES</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qpz494.dbname.net\" target=\"_blank\">SIMPolice proves</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qqm138.dbname.net\" target=\"_blank\">SIMPolice CSMS</a></td></tr>";
 #				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://qqs228.dbname.net\" target=\"_blank\">SIMPolice Can Ruti</a></td></tr>";

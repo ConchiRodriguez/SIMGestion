@@ -3,11 +3,7 @@ error_reporting(~E_ALL);
 
 
 function detalleServidoresMonitorizados ($id_cliente,$id_serv,$color){
-	global $db,$dbhandle,$dbhandle,$simclau,$idioma;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$dbhandle,$Volver,$Dia,$Mes,$Any,$Ultimos,$Estados,$Buscar,$Fecha,$Registro,$Servidor,$Uso,$Memoria,$Espacio,$simclau;
 		$sqlcbd = "select * from sgm_clients_bases_dades where visible=1 and id_client in (".$id_cliente.")";
 		$resultcbd = mysqli_query($dbhandle,convertSQL($sqlcbd));
 		$rowcbd = mysqli_fetch_array($resultcbd);

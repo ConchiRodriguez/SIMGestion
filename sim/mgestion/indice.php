@@ -12,7 +12,7 @@
 #	if ($option == 1006) { include ("mgestion/gestion-agenda.php");}
 #	if ($option == 1007) { include ("mgestion/gestion-pedidos.php");}
 	if ($option == 1008) { include ("mgestion/gestion-clientes.php");}
-	if ($option == 1009) { include ("mgestion/gestion-comercial-3.0.php");}
+	if ($option == 1009) { include ("mgestion/gestion-comercial.php");}
 
 #	if ($option == 1010) { include ("mgestion/gestion-compras.php");}
 	if ($option == 1011) { include ("mgestion/gestion-contratos.php");}

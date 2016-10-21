@@ -958,12 +958,10 @@ if (($option == 1008) AND ($autorizado == true)) {
 				}
 			}
 			if ($_POST["id_empleado_origen"] != -1){
-				echo "zz";
-				echo $sql = "select * from sgm_clients_rel_origen where id_cliente=".$id_client." and id_origen=".$_POST["id_empleado_origen"]." and tipo_origen=4";
+				$sql = "select * from sgm_clients_rel_origen where id_cliente=".$id_client." and id_origen=".$_POST["id_empleado_origen"]." and tipo_origen=4";
 				$result = mysqli_query($dbhandle,convertSQL($sql));
 				$row = mysqli_fetch_array($result);
 				if (!$row){
-					echo "zz";
 					$camposInsert = "id_cliente,id_origen,tipo_origen";
 					$datosInsert = array($id_client,$_POST["id_empleado_origen"],4);
 					insertFunction("sgm_clients_rel_origen",$camposInsert,$datosInsert);
@@ -1143,13 +1141,13 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<tr><th style=\"width:5%;\"></th><th style=\"width:95%;\">".$Sector."</th></tr>";
 						echo "<tr><td></td><td><select class=\"formclient\" name=\"id_sector\">";
 							echo "<option value=\"-1\">Indeterminado</option>";
-							$sql1 = "select * from sgm_clients_sectores where id_sector<>0 order by sector";
+							$sql1 = "select * from sgm_clients_sectores where id_sector=0 order by sector";
 							$result1 = mysqli_query($dbhandle,convertSQL($sql1));
 							while ($row1 = mysqli_fetch_array($result1)) {
-								$sqlsec2 = "select id,sector from sgm_clients_sectores where id=".$row1["id_sector"];
+								$sqlsec2 = "select id,sector from sgm_clients_sectores where id_sector=".$row1["id"];
 								$resultsec2 = mysqli_query($dbhandle,convertSQL($sqlsec2));
 								$rowsec2 = mysqli_fetch_array($resultsec2);
-								echo "<option value=\"".$row1["id"]."\">".$rowsec2["sector"]."-".$row1["sector"]."</option>";
+								echo "<option value=\"".$row1["id"]."\">".$rowsec1["sector"]."-".$row2["sector"]."</option>";
 							}
 						echo "</select></td></tr>";
 						$sqlse = "select id,id_sector from sgm_clients_rel_sectores where id_cliente=".$id_client;

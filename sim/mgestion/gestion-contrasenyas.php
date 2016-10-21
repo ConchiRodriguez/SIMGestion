@@ -23,10 +23,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 	echo "<table  class=\"principal\"><tr>";
 		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
 
-	$sqlcx = "select * from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$_GET["id_cli"]."";
-	$resultcx = mysqli_query($dbhandle,convertSQL($sqlcx));
-	$rowcx = mysqli_fetch_array($resultcx);
-	if ($_POST["id_contrato"] > 0) { $id_contrato = $_POST["id_contrato"];} elseif ($_GET["id_contrato"] > 0) { $id_contrato = $_GET["id_contrato"];} elseif ($_GET["id_cli"] > 0) { $id_contrato = $rowcx["id"];}
+	if ($_POST["id_contrato"] > 0) { $id_contrato = $_POST["id_contrato"];} elseif ($_GET["id_contrato"] > 0) { $id_contrato = $_GET["id_contrato"];}
 	if ($_POST["id_aplicacion"] > 0) { $id_aplicacion = $_POST["id_aplicacion"];} elseif ($_GET["id_aplicacion"] > 0) { $id_aplicacion = $_GET["id_aplicacion"];}
 
 	if ($soption == 0) {
@@ -38,7 +35,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "<form action=\"index.php?op=1024&sop=0\" method=\"post\">";
 			echo "<tr>";
-				echo "<td style=\"width:700px\"><select style=\"width:100%\" name=\"id_contrato\">";
+				echo "<td><select style=\"width:700px\" name=\"id_contrato\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlc = "select * from sgm_clients where visible=1 order by nombre";
 					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
@@ -56,7 +53,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 						}
 					}
 				echo "</select></td>";
-				echo "<td style=\"width:200px\"><select style=\"width:100%\" name=\"id_aplicacion\">";
+				echo "<td><select style=\"width:200px\" name=\"id_aplicacion\">";
 					echo "<option value=\"0\">-</option>";
 					$sql = "select * from sgm_contrasenyes_apliciones where visible=1 order by aplicacion";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -68,7 +65,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 						}
 					}
 				echo "</select></td>";
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Buscar."\" style=\"width:150px\"></td>";
 			echo "</tr>";
 		echo "</form>";
 		echo "</table>";
@@ -142,7 +139,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"aplicacion\" required></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion\"></td>";
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:80px\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -154,7 +151,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1024&sop=510&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["aplicacion"]."\" style=\"width:150px\" name=\"aplicacion\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion"]."\" style=\"width:350px\" name=\"descripcion\"></td>";
-					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:80px\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}

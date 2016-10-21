@@ -111,7 +111,7 @@ if (($option == 1022) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1022&sop=5\" method=\"post\">";
 				echo "<td><input type=\"Text\" name=\"comando\" style=\"width:300px\"></td>";
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Ejecutar."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Ejecutar."\" style=\"width:100px\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr>";

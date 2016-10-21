@@ -847,7 +847,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<option value=\"".$rowp["id"]."\">".$rowp["divisa"]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td><input type=\"submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -861,7 +861,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				if ($rows["vigente"] == 1) { $color = "#FF4500"; }
 				echo "<tr style=\"background-color : ".$color."\">";
 					echo "<form action=\"index.php?op=1004&sop=130&ssop=2&id=".$_GET["id"]."&id_stock=".$rows["id"]."\" method=\"post\" name=\"formulario".$rows["id"]."\">";
-					echo "<td><input type=\"submit\" value=\"Vigente\"></td>";
+					echo "<td class=\"Submit\"><input type=\"submit\" value=\"Vigente\"></td>";
 					echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$rows["codigo"]."\">";
 					echo "</form>";
 					echo "<form action=\"index.php?op=1004&sop=130&ssop=3&id=".$_GET["id"]."&id_stock=".$rows["id"]."\" method=\"post\" name=\"formulario".$rows["id"]."\">";
@@ -894,7 +894,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					if ($rows["idfactura"] == 0){
-						echo "<td><input type=\"submit\" value=\"".$Modificar."\"></td>";
+						echo "<td class=\"Submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					}
 					echo "</form>";
 				echo "</tr>";
@@ -965,7 +965,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					}
 				}
 				echo "</select></td>";
-				echo "<td><input type=\"submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
@@ -1631,7 +1631,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<form action=\"index.php?op=1004&sop=522&ssop=1&id_caracteristica=".$_GET["id_caracteristica"]."\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"valor\" style=\"width:150px\"></td>";
-				echo "<td>&nbsp;<input type=\"submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\">&nbsp;<input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -1642,7 +1642,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1004&sop=522&ssop=2&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\" method=\"post\">";
 					echo "<td><a href=\"index.php?op=1004&sop=523&id=".$row1["id"]."&id_caracteristica=".$_GET["id_caracteristica"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
 					echo "<td><input type=\"Text\" name=\"valor\" value=\"".$row1["valor"]."\" style=\"width:150px\"></td>";
-					echo "<td>&nbsp;<input type=\"submit\" value=\"".$Cambiar."\"></td>";
+					echo "<td class=\"Submit\">&nbsp;<input type=\"submit\" value=\"".$Cambiar."\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}

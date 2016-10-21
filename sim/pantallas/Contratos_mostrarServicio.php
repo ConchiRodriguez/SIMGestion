@@ -31,8 +31,8 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
 		}
 
+		if (isset($id_contrato)){ $id_contrato = $id_contrato;} else { $id_contrato = 0;}
 		if ($id_cliente > 0){ $contrato_adress = $id_cliente."&id_con=".$id_contrato;} else { $contrato_adress = $id_contrato;}
-		$contract = $id_contrato;
 
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
@@ -212,6 +212,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 					echo "</select></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 					echo "</form>";
+				if ($id_contrato > 0){
 					$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$row["id"].")";
 					$resultind = mysqli_query($dbhandle,convertSQL($sqlind));
 					$rowind = mysqli_fetch_array($resultind);
@@ -221,10 +222,12 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 					echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
 					$total_euros = $hora * $row["precio_hora"];
 					echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
+				}
 				echo "</tr>";
 				$total_horas_contracte += $rowind["total"];
 				$total_euros_contracte += $total_euros;
 			}
+		if ($id_contrato > 0){
 			echo "<tr>";
 				$hora = $total_horas_contracte/60;
 				$horas = explode(".",$hora);
@@ -233,6 +236,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
 				echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros_contracte,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 			echo "</tr>";
+		}
 		echo "</table></center>";
 		echo "<br><br>";
 }

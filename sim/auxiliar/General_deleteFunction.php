@@ -6,7 +6,7 @@ function deleteFunction ($tabla,$id){
 	global $dbhandle;
 	$sql = "delete from ".$tabla." WHERE id=".$id;
 	mysqli_query($dbhandle,convertSQL($sql));
-#	echo $sql;
+	echo $sql."<br>";
 }
 
 ?>

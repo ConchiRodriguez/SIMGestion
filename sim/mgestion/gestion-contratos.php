@@ -333,7 +333,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					$resulta2 = mysqli_query($dbhandle,convertSQL($sqla2));
 					$rowa2 = mysqli_fetch_array($resulta2);
 					echo "<br>".$Cliente.": <a href=\"index.php?op=1008&sop=140&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a>";
-					echo "<br>".$Cliente." ".$Final.": <a href=\"index.php?op=1008&sop=140&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a>";
+					echo "<br>".$Cliente." ".$Final.": <a href=\"index.php?op=1008&sop=140&id=".$rowa2["id"]."\">".$rowa2["nombre"]." ".$rowa2["cognom1"]." ".$rowa2["cognom2"]."</a>";
 				echo "</td>";
 				echo "<td style=\"vertical-align:top\">";
 					echo "<table cellpadding=\"0\">";
@@ -678,7 +678,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			echo boton(array("op=1011&sop=510","op=1011&sop=520","op=1011&sop=530","op=1011&sop=540","op=1011&sop=580"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA,$Plantillas." ".$Contrato,$Origen." ".$Servicios,$Tarifas));
+			echo boton(array("op=1011&sop=510","op=1011&sop=520","op=1011&sop=530","op=1011&sop=540","op=1011&sop=550","op=1011&sop=580"),array($Tipo." ".$Contratos,$Cobertura." ".$SLA,$Plantillas." ".$Contrato,$Servicios,$Origen." ".$Servicios,$Tarifas));
 		}
 		if ($admin == false) {
 			echo $UseNoAutorizado;
@@ -937,9 +937,9 @@ if (($option == 1011) AND ($autorizado == true)) {
 				} else {
 					echo "<td></td>";
 				}
-					echo "<td>";
-						echo boton(array("op=1011&sop=535&id=".$rowcc["id"]),array($Servicios));
-					echo "</td>";
+#					echo "<td>";
+#						echo boton(array("op=1011&sop=535&id=".$rowcc["id"]),array($Servicios));
+#					echo "</td>";
 				echo "</tr>";
 			}
 		echo "</table>";
@@ -952,23 +952,23 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
-	if (($soption == 535) and ($admin == true)) {
+	if (($soption == 540) and ($admin == true)) {
 		$sqlcc = "select num_contrato,descripcion from sgm_contratos where id=".$_GET["id"]."";
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 		$rowcc = mysqli_fetch_array($resultcc);
 		echo "<h4>".$Servicios." ".$Contrato." : ".$rowcc["num_contrato"]."-".$rowcc["descripcion"]."</h4>";
 		echo boton(array("op=1011&sop=530"),array("&laquo; ".$Volver));
-		mostrarServicio($_GET["id"],536);
+		mostrarServicio(0,0,541);
 	}
 
-	if (($soption == 536) AND ($admin == true)) {
+	if (($soption == 541) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1011&sop=535&ssop=3&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"],"op=1011&sop=535&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
-	if (($soption == 540) and ($admin == true)) {
+	if (($soption == 550) and ($admin == true)) {
 		if ($ssoption == 1){
 			$camposinsert = "codigo_origen,descripcion_origen";
 			$datosInsert = array($_POST["codigo_origen"],$_POST["descripcion_origen"]);
@@ -994,7 +994,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<th>".$Descripcion."</th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
-				echo "<form action=\"index.php?op=1011&sop=540&ssop=1\" method=\"post\">";
+				echo "<form action=\"index.php?op=1011&sop=550&ssop=1\" method=\"post\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" style=\"width:150px\" name=\"codigo_origen\"></td>";
 				echo "<td><input type=\"text\" style=\"width:350px\" name=\"descripcion_origen\"></td>";
@@ -1006,8 +1006,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=541&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
-					echo "<form action=\"index.php?op=1011&sop=540&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=551&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					echo "<form action=\"index.php?op=1011&sop=550&ssop=2&id=".$row["id"]."\" method=\"post\">";
 					echo "<td><input type=\"text\" value=\"".$row["codigo_origen"]."\" style=\"width:150px\" name=\"codigo_origen\"></td>";
 					echo "<td><input type=\"text\" value=\"".$row["descripcion_origen"]."\" style=\"width:350px\" name=\"descripcion_origen\"></td>";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
@@ -1017,10 +1017,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "</table>";
 	}
 
-	if (($soption == 541) AND ($admin == true)) {
+	if (($soption == 551) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1011&sop=540&ssop=3&id=".$_GET["id"],"op=1011&sop=540"),array($Si,$No));
+		echo boton(array("op=1011&sop=550&ssop=3&id=".$_GET["id"],"op=1011&sop=550"),array($Si,$No));
 		echo "</center>";
 	}
 

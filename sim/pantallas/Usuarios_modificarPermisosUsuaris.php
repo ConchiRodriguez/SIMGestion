@@ -3,13 +3,9 @@ error_reporting(~E_ALL);
 
 
 function modificarPermisosUsuaris ($url_volver,$url){
-	global $db,$dbhandle,$idioma,$ssoption;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$Volver,$Administrar,$Permisos,$Acceso,$Modulo,$Modificar,$ssoption,$Si,$No,$idioma;
 	if ($ssoption == 1) {
-		$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre";
+		$sql = "select id from sgm_users_permisos_modulos where visible=1 order by nombre_".$idioma;
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		while ($row = mysqli_fetch_array($result)) {
 			if ($_POST["permiso".$row["id"]] == 0) {
@@ -51,14 +47,14 @@ function modificarPermisosUsuaris ($url_volver,$url){
 		echo "</tr>";
 	echo "<form action=\"index.php?".$url."&id_user=".$_GET["id_user"]."&ssop=1\" method=\"post\">";
 		echo "<tr><td class=\"submit\" colspan=\"3\"><input type=\"Submit\" value=\"".$Modificar."\"></td></tr>";
-	$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre";
+	$sql = "select * from sgm_users_permisos_modulos where visible=1 order by nombre_".$idioma;
 	$result = mysqli_query($dbhandle,convertSQL($sql));
 	while ($row = mysqli_fetch_array($result)) {
 		$sqlt = "select count(*) as total from sgm_users_permisos where id_user=".$_GET["id_user"]." and id_modulo=".$row["id_modulo"];
 		$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
 		$rowt = mysqli_fetch_array($resultt);
 		echo "<tr>";
-			echo "<td style=\"width:150px\"><strong>".$row["nombre"]."</strong></td>";
+			echo "<td style=\"width:150px\"><strong>".$row["nombre_".$idioma]."</strong></td>";
 			echo "<input type=\"Hidden\" name=\"id_modulo".$row["id"]."\" value=\"".$row["id_modulo"]."\">";
 			echo "<td style=\"width:60px\"><select name=\"permiso".$row["id"]."\" style=\"width:40px\">";
 				if ($rowt["total"] == 1) {

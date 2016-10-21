@@ -5,16 +5,16 @@
 		<Modality>I</Modality>
 		<InvoiceIssuerType>EM</InvoiceIssuerType>
 		<Batch>
-			<BatchIdentifier>3/0</BatchIdentifier>
+			<BatchIdentifier>20160048/0</BatchIdentifier>
 			<InvoicesCount>1</InvoicesCount>
 			<TotalInvoicesAmount>
-				<TotalAmount>49654.53</TotalAmount>
+				<TotalAmount>2444.20</TotalAmount>
 			</TotalInvoicesAmount>
 			<TotalOutstandingAmount>
-				<TotalAmount>49654.53</TotalAmount>
+				<TotalAmount>2444.20</TotalAmount>
 			</TotalOutstandingAmount>
 			<TotalExecutableAmount>
-				<TotalAmount>49654.53</TotalAmount>
+				<TotalAmount>2444.20</TotalAmount>
 			</TotalExecutableAmount>
 			<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
 		</Batch>
@@ -36,7 +36,7 @@
 					<CountryCode>ESP</CountryCode>
 				</AddressInSpain>
 				<ContactDetails>
-					<Telephone>937 645 637</Telephone>
+					<Telephone>937023205</Telephone>
 					<ElectronicMail>administracion@solucions-im.com</ElectronicMail>
 				</ContactDetails>
 			</LegalEntity>
@@ -52,7 +52,7 @@
 					<CentreCode>A09006670</CentreCode>
 					<RoleTypeCode>01</RoleTypeCode>
 					<Name>Domingo</Name>
-					<FirstSurname>Barrabés</FirstSurname>
+					<FirstSurname>Barrabes</FirstSurname>
 					<SecondSurname>Moreno</SecondSurname>
 					<AddressInSpain>
 						<Address>Sant Jaume, 209-217</Address>
@@ -73,7 +73,7 @@
 					<CentreCode>A09006670</CentreCode>
 					<RoleTypeCode>02</RoleTypeCode>
 					<Name>Domingo</Name>
-					<FirstSurname>Barrabés</FirstSurname>
+					<FirstSurname>Barrabes</FirstSurname>
 					<SecondSurname>Moreno</SecondSurname>
 					<AddressInSpain>
 						<Address>Sant Jaume, 209-217</Address>
@@ -94,7 +94,7 @@
 					<CentreCode>A09006670</CentreCode>
 					<RoleTypeCode>03</RoleTypeCode>
 					<Name>Domingo</Name>
-					<FirstSurname>Barrabés</FirstSurname>
+					<FirstSurname>Barrabes</FirstSurname>
 					<SecondSurname>Moreno</SecondSurname>
 					<AddressInSpain>
 						<Address>Sant Jaume, 209-217</Address>
@@ -113,7 +113,7 @@
 				</AdministrativeCentre>
 			</AdministrativeCentres>
 			<LegalEntity>
-				<CorporateName>Corporacio de Salut del Maresme i la Selva  </CorporateName>
+				<CorporateName>Corporacio de Salut del Maresme i la Selva</CorporateName>
 				<AddressInSpain>
 					<Address>Sant Jaume, 209-217</Address>
 					<PostCode>08370</PostCode>
@@ -133,13 +133,13 @@
 	<Invoices>
 		<Invoice>
 			<InvoiceHeader>
-				<InvoiceNumber>3</InvoiceNumber>
+				<InvoiceNumber>20160048</InvoiceNumber>
 				<InvoiceSeriesCode>0</InvoiceSeriesCode>
 				<InvoiceDocumentType>FC</InvoiceDocumentType>
 				<InvoiceClass>OO</InvoiceClass>
 			</InvoiceHeader>
 			<InvoiceIssueData>
-				<IssueDate>2016-06-23</IssueDate>
+				<IssueDate>2016-10-03</IssueDate>
 				<PlaceOfIssue>
 					<PostCode>08490</PostCode>
 					<PlaceOfIssueDescription>Tordera</PlaceOfIssueDescription>
@@ -153,63 +153,63 @@
 					<TaxTypeCode>01</TaxTypeCode>
 					<TaxRate>21.00</TaxRate>
 					<TaxableBase>
-						<TotalAmount>41036.80</TotalAmount>
+						<TotalAmount>2020.00</TotalAmount>
 					</TaxableBase>
 					<TaxAmount>
-						<TotalAmount>8617.73</TotalAmount>
+						<TotalAmount>424.20</TotalAmount>
 					</TaxAmount>
 				</Tax>
 			</TaxesOutputs>
 			<InvoiceTotals>
-				<TotalGrossAmount>51296.00</TotalGrossAmount>
+				<TotalGrossAmount>2020.00</TotalGrossAmount>
 				<GeneralDiscounts>
 					<Discount>
 						<DiscountReason>Descuento Factura</DiscountReason>
-						<DiscountRate>20.0000</DiscountRate>
+						<DiscountAmount>0.000000</DiscountAmount>
 					</Discount>
 				</GeneralDiscounts>
-				<TotalGeneralDiscounts>10259.20</TotalGeneralDiscounts>
-				<TotalGrossAmountBeforeTaxes>41036.80</TotalGrossAmountBeforeTaxes>
-				<TotalTaxOutputs>8617.73</TotalTaxOutputs>
+				<TotalGeneralDiscounts>0.00</TotalGeneralDiscounts>
+				<TotalGrossAmountBeforeTaxes>2020.00</TotalGrossAmountBeforeTaxes>
+				<TotalTaxOutputs>424.20</TotalTaxOutputs>
 				<TotalTaxesWithheld>0.00</TotalTaxesWithheld>
-				<InvoiceTotal>49654.53</InvoiceTotal>
-				<TotalOutstandingAmount>49654.53</TotalOutstandingAmount>
-				<TotalExecutableAmount>49654.53</TotalExecutableAmount>
+				<InvoiceTotal>2444.20</InvoiceTotal>
+				<TotalOutstandingAmount>2444.20</TotalOutstandingAmount>
+				<TotalExecutableAmount>2444.20</TotalExecutableAmount>
 			</InvoiceTotals>
 			<Items>
 				<InvoiceLine>
-					<ReceiverTransactionReference></ReceiverTransactionReference>
-					<ItemDescription>proves</ItemDescription>
-					<Quantity>2.000</Quantity>
+					<ReceiverTransactionReference>4500078080</ReceiverTransactionReference>
+					<ItemDescription>Configuracio de plataforma de monitoritzacio Nagios</ItemDescription>
+					<Quantity>1.000</Quantity>
 					<UnitOfMeasure>01</UnitOfMeasure>
-					<UnitPriceWithoutTax>25648.000000</UnitPriceWithoutTax>
-					<TotalCost>51296.000000</TotalCost>
+					<UnitPriceWithoutTax>2020.000000</UnitPriceWithoutTax>
+					<TotalCost>2020.000000</TotalCost>
 					<DiscountsAndRebates>
 						<Discount>
 							<DiscountReason>Descuento Linea</DiscountReason>
 							<DiscountAmount>0.000000</DiscountAmount>
 						</Discount>
 					</DiscountsAndRebates>
-					<GrossAmount>51296.000000</GrossAmount>
+					<GrossAmount>2020.000000</GrossAmount>
 					<TaxesOutputs>
 						<Tax>
 							<TaxTypeCode>01</TaxTypeCode>
 							<TaxRate>21.00</TaxRate>
 							<TaxableBase>
-								<TotalAmount>51296.00</TotalAmount>
+								<TotalAmount>2020.00</TotalAmount>
 							</TaxableBase>
 							<TaxAmount>
-								<TotalAmount>10772.16</TotalAmount>
+								<TotalAmount>424.20</TotalAmount>
 							</TaxAmount>
 						</Tax>
 					</TaxesOutputs>
-					<ArticleCode></ArticleCode>
+					<ArticleCode>sertec</ArticleCode>
 				</InvoiceLine>
 			</Items>
 			<PaymentDetails>
 				<Installment>
-					<InstallmentDueDate>2016-06-23</InstallmentDueDate>
-					<InstallmentAmount>49654.53</InstallmentAmount>
+					<InstallmentDueDate>2016-11-03</InstallmentDueDate>
+					<InstallmentAmount>2444.20</InstallmentAmount>
 					<PaymentMeans>04</PaymentMeans>
 					<AccountToBeCredited>
 						<IBAN>ES59 0081 0443 2900 0109 3917</IBAN>

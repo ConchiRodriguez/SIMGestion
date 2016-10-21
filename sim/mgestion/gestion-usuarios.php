@@ -101,7 +101,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
-				echo "<td class=\"Submit\"><input value=\"".$Anadir."\" type=\"Submit\"></td>";
+				echo "<td><input value=\"".$Anadir."\" type=\"Submit\" style=\"width:100px;\"></td>";
 			echo "</tr>";
 			echo "</form>";
 
@@ -127,7 +127,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<input type=\"Hidden\" name=\"id_client\" value=\"".$rowc["id"]."\">";
-					echo "<td class=\"Submit\"><input value=\"".$Modificar."\" type=\"Submit\"></td>";
+					echo "<td><input value=\"".$Modificar."\" type=\"Submit\" style=\"width:100px;\"></td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -147,20 +147,6 @@ if (($option == 1002) AND ($autorizado == true)) {
 		if ($ssoption == 1){
 			$datosInsert = array($_POST["tipus"]);
 			insertFunction ("sgm_users_tipus","tipus",$datosInsert);
-			
-			$sqlut = "select * from sgm_users_tipus where visible=1 and tipus='".$_POST["tipus"]."'";
-			$resultut = mysqli_query($dbhandle,convertSQL($sqlut));
-			$rowut = mysqli_fetch_array($resultut);
-			
-			$sql = "select * from sgm_rrhh_departamento where visible=1 order by departamento";
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			while ($row = mysqli_fetch_array($result)){
-				if ($_POST[$row["departamento"]] == 1){
-					$camposInsert = "id_tipo,id_departamento";
-					$datosInsert = array($rowut["id"],$row["id"]);
-					insertFunction ("sim_usuarios_tipos_departamentos",$camposInsert,$datosInsert);
-				}
-			}
 		}
 		if ($ssoption == 2){
 			$camposUpdate = array("tipus");
@@ -179,23 +165,13 @@ if (($option == 1002) AND ($autorizado == true)) {
 			echo "<tr style=\"background-color:silver;\">";
 				echo "<th>".$Eliminar."</th>";
 				echo "<th style=\"text-align:center\">".$Tipo."</th>";
-				$sql = "select * from sgm_rrhh_departamento where visible=1 order by departamento";
-				$result = mysqli_query($dbhandle,convertSQL($sql));
-				while ($row = mysqli_fetch_array($result)){
-					echo "<th style=\"text-align:center\">".$row["departamento"]."</th>";
-				}
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1002&sop=510&ssop=1\" method=\"post\">";
 			echo "<tr>";
 				echo "<td></td>";
 				echo "<td><input type=\"Text\" name=\"tipus\" style=\"width:200px;\" required></td>";
-				$sql = "select * from sgm_rrhh_departamento where visible=1 order by departamento";
-				$result = mysqli_query($dbhandle,convertSQL($sql));
-				while ($row = mysqli_fetch_array($result)){
-					echo "<td><input type=\"Checkbox\" name=\"".$row["departamento"]."\" value=\"1\"></td>";
-				}
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px;\"></td>";
 			echo "</tr>";
 			echo "</form>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -206,12 +182,7 @@ if (($option == 1002) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:center\"><a href=\"index.php?op=1002&sop=511&id=".$rowut["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
 				echo "<form action=\"index.php?op=1002&sop=510&ssop=2&id=".$rowut["id"]."\" method=\"post\">";
 				echo "<td><input type=\"Text\" name=\"tipus\" style=\"width:200px;\" value=\"".$rowut["tipus"]."\" required></td>";
-				$sql = "select * from sgm_rrhh_departamento where visible=1 order by departamento";
-				$result = mysqli_query($dbhandle,convertSQL($sql));
-				while ($row = mysqli_fetch_array($result)){
-					echo "<td><input type=\"Checkbox\" name=\"".$row["departamento"]."\" value=\"1\"></td>";
-				}
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px;\"></td>";
 				echo "</form>";
 				echo "<td>";
 					echo boton_form("op=1002&sop=512&id=".$rowut["id"]."",$Permisos." ".$Tipo);

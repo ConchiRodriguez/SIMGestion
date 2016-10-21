@@ -111,8 +111,8 @@
 		<script type="text/javascript">
 		// ** Funciones editor de texto WYSIWYG
 			tinymce.init({
-			  selector: '#mytextarea',
-			  height: 500,
+			  selector: '.contenidos',
+			  height: 200,
 			  plugins: [
 				"advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
 				"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",

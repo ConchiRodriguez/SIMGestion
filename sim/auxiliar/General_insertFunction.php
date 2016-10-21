@@ -16,7 +16,7 @@ function insertFunction ($tabla,$camposInsert,$datosInsert){
 	}
 	$sql = $sql.")";
 	mysqli_query($dbhandle,convertSQL($sql));
-	echo $sql;
+	echo $sql."<br>";
 }
 
 ?>

@@ -3,11 +3,7 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarUsuari ($url){
-	global $db,$dbhandle,$idioma;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$Datos,$Usuario,$Anadir,$Usuarios,$Direccion,$Email,$Contrasena,$Repetir,$Tipo,$Modificar,$Volver;
 	if ($_GET["id_user"] > 0){
 		$sqluser = "select usuario,mail,id_tipus from sgm_users WHERE id=".$_GET["id_user"];
 		$resultuser = mysqli_query($dbhandle,convertSQL($sqluser));

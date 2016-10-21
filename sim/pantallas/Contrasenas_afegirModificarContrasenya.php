@@ -3,11 +3,7 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarContrasenya ($url){
-	global $db,$dbhandle,$idioma;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$Volver,$Editar,$Contrasena,$Contrato,$Aplicacion,$Acceso,$Usuario,$Descripcion,$Modificar,$Anadir,$Anterior,$Nueva,$Repetir;
 	if ($_GET["id_con"] > 0){
 		$sqlcc = "select * from sgm_contrasenyes WHERE id=".$_GET["id_con"];
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));

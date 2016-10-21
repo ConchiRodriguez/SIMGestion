@@ -3,11 +3,7 @@ error_reporting(~E_ALL);
 
 
 function modificarContrasenya($url_volver){
-	global $db,$dbhandle,$ssoption,$userid,$simclau,$idioma;
-
-	if ($idioma == "es"){ include ("sgm_es.php");}
-	if ($idioma == "cat"){ include ("sgm_cat.php");}
-
+	global $db,$dbhandle,$Volver,$Modificar,$Contrasena,$Cliente,$Aplicacion,$Anterior,$Nueva,$Repetir,$Campos,$Obligatorios,$ssoption,$userid,$simclau,$mesaje_modificar,$PassIncorrecto;
 	if ($ssoption == 1) {
 		$cadena = encrypt($_POST["passold"],$simclau);
 		$sql = "select Count(*) AS total from sgm_contrasenyes WHERE id='".$_GET["id_con"]."' and pass='".$cadena."'";

@@ -11,7 +11,7 @@ if ($option == 100) {
 				echo "<th><font class=\"tahomagrey\">".$Contrasena."</font></th>";
 				echo "<td><input type=\"Password\" name=\"pass\" maxlength=\"100\" style=\"width:150px\"></td>";
 			echo "</tr>";
-			echo "<tr><td></td><td class=\"Submit\"><input type=\"Submit\" value=\"".$Entrar."\"></td></tr>";
+			echo "<tr><td></td><td><input type=\"Submit\" value=\"".$Entrar."\" style=\"width:150px\"></td></tr>";
 			echo "</form>";
 			echo "<tr><td></td><td><a href=\"index.php?op=100&sop=1\">".$ayudaLogin."</a></td></tr>";
 		echo "</table>";
@@ -27,7 +27,7 @@ if ($option == 100) {
 			echo "</tr>";
 			echo "<tr>";
 				echo "<td style=\"vertical-align:middle;\"><input type=\"text\" name=\"mail\"  style=\"width:300px;\"></td>";
-				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Recuperar."\"></td>";
+				echo "<td><input type=\"Submit\" value=\"".$Recuperar."\"></td>";
 			echo "</tr>";
 		echo "</table>";
 		echo "</form>";
