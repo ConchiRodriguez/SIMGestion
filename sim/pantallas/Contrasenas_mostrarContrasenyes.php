@@ -12,17 +12,21 @@ function mostrarContrasenyes ($link_edit,$link_del,$link_veure_contra,$link_edit
 			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") {
 				echo mensaje_error($PassIncorrecto);
 			} else {
-				$cadena = encrypt($_POST["pass1"],$simclau);
-				$camposInsert = "id_contrato,id_aplicacion,acceso,usuario,pass,descripcion";
-				$datosInsert = array($_POST["id_contrato"],$_POST["id_aplicacion"],$_POST["acceso"],$_POST["usuario"],$cadena,$_POST["descripcion"]);
-				insertFunction ("sgm_contrasenyes",$camposInsert,$datosInsert);
+				if ($_POST["id_contrato"] == '') {
+					echo mensaje_error($SinContrato);
+				} else {
+					$cadena = encrypt($_POST["pass1"],$simclau);
+					$camposInsert = "id_contrato,id_aplicacion,acceso,usuario,pass,descripcion";
+					$datosInsert = array($_POST["id_contrato"],$_POST["id_aplicacion"],$_POST["acceso"],$_POST["usuario"],$cadena,$_POST["descripcion"]);
+					insertFunction ("sgm_contrasenyes",$camposInsert,$datosInsert);
 
-				$sqlcc = "select id from sgm_contrasenyes where id_contrato=".$_POST["id_contrato"]." and id_aplicacion=".$_POST["id_aplicacion"]." and acceso='".$_POST["acceso"]."' order by id desc";
-				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
-				$rowcc = mysqli_fetch_array($resultcc);
-				$camposInsert = "id_contrasenya,id_usuario,fecha,accion";
-				$datosInsert = array($rowcc["id"],$userid,time(),"0");
-				insertFunction ("sgm_contrasenyes_lopd",$camposInsert,$datosInsert);
+					$sqlcc = "select id from sgm_contrasenyes where id_contrato=".$_POST["id_contrato"]." and id_aplicacion=".$_POST["id_aplicacion"]." and acceso='".$_POST["acceso"]."' order by id desc";
+					$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+					$rowcc = mysqli_fetch_array($resultcc);
+					$camposInsert = "id_contrasenya,id_usuario,fecha,accion";
+					$datosInsert = array($rowcc["id"],$userid,time(),"0");
+					insertFunction ("sgm_contrasenyes_lopd",$camposInsert,$datosInsert);
+				}
 			}
 		}
 		if ($ssoption == 2) {

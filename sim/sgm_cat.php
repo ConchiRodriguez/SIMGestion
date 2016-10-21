@@ -742,6 +742,7 @@ $info_cliente_vip = "El Client VIP es aquell client amb consideracions especials
 $CambioPassCorrecto = "La contrasenya s'ha modificat correctament";
 $Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta.";
 $ContrasenyaAppErrorEliminar = "No es pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
+$SinContrato = "No es pot introduir una contrasenya sense indicar el contracte.";
 #Contratos
 $Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
 $Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
