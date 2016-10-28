@@ -1125,7 +1125,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						if (($cambio_pago == true) and ($_POST["cambio2"] == 0)) { mensageError($InfoCambioFormaPagoTPV); }
 						if (($cambio_pago == true) and ($_POST["cambio2"] == 1)) { mensageError($InfoCambioFormaPagoTPV2); }
 						echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-							if ($row["id_tipo_pago"] == 0) { $color = "#FF6347"; } elseif ($row["id_tipo_pago"] <> 0) {$color = "#32CD32";}
+							if ($row["id_tipo_pago"] == 0) { $color = $color_naranja; } elseif ($row["id_tipo_pago"] <> 0) {$color = $color_verde;}
 							echo "<tr style=\"background-color:".$color.";width:450px;vertical-align:middle;height:50px;text-align:center\">";
 								echo "<form action=\"index.php?op=1003&sop=100&ssop=10&id=".$_GET["id"]."&id_tipo=".$_GET["id_tipo"]."\" method=\"post\">";
 								echo "<td><select name=\"id_tipo_pago\">";
@@ -1278,27 +1278,22 @@ if (($option == 1003) AND ($autorizado == true)) {
 												$sqlcl1 = "select id from sgm_clients where visible=1 and nif=(select nif from sgm_dades_origen_factura)";
 												$resultcl1 = mysqli_query($dbhandle,convertSQL($sqlcl1));
 												$rowcl1 = mysqli_fetch_array($resultcl1);
-#												$sql1b = "select count(*) as total from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
-												$sql1b = "select count(*) as total from sgm_contratos where visible=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
+												$sql1b = "select count(*) as total from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
 												$result1b = mysqli_query($dbhandle,convertSQL($sql1b));
 												$row1b = mysqli_fetch_array($result1b);
 												if ($row1b["total"] > 0){
-#													$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
-													$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
+													$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row["id_cliente"]." and id_cliente<>".$rowcl1["nif"];
 												} else {
-#													$sql1b2b = "select count(*) as total from sgm_contratos where visible=1 and activo=1 and id_cliente=(select id_agrupacio from sgm_clients where id=".$row["id_cliente"].")";
-													$sql1b2b = "select count(*) as total from sgm_contratos where visible=1 and id_cliente=(select id_agrupacio from sgm_clients where id=".$row["id_cliente"].")";
+													$sql1b2b = "select count(*) as total from sgm_contratos where visible=1 and activo=1 and id_cliente=(select id_agrupacio from sgm_clients where id=".$row["id_cliente"].")";
 													$result1b2b = mysqli_query($dbhandle,convertSQL($sql1b2b));
 													$row1b2b = mysqli_fetch_array($result1b2b);
 													if ($row1b2b["total"] > 0){
 														$sql1b2 = "select id_agrupacio from sgm_clients where id=".$row["id_cliente"];
 														$result1b2 = mysqli_query($dbhandle,convertSQL($sql1b2));
 														$row1b2 = mysqli_fetch_array($result1b2);
-#														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row1b2["id_agrupacio"];
-														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and id_cliente=".$row1b2["id_agrupacio"];
+														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1 and id_cliente=".$row1b2["id_agrupacio"];
 													} else {
-#														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1";
-														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1";
+														$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1";
 													}
 												}
 												$result1a = mysqli_query($dbhandle,convertSQL($sql1a));

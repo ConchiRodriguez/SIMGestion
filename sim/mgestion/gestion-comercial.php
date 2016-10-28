@@ -43,8 +43,84 @@ if (($option == 1009) AND ($autorizado == true)) {
 				insertFunction("sim_comercial_oferta_rel_contenido",$camposInsert,$datosInsert);
 			}
 		}
+		if ($ssoption == 2) {
+			$camposUpdate=array('aceptada');
+			$datosUpdate=array(1);
+			updateFunction("sim_comercial_oferta",$_GET["id"],$camposUpdate,$datosUpdate);
+			# Pediente de que hacer en facturación #
+		}
+		if ($ssoption == 3) {
+			$camposUpdate=array('aceptada');
+			$datosUpdate=array(0);
+			updateFunction("sim_comercial_oferta",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		if ($soption == 200) {
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+				echo "<tr style=\"background-color:silver;\">";
+					echo "<th>".$Cliente."</th>";
+					echo "<th>".$Cliente." ".$Final."</th>";
+					echo "<th>".$Historico."</th>";
+					echo "<th></th>";
+				echo "</tr>";
+				echo "<tr>";
+					echo "<form action=\"index.php?op=1009&sop=200\" method=\"post\">";
+					echo "<td style=\"width:25%\">";
+						echo "<select name=\"id_cliente\">";
+						echo "<option value=\"0\">-</option>";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							if ($_POST["id_cliente"] == $row["id"]){
+								echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
+							} else {
+								echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
+							}
+						}
+						echo "</select>";
+					echo "</td>";
+					echo "<td style=\"width:5%;\"><input type=\"Text\" style=\"width:100%;\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\"></td>";
+					$fecha = getdate();
+					if ($_POST["data_desde1"]){
+						$data = $_POST["data_desde1"];
+						$data1 = $_POST["data_fins1"];
+					} else {
+						$data = cambiarFormatoFechaDMY(date("Y-m-d"));
+						$data1 = $data;
+					}
+					if ($_POST["data_desde2"]){
+						$data2 = $_POST["data_desde2"];
+						$data3 = $_POST["data_fins2"];
+					} else {
+						$data2 = cambiarFormatoFechaDMY(date("Y-m-d", mktime(0,0,0,$fecha["mon"] ,$fecha["mday"], $fecha["year"])));
+						$data3 = $data2;
+					}
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"data_desde1\" value=\"".$data."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"data_fins1\" value=\"".$data1."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"codigo\" value=\"".$_POST["codigo"]."\"></td>";
+					echo "<td><input type=\"Text\" style=\"width:100%;\" name=\"articulo\" value=\"".$_POST["articulo"]."\"></td>";
+					echo "<td>";
+						echo "<select name=\"hist\">";
+						echo "<option value=\"0\">-</option>";
+							if ($_POST["hist"] == 0){
+								echo "<option value=\"0\" selected>".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
+							} else {
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\" selected>".$Si."</option>";
+							}
+						echo "</select>";
+					echo "</td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			echo "</table>";
+			echo "<br>";
+		}
 		if (($soption != 200) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0)){
 			echo "<h4>".$Oferta_Comercial." :</h4>";
+			if ($_GET["hist"] == 0) { echo boton(array("op=1009&sop=0&hist=1"),array($Historico)); }
+			if ($_GET["hist"] == 1) { echo boton(array("op=1009&sop=0"),array($Actual)); }
 			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver\">";
 					echo "<th>".$Eliminar."</th>";
@@ -60,8 +136,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 				if ($_POST["id_cliente_final2"] > 0) {
 					$sqlcc = $sqlcc." and id_cliente_final=".$_POST["id_cliente_final2"]."";
 				}
-#				if ($soption == 0){ $sqlcc = $sqlcc." and renovado=0";}
-#				if ($soption == 1){ $sqlcc = $sqlcc." and renovado=1";}
+				if ($_GET["hist"] == 0){ $sqlcc = $sqlcc." and aceptada=0";}
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
 					echo "<tr>";
@@ -81,6 +156,15 @@ if (($option == 1009) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1009&sop=10&id=".$rowcc["id"]."\" method=\"post\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Imprimir."\"></td>";
 					echo "</form>";
+				if ($rowcc["aceptada"] == 0){
+					echo "<form action=\"index.php?op=1009&sop=0&ssop=2&id=".$rowcc["id"]."\" method=\"post\">";
+						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Aprobar."\"></td>";
+					echo "</form>";
+				} else {
+					echo "<form action=\"index.php?op=1009&sop=0&ssop=3&id=".$rowcc["id"]."\" method=\"post\">";
+						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Desaprobar."\"></td>";
+					echo "</form>";
+				}
 					echo "</tr>";
 				}
 			echo "</table>";
@@ -95,7 +179,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "<th>".$Tipo."</th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
-				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-ofertas-print-pdf.php?id=".$_GET["id"]."\" target=\"_blank\">";
+				echo "<form method=\"post\" action=\"".$urlmgestion."/mgestion/gestion-comercial-ofertas-print-pdf.php?id=".$_GET["id"]."\" target=\"_blank\">";
 				echo "<td><select name=\"tipo\" style=\"width:100px\">";
 					echo "<option value=\"0\">".$Normal."</option>";
 					echo "<option value=\"1\">".$Extendido."</option>";
@@ -330,6 +414,23 @@ if (($option == 1009) AND ($autorizado == true)) {
 		if ($ssoption == 3) {
 			deleteFunction("sim_comercial_oferta_valoracion",$_GET["id_val"]);
 		}
+		if ($ssoption == 4) {
+			$sql = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)){
+				$camposUpdate=array('aceptada');
+				$datosUpdate=array(0);
+				updateFunction("sim_comercial_oferta_valoracion",$row["id"],$camposUpdate,$datosUpdate);
+			}
+			$camposUpdate=array('aceptada');
+			$datosUpdate=array(1);
+			updateFunction("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 5) {
+			$camposUpdate=array('aceptada');
+			$datosUpdate=array(0);
+			updateFunction("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
+		}
 
 		echo "<h4>".$Valoraciones."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -353,9 +454,8 @@ if (($option == 1009) AND ($autorizado == true)) {
 			$sql = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
-				$color = "white";
-				$colorl = "black";
-				echo "<tr>";
+				if ($row["aceptada"] == 1){$color = $color_verde;} else {$color = "white";}
+				echo "<tr style=\"background-color:".$color.";\">";
 					echo "<form action=\"index.php?op=1009&sop=122&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1009&sop=121&id=".$_GET["id"]."&id_val=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
 					echo "<td>".$row["descripcion"]."</td>";
@@ -367,6 +467,15 @@ if (($option == 1009) AND ($autorizado == true)) {
 					echo "<td style=\"text-align:right\">".number_format($total_valoracion,2,'.','')." ".$rowd["abrev"]."</td>";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
 					echo "</form>";
+				if ($row["aceptada"] == 0){
+					echo "<form action=\"index.php?op=1009&sop=120&ssop=4&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Aprobar."\"></td>";
+					echo "</form>";
+				} else {
+					echo "<form action=\"index.php?op=1009&sop=120&ssop=5&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Desaprobar."\"></td>";
+					echo "</form>";
+				}
 				echo "</tr>";
 			}
 		echo "</table>";
@@ -513,7 +622,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 			insertFunction("sim_comercial_contenido",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
-			$camposUpdate=array('id_comercial_contenido','titulo','id_idioma','obligatorioo','id_servicio');
+			$camposUpdate=array('id_comercial_contenido','titulo','id_idioma','obligatorio','id_servicio');
 			$datosUpdate=array($_POST["id_comercial_contenido"],comillas($_POST["titulo"]),$_POST["id_idioma"],$_POST["obligatorio"],$_POST["id_servicio"]);
 			updateFunction("sim_comercial_contenido",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
@@ -705,8 +814,15 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "</table>";
 	}
 
-	if ($soption == 516) {
+	if (($soption == 516) AND ($admin == true)){
 		echo anadirArchivo($_GET["id"],7,'');
+	}
+
+	if (($soption == 517) AND ($admin == true)) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1009&sop=516&ssop=2&id=".$_GET["id"]."&id_archivo=".$_GET["id_archivo"],"op=1009&sop=516&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
 	}
 
 	if (($soption == 520) and ($admin == true)) {

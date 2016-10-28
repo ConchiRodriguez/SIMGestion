@@ -62,4 +62,8 @@ $recibo = "Rebut";
 $listado_articulos = "Llistat d'Articles";
 $retenciones = "Retencions";
 
+$articulos = "Articles";
+$valoracion_economica = "Valoració Económica";
+$indice = "Índex";
+
 ?>

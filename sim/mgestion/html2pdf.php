@@ -36,10 +36,11 @@ function txtentities($html){
 /************************************/
 class createPDF {
 
-    function __construct($_html,$_title) {
+    function __construct($_html,$_title,$_idioma) {
         // main vars
         $this->html=$_html;               // html text to convert to PDF
         $this->title=$_title;             // article title
+        $this->idioma=$_idioma;             // article title
         // other options
         $this->from='iso-8859-2';         // input encoding
         $this->to='cp1250';               // output encoding
@@ -75,7 +76,7 @@ class createPDF {
         $pdf->SetCreator("Solucions-IM");
         $pdf->SetDisplayMode('real');
         $pdf->SetTitle($this->_convert($this->title));
-        $pdf->Portada('Oferta Comercial');
+        $pdf->Portada('Oferta Comercial',$this->idioma);
         $pdf->AddPage();
 		
 

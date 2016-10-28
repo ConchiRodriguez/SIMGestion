@@ -62,4 +62,8 @@ $recibo = "Recibo";
 $listado_articulos = "Listado de Articulos";
 $retenciones = "Retenciones";
 
+$articulos = "Articulos";
+$valoracion_economica = "Valoración Económica";
+$indice = "Índice";
+
 ?>

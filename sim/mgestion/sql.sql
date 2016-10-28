@@ -382,6 +382,7 @@ ALTER TABLE `sim_comercial_oferta` ADD `id_idioma` int(11) NOT NULL default '0' 
 ALTER TABLE `sim_comercial_oferta` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `id_idioma`;
 ALTER TABLE `sim_comercial_oferta` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 ALTER TABLE `sim_comercial_oferta` ADD `versionado` tinyint(1) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sim_comercial_oferta` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `visible`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
@@ -393,6 +394,7 @@ ALTER TABLE `sim_comercial_oferta_valoracion` ADD `id_comercial_oferta` int(11) 
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `id_comercial_oferta`;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `total` decimal(11,3) NOT NULL default '0' AFTER `descripcion` ;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descuento` decimal(11,2) NOT NULL default '0' AFTER `total` ;
+ALTER TABLE `sim_comercial_oferta_valoracion` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `descuento`;
 
 CREATE TABLE `sim_comercial_oferta_valoracion_rel_articulos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_comercial_oferta_valoracion` int(11) NOT NULL default '0' AFTER `id`;
@@ -755,7 +757,7 @@ ALTER TABLE `sim_formato_documento` ADD `formato_documento` varchar(50) default 
 ALTER TABLE `sim_formato_documento` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `formato_documento`;
 
 CREATE TABLE `sgm_idiomas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
-ALTER TABLE `sgm_idiomas` ADD `idioma` varchar(2) NOT NULL default 'ES' AFTER `id`;
+ALTER TABLE `sgm_idiomas` ADD `idioma` varchar(2) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_idiomas` ADD `descripcion` varchar(15) NOT NULL default '' AFTER `idioma`;
 ALTER TABLE `sgm_idiomas` ADD `imagen` varchar(15) NOT NULL default '' AFTER `descripcion`;
 ALTER TABLE `sgm_idiomas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `imagen`;
