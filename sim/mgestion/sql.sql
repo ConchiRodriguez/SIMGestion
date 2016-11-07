@@ -383,6 +383,7 @@ ALTER TABLE `sim_comercial_oferta` ADD `descripcion` varchar(255) NOT NULL defau
 ALTER TABLE `sim_comercial_oferta` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 ALTER TABLE `sim_comercial_oferta` ADD `versionado` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sim_comercial_oferta` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sim_comercial_oferta` ADD `cerrada` tinyint(1) NOT NULL default '0' AFTER `aceptada`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;

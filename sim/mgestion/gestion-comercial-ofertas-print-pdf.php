@@ -57,7 +57,7 @@ class PDF extends FPDF
         $this->_toc[]=array('t'=>$txt,'l'=>$level,'p'=>$this->numPageNo());
     }
 
-    function insertTOC( $location=1,$labelSize=20,$entrySize=10,$tocfont='Times') {
+    function insertTOC( $location=1,$labelSize=20,$entrySize=10,$tocfont='Calibri') {
 		global $indice;
         //make toc at end
         $this->stopPageNums();
@@ -118,7 +118,7 @@ class PDF extends FPDF
         //Go to 1.5 cm from bottom
         $this->SetY(-15);
         //Select Arial italic 8
-        $this->SetFont('Times','I',8);
+        $this->SetFont('Calibri','',8);
         $this->Cell(0,7,$this->numPageNo(),0,0,'C'); 
         if(!$this->_numbering)
             $this->_numberingFooter=false;
@@ -270,14 +270,14 @@ class PDF extends FPDF
 		// Etiqueta de cierre
         if ($tag=='H1' || $tag=='H2' || $tag=='H3' || $tag=='H4'){
             $this->Ln(6);
-            $this->SetFont('Times','',10);
+            $this->SetFont('Calibri','',10);
             $this->SetFontSize(10);
             $this->SetStyle('U',false);
             $this->SetStyle('B',false);
             $this->mySetTextColor(-1);
         }
         if ($tag=='PRE'){
-            $this->SetFont('Times','',10);
+            $this->SetFont('Calibri','',10);
             $this->SetFontSize(10);
             $this->PRE=false;
         }
@@ -302,7 +302,7 @@ class PDF extends FPDF
                 $this->SetTextColor(0,0,0);
             }
             if ($this->issetfont) {
-                $this->SetFont('Times','',10);
+                $this->SetFont('Calibri','',10);
                 $this->issetfont=false;
             }
         }
@@ -330,7 +330,7 @@ class PDF extends FPDF
 		$this->Write(5,$txt,$URL);
 		$this->SetStyle('U',false);
 		$this->SetTextColor(0);
-		$this->SetFont('Times','',10);
+		$this->SetFont('Calibri','',10);
  	}
 
     function PutLine()
@@ -382,10 +382,10 @@ class PDF extends FPDF
 		$resultov = mysqli_query($dbhandle,convertSQL($sqlov));
 		while ($rowov = mysqli_fetch_array($resultov)){
 
-			$this->SetFont('Times','',12);
+			$this->SetFont('Calibri','',12);
 			$this->Cell(180,5,$rowov["descripcion"],0,1);
 			$this->Ln();
-			$this->SetFont('Times','',10);
+			$this->SetFont('Calibri','',10);
 			$this->Cell(40,5,$unitats,0,0);
 			$this->Cell(100,5,$articulos,0,0);
 			$this->Cell(40,5,$precio." ".$total,0,1);
@@ -407,7 +407,7 @@ class PDF extends FPDF
 				$total_art = $row["pvp"] * $rowcova["unidades"];
 				$total_val += $total_art;
 				
-				$this->SetFont('Times','',10);
+				$this->SetFont('Calibri','',9);
 				$this->Cell(40,5,$rowcova["unidades"],0,0);
 				$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
 				$this->Cell(40,5,$total_art." ".$rowd["abrev"],0,1,'R');
@@ -423,16 +423,26 @@ class PDF extends FPDF
 
 	
  	$pdf=new PDF();
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
 	$pdf->SetCreator("Solucions-IM");
 	$pdf->SetDisplayMode('real');
 	$pdf->SetTitle($rowof["descripcion"]);
 	$pdf->Portada('Oferta Comercial',$rowi["idioma"]);
 	$pdf->startPageNums();
 
+	$orden_contenido = 0;
 	$sqlofc = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"]." order by orden";
 	$resultofc = mysqli_query($dbhandle,convertSQL($sqlofc));
 	while ($rowofc = mysqli_fetch_array($resultofc)){
-		$pdf->AddPage();
+#		echo $orden_contenido."-".substr($rowofc["orden"],0,2)."<br>";
+		if ($orden_contenido != substr($rowofc["orden"],0,2)){
+			$pdf->AddPage();
+			$orden_contenido = substr($rowofc["orden"],0,2);
+		} else {
+			$pdf->Ln(15);
+		}
 		$sqlcon = "select * from sim_comercial_contenido where id=".$rowofc["id_comercial_contenido"];
 		$resultcon = mysqli_query($dbhandle,convertSQL($sqlcon));
 		$rowcon = mysqli_fetch_array($resultcon);
@@ -441,13 +451,14 @@ class PDF extends FPDF
 		$pdf->SetTextColor(51,51,159);
 		$pdf->SetFontSize(14);
 		$pdf->SetStyle('B',true);
-		$pdf->Cell(180,5,$rowofc["orden"]." ".$rowcon["titulo"],0,1);
-		$pdf->entryTOC($rowofc["orden"]." ".$rowcon["titulo"],0);
+		
+		$pdf->Cell(180,5,ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0,1);
+		$pdf->entryTOC(ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0);
 		$pdf->Ln(5);
 
 		$texto_html = $contenido."<br>";
 		$pdf->SetTextColor(0,0,0);
-		$pdf->SetFont('Times','',10);
+		$pdf->SetFont('Calibri','',10);
 		$pdf->WriteHTML($texto_html);
 		
 		$sqlf = "select * from sgm_files where tipo_id_elemento=7 and id_elemento=".$rowcon["id"];

@@ -389,10 +389,10 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<h4>".$Facturacion."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"2\" class=\"lista\">";
 			echo "<tr>";
-			echo $sqltipos2 = "select id,tipo from sgm_factura_tipos where visible=1 and id in (select tipo from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"].") order by orden,descripcion";
+			$sqltipos2 = "select id,tipo from sgm_factura_tipos where visible=1 and id in (select tipo from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"].") order by orden,descripcion";
 			$resulttipos2 = mysqli_query($dbhandle,convertSQL($sqltipos2));
 			while ($rowtipos2 = mysqli_fetch_array($resulttipos2)) {
-				echo $sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
+				$sqlpermiso = "select count(*) as total from sgm_factura_tipos_permisos where id_tipo=".$rowtipos2["id"]." and id_user=".$userid;
 				$resultpermiso = mysqli_query($dbhandle,convertSQL($sqlpermiso));
 				$rowpermiso = mysqli_fetch_array($resultpermiso);
 				if ($rowpermiso["total"] > 0) { 

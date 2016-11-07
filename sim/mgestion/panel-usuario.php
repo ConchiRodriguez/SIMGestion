@@ -33,7 +33,30 @@ if (($option == 200) AND ($user == true)) {
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Contratos."</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Bolsa." ".$Horas."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"width:750px;\">".$Bolsa." ".$Horas."</th>";
+							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["bh"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"bh\" value=\"1\">";
+							}
+							if ($_POST["bh"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"bh\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["bh"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:450px;\">".$Cliente."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
@@ -69,12 +92,36 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td style=\"color:".$color_letra."\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
+					}
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Resumen." ".$Contratos."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"2\" style=\"width:750px;\">".$Resumen." ".$Contratos."</th>";
+							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["rc"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"1\">";
+							}
+							if ($_POST["rc"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["rc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:550px;\">".$Cliente."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
@@ -105,6 +152,7 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
+					}
 					echo "</table>";
 				echo "<td>";
 			echo "</tr>";
@@ -112,7 +160,30 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Facturacion." ".$Mensual." ".$Horas."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"2\" style=\"width:750px;\">".$Facturacion." ".$Mensual." ".$Horas."</th>";
+							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["fm"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"1\">";
+							}
+							if ($_POST["fm"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["fm"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:450px;\">".$Cliente."</th>";
 							echo "<th style=\"width:300px;\">".$Contrato."</th>";
@@ -144,6 +215,7 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
+					}
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
@@ -154,7 +226,30 @@ if (($option == 200) AND ($user == true)) {
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Facturacion."</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Facturar." 15 ".$Dias."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"width:800px;\">".$Facturacion." 15 ".$Dias."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["fd"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"1\">";
+							}
+							if ($_POST["fd"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["fd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
 							echo "<th style=\"width:150px;\">".$Fecha."</th>";
@@ -182,12 +277,36 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
 							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
 						echo "</tr>";
+					}
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Presupuesto." ".$Aprobado."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"width:800px;\">".$Presupuesto." ".$Aprobado."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["pa"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"1\">";
+							}
+							if ($_POST["pa"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["pa"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
 							echo "<th style=\"width:150px;\">".$Fecha."</th>";
@@ -213,6 +332,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
 							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
 						echo "</tr>";
+					}
 					echo "</table>";
 				echo "<td>";
 			echo "</tr>";
@@ -220,7 +340,30 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Pagos." 15 ".$Dias."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"3\" style=\"width:800px;\">".$Pagos." 15 ".$Dias."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["pd"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"1\">";
+							}
+							if ($_POST["pd"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["pd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:150px;\">".$Numero." ".$Factura."</th>";
 							echo "<th style=\"width:150px;\">".$Fecha."</th>";
@@ -248,11 +391,35 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
 							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
 						echo "</tr>";
+					}
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Cobros." 15 ".$Dias."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"4\" style=\"width:800px;\">".$Cobros." 15 ".$Dias."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["cd"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"1\">";
+							}
+							if ($_POST["cd"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["cd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:100px;\">".$Numero." ".$Factura."</th>";
 							echo "<th style=\"width:100px;\">".$Fecha."</th>";
@@ -282,6 +449,8 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th colspan=\"4\" style=\"border-top:1px solid black;\"></th>";
 							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
 						echo "</tr>";
+					
+					}
 					echo "</table>";
 				echo "<td>";
 			echo "</tr>";
@@ -290,7 +459,30 @@ if (($option == 200) AND ($user == true)) {
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Incidencias."</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Sin." ".$Contrato."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"2\" style=\"width:800px;\">".$Sin." ".$Contrato."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["sc"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"1\">";
+							}
+							if ($_POST["sc"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["sc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:400px;\">".$Cliente."</th>";
 							echo "<th style=\"width:400px;\">".$Asunto."</th>";
@@ -316,76 +508,101 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
+					}
 					echo "</table>";
 				echo "<td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<caption>".$Usuario." ".$Actual."</caption>";
+						echo "<tr>";
+							echo "<th colspan=\"2\" style=\"width:800px;\">".$Usuario." ".$Actual."</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
+							if ($_POST["ua"] == 0){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"1\">";
+							}
+							if ($_POST["ua"] == 1){ 
+								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_up.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
+								echo "<input type=\"hidden\" name=\"ua\" value=\"0\">";
+							}
+								echo "<input type=\"hidden\" name=\"bh\" value=\"".$_POST["bh"]."\">";
+								echo "<input type=\"hidden\" name=\"rc\" value=\"".$_POST["rc"]."\">";
+								echo "<input type=\"hidden\" name=\"fm\" value=\"".$_POST["fm"]."\">";
+								echo "<input type=\"hidden\" name=\"fd\" value=\"".$_POST["fd"]."\">";
+								echo "<input type=\"hidden\" name=\"pa\" value=\"".$_POST["pa"]."\">";
+								echo "<input type=\"hidden\" name=\"pd\" value=\"".$_POST["pd"]."\">";
+								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
+								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
+							echo "</form>";
+							echo "</th>";
+						echo "</tr>";
+					if ($_POST["ua"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:400px;\">".$Cliente."</th>";
 							echo "<th style=\"width:400px;\">".$Asunto."</th>";
 							echo "<th style=\"width:100px;\">".$SLA."</th>";
 						echo "</tr>";
-					for ($i = 1; $i<=4;$i++){
-						$sqli = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_estado<>-2 and id_usuario_destino=".$userid;
-						if ($i == 1) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision > 0 and pausada=0"; }
-						elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente<>(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
-						elseif ($i == 3) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente=(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
-						elseif ($i == 4) { $sqli = $sqli." and pausada=1"; }
-						$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
-						$resulti = mysqli_query($dbhandle,convertSQL($sqli));
-						while ($rowi = mysqli_fetch_array($resulti)) {
-							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowi["id_cliente"];
-							$resulta = mysqli_query($dbhandle,convertSQL($sqla));
-							$rowa = mysqli_fetch_array($resulta);
+						for ($i = 1; $i<=4;$i++){
+							$sqli = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_estado<>-2 and id_usuario_destino=".$userid;
+							if ($i == 1) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision > 0 and pausada=0"; }
+							elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente<>(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
+							elseif ($i == 3) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente=(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
+							elseif ($i == 4) { $sqli = $sqli." and pausada=1"; }
+							$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
+							$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+							while ($rowi = mysqli_fetch_array($resulti)) {
+								$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowi["id_cliente"];
+								$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+								$rowa = mysqli_fetch_array($resulta);
 
-							$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1";
-							$resultd = mysqli_query($dbhandle,convertSQL($sqld));
-							$rowd = mysqli_fetch_array($resultd);
-							$total_horas = $rowd["total"];
-							$hora = $total_horas/60;
-							$horas = explode(".",$hora);
-							$minutos = $total_horas % 60;
-							$sqlc = "select temps_resposta from sgm_contratos_servicio where id=".$rowi["id_servicio"];
-							$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-							$rowc = mysqli_fetch_array($resultc);
-							if ($rowc["temps_resposta"] != 0){
-								$hora_actual = time();
-								$horax = $rowi["temps_pendent"]/3600;
-								$horas2 = explode(".",$horax);
-								$minutox = (($horax - $horas2[0])*60);
-								$minutos2 = explode(".",$minutox);
-								$sla = "".$horas2[0]."h. ".$minutos2[0]."m.";
-								if ($horas2[0] > 4){
-										$estado_color = "White";
-										$estado_color_letras = "";
+								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1";
+								$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+								$rowd = mysqli_fetch_array($resultd);
+								$total_horas = $rowd["total"];
+								$hora = $total_horas/60;
+								$horas = explode(".",$hora);
+								$minutos = $total_horas % 60;
+								$sqlc = "select temps_resposta from sgm_contratos_servicio where id=".$rowi["id_servicio"];
+								$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+								$rowc = mysqli_fetch_array($resultc);
+								if ($rowc["temps_resposta"] != 0){
+									$hora_actual = time();
+									$horax = $rowi["temps_pendent"]/3600;
+									$horas2 = explode(".",$horax);
+									$minutox = (($horax - $horas2[0])*60);
+									$minutos2 = explode(".",$minutox);
+									$sla = "".$horas2[0]."h. ".$minutos2[0]."m.";
+									if ($horas2[0] > 4){
+											$estado_color = "White";
+											$estado_color_letras = "";
+									}
+									if (($horas2[0] < 4) and ($horas2[0] >= 0)) {
+											$estado_color = "Orange";
+											$estado_color_letras = "";
+									}
+									if (($horas2[0] < 0) or ($minutos2[0] < 0)) {
+										$estado_color = "Red";
+										$estado_color_letras = "White";
+									}
+									$fecha_prev = date("Y-m-d H:i:s", $rowi["fecha_prevision"]);
+								} else {
+									$sla = "";
+									$fecha_prev = "";
+									$estado_color = "";
+									$estado_color_letras = "";
 								}
-								if (($horas2[0] < 4) and ($horas2[0] >= 0)) {
-										$estado_color = "Orange";
-										$estado_color_letras = "";
+								if ($rowi["pausada"] == 1){
+									$fecha_prev = "";
+									$estado_color = "#E5E5E5";
+									$estado_color_letras = "";
 								}
-								if (($horas2[0] < 0) or ($minutos2[0] < 0)) {
-									$estado_color = "Red";
-									$estado_color_letras = "White";
-								}
-								$fecha_prev = date("Y-m-d H:i:s", $rowi["fecha_prevision"]);
-							} else {
-								$sla = "";
-								$fecha_prev = "";
-								$estado_color = "";
-								$estado_color_letras = "";
+								echo "<tr style=\"background-color:".$estado_color.";\">";
+									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$estado_color_letras."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+									echo "<td><a href=\"index.php?op=1018&sop=100&id=".$rowi["id"]."\" style=\"color:".$estado_color_letras."\">".$rowi["asunto"]."</a></td>";
+									echo "<td style=\"color:".$estado_color_letras."\">".$sla."</td>";
+								echo "</tr>";
 							}
-							if ($rowi["pausada"] == 1){
-								$fecha_prev = "";
-								$estado_color = "#E5E5E5";
-								$estado_color_letras = "";
-							}
-							echo "<tr style=\"background-color:".$estado_color.";\">";
-								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$estado_color_letras."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-								echo "<td><a href=\"index.php?op=1018&sop=100&id=".$rowi["id"]."\" style=\"color:".$estado_color_letras."\">".$rowi["asunto"]."</a></td>";
-								echo "<td style=\"color:".$estado_color_letras."\">".$sla."</td>";
-							echo "</tr>";
 						}
 					}
 					echo "</table>";

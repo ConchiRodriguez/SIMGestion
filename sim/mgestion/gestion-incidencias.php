@@ -1625,6 +1625,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$data1 = date(U, mktime(0, 0, 0, $me, $i, $_POST["any"]));
 								$data2 = date(U, mktime(0, 0, 0, $me, $i+1, $_POST["any"]));
 								if (comprobar_festivo_empleado($data1,$_POST["id_usuario"]) == 1){ $color = "Orange"; } else {$color = "white";}
+								if ($data1 == date(U, mktime(0, 0, 0, date(m), date(d), date(Y)))){ $color = "yellow"; } else {$color = $color;}
 								if (comprobar_festivo2($data1) == 1){ $color = "Tomato"; } else {$color = $color;}
 								echo "<tr style=\"background-color:".$color."\">";
 									if ($count == 0){echo "<th style=\"background-color:white;\">".$i."</th>";} else {echo "<td></td>";}
