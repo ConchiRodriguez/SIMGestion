@@ -820,19 +820,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$rowd = mysqli_fetch_array($resultd);
 				$total = $rowd["total"];
 				
-						$sqlcl = "select nif from sgm_dades_origen_factura";
-						$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
-						$rowcl = mysqli_fetch_array($resultcl);
-						$sqlcli = "select id from sgm_clients where visible=1 and nif='".$rowcl["nif"]."'";
-						$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
-						$rowcli = mysqli_fetch_array($resultcli);
-				echo $sqlsc = "select nivel_tecnico from sgm_incidencias where id=".$_GET["id"]." and id_servicio in (select id from sgm_contratos_servicio where visible=1 and id_contrato not in (select id from sgm_contratos where visible=1 and id_cliente=".$rowcli["id"]." and activo=1))";
-				$resultsc = mysqli_query($dbhandle,convertSQL($sqlsc));
-				$rowsc = mysqli_fetch_array($resultsc);
-				$nivell = true;
-				if ($rowsc["nivel_tecnico"] != 0) { $nivell = false; }
-				
-				if ((($_POST["notas_registro"] != "") or ($_POST["notas_conclusion"] != ""))  and ($total > 0) and (strtotime($_POST["fecha_cierre"]) > 0) and ($nivell == true)){
+				if ((($_POST["notas_registro"] != "") or ($_POST["notas_conclusion"] != ""))  and ($total > 0) and (strtotime($_POST["fecha_cierre"]) > 0)){
 					if ($rowc["temps_resposta"] != 0){
 						$temps_pendent=(calculSLA($_GET["id"],1));
 						if ($temps_pendent > 0) { $sla = 0;} else { $sla = 1;}
@@ -1176,7 +1164,6 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr>";
 							echo "<th style=\"text-align:right;vertical-align:top;\">".$Nivel." ".$Tecnico." :</th>";
 							echo "<td><select name=\"nivel_tecnico\" style=\"width:150px\">";
-								echo "<option value=\"0\">-</option>";
 								if ($row["nivel_tecnico"] == 1){
 									echo "<option value=\"1\" selected>1</option>";
 									echo "<option value=\"2\">2</option>";
