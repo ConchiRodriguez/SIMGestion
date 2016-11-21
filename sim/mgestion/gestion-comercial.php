@@ -310,6 +310,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Cliente." ".$Final.": </td>";
 				echo "<td><select style=\"width:550px\" name=\"id_cliente_final\">";
+					echo "<option value=\"0\">-</option>";
 					$sqlb = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 					$resultb = mysqli_query($dbhandle,convertSQL($sqlb));
 					while ($rowb = mysqli_fetch_array($resultb)) {
@@ -814,7 +815,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "</tr><tr>";
 				echo "<td style=\"text-align:right;vertical-align:top;\">".$Contenido_Estendido." : </td><td><textarea name=\"contenido_extenso\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido_extenso"]."</textarea></td>";
 			echo "</tr><tr>";
-				echo "<td></td><td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:80px\"></td>";
+				echo "<td></td><td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
 			echo "</tr>";
 			echo "</form>";
 		echo "</table>";
@@ -864,7 +865,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 						echo "<option value=\"".$row["id"]."\">".$row["grupo"]."</option>";
 					}
 				echo "</td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";

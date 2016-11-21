@@ -11,3 +11,4 @@ admin/controlLog.txt
 *.db
 *.db
 *.db
+/sim/nbproject/private/

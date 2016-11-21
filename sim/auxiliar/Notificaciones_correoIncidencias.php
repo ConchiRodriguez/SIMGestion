@@ -162,26 +162,28 @@ function correoIncidencias(){
 //Busca si contiene codigo de incidencia en el asunto
 				list($idinci,$id_inc) = buscarCodigoIncidenciaEmail($asunto1,$id_cliente);
 				if ($idinci == 0) {list($idinci,$id_inc) = buscarEmailRespuesta($asunto1,$id_cliente);}
-				if ($idinci == 0) {list($idinci,$id_inc,$id_codigo_externo,$asunto2) = buscarCodigoExternoIncidencia($asunto1,$id_cliente,$mensaje);}
+				if ($idinci == 0) {list($idinci,$id_inc,$id_codigo_externo,$asunto2,$not_sla_mango) = buscarCodigoExternoIncidencia($asunto1,$id_cliente,$mensaje);}
 				if (($asunto != $asunto2) and ($asunto2 != "")) {$asunto = $asunto2;}
 //si se encuentra una sola coincidencia inserta una nota de desarrollo, si es 0 o mas de 1 añade una incidencia nueva.
 				if ($idinci == 1){
 //Añadir nota a incidencia
-					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada,codigo_externo";
-					$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
-					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
+					if ($not_sla_mango == 0){
+						$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada,codigo_externo";
+						$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
+						insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
-					$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id=".$id_inc;
-					$resultinc = mysqli_query($dbhandle,$sqlinc);
-					$rowinc = mysqli_fetch_array($resultinc);
-					$incidencia_id = $id_inc;
-					
-					$sqlser = "select auto_email,codigo_catalogo from sgm_contratos_servicio where visible=1 and id=".$rowinc["id_servicio"];
-					$resultser = mysqli_query($dbhandle,$sqlser);
-					$rowser = mysqli_fetch_array($resultser);
-//enviar notificación nueva nota en la incidencia
-					if ($rowser["auto_email"] == 1){
-						enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,'');
+						$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id=".$id_inc;
+						$resultinc = mysqli_query($dbhandle,$sqlinc);
+						$rowinc = mysqli_fetch_array($resultinc);
+						$incidencia_id = $id_inc;
+						
+						$sqlser = "select auto_email,codigo_catalogo from sgm_contratos_servicio where visible=1 and id=".$rowinc["id_servicio"];
+						$resultser = mysqli_query($dbhandle,$sqlser);
+						$rowser = mysqli_fetch_array($resultser);
+	//enviar notificación nueva nota en la incidencia
+						if ($rowser["auto_email"] == 1){
+							enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,'');
+						}
 					}
 				} else {
 //Buscar si contiene codigo de catalogo de servicio

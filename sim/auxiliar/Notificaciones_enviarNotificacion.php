@@ -8,6 +8,8 @@ $tipo: 1=incidencia nueva externa, 2=nota de incidencia externa, 3=incidencia nu
 
 function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$tipo,$body){
 	global $db,$dbhandle,$buzon_usuario;
+	
+	$cuerpo = '';
 
 	$sqlm = "select * from sgm_incidencias where id=".$id;
 	$resultm = mysqli_query($dbhandle,$sqlm);
@@ -20,25 +22,29 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 	$asunto.= comillasInver($rowm["asunto"]);
 	$email=$buzon_usuario;
 
-	$cuerpo="**Aquest &eacute;s un missatge autom&agrave;tic.**<br><br>";
+	if (($id_codigo_externo == '')) {$cuerpo.="**Aquest &eacute;s un missatge autom&agrave;tic.**<br><br>";}
 	
-	if ($tipo == 1) { $cuerpo.="Hem rebut el seu e-mail i s'ha creat una incid&egrave;ncia que els nostres t&egrave;cnics gestionaran.<br><br>";}
-	if ($tipo == 2){ $cuerpo.="Hem rebut el seu e-mail amb informaci&oacute; adicional.<br><br>";}
-	if ($tipo == 3){ $cuerpo.="S'ha creat una incid&egrave;ncia relacionada amb la seva plataforma de monitoritzaci&oacute<br><br><em>".$body."</em><br><br>";}
-	if ($tipo == 4){ $cuerpo.="La informaci&oacute; de la incid&egrave;ncia a estat actualitzada amb la seg&uuml;ent informaci&oacute :<br><br>".$body."<br><br>";}
-	if ($tipo == 5){ $cuerpo.="La incid&egrave;ncia s'ha tancat amb la seg&uuml;ent informaci&oacute :<br><br><em>".$body."</em><br><br>";}
-	if ($tipo == 6){ $cuerpo.="La incid&egrave;ncia s'ha reobert<br><br>";}
-	if ($tipo == 7){ $cuerpo.="La incid&egrave;ncia s'ha realcionat amb la seg&uuml;ent incidencia :<br><br><em>".$body."</em><br><br>";}
-	if ($tipo == 8){ $cuerpo.="La incid&egrave;ncia s'ha eliminat<br><br>";}
+	if (($id_codigo_externo == '')) {
+		if ($tipo == 1) { $cuerpo.="Hem rebut el seu e-mail i s'ha creat una incid&egrave;ncia que els nostres t&egrave;cnics gestionaran.<br><br>";}
+		if ($tipo == 2){ $cuerpo.="Hem rebut el seu e-mail amb informaci&oacute; adicional.<br><br>";}
+		if ($tipo == 3){ $cuerpo.="S'ha creat una incid&egrave;ncia relacionada amb la seva plataforma de monitoritzaci&oacute<br><br><em>".$body."</em><br><br>";}
+		if ($tipo == 4){ $cuerpo.="La informaci&oacute; de la incid&egrave;ncia a estat actualitzada amb la seg&uuml;ent informaci&oacute :<br><br>".$body."<br><br>";}
+		if ($tipo == 5){ $cuerpo.="La incid&egrave;ncia s'ha tancat amb la seg&uuml;ent informaci&oacute :<br><br><em>".$body."</em><br><br>";}
+		if ($tipo == 6){ $cuerpo.="La incid&egrave;ncia s'ha reobert<br><br>";}
+		if ($tipo == 7){ $cuerpo.="La incid&egrave;ncia s'ha realcionat amb la seg&uuml;ent incidencia :<br><br><em>".$body."</em><br><br>";}
+		if ($tipo == 8){ $cuerpo.="La incid&egrave;ncia s'ha eliminat<br><br>";}
+	} else {
+		$cuerpo.= $body;
+	}
 
-	if (($tipo != 5) and ($tipo != 6)){ $cuerpo.="Per facilitar m&eacute;s informaci&oacute;, contesti aquest missatge.<br><br>";}
+	if (($tipo != 5) and ($tipo != 6) and ($id_codigo_externo == '')){ $cuerpo.="Per facilitar m&eacute;s informaci&oacute;, contesti aquest missatge.<br><br>";}
 
-	$cuerpo.="Id Incid&egrave;ncia: ".$id."<br>";
-	$cuerpo.="Assumpte: ".$asunto."<br>";
-	$cuerpo.="Data: ".date(DATE_RFC2822,$rowm["fecha_registro_inicio"])."<br>";
-	$cuerpo.="Remitent: ".$correo_remitente."<br><br>";
+	if (($id_codigo_externo == '')) {$cuerpo.="Id Incid&egrave;ncia: ".$id."<br>";}
+	if (($id_codigo_externo == '')) {$cuerpo.="Assumpte: ".$asunto."<br>";}
+	if (($id_codigo_externo == '')) {$cuerpo.="Data: ".date(DATE_RFC2822,$rowm["fecha_registro_inicio"])."<br>";}
+	if (($id_codigo_externo == '')) {$cuerpo.="Remitent: ".$correo_remitente."<br><br>";}
 
-	$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.<br>";
+	if (($id_codigo_externo == '')) {$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.<br>";}
 
 	echo "<br>".$correo_remitente." - ".$asunto." - ".$email." - ".$cuerpo."<br>";
 

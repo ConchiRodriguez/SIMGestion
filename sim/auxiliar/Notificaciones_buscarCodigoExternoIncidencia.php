@@ -6,6 +6,7 @@ function buscarCodigoExternoIncidencia($asunto,$id_cli,$mensaje){
 
 	$x = 0;
 	$id_inc = 0;
+	$not_sla_mango = 0;
 	$rest = "";
 
 #	$sqlcs = "select funcion from sgm_contratos_servicio where visible=1 and id=".$id_servicio_con;
@@ -24,15 +25,20 @@ function buscarCodigoExternoIncidencia($asunto,$id_cli,$mensaje){
 			$x++;
 			$id_inc = $rowinc["id"];
 		}
-		$pos = strpos($mensaje,"OP5: ");
+		$pos = strpos($mensaje,"con asunto ");
 		if ($pos !== false){
 			$pos2 = strpos($mensaje,"y en estado");
-			$rest = substr($mensaje, $pos, ($pos2-$pos));
+			$pos3=$pos+11;
+			$rest = substr($mensaje, $pos3, ($pos2-$pos3));
+		}
+		$pos = strpos($asunto,"SLA Status ");
+		if ($pos !== false){
+			$not_sla_mango = 1;
 		}
 
 	}
 
-	return array($x,$id_inc,$codigo_externo,$rest);
+	return array($x,$id_inc,$codigo_externo,$rest,$not_sla_mango);
 }
 
 ?>

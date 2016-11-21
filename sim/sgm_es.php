@@ -447,6 +447,7 @@ $Nacimiento = "Nacimiento";
 $Nacion = "Naci&oacute;n";
 $NBD = "NBD";
 $NIF = "NIF";
+$Nivel = "Nivel";
 $No = "No";
 $Nombre = "Nombre";
 $Nombre_cliente = "Nombre cliente";
@@ -750,7 +751,7 @@ $info_cliente_vip = "El Cliente VIP es aquel cliente con consideraciones especia
 $CambioPassCorrecto = "La contrase&ntilde;a se ha modificado correctamente";
 $Redireccion10seg = "En 10 segundos ser&aacute; redirigido por motivos de seguridad.";
 $ContrasenyaAppErrorEliminar = "No se puede eliminar esta aplicaci&oacute;n, ya que existen contrase&ntilde;as asociadas.";
-$SinContrato = "No se puede introducir una contrase&ntilde;a sin indicar el contrato.";
+$ContrasenyaSinContrato = "No se puede introducir una contrase&ntilde;a sin indicar el contrato.";
 #Contratos
 $ContratoErrorEliminar = "No se puede eliminar este contrato, ya que existen incidencias asociadas.";
 $ContratoTipoErrorEliminar = "No se puede eliminar este tipo de contrato, ya que existen contratos asociados.";

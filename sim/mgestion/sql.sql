@@ -382,7 +382,7 @@ ALTER TABLE `sim_comercial_oferta` ADD `id_idioma` int(11) NOT NULL default '0' 
 ALTER TABLE `sim_comercial_oferta` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `id_idioma`;
 ALTER TABLE `sim_comercial_oferta` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 ALTER TABLE `sim_comercial_oferta` ADD `versionado` tinyint(1) NOT NULL default '0' AFTER `visible`;
-ALTER TABLE `sim_comercial_oferta` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `visible`;
+ALTER TABLE `sim_comercial_oferta` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `versionado`;
 ALTER TABLE `sim_comercial_oferta` ADD `cerrada` tinyint(1) NOT NULL default '0' AFTER `aceptada`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
@@ -795,6 +795,8 @@ ALTER TABLE `sgm_incidencias` ADD `pausada_forzada` tinyint(1) NOT NULL default 
 ALTER TABLE `sgm_incidencias` ADD `codigo_externo` varchar(50) default NULL AFTER `pausada_forzada`;
 ALTER TABLE `sgm_incidencias` ADD `facturada` tinyint(1) NOT NULL default '0' AFTER `codigo_externo` ;
 ALTER TABLE `sgm_incidencias` ADD `control_version` tinyint(1) NOT NULL default '0' AFTER `facturada` ;
+ALTER TABLE `sgm_incidencias` ADD `nivel_tecnico` int(1) NOT NULL default '0' AFTER `control_version` ;
+/*nivel_tecnico: 1, 2 o 3.*/
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
