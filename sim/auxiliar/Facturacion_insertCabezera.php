@@ -68,9 +68,19 @@ function insertCabezera($datosInsert){
 			$eprovincia = $row3["provincia"];
 			$eid_pais = $row3["id_pais"];
 		}
-		$sql2 = "select * from sgm_dades_origen_factura";
-		$result2 = mysqli_query($dbhandle,convertSQL($sql2));
-		$row2 = mysqli_fetch_array($result2);
+		if (!array_key_exists('iva', $datosInsert)){
+			$sql2 = "select * from sgm_dades_origen_factura";
+			$result2 = mysqli_query($dbhandle,convertSQL($sql2));
+			$row2 = mysqli_fetch_array($result2);
+			$iva = $row2['iva'];
+		} else {
+			$iva = $datosInsert['iva'];
+		}
+		if (array_key_exists('retenciones', $datosInsert)){
+			$retenciones = $datosInsert['retenciones'];
+		} else {
+			$retenciones = 0;
+		}
 		$sqld = "select * from sgm_divisas where predefinido=1";
 		$resultd = mysqli_query($dbhandle,convertSQL($sqld));
 		$rowd = mysqli_fetch_array($resultd);
@@ -91,8 +101,8 @@ function insertCabezera($datosInsert){
 		$fecha_entrega = date("Y-m-d", strtotime($fecha_entrega));
 		$fecha_vencimiento = date("Y-m-d", strtotime($fecha_vencimiento));
 
-		$camposInsert = "numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,eid_pais,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,cuenta,id_contrato,id_licencia,id_dades_origen_factura_iban,notas,total_forzado,recibos,confirmada,confirmada_cliente,descuento";
-		$datosInsert2 = array($numero,$row2["iva"],$version,$datosInsert["numero_rfq"],$datosInsert["numero_cliente"],$fecha,$fecha_prevision,$fecha_entrega,$fecha_vencimiento,$tipo,$datosInsert['subtipo'],$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["id_pais"],$row["mail"],$row["telefono"],$edireccion,$epoblacion,$ecp,$eprovincia,$eid_pais,$row2["nombre"],$row2["nif"],$row2["direccion"],$row2["poblacion"],$row2["cp"],$row2["provincia"],$row2["mail"],$row2["telefono"],$datosInsert['id_cliente'],$userid,$rowd["id"],$rowd["canvi"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"],$row["cuentacontable"],$datosInsert['id_contrato'],$datosInsert['id_licencia'],$id_dades_origen_factura_iban,$datosInsert['notas'],$datosInsert['total_forzado'],$datosInsert['recibos'],$datosInsert['confirmada'],$datosInsert['confirmada_cliente'],$rowta["porcentage"]);
+		$camposInsert = "numero,iva,version,numero_rfq,numero_cliente,fecha,fecha_prevision,fecha_entrega,fecha_vencimiento,tipo,subtipo,nombre,nif,direccion,poblacion,cp,provincia,id_pais,mail,telefono,edireccion,epoblacion,ecp,eprovincia,eid_pais,onombre,onif,odireccion,opoblacion,ocp,oprovincia,omail,otelefono,id_cliente,id_user,id_divisa,div_canvi,cnombre,cmail,ctelefono,id_contrato,id_licencia,id_dades_origen_factura_iban,notas,total_forzado,recibos,confirmada,confirmada_cliente,descuento,retenciones";
+		$datosInsert2 = array($numero,$iva,$version,$datosInsert["numero_rfq"],$datosInsert["numero_cliente"],$fecha,$fecha_prevision,$fecha_entrega,$fecha_vencimiento,$tipo,$datosInsert['subtipo'],$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"],$row["nif"],$row["direccion"],$row["poblacion"],$row["cp"],$row["provincia"],$row["id_pais"],$row["mail"],$row["telefono"],$edireccion,$epoblacion,$ecp,$eprovincia,$eid_pais,$row2["nombre"],$row2["nif"],$row2["direccion"],$row2["poblacion"],$row2["cp"],$row2["provincia"],$row2["mail"],$row2["telefono"],$datosInsert['id_cliente'],$userid,$rowd["id"],$rowd["canvi"],$rowc["nombre"]." ".$rowc["apellido1"]." ".$rowc["apellido2"],$rowc["mail"],$rowc["telefono"],$datosInsert['id_contrato'],$datosInsert['id_licencia'],$id_dades_origen_factura_iban,$datosInsert['notas'],$datosInsert['total_forzado'],$datosInsert['recibos'],$datosInsert['confirmada'],$datosInsert['confirmada_cliente'],$rowta["porcentage"],$retenciones);
 		insertFunction ("sgm_cabezera",$camposInsert,$datosInsert2);
 		if (($v_recibos == 1) and ($datosInsert["fecha"] > date("Y-m-d"))){
 			echo mensageError($errorFacturaCrear);

@@ -1603,7 +1603,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select>";
-					$sql4 = "select mail from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." order by nombre,apellido1,apellido2";
+					$sql4 = "select mail from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." and id=".$row["id_contacto_facturacion"];
 					$result4 = mysqli_query($dbhandle,convertSQL($sql4));
 					$row4 = mysqli_fetch_array($result4);
 					echo "&nbsp;<a href=\"mailto:".$row4["mail"]."\"><img src=\"mgestion/pics/icons-mini/email_link.png\" style=\"border:0px;vertical-align:middle;\"></a>";
