@@ -214,12 +214,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<th>".$Cliente."</th>";
 					echo "<th>".$Cliente." ".$Final."</th>";
 					echo "<th>".$Descripcion."</th>";
+					echo "<th>".$Fecha." ".$Inicio."</th>";
+					echo "<th>".$Fecha." ".$Fin."</th>";
 					echo "<th></th>";
 					echo "<th></th>";
 					echo "<th></th>";
 				echo "</tr>";
 #				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_plantilla<>0 ";
-				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado from sgm_contratos where visible=1 ";
+				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado,fecha_ini,fecha_fin from sgm_contratos where visible=1 ";
 				if ($_POST["id_contrato_tipo2"] > 0) {
 					$sqlcc = $sqlcc." and id_contrato_tipo=".$_POST["id_contrato_tipo2"]."";
 				}
@@ -231,21 +233,25 @@ if (($option == 1011) AND ($autorizado == true)) {
 				}
 				if ($soption == 0){ $sqlcc = $sqlcc." and activo=1";}
 				if ($soption == 1){ $sqlcc = $sqlcc." and activo=0";}
-				$sqlcc = $sqlcc." order by num_contrato desc";
+				$sqlcc = $sqlcc." order by fecha_ini desc, fecha_fin desc";
 #				echo $sqlcc."<br>";
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
-					echo "<tr>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
+					if (date('U',strtotime($rowcc["fecha_fin"])) < date('U')) { $color = "red"; $color_letra = "white";}
+					else { $color = "white"; $color_letra = "";}
+					echo "<tr style=\"background-color:".$color."\">";
+						echo "<td style=\"text-align:center;color:".$color_letra."\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
 						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]."</a></td>";
 						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\">".$row["nombre"]."</a></td>";
-						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\">".$rowcc["descripcion"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\" style=\"color:".$color_letra."\">".$rowcc["descripcion"]."</a></td>";
+						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_ini"]."</td>";
+						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_fin"]."</td>";
 
 						echo "<form action=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\" method=\"post\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
@@ -343,17 +349,17 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$sqlfact = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1)";
 						$resultfact = mysqli_query($dbhandle,convertSQL($sqlfact));
 						$rowfact = mysqli_fetch_array($resultfact);
-						echo "<tr><td>".$Total." ".$Contrato."</td><td style=\"text-align:right;\">".$rowfact["total_fact"]." ".$rowdiv["abrev"]."</td></tr>";
+						echo "<tr><td>".$Total." ".$Contrato."</td><td style=\"text-align:right;\">".number_format ($rowfact["total_fact"],3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
 						$sqlfact2 = "select sum(subtotal) as total_fact2 from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1)";
 						$resultfact2 = mysqli_query($dbhandle,convertSQL($sqlfact2));
 						$rowfact2 = mysqli_fetch_array($resultfact2);
-						echo "<tr><td>".$Facturado."</td><td style=\"text-align:right;\">".$rowfact2["total_fact2"]." ".$rowdiv["abrev"]."</td></tr>";
+						echo "<tr><td>".$Facturado."</td><td style=\"text-align:right;\">".number_format ($rowfact2["total_fact2"],3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
 						$fact_pendiente = $rowfact["total_fact"] - $rowfact2["total_fact2"];
-						echo "<tr><td>".$Pendiente."</td><td style=\"text-align:right;\">".number_format ($fact_pendiente,3,".","")." ".$rowdiv["abrev"]."</td></tr>";
-						$sqlfact3 = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
+						echo "<tr><td>".$Pendiente."</td><td style=\"text-align:right;\">".number_format ($fact_pendiente,3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
+						$sqlfact3 = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and fecha<'".date("Y-m-d")."' and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
 						$resultfact3 = mysqli_query($dbhandle,convertSQL($sqlfact3));
 						$rowfact3 = mysqli_fetch_array($resultfact3);
-						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".$rowfact3["total_fact"]." ".$rowdiv["abrev"]."</td></tr>";
+						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".number_format ($rowfact3["total_fact"],3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
 					echo "</table>";
 				echo "</td>";
 #				echo "<td style=\"vertical-align:top\">";

@@ -211,7 +211,7 @@ function comprobar_festivo2($fecha)
 	if ($dia_sem == 6){
 		$festivo=1;
 	}
-	$sqlc = "select * from sgm_calendario where dia=".date("j", ($fecha))." and mes=".date("n", ($fecha))."";
+	$sqlc = "select * from sgm_calendario where dia=".date("j", ($fecha))." and mes=".date("n", ($fecha))." and ano=".date("Y", ($fecha))."";
 	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 	$rowc = mysqli_fetch_array($resultc);
 	if ($rowc){

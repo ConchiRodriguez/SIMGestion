@@ -2114,7 +2114,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					updateFunction ("sgm_incidencias",$row["id"],$camposUpdate,$datosUpdate);
 				}
 			}
-			if ($duracion > 0){
+			if (($duracion > 0) and ($_POST["pvp"] > 0)){
 				$date = date("Y-m-d", mktime(0,0,0,date("m"),date("d"),date("Y")));
 				$datosInsert = array('fecha' => $date, 'fecha_prevision' => $date, 'id_cliente' => $_GET["id"], 'tipo' => 1);
 				insertCabezera($datosInsert);
@@ -2216,7 +2216,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "<input type=\"Hidden\" name=\"id_servicio\" value=\"".$_POST["id_servicio"]."\">";
 			echo "<input type=\"Hidden\" name=\"id_usuario\" value=\"".$_POST["id_usuario"]."\">";
 			echo "<input type=\"Hidden\" name=\"mes\" value=\"".$_POST["mes"]."\">";
-			$sql = "select * from sgm_incidencias where visible=1 and id_estado=-2";
+			$sql = "select * from sgm_incidencias where visible=1 and id_estado=-2 and id_cliente=".$_GET["id"];
 			if ($_POST["id_servicio"] != 0){ $sql = $sql." and id_servicio=".$_POST["id_servicio"];}
 			if ($_POST["mes"] != 0){
 				$mes = $_POST["mes"];

@@ -168,6 +168,7 @@ function correoIncidencias(){
 				if ($idinci == 1){
 //Añadir nota a incidencia
 					if ($not_sla_mango == 0){
+						$id_codigo_externo = call_user_func("funcionMANGO",$asunto);
 						$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_desarrollo,asunto,pausada,codigo_externo";
 						$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
 						insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);

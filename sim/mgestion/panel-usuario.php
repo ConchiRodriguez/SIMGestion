@@ -28,6 +28,25 @@ if (($option == 200) AND ($user == true)) {
 		$rowx = mysqli_fetch_array($resultx);
 
 		echo "<h4>".$Estado." ".$General."</h4>";
+		echo "<h4>".$Versiones." SIMges</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+		$inicio_mes = date("Y-m-d", mktime(0,0,0,date("m"),date("d")-7,date("Y")));
+		$final_mes = date("Y-m-d");
+		$sqlcv = "select * from sim_control_versiones where visible=1 and fecha between '".$inicio_mes."' and '".$final_mes."' order by fecha desc";
+		$resultcv = mysqli_query($dbhandle,convertSQL($sqlcv));
+		while ($rowcv = mysqli_fetch_array($resultcv)) {
+			echo "<tr>";
+				echo "<td style=\"vertical-align:top;width:80px;\">".cambiarFormatoFechaDMY($rowcv["fecha"])."</td>";
+				$sqlx = "select id,usuario from sgm_users where sgm=1 and activo=1 and validado=1 and id=".$rowcv["id_usuario"];
+				$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+				$rowx = mysqli_fetch_array($resultx);
+				echo "<td style=\"vertical-align:top;\">".$rowx["usuario"]."</td>";
+				echo "<td><textarea name=\"comentarios\" style=\"width:800px\" disabled>".$rowcv["comentarios"]."</textarea></td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+		}
+		echo "<tr><td></td><td></td><td style=\"text-align:right;\"><a href=\"index.php?op=200&sop=20\">".$VerMas."</a></td></tr>";
+		echo "</table>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
@@ -146,10 +165,12 @@ if (($option == 200) AND ($user == true)) {
 							$hora = $total_horas/60;
 							$horas = explode(".",$hora);
 							$minutos = $total_horas % 60;
-							echo "<tr>";
-								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\">".$rowch["descripcion"]."</a></td>";
-								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+							if (date('U',strtotime($rowch["fecha_fin"])) <= date('U')) { $color = "red"; $color_letra = "white";}
+							else { $color = "white"; $color_letra = "";}
+							echo "<tr style=\"background-color:".$color."\">";
+								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td style=\"color:".$color_letra."\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
 #					}
@@ -487,7 +508,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th style=\"width:400px;\">".$Asunto."</th>";
 							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
 						echo "</tr>";
-						$sqlin = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_servicio=-1 and facturada=0 order by fecha_inicio desc";
+						$sqlin = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_servicio=-1 and facturada=0 and id_estado=-2 order by fecha_inicio desc";
 						$resultin = mysqli_query($dbhandle,convertSQL($sqlin));
 						while ($rowin = mysqli_fetch_array($resultin)) {
 							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowin["id_cliente"];

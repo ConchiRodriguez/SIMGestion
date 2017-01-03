@@ -64,6 +64,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<th>".$Tipo."</th>";
 					echo "<th>".$Cliente."</th>";
 					echo "<th>".$Pedido." ".$Cliente."</th>";
+					echo "<th>".$Contrato."</th>";
 					echo "<th>".$Desde."</th>";
 					echo "<th>".$Hasta."</th>";
 					echo "<th>".$Codigo."</th>";
@@ -87,7 +88,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						}
 						echo "</select>";
 					echo "</td>";
-					echo "<td style=\"width:25%\">";
+					echo "<td style=\"width:30%\">";
 						echo "<select name=\"id_cliente\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
@@ -102,6 +103,23 @@ if (($option == 1003) AND ($autorizado == true)) {
 						echo "</select>";
 					echo "</td>";
 					echo "<td style=\"width:5%;\"><input type=\"Text\" style=\"width:100%;\" name=\"ref_cli\" value=\"".$_POST["ref_cli"]."\"></td>";
+					echo "<td style=\"width:15%\">";
+						echo "<select name=\"id_contrato\">";
+						echo "<option value=\"0\">".$Todos."</option>";
+						$sql1a = "select id,descripcion,id_cliente from sgm_contratos where visible=1 and activo=1";
+						$result1a = mysqli_query($dbhandle,convertSQL($sql1a));
+						while ($row1a = mysqli_fetch_array($result1a)) {
+							$sqlcl = "select alias from sgm_clients where id=".$row1a["id_cliente"];
+							$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+							$rowcl = mysqli_fetch_array($resultcl);
+							if ($_POST["id_contrato"] == $row1a["id"]) { 
+								echo "<option value=\"".$row1a["id"]."\" selected>(".$rowcl["alias"].")".$row1a["descripcion"]."</option>";
+							} else {
+								echo "<option value=\"".$row1a["id"]."\">(".$rowcl["alias"].")".$row1a["descripcion"]."</option>";
+							}
+						}
+						echo "</select>";
+					echo "</td>";
 					$fecha = getdate();
 					if ($_POST["data_desde1"]){
 						$data = $_POST["data_desde1"];
@@ -139,7 +157,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			echo "</table>";
 			echo "<br>";
 		}
-		if (($_GET["id"] != "") or $_POST["id_tipo"] or $_POST["id_cliente"] or $_POST["ref_cli"] or $_POST["data_desde1"] or $_POST["data_fins1"] or $_POST["codigo"] or $_POST["articulo"] or $_POST["hist"]){
+		if (($_GET["id"] != "") or $_POST["id_tipo"] or $_POST["id_cliente"] or $_POST["ref_cli"] or $_POST["data_desde1"] or $_POST["data_fins1"] or $_POST["codigo"] or $_POST["articulo"] or $_POST["hist"] or $_POST["id_contrato"]){
 			if ($ssoption == 1) {
 				$sqlcc = "select count(*) as total from sgm_cabezera where visible=1 and numero=".$_POST["numero"]." and tipo=".$_POST["tipo"];
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
@@ -309,6 +327,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<input type=\"Hidden\" name=\"codigo\" value=\"".$_POST["codigo"]."\">";
 					echo "<input type=\"Hidden\" name=\"articulo\" value=\"".$_POST["articulo"]."\">";
 					echo "<input type=\"Hidden\" name=\"hist\" value=\"".$_POST["hist"]."\">";
+					echo "<input type=\"Hidden\" name=\"id_contrato\" value=\"".$_POST["id_contrato"]."\">";
 					echo "<input type=\"Hidden\" name=\"todo\" value=\"1\">";
 					if ($rowtipos["aprovado"] == 1)  {$tds2++;}
 					if ($rowtipos["v_recibos"] == 1)  {$tds2++;}
@@ -415,6 +434,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				if (($rowtipos["id"] != 0)) { $sql = $sql." AND tipo=".$rowtipos["id"]; }
 				if (($soption == 200) AND ($_POST["id_cliente"] != 0)) { $sql = $sql." AND id_cliente=".$_POST["id_cliente"]; }
 				if (($soption == 200) AND ($_POST["id_cliente2"] != 0)) { $sql = $sql." AND id_cliente=".$_POST["id_cliente2"]; }
+				if (($soption == 200) AND ($_POST["id_contrato"] != 0)) { $sql = $sql." AND id_contrato=".$_POST["id_contrato"]; }
 				if (($soption == 200) AND ($_POST["ref_cli"] != '')) { $sql = $sql." AND numero_cliente like '%".$_POST["ref_cli"]."%'"; }
 				if (($soption == 200) AND ($_GET["fecha"] != 0)) { $sql = $sql." AND fecha='".date("Y-m-d", $_GET["fecha"])."'"; }
 				if (($soption == 200) AND ($_POST["data_desde1"] != 0)) { $sql = $sql." AND fecha>='".cambiarFormatoFechaDMY($_POST["data_desde1"])."'"; }

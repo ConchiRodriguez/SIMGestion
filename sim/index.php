@@ -117,7 +117,7 @@ lopd($userid,$username,$option,$soption);
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<title>SIMGESTION PRO</title>
+		<title>SIMGESTION DES</title>
 
 		<?php include ("functions-js.php"); ?>
   </head>

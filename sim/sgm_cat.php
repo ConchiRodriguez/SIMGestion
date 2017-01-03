@@ -683,6 +683,7 @@ $Valoraciones = "Valoracions";
 $Valores = "Valors";
 $Vencimiento = "Venciment";
 $Ver = "Veure";
+$VerMas = "Veure Mes";
 $Ver_Empleados = "Veure Empleats";
 $Ver_Departamentos = "Veure Departaments";
 $Ver_Horas = "Veure Hores";

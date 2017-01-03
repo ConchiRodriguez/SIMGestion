@@ -1624,7 +1624,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "</select></td>";
 				echo "<td><select name=\"any\" style=\"width:100px\">";
 					if ($_POST["any"] == 0) {$year = date("Y");} else {$year = $_POST["any"];}
-					for ($j=2013;$j<=date("Y");$j++){
+					for ($j=2013;$j<=(date("Y")+1);$j++){
 						if ($j == $year){
 							echo "<option value=\"".$j."\" selected>".$j."</option>";
 						} else {
@@ -1855,11 +1855,20 @@ function envioNotificacionIncidencia($id_incidencia,$id_servicio,$id_usuario_reg
 {
 	global $db,$dbhandle;
 	$enviar = 0;
+
 	$sqlu = "select * from sgm_users where validado=1 and activo=1 and sgm=0 and id=".$id_usuario_registro;
 	$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
 	$rowu = mysqli_fetch_array($resultu);
 	if ($rowu){
 		enviarNotInci($id_usuario_registro,$id_incidencia,$tipo,$id_servicio,$insertada,$editada,$cerrada,$relacionada,$eliminada);
+
+		$sqls = "select * from sgm_contratos_servicio where auto_email=1 and id=".$id_servicio;
+		$results = mysqli_query($dbhandle,convertSQL($sqls));
+		$rows = mysqli_fetch_array($results);
+		if (($rows) and ($id_usuario_registro != $usuario_origen)){
+			enviarNotInci($usuario_origen,$id_incidencia,$tipo,$id_servicio,$insertada,$editada,$cerrada,$relacionada,$eliminada);
+		}
+
 	} else {
 		$sqlu2 = "select * from sgm_users where validado=1 and activo=1 and sgm=0 and id=".$usuario_origen;
 		$resultu2 = mysqli_query($dbhandle,convertSQL($sqlu2));
@@ -1869,12 +1878,6 @@ function envioNotificacionIncidencia($id_incidencia,$id_servicio,$id_usuario_reg
 		}
 	}
 
-	$sqls = "select * from sgm_contratos_servicio where auto_email=1 and id=".$id_servicio;
-	$results = mysqli_query($dbhandle,convertSQL($sqls));
-	$rows = mysqli_fetch_array($results);
-	if (($rows) and ($id_usuario_registro != $usuario_origen)){
-		enviarNotInci($usuario_origen,$id_incidencia,$tipo,$id_servicio,$insertada,$editada,$cerrada,$relacionada,$eliminada);
-	}
 
 	$sqlcsn = "select * from sgm_contratos_servicio_notificacion where id_servicio=".$id_servicio." and id_usuario<>".$id_usuario_registro;
 	$resultcsn = mysqli_query($dbhandle,convertSQL($sqlcsn));
