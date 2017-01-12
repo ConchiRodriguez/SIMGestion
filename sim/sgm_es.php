@@ -692,6 +692,7 @@ $Ver = "Ver";
 $VerMas = "Ver Mas";
 $Ver_Empleados = "Ver Empleados";
 $Ver_Departamentos = "Ver Departamentos";
+$Ver_Detalles = "Ver Detalles";
 $Ver_Horas = "Ver Horas";
 $Ver_Todos = "Ver Todos";
 $Ver_Todos_Personales = "Ver Todos Personales";

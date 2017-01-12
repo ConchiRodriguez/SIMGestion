@@ -2,13 +2,14 @@
 error_reporting(~E_ALL);
 
 
-function informesContratos(){
-	global $db,$dbhandle,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma;
+function informesContratos($id){
+	global $db,$dbhandle,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma,$Ver_Detalles;
+
 	echo "<strong>".$Informes."</strong>";
 	echo "<br><br>";
 	echo "<center><table cellspacing=\"0\">";
 		echo "<tr style=\"background-color:silver;\">";
-		if ($_GET["id"] <= 0) {
+		if ($id <= 0) {
 			echo "<td>".$Cliente."</td>";
 		}
 			echo "<td>".$Contrato."</td>";
@@ -16,10 +17,11 @@ function informesContratos(){
 			echo "<td>".$Mes."-".$Ano." ".$Hasta."</td>";
 			echo "<td>".$Idioma."</td>";
 			echo "<td>".$Ver_Horas."</td>";
+			echo "<td>".$Ver_Detalles."</td>";
 			echo "<td></td>";
 		echo "</tr><tr>";
 			echo "<form method=\"post\" name=\"form2\" action=\"".$urlmgestion."/mgestion/gestion-contratos-informe-print-pdf.php\" target=\"popup\" onsubmit=\"window.open('', 'popup', '')\">";
-		if ($_GET["id"] <= 0) {
+		if ($id <= 0) {
 			echo "<td><select name=\"id_cliente\" id=\"id_cliente\" style=\"width:300px\" onchange=\"desplegableCombinado5()\">";
 				echo "<option value=\"0\">Todos</option>";
 				$sqli = "select * from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
@@ -33,13 +35,13 @@ function informesContratos(){
 				}
 			echo "</select></td>";
 		} else {
-			echo "<input type=\"Hidden\" value=\"".$_GET["id"]."\" name=\"id_cliente\">";
+			echo "<input type=\"Hidden\" value=\"".$id."\" name=\"id_cliente\">";
 		}
 			echo "<td><select name=\"id_contrato\" id=\"id_contrato\" style=\"width:300px\" onchange=\"desplegableCombinado5()\">";
-				if ($_GET["id"] <= 0) {
+				if ($id <= 0) {
 					echo "<option value=\"0\">Todos</option>";
 				}
-				if ($_GET["id"] > 0) { $id_cli = $_GET["id"]; } else {$id_cli = $_POST["id_cliente"]; }
+				if ($id > 0) { $id_cli = $id; } else {$id_cli = $_POST["id_cliente"]; }
 				$sqlc = "select id,descripcion from sgm_contratos where visible=1 and id_cliente=".$id_cli;
 				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 				while ($rowc = mysqli_fetch_array($resultc)) {
@@ -50,6 +52,7 @@ function informesContratos(){
 					}
 				}
 			echo "</select></td>";
+
 			$sqlco = "select * from sgm_contratos where id=".$_POST["id_contrato"]." order by fecha_ini";
 			$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
 			$rowco = mysqli_fetch_array($resultco);
@@ -149,6 +152,15 @@ function informesContratos(){
 			echo "</select></td>";
 			echo "<td><select name=\"horas\" style=\"width:50px\">";
 				if ($_POST["horas"] == 0){
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				} else {
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+				}
+			echo "</select></td>";
+			echo "<td><select name=\"detalles\" style=\"width:60px\">";
+				if ($_POST["detalles"] == 0){
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				} else {

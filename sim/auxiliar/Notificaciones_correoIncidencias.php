@@ -173,6 +173,10 @@ function correoIncidencias(){
 						$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
 						insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
+						$camposUpdate = array("pausada");
+						$datosUpdate = array(0);
+						updateFunction ("sgm_incidencias",$id_inc,$camposUpdate,$datosUpdate);
+
 						$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id=".$id_inc;
 						$resultinc = mysqli_query($dbhandle,$sqlinc);
 						$rowinc = mysqli_fetch_array($resultinc);

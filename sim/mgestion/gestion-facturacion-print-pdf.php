@@ -1,7 +1,7 @@
 <?php 
 	error_reporting(~E_ALL);
 
-	include ("../config.php");
+	include ("../config4.php");
 	foreach (glob("../auxiliar/*.php") as $filename)
 	{
 		include ($filename);

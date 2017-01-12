@@ -679,7 +679,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	#Informes
 	if ($soption == 290) {
-		informesContratos();
+		informesContratos(0);
 	}
 
 	if ($soption == 500) {

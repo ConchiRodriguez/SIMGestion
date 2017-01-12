@@ -161,12 +161,33 @@ if (($option == 1018) AND ($autorizado == true)) {
 								if ($counter == 12) {echo "</tr><tr><td colspan=\"2\"></td>";}
 								echo "<td class=".$class.">";
 									echo "<table class=\"lista\"><tr>";
-										echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1018&sop=0&id_cli=".$rowcli["id"]."\" class=".$class.">".$rowcli["alias"]."</a></td>";
+										echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1018&sop=0&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\" class=".$class.">".$rowcli["alias"]."</a></td>";
 										echo "<td style=\"width:10px;\">&nbsp;</td>";
-										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1&id_cli=".$rowcli["id"]."\">".$rowiw["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2&id_cli=".$rowcli["id"]."\">".$rowic["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3&id_cli=".$rowcli["id"]."\">".$rowip["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:yellow;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."\">".$contador1."</a></td>";
+										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1&id_cli=".$rowcli["id"]."\"&id_user=".$_GET["id_user"].">".$rowiw["total"]."</a></td>";
+										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$rowic["total"]."</a></td>";
+										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$rowip["total"]."</a></td>";
+										echo "<td style=\"width:10px;background-color:yellow;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$contador1."</a></td>";
+									echo "</tr></table>";
+								echo "</td>";
+								$counter++;
+							}
+							echo "</tr>";
+						echo "</table>";
+					echo "</td>";
+				echo "</tr>";
+				echo "<tr>";
+					echo "<td>";
+						echo "<table class=\"lista\">";
+							echo "<tr>";
+							$counter = 0;
+							$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1 and id in (select id_usuario_destino from sgm_incidencias where visible=1 and id_estado<>-2 and id_incidencia=0) order by usuario";
+							$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+							while ($rowu = mysqli_fetch_array($resultu)) {
+								if ($rowu["id"] == $_GET["id_user"]) {$class = "menu_select";} else {$class = "menu";}
+								if ($counter == 12) {echo "</tr><tr><td colspan=\"2\"></td>";}
+								echo "<td class=".$class.">";
+									echo "<table class=\"lista\"><tr>";
+										echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1018&sop=0&id_user=".$rowu["id"]."&id_cli=".$_GET["id_cli"]."\" class=".$class.">".$rowu["usuario"]."</a></td>";
 									echo "</tr></table>";
 								echo "</td>";
 								$counter++;
@@ -403,6 +424,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$sqli = $sqli." and id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$data1." and ".$data2." and visible=1)";
 			}
 			if (($_GET["u"] != 0) or ($_POST["id_usuario"] != 0)) { $sqli = $sqli." and (id_usuario_destino=".$_GET["u"].$_POST["id_usuario"]." or id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and id_usuario_registro=".$_GET["u"].$_POST["id_usuario"]."))"; }
+			if ($_GET["id_user"] != 0) { $sqli = $sqli." and id_usuario_destino=".$_GET["id_user"]; }
 			if ($_POST["id_cliente"] != 0) { $sqli = $sqli." and id_cliente=".$_POST["id_cliente"].""; }
 			if ($_GET["id_cli"] != 0) { $sqli = $sqli." and (id_cliente=".$_GET["id_cli"]." or id_servicio in (select id from sgm_contratos_servicio where id_contrato in (select id from sgm_contratos where id_cliente=".$_GET["id_cli"]." and visible=1) and visible=1))"; }
 			if ($_POST["id_servicio"] != 0) { $sqli = $sqli." and id_servicio=".$_POST["id_servicio"].""; }
@@ -1374,9 +1396,14 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Duracion." (".$Minutos.") :</th><td><input type=\"number\" min=\"1\" name=\"duracion\" style=\"width:50px\"></td></tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Visible." ".$Cliente." :</th>";
 							echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
-								echo "<option value=\"0\">".$No."</option>";
-								echo "<option value=\"1\" selected>".$Si."</option>";
-							echo "</select></td>";
+								if ($row["visible_cliente"] == 0){
+									echo "<option value=\"0\" selected>".$No."</option>";
+									echo "<option value=\"1\">".$Si."</option>";
+								} else {
+									echo "<option value=\"0\">".$No."</option>";
+									echo "<option value=\"1\" selected>".$Si."</option>";
+								}
+					echo "</select></td>";
 						echo "</tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Pausar." ".$Incidencia." :</th>";
 							echo "<td><select name=\"pausada\" style=\"width:50px\">";

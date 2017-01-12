@@ -30,7 +30,7 @@ if (($option == 200) AND ($user == true)) {
 		echo "<h4>".$Estado." ".$General."</h4>";
 		echo "<h4>".$Versiones." SIMges</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-		$inicio_mes = date("Y-m-d", mktime(0,0,0,date("m"),date("d")-7,date("Y")));
+		$inicio_mes = date("Y-m-d", mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$final_mes = date("Y-m-d");
 		$sqlcv = "select * from sim_control_versiones where visible=1 and fecha between '".$inicio_mes."' and '".$final_mes."' order by fecha desc";
 		$resultcv = mysqli_query($dbhandle,convertSQL($sqlcv));

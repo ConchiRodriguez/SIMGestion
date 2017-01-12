@@ -108,8 +108,14 @@ class PDF extends FPDF
 		return $nl;
 	}
 
+	function CheckPageBreak($h){
+		//If the height h would cause an overflow, add a new page immediately
+		if($this->GetY()+$h>$this->PageBreakTrigger)
+			$this->AddPage($this->CurOrientation);
+	}
+
 	function informe_print($id_cliente, $id_contrato){
-		global $db,$dbhandle,$cobertura,$meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerradas,$pendientes,$pausadas,$fuera_sla,$pocentaje_sla,$tiempo,$total_contrato,$asunto,$estado;
+		global $db,$dbhandle,$duracion,$incidencias,$cobertura,$meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerrada,$cerradas,$pendientes,$pausadas,$fuera_sla,$porcentaje_sla,$tiempo,$total_contrato,$asunto,$estado,$fecha;
 		//Creación del objeto de la clase heredada
 
 		$sqlcli = "select * from sgm_clients where id=".$id_cliente;
@@ -179,10 +185,10 @@ class PDF extends FPDF
 			$this->Cell(17,5,"".$pausadas."",'TBR',0);
 			$this->Cell(17,5,"".$fuera_sla."",'TBR',0);
 			if ($_POST["horas"] == 1){
-				$this->Cell(20,5,"".$pocentaje_sla."",'TBR',0);
+				$this->Cell(20,5,"".$porcentaje_sla."",'TBR',0);
 				$this->Cell(15,5,"".$tiempo."",'TBR',1);
 			} else {
-				$this->Cell(25,5,"".$pocentaje_sla."",'TBR',1);
+				$this->Cell(25,5,"".$porcentaje_sla."",'TBR',1);
 			}
 
 			$open = 0;
@@ -307,6 +313,64 @@ class PDF extends FPDF
 			$mes_act = $mes_seg;
 		}
 
+		if ($_POST["detalles"] == 1){
+			$this->SetFont('Calibri','B',8);
+			$this->Cell(180,5,"".$incidencias."",0,1);
+			$this->SetFont('Calibri','',6);
+			$this->Cell(15,4,$fecha,'B',0);
+			$this->Cell(15,4,"Id.",'B',0);
+			$this->Cell(110,4,$asunto,'B',0);
+			$this->Cell(25,4,$estado,'B',0);
+			$this->Cell(15,4,$duracion,'B',1);
+
+			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
+			$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+			while ($rowcs = mysqli_fetch_array($resultcs)) {
+				$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado=-2 and visible=1 and fecha_inicio between ".$mes_ini." and ".$mes_act." order by fecha_inicio";
+				$resulti0 = mysqli_query($dbhandle,convertSQL($sqli0));
+				while ($rowi0 = mysqli_fetch_array($resulti0)){
+					$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi0["id"]." and visible=1";
+					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+					$rowd = mysqli_fetch_array($resultd);
+					$hora = $rowd["total"]/60;
+					$horas = explode(".",$hora);
+					$minutos = $rowd["total"] % 60;
+					$duration = $horas[0]."h. ".$minutos."m.";
+					$estatinc = $cerrada;
+					$asunto = str_replace("&#39;", "'",$rowi0["asunto"]);
+					$this->Cell(15,4,date("d-m-Y",$rowi0["fecha_inicio"]),'',0);
+					$this->Cell(15,4,$rowi0["id"],'',0);
+					$this->Cell(110,4,$asunto,'',0);
+					$this->Cell(25,4,$estatinc,'',0);
+					$this->Cell(15,4,$duration,'',1);
+
+					$sqlid = "select * from sgm_incidencias where id_incidencia=".$rowi0["id"]." and visible=1";
+					$resultid = mysqli_query($dbhandle,convertSQL($sqlid));
+					while ($rowid = mysqli_fetch_array($resultid)){
+						$notas_desarrollo = str_replace("&#39;", "'",$rowid["notas_desarrollo"]);
+#						$notas_desarrollo = str_replace("\n","<br>",$notas_desarrollo);
+#						$notas_desarrollo = str_replace("\n","\r",$notas_desarrollo);
+						$hora2 = $rowid["duracion"]/60;
+						$horas2 = explode(".",$hora2);
+						$minutos2 = $rowid["duracion"] % 60;
+						$duration2 = $horas2[0]."h. ".$minutos2."m.";
+						$lines = $this->NbLines(110,$notas_desarrollo);
+						$lines2 = 4*$lines;
+						$this->CheckPageBreak($lines2);
+						$this->Cell(15,4,'',0,0);
+						$this->Cell(15,4,'',0,0);
+						$x=$this->GetX();
+						$y=$this->GetY();
+						$this->MultiCell(110,4,$notas_desarrollo,0);
+						$this->SetXY($x+110,$y);
+						$this->Cell(25,4,'',0,0);
+						$this->Cell(15,4,$duration2,0,1);
+						$this->Ln(4*$lines);
+					}
+				}
+			}
+		}
+
 		$this->SetFont('Calibri','B',8);
 		$this->Cell(180,5,"".$incidencias_pendientes."",0,1);
 		$this->SetFont('Calibri','',6);
@@ -323,8 +387,9 @@ class PDF extends FPDF
 			while ($rowi0 = mysqli_fetch_array($resulti0)){
 				if ($rowi0["id_estado"] == -1){$estatinc = $abierta;}
 				if ($rowi0["pausada"] == 1){$estatinc = $pausada;}
+				$asunto = str_replace("&#39;", "'",$rowi0["asunto"]);
 				$this->Cell(15,4,$rowi0["id"],'',0);
-				$this->Cell(125,4,$rowi0["asunto"],'',0);
+				$this->Cell(125,4,$asunto,'',0);
 				$this->Cell(25,4,$estatinc,'',0);
 				$this->Cell(15,4,$rowi0["sla"],'',1);
 			}
@@ -342,10 +407,10 @@ class PDF extends FPDF
 		$this->Cell(17,5,"".$pausadas."",'LTBR',0);
 		$this->Cell(17,5,"".$fuera_sla."",'LTBR',0);
 		if ($_POST["horas"] == 1){
-			$this->Cell(20,5,"".$pocentaje_sla."",'TBR',0);
+			$this->Cell(20,5,"".$porcentaje_sla."",'TBR',0);
 			$this->Cell(15,5,"".$tiempo."",'TBR',1);
 		} else {
-			$this->Cell(25,5,"".$pocentaje_sla."",'TBR',1);
+			$this->Cell(25,5,"".$porcentaje_sla."",'TBR',1);
 		}
 
 		$open = 0;

@@ -1822,7 +1822,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 	
 #Informes
 	if ($soption == 130) {
-		informesContratos();
+		informesContratos($_GET["id"]);
 	}
 
 #Bases de dades

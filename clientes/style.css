@@ -1,0 +1,149 @@
+BODY {
+	text-align : center;
+	background-color : White;
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: Black;
+
+}
+
+.inverse {
+	text-align : left;
+	background-color : #AAAAAA;
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: #32599E;
+}
+
+A:LINK, A:VISITED {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: grey;
+	text-decoration : none;
+}
+
+A:HOVER {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #32599E;
+	text-decoration : none;
+}
+
+.targrey{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #32599E;
+	text-decoration:underline;
+}
+.tahomagrey{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #32599E;
+}
+TD{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color:#000000;
+}
+.tahomadlack{
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+color:#000000;
+
+}
+.tahomadlackbl{
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+color:#000000;
+font-weight:900;
+}
+
+FORM {
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+}
+
+UL,LI {
+	padding : 1px 1px 1px 1px;
+	margin : 0px 0px 0px 8px;
+}
+INPUT,TEXTAREA,SELECT {
+	padding : 0px 0px 0px 0px;
+	margin : 0px 0px 0px 0px;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: black;
+	border : 1px solid Black;
+}
+
+
+
+.px400 { width : 400px; }
+.px300 { width : 300px; }
+.px250 { width : 250px; }
+.px200 { width : 200px; }
+.px150 { width : 150px; }
+.px120 { width : 120px; }
+.px100 { width : 100px; }
+.px80 { width : 80px; }
+.px50 { width : 50px; }
+
+.titulo {
+	font-weight: bold;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	width:0;
+	filter:dropshadow(color=Silver,offx=1, offy=1, positive=1), glow(color=Silver, strength=1);
+	color: #32599E;
+}
+
+.titulo-blanco {
+	font-weight: bold;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	width:0;
+	filter:dropshadow(color=Black,offx=1, offy=1, positive=1), glow(color=Black, strength=1);
+	color: White;
+}
+
+A:LINK.admin, A:VISITED.admin {
+	text-decoration : none;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: White;
+}
+A:HOVER.admin {
+	color: Silver;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration : none;
+}
+A:LINK.docs, A:VISITED.docs {
+	text-decoration : none;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: White;
+}
+A:HOVER.docs {
+	color: Silver;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration : none;
+}
+.gris {
+	color: #32599E;
+	font-size: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.bigcheck {
+	border: none;
+	height: 40px;
+	width: 40px;
+	padding: none;
+	background: none;
+}
