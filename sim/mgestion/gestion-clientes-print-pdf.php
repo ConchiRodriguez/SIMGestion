@@ -28,7 +28,7 @@ class PDF extends FPDF
 		//Número de página
 		$this->Cell(0,10,'Pagina '.$this->PageNo().'/{nb}',0,0,'C');
 		//Logo
-		$this->Image('../../archivos_comunes/images/logo1.jpg',160,285,40);
+		$this->Image('pics/logo1.jpg',160,285,40);
 	}
 	function hex2rgb($hex) {
 	   $hex = str_replace("#", "", $hex);

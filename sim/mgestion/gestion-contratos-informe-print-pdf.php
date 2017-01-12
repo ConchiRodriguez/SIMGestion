@@ -24,7 +24,7 @@ class PDF extends FPDF
 		$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
 		$rowele = mysqli_fetch_array($resultele);
 
-		$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
+		$this->Image('pics/logo1.jpg',10,5,80,18);
 		$this->SetFont('Calibri','',8);
 		$this->SetXY(100,5);
 		$this->Cell(90,3,"".$rowele["nombre"],0,1);

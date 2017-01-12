@@ -5,9 +5,7 @@ function redireccionar(){
 setTimeout ("redireccionar()", 600000);
 </script>
 <?PHP
-include ("../archivos_comunes/config.php");
-#include("../archivos_comunes/functions.php");
-#include("../archivos_comunes/funciones.php");
+include ("../sim/config.php");
 
 foreach (glob("../sim/auxiliar/*.php") as $filename)
 {

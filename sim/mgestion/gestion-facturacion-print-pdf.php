@@ -1,7 +1,7 @@
 <?php 
 	error_reporting(~E_ALL);
 
-	include ("../config4.php");
+	include ("../config.php");
 	foreach (glob("../auxiliar/*.php") as $filename)
 	{
 		include ($filename);
@@ -99,7 +99,7 @@ class PDF extends FPDF
 
 		if ($tipo == 1) {
 			#no sobre#
-			$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
+			$this->Image('pics/logo1.jpg',10,5,80,18);
 	
 			$this->SetXY(10,25);
 			$this->SetFont('Calibri','',10);
@@ -132,7 +132,7 @@ class PDF extends FPDF
 		
 		if ($tipo == 0) {
 			#sobre#
-			$this->Image('../../archivos_comunes/images/logo1.jpg',10,10,80,18);
+			$this->Image('pics/logo1.jpg',10,10,80,18);
 		
 			$this->SetXY(10,35);
 			$this->SetFont('Calibri','',10);
@@ -300,7 +300,6 @@ class PDF extends FPDF
 }
 
 	$pdf=new PDF();
-#	$pdf->AddFont('codi_barres','','../../archivos_comunes/font/codi_barres.php');
 	$pdf->AddFont('Calibri','','../font/Calibri.php');
 	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
 	$pdf->AddFont('Calibri','B','../font/Calibrib.php');

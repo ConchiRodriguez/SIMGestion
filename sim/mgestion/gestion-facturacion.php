@@ -1843,9 +1843,14 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$mes = ($mact-1);
 
 		if ($mes == 12){ $any = $yact-1;} else { $any = $yact;}
+		$data_iva1 = date("U", mktime(0,0,0,1,20,$any));
+		$data_iva2 = date("U", mktime(0,0,0,4,20,$any));
+		$data_iva3 = date("U", mktime(0,0,0,7,20,$any));
+		$data_iva4 = date("U", mktime(0,0,0,10,20,$any));
 		$mes_anterior = date("U", mktime(0,0,0,$mes,1,$any));
 		$mes_ultimo = date("U", mktime(0,0,0,$mes+12, 1-1, $yact));
 		$dia_actual=$mes_anterior;
+		$iva2 = 0;
 		while ($dia_actual<=$mes_ultimo){
 			$contador=$m;
 			$m = date("n", $dia_actual);
@@ -1856,6 +1861,29 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$dia_actual2 = date("Y-m-d", $dia_actual);
 			if ($hoy == $dia_actual2){ $color_fondo = "yellow";} else { $color_fondo = "white";}
 			$d = date("d", $dia_actual);
+
+			$iva = 0;
+			
+			if (($dia_actual == $data_iva1) or ($dia_actual == $data_iva2) or ($dia_actual == $data_iva3) or ($dia_actual == $data_iva4)) {
+				if ($dia_actual == $data_iva1){ $mes1 = 10; $mes2 = 12; $any2 = $any-1;}
+				if ($dia_actual == $data_iva2){ $mes1 = 1; $mes2 = 3; $any2 = $any;}
+				if ($dia_actual == $data_iva3){ $mes1 = 4; $mes2 = 6; $any2 = $any;}
+				if ($dia_actual == $data_iva4){ $mes1 = 7; $mes2 = 9; $any2 = $any;}
+				$dia_iva1 = date("Y-m-d", mktime(0,0,0,$mes1,1,$any2));
+				$last_day = date('t',strtotime($any2."-".$mes2."-1"));
+				$dia_iva2 = date("Y-m-d", mktime(0,0,0,$mes2,$last_day,$any2));
+				$sqlgasto = "select sum(total) as total_gasto,sum(subtotaldescuento) as subtotal_gasto from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=-1 and facturable=0) and fecha between '".$dia_iva1."' and '".$dia_iva2."' and id_pagador=1";
+				$resultgasto = mysqli_query($dbhandle,$sqlgasto);
+				$rowgasto = mysqli_fetch_array($resultgasto);
+
+				$sqlingre1 = "select sum(total) as total_ingre,sum(subtotaldescuento) as subtotal_ingre from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=1) and fecha between '".$dia_iva1."' and '".$dia_iva2."' and id_pagador=1";
+				$resultingre1 = mysqli_query($dbhandle,$sqlingre1);
+				$rowingre1 = mysqli_fetch_array($resultingre1);
+
+				$iva = ($rowingre1["total_ingre"]-$rowingre1["subtotal_ingre"]) - ($rowgasto["total_gasto"]-$rowgasto["subtotal_gasto"]);
+			}
+			
+			$iva2 += $iva;
 			echo "<td style=\"background-color:".$color_fondo."\">";
 				echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%\">";
 					echo "<tr><th>".$d."</th></tr>";
@@ -1864,12 +1892,12 @@ if (($option == 1003) AND ($autorizado == true)) {
 					$row = mysqli_fetch_array($result);
 					if ($row["gastos"] > 0) {$color = "red";$color_letra = "white";} else {$color = $color_fondo; $color_letra = "black";}
 					if ($row["ingresos"] > 0) {$color3 = "#1EB53A";} else {$color3 = $color_fondo;}
-					if ($row["liquido"] >= 0) {$color2 = "#1EB53A"; $color_letra2 = "black";} else {$color2 = "red"; $color_letra2 = "white";}
+					if (($row["liquido"]-$iva2) >= 0) {$color2 = "#1EB53A"; $color_letra2 = "black";} else {$color2 = "red"; $color_letra2 = "white";}
 					if ($dia_actual2 < $hoy){ $tipus = 5;} elseif ($dia_actual2 == $hoy){$tipus = 9;} else { $tipus = 3;}
-					echo "<tr><td style=\"text-align:right;background-color:".$color.";\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=1&fecha=".$dia_actual."\" style=\"color:".$color_letra.";\">".number_format($row["gastos"], 2)."</a></td></tr>";
+					echo "<tr><td style=\"text-align:right;background-color:".$color.";\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=1&fecha=".$dia_actual."\" style=\"color:".$color_letra.";\">".number_format($row["gastos"]+$iva, 2)."</a></td></tr>";
 					echo "<tr><td style=\"text-align:right;background-color:".$color3."\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=".$tipus."&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["ingresos"], 2)."</a></td></tr>";
 					echo "<tr><td style=\"text-align:right;background-color:#0084C9\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=4&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["externos"], 2)."</a></td></tr>";
-					echo "<tr><td style=\"text-align:right;background-color:".$color2.";\">".number_format($row["liquido"], 2)."</td></tr>";
+					echo "<tr><td style=\"text-align:right;background-color:".$color2.";\">".number_format($row["liquido"]-$iva2, 2)."</td></tr>";
 				echo "</table>";
 			echo "</td>";
 			$proxim_any = date("Y",$dia_actual);
@@ -1938,24 +1966,28 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<td>".$rowtipos["tipo"]."</td>";
 				for ($x = 1; $x <= 12; $x++) {
 					$y = $yact;
-					$yf = $yact;
-					if ($x < 10) { $m = "0".$x; } else { $m = $x; }
-					if ($x == 12) { 
-						$mf = "01";
-						$yf = $yact+1;
-					} else {
-						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
-					}
-					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
+#					$yf = $yact;
+#					if ($x < 10) { $m = "0".$x; } else { $m = $x; }
+#					if ($x == 12) { 
+#						$mf = "01";
+#						$yf = $yact+1;
+#					} else {
+#						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
+#					}
+					$dia1 = date("Y-m-d", mktime(0,0,0,$x,1,$y));
+					$last_day = date('t',strtotime($y."-".$x."-1"));
+					$dia2 = date("Y-m-t", mktime(0,0,0,$x,$last_day,$y));
+#					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
+					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$rowtipos["id"]." and fecha between '".$dia1."' and '".$dia2."'";
 #					if ($rowtipos["v_recibos"] == 1) { $sql = $sql." and cobrada=1"; }
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
-					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=490&tipo=6&hist=1&y=".$y."&m=".$m."&id_tipo=".$rowtipos["id"]."\" style=\"color:black;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></a></td>";
+					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=490&tipo=6&hist=1&y=".$y."&m=".$x."&id_tipo=".$rowtipos["id"]."\" style=\"color:black;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></a></td>";
 					$tri1 = $tri1+$row["total1"];
 					$tri3 = $tri3+$row["total3"];
 					$tri4 = $tri4+$row["total4"];
 					if ($tri == 3) {
-						echo "<td style=\"text-align:right;color:blue;\"><a href=\"index.php?op=1003&sop=490&tipo=7&hist=1&y=".$y."&m=".$m."&id_tipo=".$rowtipos["id"]."\" style=\"color:blue;\">(".$tri4.")<br><strong>".number_format($tri1, 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($tri3-$tri1), 2, ',', '.')."</strong><br><strong>".number_format($tri3, 2, ',', '.')."</strong></a></td>";
+						echo "<td style=\"text-align:right;color:blue;\"><a href=\"index.php?op=1003&sop=490&tipo=7&hist=1&y=".$y."&m=".$x."&id_tipo=".$rowtipos["id"]."\" style=\"color:blue;\">(".$tri4.")<br><strong>".number_format($tri1, 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($tri3-$tri1), 2, ',', '.')."</strong><br><strong>".number_format($tri3, 2, ',', '.')."</strong></a></td>";
 						$tri = 0;
 						$totala1 = $totala1+$tri1;
 						$totala3 = $totala3+$tri3;
@@ -2088,7 +2120,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "</table>";
 		echo "<table cellpadding=\"1\" cellspacing=\"8\" class=\"lista\">";
 			echo "<tr>";
-		for ($i = 2012; $i <= (date("Y")+1); $i++) {
+		for ($i = date("Y"); $i >= 2012; $i--) {
 			$totala1 = 0;
 			$totala3 = 0;
 			$totala4 = 0;
@@ -2115,23 +2147,27 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$tri4 = 0;
 				for ($x = 1; $x <= 12; $x++) {
 					$y = $i;
-					$yf = $i;
-					if ($x < 10) { $m = "0".$x; } else { $m = $x; }
-					if ($x == 12) { 
-						$mf = "01";
-						$yf = $i+1;
-					} else {
-						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
-					}
-					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_POST["id_tipo"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
+#					$yf = $yact;
+#					if ($x < 10) { $m = "0".$x; } else { $m = $x; }
+#					if ($x == 12) { 
+#						$mf = "01";
+#						$yf = $yact+1;
+#					} else {
+#						if ($x < 9) { $mf = "0".($x+1); } else { $mf = $x+1; }
+#					}
+					$dia1 = date("Y-m-d", mktime(0,0,0,$x,1,$y));
+					$last_day = date('t',strtotime($y."-".$x."-1"));
+					$dia2 = date("Y-m-t", mktime(0,0,0,$x,$last_day,$y));
+					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_POST["id_tipo"]." and fecha between '".$dia1."' and '".$dia2."'";
+#					$sql = "select sum(subtotaldescuento) as total1, sum(total) as total3,count(*) as total4 from sgm_cabezera where visible=1 and tipo=".$_POST["id_tipo"]." and ((fecha>= '".$y."-".$m."-01') and (fecha<'".$yf."-".$mf."-01'))";
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
-					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=490&tipo=6&hist=1&y=".$y."&m=".$m."&id_tipo=".$_POST["id_tipo"]."\" style=\"color:black;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></a></td>";
+					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1003&sop=490&tipo=6&hist=1&y=".$y."&m=".$x."&id_tipo=".$_POST["id_tipo"]."\" style=\"color:black;\">(".$row["total4"].")<br><strong>".number_format($row["total1"], 2, ',', '.')."</strong><br><strong style=\"color:red;\">".number_format(($row["total3"]-$row["total1"]), 2, ',', '.')."</strong><br><strong>".number_format($row["total3"], 2, ',', '.')."</strong></a></td>";
 					$tri1 = $tri1+$row["total1"];
 					$tri3 = $tri3+$row["total3"];
 					$tri4 = $tri4+$row["total4"];
 					if ($tri == 3) {
-						echo "<td style=\"text-align:right;color:blue;\"><a href=\"index.php?op=1003&sop=490&tipo=7&hist=1&y=".$y."&m=".$m."&id_tipo=".$_POST["id_tipo"]."\" style=\"color:blue;\">(".$tri4.")<br><strong>".number_format($tri1, 2, ',', '.')."</strong><br><strong style=\"color:blue;\">".number_format(($tri3-$tri1), 2, ',', '.')."</strong><br><strong>".number_format($tri3, 2, ',', '.')."</strong></a></td>";
+						echo "<td style=\"text-align:right;color:blue;\"><a href=\"index.php?op=1003&sop=490&tipo=7&hist=1&y=".$y."&m=".$x."&id_tipo=".$_POST["id_tipo"]."\" style=\"color:blue;\">(".$tri4.")<br><strong>".number_format($tri1, 2, ',', '.')."</strong><br><strong style=\"color:blue;\">".number_format(($tri3-$tri1), 2, ',', '.')."</strong><br><strong>".number_format($tri3, 2, ',', '.')."</strong></a></td>";
 						$tri = 0;
 						$totala1 = $totala1+$tri1;
 						$totala3 = $totala3+$tri3;
@@ -2393,7 +2429,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if (($archivo != "none") AND ($archivo_size != 0) AND ($archivo_size<=$lim_tamano)){
 				if ($_GET["logo"] == 1){$archivo_name = "logo1.jpg";}
 				if ($_GET["logo"] == 3){$archivo_name = "logo3.jpg";}
-				if (copy ($archivo, "../archivos_comunes/images/".$archivo_name)) {
+				if (copy ($archivo, "pics/".$archivo_name)) {
 					if ($_GET["logo"] == 1){
 						$sql = "update sgm_dades_origen_factura set ";
 						$sql = $sql."logo1='".$archivo_name."'";
@@ -2428,9 +2464,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 						if ($rowele["logo1"] != ""){
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1003&ssop=521&logo=1\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-								echo "<td><a href=\"../archivos_comunes/images/".$rowele["logo1"]."\" target=\"_blank\"><strong>".$rowele["logo1"]."</a></strong></td>";
+								echo "<td><a href=\"mgestion/pics/".$rowele["logo1"]."\" target=\"_blank\"><strong>".$rowele["logo1"]."</a></strong></td>";
 							echo "</tr>";
-							echo "<tr><td colspan=\"2\"><img src=\"../archivos_comunes/images/".$rowele["logo1"]."\"></td></tr>";
+							echo "<tr><td colspan=\"2\"><img src=\"mgestion/pics/".$rowele["logo1"]."\"></td></tr>";
 						}
 					echo "</table>";
 				echo "</td><td style=\"width:200px;vertical-align:top;\">";
@@ -2438,7 +2474,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<center>";
 					echo "<input type=\"hidden\" name=\"id_tipo\" value=\"1\">";
 					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
-					echo "<br><br><input type=\"submit\" value=\"archivos_comunes/images/\" style=\"width:200px\">";
+					echo "<br><br><input type=\"submit\" value=\"mgestion/pics/\" style=\"width:200px\">";
 					echo "</center>";
 					echo "</form>";
 				echo "</td>";
@@ -2450,9 +2486,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 						if ($rowele["logo_ticket"] != ""){
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1003&ssop=521&logo=3\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px;\"></a></td>";
-								echo "<td><a href=\"../archivos_comunes/images/".$rowele["logo_ticket"]."\" target=\"_blank\"><strong>".$rowele["logo_ticket"]."</a></strong></td>";
+								echo "<td><a href=\"mgestion/pics/".$rowele["logo_ticket"]."\" target=\"_blank\"><strong>".$rowele["logo_ticket"]."</a></strong></td>";
 							echo "</tr>";
-							echo "<tr><td colspan=\"2\"><img src=\"../archivos_comunes/images/".$rowele["logo_ticket"]."\"></td></tr>";
+							echo "<tr><td colspan=\"2\"><img src=\"mgestion/pics/".$rowele["logo_ticket"]."\"></td></tr>";
 						}
 					echo "</table>";
 				echo "</td><td style=\"width:200px;vertical-align:top;\">";
@@ -2460,7 +2496,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					echo "<center>";
 					echo "<input type=\"hidden\" name=\"id_tipo\" value=\"1\">";
 					echo "<input type=\"file\" name=\"archivo\" size=\"29px\">";
-					echo "<br><br><input type=\"submit\" value=\"archivos_comunes/images/\" style=\"width:200px\">";
+					echo "<br><br><input type=\"submit\" value=\"mgestion/pics/\" style=\"width:200px\">";
 					echo "</center>";
 					echo "</form>";
 				echo "</td>";

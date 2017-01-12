@@ -23,7 +23,7 @@
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
 
-	$pdf->Image('../../archivos_comunes/images/logo1.jpg',10,10,60,13);
+	$pdf->Image('pics/logo1.jpg',10,10,60,13);
 	$pdf->SetFont('Calibri','B',8);
 	$pdf->SetXY(10,25);
 

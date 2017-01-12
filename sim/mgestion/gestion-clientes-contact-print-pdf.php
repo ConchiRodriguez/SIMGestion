@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
 	$idioma = strtolower("es");
-	include ("../../archivos_comunes/factura-print-".$idioma.".php");
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
@@ -28,7 +28,7 @@ error_reporting(E_ALL);
 			$this->Cell(0,10,'Pagina '.$this->PageNo().'/{nb}',0,0,'C');
 			//Logo
 #			$this->Image('C:\\Archivos de programa\\EasyPHP1-8\\www\\demo\\temporal\\logo.jpeg',160,285,40);
-			$this->Image('../../archivos_comunes/images/logo1.jpg',160,285,40);
+			$this->Image('pics/logo1.jpg',160,285,40);
 		}
 	}
 
