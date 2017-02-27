@@ -287,10 +287,23 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$datosUpdate = array("0");
 				updateFunction ("sgm_cabezera",$_GET["id_fact"],$camposUpdate,$datosUpdate);
 			}
+			if ($ssoption == 10) {
+				$any = date("Y")-1;
+				$sqlcs = "select id from sgm_cabezera where visible=1 AND tipo=".$rowtipos["id"]." and fecha<='".$any."-12-31' and cerrada=0";
+				$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+				while ($rowcs = mysqli_fetch_array($resultcs)){
+					$camposUpdate = array("cerrada");
+					$datosUpdate = array("1");
+					updateFunction ("sgm_cabezera",$rowcs["id"],$camposUpdate,$datosUpdate);
+				}
+			}
 			if (($_GET["hist"] == 1) and ($_GET["id"] != "")){
 				echo boton(array("op=1003&sop=0&id=".$rowtipos["id"]),array($Actual));
 			} elseif (($_GET["hist"] == 0) and ($_GET["id"] != "")){
 				echo boton(array("op=1003&sop=0&id=".$rowtipos["id"]."&hist=1"),array($Historico));
+			}
+			if ($rowtipos["contabilidad"] == -1){
+				echo boton(array("op=1003&sop=0&ssop=10&id=".$_GET["id"]),array($Cierre_ano_ant));
 			}
 			$tds2 = 3;
 			echo "<table cellpadding=\"2\" cellspacing=\"0\" class=\"lista\">";
@@ -1843,7 +1856,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$mes = ($mact-1);
 
 		if ($mes == 12){ $any = $yact-1;} else { $any = $yact;}
-		$data_iva1 = date("U", mktime(0,0,0,1,20,$any));
+		$data_iva1 = date("U", mktime(0,0,0,1,30,$any));
 		$data_iva2 = date("U", mktime(0,0,0,4,20,$any));
 		$data_iva3 = date("U", mktime(0,0,0,7,20,$any));
 		$data_iva4 = date("U", mktime(0,0,0,10,20,$any));
@@ -1883,7 +1896,16 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$iva = ($rowingre1["total_ingre"]-$rowingre1["subtotal_ingre"]) - ($rowgasto["total_gasto"]-$rowgasto["subtotal_gasto"]);
 			}
 			
-			$iva2 += $iva;
+			$sqliva = "select id from sgm_cabezera where visible=1 and tipo=12 and fecha='".$dia_actual2."' and id_pagador=1";
+			$resultiva = mysqli_query($dbhandle,$sqliva);
+			$rowiva = mysqli_fetch_array($resultiva);
+			if ($rowiva){
+				$iva = 0;
+				$iva2 = 0;
+			} else {
+				$iva2 += $iva;
+			}
+			
 			echo "<td style=\"background-color:".$color_fondo."\">";
 				echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%\">";
 					echo "<tr><th>".$d."</th></tr>";
@@ -2533,28 +2555,28 @@ if (($option == 1003) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<th></th>";
-				echo "<th>".$Orden."</th>";
+				echo "<th>".$Orden."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_orden."\"></th>";
 				echo "<th>".$Tipo."</th>";
 #				echo "<th>".$Descripcion."</th>";
-				echo "<th>".$Plantilla."</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th>V.Prev</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th>V.Venc</th>";
-				echo "<th>V.Ref</th>";
-				echo "<th>V.Sub</th>";
-				echo "<th>V.Rec</th>";
-				echo "<th>Presu</th>";
-				echo "<th>".$Dias."</th>";
-				echo "<th>".$Stock."</th>";
-				echo "<th>".$Aprobar."</th>";
-				echo "<th>V.RFQ</th>";
-				echo "<th>".$Caja."</th>";
+				echo "<th>".$Plantilla."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_plantilla."\"></th>";
+				echo "<th>".$Dias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_plantilla_dias."\"></th>";
+				echo "<th>V.Prev<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_prevision."\"></th>";
+				echo "<th>".$Dias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_prevision_dias."\"></th>";
+				echo "<th>V.Venc<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_vencimiento."\"></th>";
+				echo "<th>V.Ref<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_referencia_cliente."\"></th>";
+				echo "<th>V.Sub<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_subtipo."\"></th>";
+				echo "<th>V.Rec<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_recibos."\"></th>";
+				echo "<th>Presu<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_presupuesto."\"></th>";
+				echo "<th>".$Dias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_presupuesto_dias."\"></th>";
+				echo "<th>".$Stock."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_stock."\"></th>";
+				echo "<th>".$Aprobar."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_aprobar."\"></th>";
+				echo "<th>V.RFQ<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_ver_rfq."\"></th>";
+				echo "<th>".$Caja."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_facturacion_caja."\"></th>";
 			echo "</tr>";
 			echo "<form action=\"index.php?op=1003&sop=530&ssop=1\" method=\"post\">";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<td style=\"width:35px\"><input type=\"number\" min=\"0\" name=\"orden\" value=\"0\" style=\"width:100%\"></td>";
+				echo "<td style=\"width:50px\"><input type=\"number\" min=\"0\" name=\"orden\" value=\"0\" style=\"width:100%\"></td>";
 				echo "<td style=\"width:25%\"><input type=\"Text\" name=\"tipo\" style=\"width:100%\"></td>";
 #				echo "<td><input type=\"Text\" name=\"descripcion\" style=\"width:100%\"></td>";
 				echo "<td><select name=\"facturable\">";
@@ -2754,7 +2776,6 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "</form>";
 			}
 		echo "</table>";
-		echo "<br>".$ayudaFacturaTipos;
 	}
 
 	if (($soption == 531) AND ($admin == true)) {

@@ -38,7 +38,9 @@ function resumEconomicContractes($id){
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$mes = date("n");
-			$sqltipos = "select id,id_cliente,num_contrato from sgm_contratos where activo=1 and renovado=0 and visible=1";
+			$inicio_any = date("Y-m-d", mktime(0,0,0,1,1,$yact));
+			$final_any = date("Y-m-d", mktime(23,59,59,12,31,$yact));
+			$sqltipos = "select id,id_cliente,num_contrato from sgm_contratos where fecha_ini between '".$inicio_any."' and '".$final_any."' and visible=1";
 			$sqltipos .= " order by id_cliente";
 			$resulttipos = mysqli_query($dbhandle,convertSQL($sqltipos));
 			while ($rowtipos = mysqli_fetch_array($resulttipos)){

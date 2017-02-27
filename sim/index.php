@@ -124,8 +124,8 @@ lopd($userid,$username,$option,$soption);
 <body>
 <center>
 <?php 
-if (($option == 900) or ($option == 600)) {
-	include ("mgestion/gestion-articulos-etiqueta-print.php");
+if ($option == 1000) {
+	include ("mgestion/gestion-incidencias-notificaciones.php");
 } else {
 	echo "<table class=\"maestra\">";
 		echo "<tr>";

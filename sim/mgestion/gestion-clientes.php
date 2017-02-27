@@ -2144,14 +2144,14 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr>";
 			echo "<form action=\"index.php?op=1008&sop=180&id=".$_GET["id"]."\" method=\"post\">";
-				echo "<td><select name=\"id_servicio\" style=\"width:600px\" >";
+				echo "<td><select name=\"id_servicio\" style=\"width:800px\" >";
 					echo "<option value=\"0\" selected>-</option>";
 					if ($_POST["id_servicio"] == "-1"){
 						echo "<option value=\"-1\" selected>".$SinContrato."</option>";
 					} else {
 						echo "<option value=\"-1\">".$SinContrato."</option>";
 					}
-					$sqlc = "select id,id_cliente,id_cliente_final from sgm_contratos where visible=1 and id_cliente=".$_GET["id"]." order by num_contrato";
+					$sqlc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_cliente=".$_GET["id"]." order by num_contrato";
 					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 					while ($rowc = mysqli_fetch_array($resultc)) {
 						$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowc["id_cliente"]." order by nombre";
@@ -2164,9 +2164,9 @@ if (($option == 1008) AND ($autorizado == true)) {
 						$results = mysqli_query($dbhandle,convertSQL($sqls));
 						while ($rows = mysqli_fetch_array($results)){
 							if ($_POST["id_servicio"] == $rows["id"]){
-								echo "<option value=\"".$rows["id"]."\" selected>".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rows["servicio"]."</option>";
+								echo "<option value=\"".$rows["id"]."\" selected>".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rowc["descripcion"]."-".$rows["servicio"]."</option>";
 							} else {
-								echo "<option value=\"".$rows["id"]."\">".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rows["servicio"]."</option>";
+								echo "<option value=\"".$rows["id"]."\">".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rowc["descripcion"]."-".$rows["servicio"]."</option>";
 							}
 						}
 					}

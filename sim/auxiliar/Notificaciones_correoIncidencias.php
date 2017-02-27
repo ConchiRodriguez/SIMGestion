@@ -162,7 +162,7 @@ function correoIncidencias(){
 //Busca si contiene codigo de incidencia en el asunto
 				list($idinci,$id_inc) = buscarCodigoIncidenciaEmail($asunto1,$id_cliente);
 				if ($idinci == 0) {list($idinci,$id_inc) = buscarEmailRespuesta($asunto1,$id_cliente);}
-				if ($idinci == 0) {list($idinci,$id_inc,$id_codigo_externo,$asunto2,$not_sla_mango) = buscarCodigoExternoIncidencia($asunto1,$id_cliente,$mensaje);}
+				if ($idinci == 0) {list($idinci,$id_inc,$id_codigo_externo,$asunto2,$not_sla_mango,$incidencia_propia) = buscarCodigoExternoIncidencia($asunto1,$id_cliente,$mensaje);}
 				if (($asunto != $asunto2) and ($asunto2 != "")) {$asunto = $asunto2;}
 //si se encuentra una sola coincidencia inserta una nota de desarrollo, si es 0 o mas de 1 añade una incidencia nueva.
 				if ($idinci == 1){
@@ -186,8 +186,8 @@ function correoIncidencias(){
 						$resultser = mysqli_query($dbhandle,$sqlser);
 						$rowser = mysqli_fetch_array($resultser);
 	//enviar notificación nueva nota en la incidencia
-						if ($rowser["auto_email"] == 1){
-							enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,'');
+						if (($rowser["auto_email"] == 1) and ($incidencia_propia == 1)){
+							enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,$mensaje,$id_inc);
 						}
 					}
 				} else {
@@ -207,8 +207,8 @@ function correoIncidencias(){
 #						$id_codigo_externo = buscarCodigoExternoIncidencia($id_servicio_con,$id_cliente,$asunto1);
 #					}
 //Añadir incidencia
-					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo";
-					$datosInsert = array(0,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,'-1',3,$mensaje,$asunto,0,$id_servicio_con,$id_codigo_externo);
+					$camposInsert = "id_incidencia,correo,id_usuario_registro,id_usuario_origen,id_cliente,fecha_registro_inicio,fecha_inicio,id_estado,id_entrada,notas_registro,asunto,pausada,id_servicio,codigo_externo,notificar_cliente";
+					$datosInsert = array(0,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,'-1',3,$mensaje,$asunto,0,$id_servicio_con,$id_codigo_externo,$incidencia_propia);
 					insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 					$sqlin = "select id_servicio,id,fecha_inicio from sgm_incidencias where fecha_registro_inicio=".$data." and fecha_inicio=".$data_missatge." and asunto='".$asunto."'";
@@ -229,7 +229,9 @@ function correoIncidencias(){
 					updateFunction ("sgm_incidencias",$rowin["id"],$camposUpdate,$datosUpdate);
 
 //enviar notificación nueva incidencia
-					enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1,'');
+					if ($incidencia_propia == 1){
+						enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1,$mensaje,$rowin["id"]);
+					}
 				}
 				// guardar ficheros adjuntos
 				if ($filename){

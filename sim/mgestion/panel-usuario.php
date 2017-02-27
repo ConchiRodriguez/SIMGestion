@@ -14,6 +14,8 @@ if (($option == 200) AND ($user == true)) {
 				echo "<td class=".$class."><a href=\"index.php?op=200&sop=10&id=".$userid["id"]."\" class=".$class.">".$Cambio." ".$Contrasena."</a></td>";
 				if (($soption >= 20) and($soption < 30)) {$class = "menu_select";} else {$class = "menu";}
 				echo "<td class=".$class."><a href=\"index.php?op=200&sop=20\" class=".$class.">".$Versiones." SIMges</a></td>";
+				if (($soption >= 30) and($soption < 40)) {$class = "menu_select";} else {$class = "menu";}
+				echo "<td class=".$class."><a href=\"index.php?op=200&sop=30\" class=".$class.">".$Calendario."</a></td>";
 				echo "</tr>";
 			echo "</table>";
 		echo "</td></tr>";
@@ -27,26 +29,35 @@ if (($option == 200) AND ($user == true)) {
 		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
 		$rowx = mysqli_fetch_array($resultx);
 
+		$sqldiv = "select * from sgm_divisas where predefinido=1";
+		$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
+		$rowdiv = mysqli_fetch_array($resultdiv);
+
 		echo "<h4>".$Estado." ".$General."</h4>";
-		echo "<h4>".$Versiones." SIMges</h4>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 		$inicio_mes = date("Y-m-d", mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$final_mes = date("Y-m-d");
-		$sqlcv = "select * from sim_control_versiones where visible=1 and fecha between '".$inicio_mes."' and '".$final_mes."' order by fecha desc";
+		$sqlcv = "select count(*) as total from sim_control_versiones where visible=1 and fecha between '".$inicio_mes."' and '".$final_mes."' order by fecha desc";
 		$resultcv = mysqli_query($dbhandle,convertSQL($sqlcv));
-		while ($rowcv = mysqli_fetch_array($resultcv)) {
-			echo "<tr>";
-				echo "<td style=\"vertical-align:top;width:80px;\">".cambiarFormatoFechaDMY($rowcv["fecha"])."</td>";
-				$sqlx = "select id,usuario from sgm_users where sgm=1 and activo=1 and validado=1 and id=".$rowcv["id_usuario"];
-				$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
-				$rowx = mysqli_fetch_array($resultx);
-				echo "<td style=\"vertical-align:top;\">".$rowx["usuario"]."</td>";
-				echo "<td><textarea name=\"comentarios\" style=\"width:800px\" disabled>".$rowcv["comentarios"]."</textarea></td>";
-			echo "</tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
+		$rowcv = mysqli_fetch_array($resultcv);
+		if ($rowcv["total"] > 0){
+			echo "<h4>".$Versiones." SIMges</h4>";
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			$sqlcv = "select * from sim_control_versiones where visible=1 and fecha between '".$inicio_mes."' and '".$final_mes."' order by fecha desc";
+			$resultcv = mysqli_query($dbhandle,convertSQL($sqlcv));
+			while ($rowcv = mysqli_fetch_array($resultcv)) {
+				echo "<tr>";
+					echo "<td style=\"vertical-align:top;width:80px;\">".cambiarFormatoFechaDMY($rowcv["fecha"])."</td>";
+					$sqlx = "select id,usuario from sgm_users where sgm=1 and activo=1 and validado=1 and id=".$rowcv["id_usuario"];
+					$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
+					$rowx = mysqli_fetch_array($resultx);
+					echo "<td style=\"vertical-align:top;\">".$rowx["usuario"]."</td>";
+					echo "<td><textarea name=\"comentarios\" style=\"width:800px\" disabled>".$rowcv["comentarios"]."</textarea></td>";
+				echo "</tr>";
+				echo "<tr><td>&nbsp;</td></tr>";
+			}
+			echo "<tr><td></td><td></td><td style=\"text-align:right;\"><a href=\"index.php?op=200&sop=20\">".$VerMas."</a></td></tr>";
+			echo "</table>";
 		}
-		echo "<tr><td></td><td></td><td style=\"text-align:right;\"><a href=\"index.php?op=200&sop=20\">".$VerMas."</a></td></tr>";
-		echo "</table>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
@@ -77,8 +88,9 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					if ($_POST["bh"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
-							echo "<th style=\"width:450px;\">".$Cliente."</th>";
+							echo "<th style=\"width:400px;\">".$Cliente."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
+							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
 							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
 							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
@@ -107,6 +119,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
 								echo "<td style=\"color:".$color_letra."\">".$rowch["num_horas"]." ".$Horas."</td>";
 								echo "<td style=\"color:".$color_letra."\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
@@ -142,11 +155,12 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					if ($_POST["rc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
-							echo "<th style=\"width:550px;\">".$Cliente."</th>";
+							echo "<th style=\"width:500px;\">".$Cliente."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
+							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
 							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
-						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=0 order by fecha_ini desc";
+						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=0 order by fecha_fin";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
 						while ($rowch = mysqli_fetch_array($resultch)) {
 							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
@@ -170,6 +184,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
 								echo "<td style=\"color:".$color_letra."\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
@@ -206,11 +221,12 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					if ($_POST["fm"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
-							echo "<th style=\"width:450px;\">".$Cliente."</th>";
+							echo "<th style=\"width:400px;\">".$Cliente."</th>";
 							echo "<th style=\"width:300px;\">".$Contrato."</th>";
+							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
 							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
-						$sqlch = "select * from sgm_contratos where visible=1 and horas_mensual=1 order by fecha_ini desc";
+						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and horas_mensual=1 order by fecha_ini desc";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
 						while ($rowch = mysqli_fetch_array($resultch)) {
 							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
@@ -233,6 +249,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
 								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
@@ -289,14 +306,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -345,13 +362,13 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 								echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-								echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+								echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
 							echo "</tr>";
 							$total_factura += $rowc["total"];
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -403,14 +420,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -461,14 +478,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha_vencimiento"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".$rowc["total"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"4\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.','')."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -505,8 +522,8 @@ if (($option == 200) AND ($user == true)) {
 #					if ($_POST["sc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:400px;\">".$Cliente."</th>";
-							echo "<th style=\"width:400px;\">".$Asunto."</th>";
-							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
+							echo "<th style=\"width:350px;\">".$Asunto."</th>";
+							echo "<th style=\"width:150px;\">".$Numero." ".$Horas."</th>";
 						echo "</tr>";
 						$sqlin = "select * from sgm_incidencias where visible=1 and id_incidencia=0 and id_servicio=-1 and facturada=0 and id_estado=-2 order by fecha_inicio desc";
 						$resultin = mysqli_query($dbhandle,convertSQL($sqlin));
@@ -721,7 +738,126 @@ if (($option == 200) AND ($user == true)) {
 		echo "</table>";
 	}
 
+	if ($soption == 30) {
+		echo "<h4>".$Calendario."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<form action=\"index.php?op=200&sop=30\" method=\"post\">";
+			echo "<tr>";
+				echo "<th style=\"text-align:center;\">".$Ano." : </th>";
+				echo "<td><select name=\"ano\">";
+				for ($i = date("Y")+1; $i >= 2012; $i--) {
+					if ($_POST["ano"] == $i) {
+						echo "<option value=\"".$i."\" selected>".$i."</option>";
+					} else {
+						echo "<option value=\"".$i."\">".$i."</option>";
+					}
+				}
+				echo "</select></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Enviar."\"></td>";
+			echo "</tr>";
+			echo "</form>";
+		echo "</table>";
+		echo "<table cellpadding=\"1\" cellspacing=\"10\" class=\"lista\">";
+			echo "<tr>";
+			$color_vac_user = array();
+		for ($j=1;$j<=12;$j++){
+			echo "<td style=\"vertical-align:top\">";
+				### parametros configurables
+				if ($_POST["ano"] == "") {
+					$a = date("Y");
+				} else {
+					$a = $_POST["ano"];
+				}
+				$m = $j;
+				$d = 1;
+				$programada = 1;
+				$totaldiasmes = date("t", mktime(0,0,0,$m ,$d, $a));
+				$semananum = 0;
+				echo "<table>";
+				echo "<caption>".$meses[$m-1]."</caption>";
+				echo "<tr>";
+					for ($i=0;$i<=6;$i++){
+						echo "<td style=\"text-align:center\">".$dias[$i]."</td>";
+					}
+				echo "</tr><tr>";
+				$sumadias = 0;
+				$diasemana = 1;
+				$semanax = 0;
+				$control = 0;
 
+				$index = 0;
+				$color_vacances = array('8FBC8F','7B68EE','FF00FF','4682B4','4169E1','FF00FF','228B22','00FF00','808000');
+				$sqlu = "select * from sgm_users where validado=1 and activo=1 and sgm=1 and id>1";
+				$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+				while ($rowu = mysqli_fetch_array($resultu)){
+					$color_vac_user[$rowu["id"]] = "#".$color_vacances[$index];
+					$index++;
+				}
+
+				while ($d <= $totaldiasmes) {
+					$diasemana = date("w", mktime(0,0,0,$m ,$d, $a));
+					if ($diasemana == 0) { $diasemana = 7; }
+					$semana = date("W", mktime(0,0,0,$m ,$d, $a));
+					if ($semana != $semanaanterior) {
+						$semananum++;
+						echo "</tr><tr>";
+					}
+					if ($semanax == 0) { 
+						if ($diasemana == 7) { echo "<td></td><td></td><td></td><td></td><td></td><td></td>"; $sumadias = 6;}
+						if ($diasemana == 6) { echo "<td></td><td></td><td></td><td></td><td></td>"; $sumadias = 5;}
+						if ($diasemana == 5) { echo "<td></td><td></td><td></td><td></td>"; $sumadias = 4;}
+						if ($diasemana == 4) { echo "<td></td><td></td><td></td>"; $sumadias = 3;}
+						if ($diasemana == 3) { echo "<td></td><td></td>"; $sumadias = 2;}
+						if ($diasemana == 2) { echo "<td></td>"; $sumadias = 1;}
+						if ($diasemana == 1) { echo ""; $sumadias = 0;}
+						$semanax = 1;
+					}
+
+					$fecha = date("U", mktime(0,0,0,$m ,$d, $a));
+					$color = "white";
+					if ($fecha == date('U', mktime(0, 0, 0, date('m'), date('d'), date('Y')))){ $color = "yellow"; } else {$color = $color;}
+					if (comprobar_festivo2($fecha) == 1){ $color = "Tomato"; } else {$color = $color;}
+					echo "<td style=\"text-align:center;width:50px;background-color:".$color.";vertical-align:top;color:black;border:1px Black Solid;height:40px;\">";
+						echo "<table cellpadding=\"0\" cellspacing=\"0\">";
+							echo "<caption>".$d."</caption>";
+							echo "<tr>";
+							$sqlu = "select * from sgm_users where validado=1 and activo=1 and sgm=1 and id>1";
+							$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+							while ($rowu = mysqli_fetch_array($resultu)){
+								if (comprobarFestivoEmpleado($fecha,$rowu["id"]) == 1){
+									$color2 = $color_vac_user[$rowu["id"]];
+									echo "<td style=\"background-color:".$color2.";height:10px;width:5px;\">&nbsp;</td>";
+								}
+							}
+							echo "</tr>";
+						echo "</table>";
+					echo "</td>";
+					$d++;
+					$semanaanterior = $semana;
+				}
+				echo "</tr></table>";
+			echo "</td>";
+			if(($m==4) or ($m==8)){
+				echo "</tr><tr>";
+			}
+		}
+			echo "</tr>";
+		echo "</table>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr>";
+			foreach ( $color_vac_user as $usuario => $color_usuario){
+				$sqlu = "select * from sgm_users where validado=1 and activo=1 and sgm=1 and id=".$usuario."";
+				$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+				$rowu = mysqli_fetch_array($resultu);
+				echo "<td style=\"background: ".$color_usuario.";width:15px;\";>&nbsp;</td>";
+				echo "<td style=\"width:100px;\";>".$rowu["usuario"]."</td>";
+			}
+#			var_dump($color_vac_user);
+			echo "</tr>";
+		echo "</table>";
+
+	}
+	
 	echo "</td></tr></table><br>";
 }
 

@@ -797,6 +797,7 @@ ALTER TABLE `sgm_incidencias` ADD `facturada` tinyint(1) NOT NULL default '0' AF
 ALTER TABLE `sgm_incidencias` ADD `control_version` tinyint(1) NOT NULL default '0' AFTER `facturada` ;
 ALTER TABLE `sgm_incidencias` ADD `nivel_tecnico` int(1) NOT NULL default '0' AFTER `control_version` ;
 /*nivel_tecnico: 1, 2 o 3.*/
+ALTER TABLE `sgm_incidencias` ADD `notificar_cliente` tinyint(1) NOT NULL default '1' AFTER `nivel_tecnico` ;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;
@@ -808,6 +809,7 @@ ALTER TABLE `sgm_incidencias_correos_enviados` ADD `destinatario` varchar(100) N
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `asunto` varchar(300) NOT NULL default '' AFTER `destinatario`;
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `fecha` int(15) NOT NULL default '0' AFTER `asunto`;
 ALTER TABLE `sgm_incidencias_correos_enviados` ADD `tipo` int(11) NOT NULL default '0' AFTER `fecha`;
+ALTER TABLE `sgm_incidencias_correos_enviados` ADD `mensaje` longtext NOT NULL default '' AFTER `tipo`;
 
 CREATE TABLE `sgm_incidencias_entrada` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_entrada` ADD `entrada` varchar(30) NOT NULL default '' AFTER `id`;

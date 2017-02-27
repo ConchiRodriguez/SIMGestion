@@ -6,10 +6,14 @@ $tipo: 1=incidencia nueva externa, 2=nota de incidencia externa, 3=incidencia nu
 */
 
 
-function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$tipo,$body){
+function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$tipo,$body,$id_nota_inci){
 	global $db,$dbhandle,$buzon_usuario;
 	
 	$cuerpo = '';
+
+	if ($tipo == 7){
+		$id = $id_nota_inci;
+	}
 
 	$sqlm = "select * from sgm_incidencias where id=".$id;
 	$resultm = mysqli_query($dbhandle,$sqlm);
@@ -46,11 +50,12 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 
 	if (($id_codigo_externo == '')) {$cuerpo.="Gr&agrave;cies per contactar amb el departament de suport de Solucions-IM.<br>";}
 
-	echo "<br>".$correo_remitente." - ".$asunto." - ".$email." - ".$cuerpo."<br>";
+	$cuerpo = str_replace("\r\n", "<br>", $cuerpo);
+	echo "<br>".$correo_remitente." - ".$asunto." - ".$email." - ".comillas($cuerpo)."<br>";
 
 #	if (send_mail($correo_remitente,$asunto,$email,$cuerpo)){
-		$camposInsert = "id_incidencia,destinatario,asunto,fecha,tipo";
-		$datosInsert = array($id,$correo_remitente,$asunto,date('U'),$tipo);
+		$camposInsert = "id_incidencia,destinatario,asunto,fecha,tipo,mensaje";
+		$datosInsert = array($id_nota_inci,$correo_remitente,$asunto,date('U'),$tipo,comillas($cuerpo));
 		insertFunction ("sgm_incidencias_correos_enviados",$camposInsert,$datosInsert);
 #	}
 }

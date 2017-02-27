@@ -11,7 +11,7 @@ function updateFunction ($tabla,$id,$camposUpdate,$datosUpdate){
 		} else {
 			$sql = $sql.",";
 		}
-		$sql = $sql.$camposUpdate[$i]."='".comillas($datosUpdate[$i])."'";
+		$sql = $sql.$camposUpdate[$i]."='".mysqli_real_escape_string($dbhandle,comillas($datosUpdate[$i]))."'";
 	}
 	$sql = $sql." WHERE id=".$id."";
 	mysqli_query($dbhandle,convertSQL($sql));

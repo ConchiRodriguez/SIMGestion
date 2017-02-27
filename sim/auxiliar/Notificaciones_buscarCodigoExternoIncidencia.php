@@ -7,6 +7,7 @@ function buscarCodigoExternoIncidencia($asunto,$id_cli,$mensaje){
 	$x = 0;
 	$id_inc = 0;
 	$not_sla_mango = 0;
+	$incidencia_propia = 1;
 	$rest = "";
 
 #	$sqlcs = "select funcion from sgm_contratos_servicio where visible=1 and id=".$id_servicio_con;
@@ -35,10 +36,14 @@ function buscarCodigoExternoIncidencia($asunto,$id_cli,$mensaje){
 		if ($pos !== false){
 			$not_sla_mango = 1;
 		}
+		$pos = strpos($mensaje,"one of our analysts ");
+		if ($pos !== false){
+			$incidencia_propia = 0;
+		}
 
 	}
 
-	return array($x,$id_inc,$codigo_externo,$rest,$not_sla_mango);
+	return array($x,$id_inc,$codigo_externo,$rest,$not_sla_mango,$incidencia_propia);
 }
 
 ?>

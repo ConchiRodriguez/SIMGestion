@@ -12,7 +12,7 @@ function insertFunction ($tabla,$camposInsert,$datosInsert){
 		} else {
 			$sql = $sql.",";
 		}
-		$sql = $sql."'".comillas($datosInsert[$i])."'";
+		$sql = $sql."'".mysqli_real_escape_string($dbhandle,comillas($datosInsert[$i]))."'";
 	}
 	$sql = $sql.")";
 	mysqli_query($dbhandle,convertSQL($sql));

@@ -1,0 +1,419 @@
+body{
+	background-color: #E6E6E6;
+	font: 11px Verdana;
+	margin: auto;
+	text-align: center;
+	height: 100%;
+}
+
+table.principal{
+	background-color: White;
+	text-align: center;
+	margin-left:auto; 
+	margin-right:auto;	
+	border-spacing: 0px;
+	padding:0px;
+	max-width:1000px;
+	width: 100%;
+	height: 100%;
+}
+
+tr.principal_cabezera{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:10%;
+}
+
+td.principal_cabezera{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+}
+
+tr.principal_banner{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:13%;
+}
+
+tr.principal_cuerpo{
+	background-color: White;
+	text-align: center;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+
+table.cabezera{
+	background-color: White;
+	border-spacing: 0px;
+	padding:0px;
+	width:1000px;
+}
+
+tr.cabezera{
+	background-color: White;
+	border-spacing: 0px;
+	padding:0px;
+	width:1000px;
+	height:80px;
+}
+
+td.cabezera_logo{
+	background-color: White;
+	text-align: center;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:350px;
+	height:80px;
+}
+
+td.cabezera_menu{
+	background-color: White;
+	text-align: right;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:650px;
+	height:80px;
+}
+
+table.cabezera_menu{
+	background-color: White;
+	text-align: center;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 2px;
+	padding:0px;
+	width:650px;	
+}
+
+td.menu{
+	background-color: #CCCCCC;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:16%;
+	height:20px;
+}
+
+td.menu_select{
+	background-color: #33339F;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:16%;
+	height:20px;	
+}
+
+td.menu_select_empresa{
+	background-color: #33339F;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:25%;
+	height:20px;	
+}
+
+td.menu_select_contacto{
+	background-color: #33339F;
+	text-align: center;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:33%;
+	height:20px;	
+}
+
+a.menu{
+	color: black;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+a.menu:hover{
+	color: black;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a.menu_select{
+	color: white;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+a.menu_select:hover{
+	color: white;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+
+p, li{
+	text-align: justify;
+	color: black;
+	text-decoration: none;
+}
+
+
+td.cuerpo{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:15px;
+	width:75%;
+}
+
+td.cuerpo1{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding: 15px;
+	width:50%;
+}
+
+td.cuerpo2{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding: 15px;
+	width:25%;
+}
+
+table.footer{
+	background-color: Silver;
+	text-align: left;
+}
+
+a{
+	color: black;
+	text-decoration: none;
+}
+
+a:hover{
+	color: blue;
+	text-decoration: underline;
+}
+
+a.footer{
+	text-decoration: none;
+	font-size: 11px;
+	color: black;
+}
+
+a.footer:hover{
+	color: blue;
+	text-decoration: underline;
+}
+
+a.image{
+	text-decoration: none;
+	border: none;
+}
+
+img{
+	border: none;
+}
+
+table.contacto{
+	background-color: White;
+	text-align: left;
+	margin-left:0px; 
+	margin-right:0px;	
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+}
+
+table.contacto1{
+	background-color: White;
+	text-align: left;
+	margin-left:0px; 
+	margin-right:0px;	
+	border-spacing: 0px;
+	padding:0px;
+	width:400px;
+}
+
+td.contacto{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+}
+
+td.contacto2{
+	background-color: white;
+	text-align: justify;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+}
+
+input.contacto{
+	width:100%;
+}
+
+table.news{
+	background-color: White;
+	text-align: left;
+	margin-left:auto; 
+	margin-right:auto;	
+	border-spacing: 0px;
+	padding:0px;
+	width:100%;
+}
+
+td.news{
+	background-color: white;
+	text-align: right;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:30%;
+}
+
+td.news2{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:70%;
+}
+
+td.presupost{
+	background-color: white;
+	text-align: right;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:30%;
+}
+
+td.presupost2{
+	background-color: white;
+	text-align: left;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:70%;
+}
+
+td.presupost3{
+	background-color: white;
+	text-align: justify;
+	vertical-align:middle;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:70%;
+}
+
+input.presupost{
+	width:100%;
+}
+
+table.social{
+	background-color: White;
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+td.social{
+	background-color: white;
+	text-align: center;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+	width: 50%;
+	border-spacing: 0px;
+}
+
+td.rsocial{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:20%;
+}
+
+td.rsocial2{
+	background-color: white;
+	text-align: justify;
+	vertical-align: top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding: 0px;
+	width: 80%;
+}
+
+div.social{
+	height: 370px;
+	overflow: auto;
+	text-align: justify;
+}
+
+td.contact{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:35%;
+}
+
+td.contact2{
+	background-color: white;
+	text-align: left;
+	vertical-align:top;
+	margin: 0px;
+	border-spacing: 0px;
+	padding:0px;
+	width:65%;
+}

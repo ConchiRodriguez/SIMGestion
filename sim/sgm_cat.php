@@ -120,6 +120,7 @@ $Certificacion = "Certificaci&oacute;";
 $Certificaciones = "Certificacions";
 $Cerrada = "Tancada";
 $Cerrar = "Tancar";
+$Cierre_ano_ant = "Tancament Any Passat";
 $Clase = "Classe";
 $Clasificar = "Classificar";
 $CLIENTE = "CLIENT";
@@ -245,6 +246,7 @@ $Edicion = "Edici&oacute;";
 $Editable = "Editable";
 $Editar = "Editar";
 $Ejecutar = "Executar";
+$Eliminada = "Eliminada";
 $Eliminar = "Eliminar";
 $Email = "E-mail";
 $Empleado = "Empleat";
@@ -388,6 +390,7 @@ $Informes = "Informes";
 $Ingresos = "Ingresos";
 $Inicial = "Inicial";
 $Inicio = "Inici";
+$Insertada = "Insertada";
 $Insertar = "Insertar";
 $Interno = "Intern";
 $Introduccion = "Introducci&oacute;";
@@ -424,6 +427,7 @@ $Maximo = "M&agrave;xim";
 $Medio = "Medi";
 $Medios = "Medis";
 $Memoria = "Mem&ograve;ria";
+$Mensaje = "Missatge";
 $Mensual = "Mensual";
 $Mes = "Mes";
 $Meses = "Mesos";
@@ -454,6 +458,7 @@ $Nota = "Nota";
 $Notas = "Notes";
 $Notificacion = "Notificaci&oacute;";
 $Notificaciones = "Notificacions";
+$Notificar = "Notificar";
 $NoVer = "No Veure";
 $Nueva = "Nova";
 $Nuevo = "Nou";
@@ -550,6 +555,7 @@ $Puestos_trabajo = "Llocs de Treball";
 $PVP = "PVP";
 $PVD = "PVD";
 
+$Reabierta = "Reoberta";
 $Realizado = "Realitzat";
 $Recalcular = "Recalcular";
 $Recibo = "Rebut";
@@ -564,6 +570,7 @@ $Registrar_Documento = "Registrar Document";
 $Registro = "Registre";
 $Relacion = "Relaci&oacute;";
 $Relacionar = "Relacionar";
+$Relacionada = "Relacionada";
 $Relacionado = "Relacionat";
 $Relaciones = "Relacions";
 $Remitente = "Remitent";
@@ -770,21 +777,21 @@ $info_contrato_servicios10 = "Enviament autom&agrave;tic de email en el modulo d
 $info_contrato_servicios11 = "Nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.";
 $info_contrato_servicios12 = "Codi de qui obre incid&egrave;ncies relacionades amb aquest servei.";
 #Facturas
-$ayudaFacturaTipos = "<br><strong>Ordre</strong> - Ordre en que apareixen els diferents tipus en el llistat superior.
-<br><strong>Plantilla</strong> - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.
-<br><strong>Dies</strong> - La periocitat en dies en que s'ha de regenerar una nova plantilla.
-<br><strong>V.Prev</strong> - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).
-<br><strong>Dies</strong> - Dies que suma de forma autom&agrave;tica a la previsi&oacute;n. Data de previsi&oacute; = Data actual + D&iacute;as.
-<br><strong>V.Ven</strong> - (Visualitzar Vencimient) Visualitza en el llistat el vencimient de la factura. Data de vencimient = Data actual + Dies de la fitxa client.
-<br><strong>V.Ref</strong> - (Visualitzar Referencia del Cliente) Visualitza en el llistat n&uacute;mero de referencia del cliente y nombre de solicitante.
-<br><strong>V.Sub</strong> - (Visualitzar Subtipus) Visualitza el subtipus (en cas de que existeixin).
-<br><strong>V.Rec</strong> - (Visualitzar Recibos) Permet la gesti&oacute; de rebuts pel control del cobrament.
-<br><strong>Presu</strong> - Format de pressupuest. Vencimient i c&agrave;lcul de costos.
-<br><strong>Dies</strong> - Dies que suma a la caducidad del pressupuesto. Data de caducidad = Data actual + Dies.
-<br><strong>Aprovar</strong> - Donar aprovaci&oacute; a un pressupuesto.
-<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualitza n&uacute;mero RFQ.
-<br><strong>Caixa</strong> - Indica com aquest tipus influeix en la caixa.
-";
+$info_facturacion_orden = "Ordre - Ordre en que apareixen els diferents tipus en el llistat superior.";
+$info_facturacion_plantilla = "Plantilla - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.";
+$info_facturacion_plantilla_dias = "Dies - La periocitat en dies en que s'ha de regenerar una nova plantilla.";
+$info_facturacion_ver_prevision = "V.Prev - (Visualitzar previsi&oacute;) Visualitza en el llistat la data de previsi&oacute; (utilitzant per comandes de clients/prove&iuml;dors).";
+$info_facturacion_ver_prevision_dias = "Dies - Dies que suma de forma autom&agrave;tica a la previsi&oacute;n. Data de previsi&oacute; = Data actual + D&iacute;as.";
+$info_facturacion_ver_vencimiento = "V.Ven - (Visualitzar Vencimient) Visualitza en el llistat el vencimient de la factura. Data de vencimient = Data actual + Dies de la fitxa client.";
+$info_facturacion_ver_referencia_cliente = "V.Ref - (Visualitzar Referencia del Cliente) Visualitza en el llistat n&uacute;mero de referencia del cliente y nombre de solicitante.";
+$info_facturacion_ver_subtipo = "V.Sub - (Visualitzar Subtipus) Visualitza el subtipus (en cas de que existeixin).";
+$info_facturacion_ver_recibos = "V.Rec - (Visualitzar Recibos) Permet la gesti&oacute; de rebuts pel control del cobrament.";
+$info_facturacion_presupuesto = "Presu - Format de pressupuest. Vencimient i c&agrave;lcul de costos.";
+$info_facturacion_presupuesto_dias = "Dies - Dies que suma a la caducidad del pressupuesto. Data de caducidad = Data actual + Dies.";
+$info_facturacion_stock = "Stock - Indica com aquest tipus influeix en el stock.";
+$info_facturacion_aprobar = "Aprovar - Donar aprovaci&oacute; a un pressupuesto.";
+$info_facturacion_ver_rfq = "V.RFQ - (Visualitzar RFQ) Visualitza n&uacute;mero RFQ.";
+$info_facturacion_caja = "Caixa - Indica com aquest tipus influeix en la caixa.";
 $ayudaFecturaRelaciones = "Les relacions entre tipus marcaran d'on a on es poden traspassar dades de facturaci&oacute;.";
 $ayudaFacturaEliminar = "S'eliminar&agrave; l'article en tot el progama. Totes les dades relacionades amb ell seran inaccessibles.";
 $ayudaFacturaCerrar = "Es tancar&agrave; el document i deixar&agrave; de ser visible, excepte en el hist&ograve;ric.";

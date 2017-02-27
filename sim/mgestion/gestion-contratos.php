@@ -182,7 +182,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						while ($row = mysqli_fetch_array($result)) {
-							if ($_POST["id_cliente2"] == $row["id"]){
+							if (($_POST["id_cliente2"] == $row["id"]) or ($_GET["id_cli"] == $row["id"])){
 								echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
 							} else {
 								echo "<option value=\"".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</option>";
@@ -207,7 +207,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "</table>";
 			echo "<br><br>";
 		}
-		if (($soption != 200) or ($_POST["id_contrato_tipo2"] > 0) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0)){
+		if (($soption != 200) or ($_POST["id_contrato_tipo2"] > 0) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0) or ($_GET["id_cli"] > 0)){
 			echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver\">";
 					echo "<th>".$Eliminar."</th>";
@@ -225,8 +225,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 				if ($_POST["id_contrato_tipo2"] > 0) {
 					$sqlcc = $sqlcc." and id_contrato_tipo=".$_POST["id_contrato_tipo2"]."";
 				}
-				if ($_POST["id_cliente2"] > 0) {
-					$sqlcc = $sqlcc." and id_cliente=".$_POST["id_cliente2"]."";
+				if (($_POST["id_cliente2"] > 0) or ($_GET["id_cli"] > 0)) {
+					$sqlcc = $sqlcc." and id_cliente=".$_POST["id_cliente2"].$_GET["id_cli"]."";
 				}
 				if ($_POST["id_cliente_final2"] > 0) {
 					$sqlcc = $sqlcc." and id_cliente_final=".$_POST["id_cliente_final2"]."";
@@ -237,7 +237,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 #				echo $sqlcc."<br>";
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
-					if (date('U',strtotime($rowcc["fecha_fin"])) < date('U')) { $color = "red"; $color_letra = "white";}
+					if ((date('U',strtotime($rowcc["fecha_fin"])) < date('U')) and ($rowcc["activo"] == 1)) { $color = "red"; $color_letra = "white";}
 					else { $color = "white"; $color_letra = "";}
 					echo "<tr style=\"background-color:".$color."\">";
 						echo "<td style=\"text-align:center;color:".$color_letra."\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
@@ -321,6 +321,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=100&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Datos." ".$Contrato."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=110&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Servicios."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=120&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Facturacion."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=160&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Incidencias."</a></td>";
 						echo "</tr>";
 						echo "<tr>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=150&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Tecnicos."</a></td>";
@@ -670,6 +671,127 @@ if (($option == 1011) AND ($autorizado == true)) {
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1011&sop=150&ssop=3&id=".$_GET["id"]."&id_con_user=".$_GET["id_con_user"],"op=1011&sop=150&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
+	}
+
+	if ($soption == 160) {
+		echo "<h4>".$Incidencias."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver;\">";
+				echo "<th>ID</th>";
+				echo "<th>".$SLA."</th>";
+				echo "<th>".$Fecha." ".$Prevision."</th>";
+				echo "<th>".$Asunto."</th>";
+				echo "<th colspan=\"2\">".$Nivel." ".$Tecnico."</a></th>";
+				echo "<th>".$Servicio."</th>";
+				echo "<th>".$Usuario." ".$Destino."</th>";
+				echo "<th>".$Tiempo."</th>";
+			echo "</tr>";
+		$sqli = "select * from sgm_incidencias where visible=1 and id_servicio in (select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." order by servicio) and id_incidencia=0 order by id";
+		$resulti = mysqli_query($dbhandle,convertSQL($sqli));
+		while ($rowi = mysqli_fetch_array($resulti)){
+			$estado_color = "White";
+			$estado_color_letras = "Black";
+
+			$sqlu = "select usuario from sgm_users where id=".$rowi["id_usuario_destino"];
+			$resultu = mysqli_query($dbhandle,convertSQL($sqlu));
+			$rowu = mysqli_fetch_array($resultu);
+			$sqlc = "select servicio,id_contrato,temps_resposta from sgm_contratos_servicio where id=".$rowi["id_servicio"];
+			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+			$rowc = mysqli_fetch_array($resultc);
+			$sqls = "select id_cliente,descripcion from sgm_contratos where id=".$rowc["id_contrato"];
+			$results = mysqli_query($dbhandle,convertSQL($sqls));
+			$rows = mysqli_fetch_array($results);
+
+			if ($rowi["id_servicio"] == 0){
+				$estado_color = "black";
+				$estado_color_letras = "white";
+			}
+
+			$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi["id"]." and visible=1";
+			$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+			$rowd = mysqli_fetch_array($resultd);
+			$hora = $rowd["total"]/60;
+			$horas = explode(".",$hora);
+			$minutos = $rowd["total"] % 60;
+			if ($rowc["temps_resposta"] != 0){
+				if ($rowi["id_estado"] != -2) { $hora_actual = time(); }
+				if ($rowi["id_estado"] == -2) { $hora_actual = $rowi["fecha_registro_cierre"]; }
+				$horax = $rowi["temps_pendent"]/3600;
+				$horas2 = explode(".",$horax);
+				$minutox = (($horax - $horas2[0])*60);
+				$minutos2 = explode(".",$minutox);
+				$sla = "".$horas2[0]."h. ".$minutos2[0]."m.";
+				if ($horas2[0] > 4){
+						$estado_color = "White";
+						$estado_color_letras = "";
+				}
+				if (($horas2[0] < 4) and ($horas2[0] >= 0)) {
+						$estado_color = "Orange";
+						$estado_color_letras = "";
+				}
+				if (($horas2[0] < 0) or ($minutos2[0] < 0)) {
+					$estado_color = "Red";
+					$estado_color_letras = "White";
+				}
+				if ($rowi["id_estado"] == -1) { $fecha_prev = date("Y-m-d H:i:s", $rowi["fecha_prevision"]); }
+				if ($rowi["id_estado"] == -2) { $fecha_prev = date("Y-m-d H:i:s", $rowi["fecha_registro_cierre"]); }
+			} else {
+				$sla = "";
+				$fecha_prev = "";
+			}
+			if ($rowi["pausada"] == 1){
+				$fecha_prev = "";
+				$estado_color = "#E5E5E5";
+				$estado_color_letras = "";
+			}
+			echo "<tr style=\"background-color:".$estado_color.";\">";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:50px;\">".$rowi["id"]."</td>";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:100px;\" nowrap>".$sla."</td>";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:150px;\" nowrap>".$fecha_prev."</td>";
+				if (($rowi["id_estado"] <> -2) and ($rowi["pausada"] != 1)){$estado_color = "#33CC33";}
+				if ($rowi["asunto"] != ""){$asun = $rowi["asunto"];} else {$asun = $SinAsunto;}
+				echo "<td style=\"vertical-align:top;background-color:".$estado_color.";\"><a href=\"index.php?op=1018&sop=100&id=".$rowi["id"].$adres."\" style=\"color:".$estado_color_letras.";\">".$asun."<a></td>";
+				if ($rowi["nivel_tecnico"] == 1) {$icon = "medal_bronze_3.png";} elseif ($rowi["nivel_tecnico"] == 2) {$icon = "medal_silver_3.png";} elseif ($rowi["nivel_tecnico"] == 3) {$icon = "medal_gold_3.png";} else {$icon = "";}
+				if ($rowi["nivel_tecnico"] > 0) { $nivel_tech = $rowi["nivel_tecnico"]; } else { $nivel_tech = $Sin;}
+				echo "<td style=\"vertical-align:top;text-align:center;width:30px;background-color:".$estado_color.";color:".$estado_color_letras.";\">".$nivel_tech."</td>";
+				echo "<td style=\"text-align:left;vertical-align:top;width:50px;\"><img src=\"mgestion/pics/icons-mini/".$icon."\" alt=\"".$Nivel."\" title=\"".$Nivel."\" style=\"border:0px;\"></td>";
+				if ($rowi["id_servicio"] > 0) {$texto_servicio = $rowc["servicio"]." (".$rows["descripcion"].")"; } elseif ($rowi["id_servicio"] == -1) { $texto_servicio = $SinContrato;} else {$texto_servicio = '';}
+				echo "<td style=\"vertical-align:top;\"><a href=\"index.php?op=1011&sop=110&id=".$rowc["id_contrato"]."\" style=\"color:".$estado_color_letras.";\">".$texto_servicio."<a></td>";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:100px;\">".$rowu["usuario"]."</td>";
+
+			$sqldd = "select sum(duracion) as temps from sgm_incidencias where visible=1 and id_incidencia=".$rowi["id"]."";
+			$resultdd = mysqli_query($dbhandle,convertSQL($sqldd));
+			$rowdd = mysqli_fetch_array($resultdd);
+			$horad = $rowdd["temps"]/60;
+			$horasd = explode(".",$horad);
+			$minutosd = $rowdd["temps"] % 60;
+			$temps_total += $rowdd["temps"];
+
+			if (($_POST["dia"] != 0) or ($_GET["d"] != 0) or ($_POST["mes"] != 0) or ($_GET["m"] != 0) or ($_POST["any"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0)){
+				$duration = $horasd[0]."h. ".$minutosd."m. (".$horas[0]."h. ".$minutos."m.)";
+			} else {
+				$duration = $horas[0]."h. ".$minutos."m.";
+			}
+			echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:100px;\" nowrap>".$duration."</td>";
+			if (($soption == 0) or ($soption == 1)){
+				echo "<form action=\"index.php?op=1018&sop=3&id=".$rowi["id"]."&id_cli=".$_GET["id_cli"]."\" method=\"post\">";
+				echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:50px;\"><input type=\"number\" name=\"id_inc_rel\" style=\"width:100%\" min=\"1\"></td>";
+				echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Relacion."\"></td>";
+				echo "</form>";
+			}
+			echo "</tr>";
+		}
+			$horad2 = $temps_total/60;
+			$horasd2 = explode(".",$horad2);
+			$minutod2 = ($horad2 - $horasd2[0])*60;
+			$minutosd2 = explode(".",$minutod2);
+
+			echo "<tr><td colspan=\"8\"></td><td style=\"text-align:left;\"><strong>";
+			if ($temps_total > 0) {
+				echo $horasd2[0]."h. ".$minutosd2[0]."m.";
+			}
+			echo "</strong></td><td></td></tr>";
+		echo "</table>";
 	}
 
 	if ($soption == 210) {

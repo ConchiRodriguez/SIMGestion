@@ -8,6 +8,10 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 	if ($idioma == "es"){ include ("sgm_es.php");}
 	if ($idioma == "cat"){ include ("sgm_cat.php");}
 
+	$sqldiv = "select * from sgm_divisas where predefinido=1";
+	$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
+	$rowdiv = mysqli_fetch_array($resultdiv);
+
 		if ($_GET["ssop"] == 2) {
 			$sql = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"]." and servicio='".comillas($_POST["servicio"])."'";
 			$result = mysqli_query($dbhandle,convertSQL($sql));

@@ -121,6 +121,7 @@ $Cerrar = "Cerrar";
 $Cerrada = "Cerrada";
 $Certificacion = "Certificaci&oacute;n";
 $Certificaciones = "Certificaciones";
+$Cierre_ano_ant = "Cierre A&ntilde;o Pasado";
 $Clase = "Clase";
 $Clasificacion = "Clasificaci&oacuten";
 $Clasificar = "Clasificar";
@@ -248,6 +249,7 @@ $Editar = "Editar";
 $Efectivo = "Efectivo";
 $Ejecutar = "Ejecutar";
 $Electronico = "Electr&oacute;nico";
+$Eliminada = "Eliminada";
 $Eliminar = "Eliminar";
 $Email = "E-mail";
 $Empleado = "Empleado";
@@ -392,6 +394,7 @@ $Informes = "Informes";
 $Ingresos = "Ingresos";
 $Inicial = "Inicial";
 $Inicio = "Inicio";
+$Insertada = "Insertada";
 $Insertar = "Insertar";
 $Interno = "Interno";
 $Introduccion = "Introducci&oacute;n";
@@ -429,6 +432,7 @@ $Maximo = "M&aacute;ximo";
 $Medio = "Medio";
 $Medios = "Medios";
 $Memoria = "Memoria";
+$Mensaje = "Mensaje";
 $Mensual = "Mensual";
 $Mes = "Mes";
 $Meses = "Meses";
@@ -459,6 +463,7 @@ $Nota = "Nota";
 $Notas = "Notas";
 $Notificacion = "Notificaci&oacute;n";
 $Notificaciones = "Notificaciones";
+$Notificar = "Notificar";
 $NoVer = "No Ver";
 $Nueva = "Nueva";
 $Nuevo = "Nuevo";
@@ -555,6 +560,7 @@ $Puestos_trabajo = "Puestos de Trabajo";
 $PVP = "PVP";
 $PVD = "PVD";
 
+$Reabierta = "Reabierta";
 $Realizado = "Realizado";
 $Recalcular = "Recalcular";
 $Recibo = "Recibo";
@@ -569,6 +575,7 @@ $Registrar_Documento = "Registrar Documento";
 $Registro = "Registro";
 $Relacion = "Relaci&oacute;n";
 $Relacionar = "Relacionar";
+$Relacionada = "Relacionada";
 $Relacionado = "Relacionado";
 $Relaciones = "Relaciones";
 $Remitente = "Remitente";
@@ -777,21 +784,21 @@ $info_contrato_servicios10 = "Envio autom&aacute;tico de email en el modulo de i
 $info_contrato_servicios11 = "Nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.";
 $info_contrato_servicios12 = "Codigo de quien abre incidencias relacionadas con este servicio.";
 #Facturacion
-$ayudaFacturaTipos = "<br><strong>Orden</strong> - Orden en que aparecen los difrentes tipos en el listado superior.
-<br><strong>Plantilla</strong> - Hace referencia a si este tipo debe de poder facturarse de forma continua.
-<br><strong>D&iacute;as</strong> - La periocidad en d&iacute;as en que debe regenerarse una nueva plantilla.
-<br><strong>V.Prev</strong> - (Visualizar previsi&oacute;n) Visualiza en el listado la fecha de previsi&oacute;n (usado para pedidos de clientes/proveedores).
-<br><strong>D&iacute;as</strong> - D&iacute;as que suma de forma autom&aacute;tica a la previsi&oacute;n. Fecha de previsi&oacute;n = Fecha actual + D&iacute;as.
-<br><strong>V.Ven</strong> - (Visualizar Vencimiento) Visualiza en el listado el vencimiento de la factura. Fecha de vencimiento = Fecha actual + D&iacute;as de la ficha cliente.
-<br><strong>V.Ref</strong> - (Visualizar Referencia del Cliente) Visualiza en el listado n&uacute;mero de referencia del cliente y nombre del solicitante.
-<br><strong>V.Sub</strong> - (Visualizar Subtipos) Visualiza el subtipo (en caso de que existan).
-<br><strong>V.Rec</strong> - (Visualizar Recibos) Permite la gesti&oacute;n de recibos para el control del cobro.
-<br><strong>Presu</strong> - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.
-<br><strong>D&iacute;as</strong> - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.
-<br><strong>Aprobar</strong> - Dar aprovaci&oacute;n a un presupuesto.
-<br><strong>V.RFQ</strong> - (Visualitzar RFQ) Visualita n&uacute;mero RFQ.
-<br><strong>Caja</strong> - Indica c&oacute;mo este tipo influye en la caja.
-";
+$info_facturacion_orden = "Orden - Orden en que aparecen los difrentes tipos en el listado superior.";
+$info_facturacion_plantilla = "Plantilla - Hace referencia a si este tipo debe de poder facturarse de forma continua.";
+$info_facturacion_plantilla_dias = "D&iacute;as - La periocidad en d&iacute;as en que debe regenerarse una nueva plantilla.";
+$info_facturacion_ver_prevision = "V.Prev - (Visualizar previsi&oacute;n) Visualiza en el listado la fecha de previsi&oacute;n (usado para pedidos de clientes/proveedores).";
+$info_facturacion_ver_prevision_dias = "D&iacute;as - D&iacute;as que suma de forma autom&aacute;tica a la previsi&oacute;n. Fecha de previsi&oacute;n = Fecha actual + D&iacute;as.";
+$info_facturacion_ver_vencimiento = "V.Ven - (Visualizar Vencimiento) Visualiza en el listado el vencimiento de la factura. Fecha de vencimiento = Fecha actual + D&iacute;as de la ficha cliente.";
+$info_facturacion_ver_referencia_cliente = "V.Ref - (Visualizar Referencia del Cliente) Visualiza en el listado n&uacute;mero de referencia del cliente y nombre del solicitante.";
+$info_facturacion_ver_subtipo = "V.Sub - (Visualizar Subtipos) Visualiza el subtipo (en caso de que existan).";
+$info_facturacion_ver_recibos = "V.Rec - (Visualizar Recibos) Permite la gesti&oacute;n de recibos para el control del cobro.";
+$info_facturacion_presupuesto = "Presu - Formato de presupuesto. Vencimiento y c&aacute;lculo de costes.";
+$info_facturacion_presupuesto_dias = "D&iacute;as - D&iacute;as que suma a la caducidad del presupuesto. Fecha de caducidad = Fecha actual + D&iacute;as.";
+$info_facturacion_stock = "Stock - Indica c&oacute;mo este tipo influye en el stock.";
+$info_facturacion_aprobar = "Aprobar - Dar aprovaci&oacute;n a un presupuesto.";
+$info_facturacion_ver_rfq = "V.RFQ - (Visualitzar RFQ) Visualita n&uacute;mero RFQ.";
+$info_facturacion_caja = "Caja - Indica c&oacute;mo este tipo influye en la caja.";
 $ayudaFacturaRelaciones = "Las relaciones entre tipos marcaran de donde a donde se pueden traspasar datos de facturaci&oacute;n.";
 $ayudaFacturaEliminar = "Se eliminar&aacute; el articulo en todo el progama. Todos los datos relacionados con &eacute;l ser&aacute;n inaccesible.";
 $ayudaFacturaCerrar = "Se cerrar&aacute; el documento y dejar&aacute; de ser visible, excepto en el hist&oacute;rico.";
