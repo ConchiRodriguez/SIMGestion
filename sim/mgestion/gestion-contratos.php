@@ -291,22 +291,20 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 			$rowcc = mysqli_fetch_array($resultcc);
 			if (!$rowcc){
-				$camposInsert = "id_contrato_tipo,id_cliente,id_cliente_final,num_contrato,fecha_ini,fecha_fin,descripcion,id_responsable,id_tecnico,id_tarifa,pack_horas,num_horas";
-				$datosInsert = array($_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["num_contrato"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"],$_POST["pack_horas"],$_POST["num_horas"]);
+				$camposInsert = "id_contrato_tipo,id_cliente,id_cliente_final,num_contrato,fecha_ini,fecha_fin,descripcion,id_responsable,id_tecnico,id_tarifa,pack_horas,num_horas,id_articulo_desplazamiento";
+				$datosInsert = array($_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["num_contrato"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"],$_POST["pack_horas"],$_POST["num_horas"],$_POST["id_articulo_desplazamiento"]);
 				insertFunction ("sgm_contratos",$camposInsert,$datosInsert);
 
 				$sqlc = "select id from sgm_contratos where num_contrato='".$_POST["num_contrato"]."' and visible=1";
 				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 				$rowc = mysqli_fetch_array($resultc);
 				$id_contrato = $rowc["id"];
-				$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 and id<0";
-				$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
-				while ($rowcs = mysqli_fetch_array($resultcs)) {
-					$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
-					$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$rowcs["auto_email"]);
-					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
-				}
 			}
+		}
+		if (($soption == 100) and ($ssoption == 2)) {
+			$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
+			$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$rowcs["auto_email"]);
+			insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 		}
 		if ($id_contrato == '') {$id_contrato = $_GET["id"];}
 		$sqlcontrato = "select * from sgm_contratos where id=".$id_contrato;
@@ -327,6 +325,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=150&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Tecnicos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=130&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Archivos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=140&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Notificaciones."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=170&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Desplazamientos."</a></td>";
 							echo "<td></td>";
 						echo "</tr>";
 					echo "</table>";
@@ -360,7 +359,26 @@ if (($option == 1011) AND ($autorizado == true)) {
 						$sqlfact3 = "select sum(subtotal) as total_fact from sgm_cabezera where visible=1 and fecha<'".date("Y-m-d")."' and id_contrato=".$_GET["id"]." and tipo in (select id from sgm_factura_tipos where contabilidad='-1')";
 						$resultfact3 = mysqli_query($dbhandle,convertSQL($sqlfact3));
 						$rowfact3 = mysqli_fetch_array($resultfact3);
-						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".number_format ($rowfact3["total_fact"],3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
+						
+						$ini_con = date('U',strtotime($rowcontrato["fecha_ini"]));
+						$fin_con = date('U',strtotime($rowcontrato["fecha_fin"]));
+						$fecha_anterior = 0;
+						$contador_deplazamiento = 0;
+						$sql = "select * from sgm_incidencias where (fecha_inicio>".$ini_con.") and (fecha_inicio<".$fin_con.") and id_servicio in (select id from sgm_contratos_servicio where id_contrato=".$_GET["id"].") and desplazamiento=1 order by fecha_inicio";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							if ($row["fecha_inicio"] != $fecha_anterior){
+								$contador_deplazamiento++;
+							}
+							$fecha_anterior = $row["fecha_inicio"];
+						}
+						$sqlar = "select pvp from sgm_stock where vigente=1 and id_article=".$rowcontrato["id_articulo_desplazamiento"];
+						$resultar = mysqli_query($dbhandle,convertSQL($sqlar));
+						$rowar = mysqli_fetch_array($resultar);
+
+						$total_gasto = $rowfact3["total_fact"]+($contador_deplazamiento*$rowar["pvp"]);
+						
+						echo "<tr><td>".$Gastos."</td><td style=\"text-align:right;\">".number_format ($total_gasto,3,",",".")." ".$rowdiv["abrev"]."</td></tr>";
 					echo "</table>";
 				echo "</td>";
 #				echo "<td style=\"vertical-align:top\">";
@@ -791,6 +809,36 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo $horasd2[0]."h. ".$minutosd2[0]."m.";
 			}
 			echo "</strong></td><td></td></tr>";
+		echo "</table>";
+	}
+
+	if ($soption == 170) {
+		echo "<h4>".$Desplazamientos."</h4>";
+		$sqlc = "select * from sgm_contratos where visible=1 and id=".$_GET["id"];
+		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+		$rowc = mysqli_fetch_array($resultc);
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Fecha."</th>";
+				echo "<th>".$Asunto."</th>";
+			echo "</tr>";
+			$ini_con = date('U',strtotime($rowc["fecha_ini"]));
+			$fin_con = date('U',strtotime($rowc["fecha_fin"]));
+			$fecha_anterior = 0;
+			$contador_deplazamiento = 0;
+			$sql = "select * from sgm_incidencias where (fecha_inicio>".$ini_con.") and (fecha_inicio<".$fin_con.") and id_servicio in (select id from sgm_contratos_servicio where id_contrato=".$_GET["id"].") and desplazamiento=1 order by fecha_inicio";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr><td>".date('Y-m-d',$row["fecha_inicio"])."</td><td>".$row["asunto"]."</td></tr>";
+				if ($row["fecha_inicio"] != $fecha_anterior){
+					$contador_deplazamiento++;
+				}
+				$fecha_anterior = $row["fecha_inicio"];
+			}
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Total." ".$Desplazamientos."</th>";
+				echo "<th>".$contador_deplazamiento."</th>";
+			echo "</tr>";
 		echo "</table>";
 	}
 

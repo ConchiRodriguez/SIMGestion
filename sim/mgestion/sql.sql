@@ -203,6 +203,7 @@ ALTER TABLE `sgm_clients` ADD `destino_facturacion` varchar(255) NOT NULL defaul
 ALTER TABLE `sgm_clients` ADD `id_formato_facturacion` int(11) NOT NULL default '0' AFTER `destino_facturacion`;
 ALTER TABLE `sgm_clients` ADD `id_contacto_facturacion` int(11) NOT NULL default '0' AFTER `id_formato_facturacion`;
 ALTER TABLE `sgm_clients` ADD `notas_facturacion` longtext AFTER `id_contacto_facturacion`;
+ALTER TABLE `sgm_clients` ADD `cae` tinyint(1) NOT NULL default '0' AFTER `notas_facturacion`;
 
 /*
 ALTER TABLE `sgm_clients` ADD `clienttipus` tinyint(1) NOT NULL default '0' AFTER `client`;
@@ -495,6 +496,7 @@ ALTER TABLE `sgm_contratos` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `
 ALTER TABLE `sgm_contratos` ADD `pack_horas` tinyint(1) NOT NULL default '0' AFTER `id_tarifa`;
 ALTER TABLE `sgm_contratos` ADD `num_horas` int(11) NOT NULL default '0' AFTER `pack_horas`;
 ALTER TABLE `sgm_contratos` ADD `horas_mensual` tinyint(1) NOT NULL default '0' AFTER `num_horas`;
+ALTER TABLE `sgm_contratos` ADD `id_articulo_desplazamiento` tinyint(1) NOT NULL default '0' AFTER `horas_mensual`;
 
 CREATE TABLE `sgm_contratos_servicio` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_contratos_servicio` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
@@ -798,6 +800,7 @@ ALTER TABLE `sgm_incidencias` ADD `control_version` tinyint(1) NOT NULL default 
 ALTER TABLE `sgm_incidencias` ADD `nivel_tecnico` int(1) NOT NULL default '0' AFTER `control_version` ;
 /*nivel_tecnico: 1, 2 o 3.*/
 ALTER TABLE `sgm_incidencias` ADD `notificar_cliente` tinyint(1) NOT NULL default '1' AFTER `nivel_tecnico` ;
+ALTER TABLE `sgm_incidencias` ADD `desplazamiento` tinyint(1) NOT NULL default '0' AFTER `notificar_cliente` ;
 
 CREATE TABLE `sgm_incidencias_correos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_incidencias_correos` ADD `uid` int(11) NOT NULL default '0' AFTER `id`;

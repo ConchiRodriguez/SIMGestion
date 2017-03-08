@@ -774,8 +774,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 			$camposUpdate = array('nombre','cognom1','cognom2','nif','direccion','poblacion','cp','provincia','id_pais','tipo_identificador','tipo_persona','tipo_residencia','dir3_oficina_contable','dir3_organo_gestor','dir3_unidad_tramitadora');
 			$datosUpdate = array($_POST["nombre"],$_POST["cognom1"],$_POST["cognom2"],$_POST["nif"],$_POST["direccion"],$_POST["poblacion"],$_POST["cp"],$_POST["provincia"],$_POST["id_pais"],$_POST["tipo_identificador"],$_POST["tipo_persona"],$_POST["tipo_residencia"],$_POST["dir3_oficina_contable"],$_POST["dir3_organo_gestor"],$_POST["dir3_unidad_tramitadora"]);
 			updateFunction("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
-	
-	}
+		}
 		if ($id_client <= 0){
 			$sql = "select * from sgm_clients where nombre='".$_POST["nombre"]."' and nif='".$_POST["nif"]."'";
 		} else {
@@ -800,12 +799,13 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=130&id=".$row["id"]."\" style=\"color:white;\">".$Informes."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=180&id=".$row["id"]."\" style=\"color:white;\">".$Incidencias."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=170&id=".$row["id"]."\" style=\"color:white;\">".$Contrasenas."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Contactos."</a></td>";
 						echo "</tr>";
 						echo "<tr>";
-							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=120&id=".$row["id"]."\" style=\"color:white;\">".$Contactos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=150&id=".$row["id"]."\" style=\"color:white;\">".$Usuarios."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=190&id=".$row["id"]."\" style=\"color:white;\">".$Servidores."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=135&id=".$row["id"]."\" style=\"color:white;\">".$Bases_Datos."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=125&id=".$row["id"]."\" style=\"color:white;\">".$Gestión." C.A.E</a></td>";
 						echo "</tr>";
 					echo "</table>";
 				echo "</td>";
@@ -889,6 +889,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 						}
 					}
 				}
+				echo "</select>";
 			echo "</td></tr>";
 			echo "<tr><td></td><td>";
 				if ($id_client > 0) { echo "<input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\">"; }
@@ -1060,6 +1061,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 									echo "<option value=\"".$rowi["id"]."\">".$rowi["idioma"]."</option>";
 								}
 							}
+							echo "</select>";
 						echo "</td></tr>";
 						echo "<tr><th class=\"formclient\">".$Numero." ".$Trabajadores."</th><td><input type=\"number\" min=\"0\" name=\"num_treballadors\" value=\"".$row["num_treballadors"]."\" class=\"formclient\"></td></tr>";
 					echo "</table>";
@@ -1818,6 +1820,43 @@ if (($option == 1008) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</table>";
 		echo "</form>";
+	}
+
+#Gestión C.A.E.
+	if ($soption == 125){
+		if ($ssoption == 1) {
+			$camposUpdate = array('cae');
+			$datosUpdate = array($_POST["cae"]);
+			updateFunction("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		$sql = "select * from sgm_clients where id=".$id_client;
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
+			echo "<tr>";
+				echo "<td>";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<tr>";
+							echo "<form action=\"index.php?op=1008&sop=125&ssop=1&id=".$id_client."\"  method=\"post\">";
+							echo "<th class=\"formclient\">C.A.E. ".$Activo."</th>";
+							echo "<td>";
+							echo "<select name=\"cae\" style=\"width:50px;\">";
+							if ($row["cae"] == 0){
+								echo "<option value=\"0\" selected>".$No."</option>";
+								echo "<option value=\"1\">".$Si."</option>";
+							} else {
+								echo "<option value=\"0\">".$No."</option>";
+								echo "<option value=\"1\" selected>".$Si."</option>";
+							}
+							echo "</select>";
+							echo "</td>";
+							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Guardar."\"></td>";
+							echo "</form>";
+						echo "</tr>";
+					echo "</table>";
+				echo "</td>";
+			echo "</tr>";
+		echo "</table>";
 	}
 	
 #Informes

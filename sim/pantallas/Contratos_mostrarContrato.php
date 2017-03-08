@@ -12,8 +12,8 @@ function mostrarContrato ($id_contrato,$id_cliente){
 	$contract = $id_contrato;
 	
 	if ($ssoption == 2) {
-		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico","id_tarifa","pack_horas","num_horas","horas_mensual");
-		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"],$_POST["pack_horas"],$_POST["num_horas"],$_POST["horas_mensual"]);
+		$camposUpdate = array("num_contrato","id_contrato_tipo","id_cliente","id_cliente_final","fecha_ini","fecha_fin","descripcion","id_responsable","id_tecnico","id_tarifa","pack_horas","num_horas","horas_mensual","id_articulo_desplazamiento");
+		$datosUpdate = array($_POST["num_contrato"],$_POST["id_contrato_tipo"],$_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["descripcion"],$_POST["id_responsable"],$_POST["id_tecnico"],$_POST["id_tarifa"],$_POST["pack_horas"],$_POST["num_horas"],$_POST["horas_mensual"],$_POST["id_articulo_desplazamiento"]);
 		updateFunction ("sgm_contratos",$_POST["id_contrato"],$camposUpdate,$datosUpdate);
 	}
 
@@ -129,11 +129,11 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			$sqlua = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
 			$resultua = mysqli_query($dbhandle,convertSQL($sqlua));
 			while ($rowua = mysqli_fetch_array($resultua)) {
-					if ($rowua["id"] == $rowc["id_responsable"]){
-						echo "<option value=\"".$rowua["id"]."\" selected>".$rowua["usuario"]."</option>";
-					} else {
-						echo "<option value=\"".$rowua["id"]."\">".$rowua["usuario"]."</option>";
-					}
+				if ($rowua["id"] == $rowc["id_responsable"]){
+					echo "<option value=\"".$rowua["id"]."\" selected>".$rowua["usuario"]."</option>";
+				} else {
+					echo "<option value=\"".$rowua["id"]."\">".$rowua["usuario"]."</option>";
+				}
 			}
 			echo "</select></td>";
 		echo "</tr>";
@@ -142,11 +142,24 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			$sqluu = "select id,usuario from sgm_users where validado=1 and activo=1 and sgm=1";
 			$resultuu = mysqli_query($dbhandle,convertSQL($sqluu));
 			while ($rowuu = mysqli_fetch_array($resultuu)) {
-					if ($rowuu["id"] == $rowc["id_tecnico"]){
-						echo "<option value=\"".$rowuu["id"]."\" selected>".$rowuu["usuario"]."</option>";
-					} else {
-						echo "<option value=\"".$rowuu["id"]."\">".$rowuu["usuario"]."</option>";
-					}
+				if ($rowuu["id"] == $rowc["id_tecnico"]){
+					echo "<option value=\"".$rowuu["id"]."\" selected>".$rowuu["usuario"]."</option>";
+				} else {
+					echo "<option value=\"".$rowuu["id"]."\">".$rowuu["usuario"]."</option>";
+				}
+			}
+			echo "</select></td>";
+		echo "</tr>";
+		echo "<tr><td style=\"text-align:right;\">".$Desplazamiento.": </td>";
+			echo "<td><select name=\"id_articulo_desplazamiento\" style=\"width:300px\">";
+			$sqlar = "select id,nombre from sgm_articles where visible=1 and codigo like 'Desp%'";
+			$resultar = mysqli_query($dbhandle,convertSQL($sqlar));
+			while ($rowar = mysqli_fetch_array($resultar)) {
+				if ($rowar["id"] == $rowc["id_articulo_desplazamiento"]){
+					echo "<option value=\"".$rowar["id"]."\" selected>".$rowar["nombre"]."</option>";
+				} else {
+					echo "<option value=\"".$rowar["id"]."\">".$rowar["nombre"]."</option>";
+				}
 			}
 			echo "</select></td>";
 		echo "</tr>";
