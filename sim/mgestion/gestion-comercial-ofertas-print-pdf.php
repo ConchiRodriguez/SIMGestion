@@ -432,7 +432,55 @@ class PDF extends FPDF
 	$pdf->Portada('Oferta Comercial',$rowi["idioma"]);
 	$pdf->startPageNums();
 
-	$orden_contenido = 0;
+	$pdf->AddPage();
+	$contenido_antecedentes = html_entity_decode ($rowof["contenido_antecedentes"]);
+	$contenido_necesidades = html_entity_decode ($rowof["contenido_necesidades"]);
+	$contenido_mejoras = html_entity_decode ($rowof["contenido_mejoras"]);
+
+	$pdf->SetTextColor(51,51,159);
+	$pdf->SetFontSize(14);
+	$pdf->SetStyle('B',true);
+	$pdf->Cell(180,5,"1 ".$descripcion_general,0,1);
+	$pdf->entryTOC("1 ".$descripcion_general,0);
+	$pdf->Ln(5);
+
+	$pdf->Cell(180,5,"1.1 ".$antecedentes,0,1);
+	$pdf->entryTOC("1.1 ".$antecedentes,0);
+	$pdf->Ln(5);
+
+	$texto_html = $contenido_antecedentes."<br>";
+	$pdf->SetTextColor(0,0,0);
+	$pdf->SetFont('Calibri','',10);
+	$pdf->WriteHTML($texto_html);
+	$pdf->Ln(15);
+
+	$pdf->SetTextColor(51,51,159);
+	$pdf->SetFontSize(14);
+	$pdf->SetStyle('B',true);
+	$pdf->Cell(180,5,"1.2 ".$necesidades_objetivos,0,1);
+	$pdf->entryTOC("1.2 ".$necesidades_objetivos,0);
+	$pdf->Ln(5);
+
+	$texto_html = $contenido_necesidades."<br>";
+	$pdf->SetTextColor(0,0,0);
+	$pdf->SetFont('Calibri','',10);
+	$pdf->WriteHTML($texto_html);
+	$pdf->Ln(15);
+
+	$pdf->SetTextColor(51,51,159);
+	$pdf->SetFontSize(14);
+	$pdf->SetStyle('B',true);
+	$pdf->Cell(180,5,"1.3 ".$propuesta_mejoras,0,1);
+	$pdf->entryTOC("1.3 ".$propuesta_mejoras,0);
+	$pdf->Ln(5);
+
+	$texto_html = $contenido_mejoras."<br>";
+	$pdf->SetTextColor(0,0,0);
+	$pdf->SetFont('Calibri','',10);
+	$pdf->WriteHTML($texto_html);
+	$pdf->Ln(15);
+
+	$orden_contenido = 1;
 	$sqlofc = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"]." order by orden";
 	$resultofc = mysqli_query($dbhandle,convertSQL($sqlofc));
 	while ($rowofc = mysqli_fetch_array($resultofc)){

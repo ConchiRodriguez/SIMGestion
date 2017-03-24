@@ -19,8 +19,8 @@ function afegirModificarUsuari ($url){
 	echo "<table cellpadding=\"0\" cellspacing=\"0\" class=\"lista\">";
 	echo "<tr><th>*".$Usuario."</th><td><input type=\"Text\" name=\"user\" style=\"width:200px;\" value=\"".$rowuser["usuario"]."\" required></td></tr>";
 	echo "<tr><th>*".$Direccion." ".$Email."</th><td><input type=\"email\" name=\"mail\" style=\"width:200px;\" value=\"".$rowuser["mail"]."\" required></td></tr>";
-	echo "<tr><th>*".$Contrasena."</th><td><input type=\"Password\" name=\"pass1\" style=\"width:200px;\" maxlength=\"10\" placeholder=\"Máximo 10 caracteres\"></td></tr>";
-	echo "<tr><th>*".$Repetir." ".$Contrasena."</th><td><input type=\"Password\" name=\"pass2\"  style=\"width:200px;\" maxlength=\"10\" placeholder=\"Máximo 10 caracteres\"></td></tr>";
+	echo "<tr><th>*".$Contrasena."</th><td><input type=\"Password\" name=\"pass1\" style=\"width:200px;\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\"></td></tr>";
+	echo "<tr><th>*".$Repetir." ".$Contrasena."</th><td><input type=\"Password\" name=\"pass2\"  style=\"width:200px;\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\"></td></tr>";
 	echo "<tr><th>*".$Tipo." ".$Usuario."</th>";
 		echo "<th><select name=\"id_tipus\" style=\"width:200px;\">";
 			echo "<option value=\"0\">-</option>";

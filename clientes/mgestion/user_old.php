@@ -140,8 +140,12 @@ $simclau = "Solucions00";
 		if ($soption == 10) { echo "<strong>".$Contratos." : </strong>"; }
 		if ($soption == 80) { echo "<strong>".$Proyectos." : </strong>"; }
 		echo "<br><br>";
-		if ($_GET["hist"] == 0) {echo boton_area_cliente(array("op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=1"),array($Historico));}
-		if ($_GET["hist"] == 1) {echo boton_area_cliente(array("op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=0"),array($Volver));}
+		echo "<table><tr>";
+			echo "<td style=\"width:100px;height:20px;text-align:center;vertical-align:middle;background-color:grey;border:1px solid black\">";
+			if ($_GET["hist"] == 0) {echo "<a href=\"index.php?op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=1\" style=\"color:white;\">".$Historico."</a>";}
+			if ($_GET["hist"] == 1) {echo "<a href=\"index.php?op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=0\" style=\"color:white;\">".$Volver."</a>";}
+			echo "</td>";
+		echo "</tr></table>";
 		echo "<br><br>";
 		echo "<center>";
 		echo "<table cellspacing=\"0\" style=\"width:800px;\">";
@@ -187,7 +191,11 @@ $simclau = "Solucions00";
 		if ($soption == 11) { echo "<strong>".$Contrato." : </strong>"; }
 		if ($soption == 81) { echo "<strong>".$Proyecto." : </strong>"; }
 		echo "<br><br>";
-		echo boton_area_cliente(array("op=200&sop=10&id=".$_GET["id"]),array($Volver));
+		echo "<table><tr>";
+			echo "<td style=\"width:60px;height:20px;text-align:center;vertical-align:middle;background-color:grey;border:1px solid black\">";
+				echo "<a href=\"index.php?op=200&sop=10&id=".$_GET["id"]."\" style=\"color:white;\">&laquo; ".$Volver."</a>";
+			echo "</td>";
+		echo "</tr></table>";
 		echo "<br><br>";
 		echo "<table cellspacing=\"0\" cellpadding=\"0\"  style=\"width:1100px;\"><tr><td style=\"vertical-align:top\">";
 			$sqlc = "select * from sgm_contratos where visible=1 and id=".$_GET["id_con"];
@@ -284,8 +292,6 @@ $simclau = "Solucions00";
 		if ($soption == 12) { echo "<strong>".$Contrato." : </strong>"; }
 		if ($soption == 82) { echo "<strong>".$Proyecto." : </strong>"; }
 		echo "<br><br>";
-		echo boton_area_cliente(array("op=200&sop=10&id=".$_GET["id"]),array($Volver));
-		echo "<br><br>";
 		$sqlc = "select id_cliente from sgm_contratos where visible=1 and id=".$_GET["id_con"];
 		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 		$rowc = mysqli_fetch_array($resultc);
@@ -300,7 +306,11 @@ $simclau = "Solucions00";
 		if ($soption == 13) { echo "<strong>".$Contrato." : </strong>"; }
 		if ($soption == 83) { echo "<strong>".$Proyecto." : </strong>"; }
 		echo "<br><br>";
-		echo boton_area_cliente(array("op=200&sop=11&id=".$_GET["id"]."&id_con=".$_GET["id_con"]),array($Volver));
+		echo "<table><tr>";
+			echo "<td style=\"width:60px;height:20px;text-align:center;vertical-align:middle;background-color:grey;border:1px solid black\">";
+				echo "<a href=\"index.php?op=200&sop=11&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."\" style=\"color:white;\">&laquo; ".$Volver."</a>";
+			echo "</td>";
+		echo "</tr></table>";
 		echo "<br><br>";
 		echo "<center><table cellpadding=\"0\" cellspacing=\"0\">";
 			echo "<tr style=\"background-color:silver\">";
@@ -337,6 +347,7 @@ $simclau = "Solucions00";
 	if (($soption == 20) and ($gusuarios != 1)) {echo $UseNoAutorizado;}
 	if (($soption == 20) and ($gusuarios == 1)) {
 		if ($ssoption == 1) {
+			echo "<center>";
 			$registro = 1;
 			$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"]."'";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -346,7 +357,7 @@ $simclau = "Solucions00";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
 			if ($row["total"] != 0) { $mensa = 4; $registro = 0; }
-			if (comprobarMail($_POST["mail"]) == false) { $mensa = 2 ; $registro = 0; }
+			if (comprobar_mail($_POST["mail"]) == false) { $mensa = 2 ; $registro = 0; }
 			if (($_POST["pass1"] != $_POST["pass2"]) OR $_POST["pass1"] == "") { $mensa = 1 ; $registro = 0; }
 			if ($registro == 1 ) {
 				$contrasena = crypt($_POST["pass1"]);
@@ -372,6 +383,7 @@ $simclau = "Solucions00";
 				$sql = $sql.")";
 				mysqli_query($dbhandle,convertSQL($sql));
 			}
+			echo "</center>";
 		}
 		if ($ssoption == 2) {
 			$sql = "select Count(*) AS total from sgm_users WHERE id='".$_POST["id_user"]."'";
@@ -396,77 +408,79 @@ $simclau = "Solucions00";
 
 		echo "<strong>".$Gestion." ".$Usuarios."</strong>";
 		echo "<br><br>";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr><td style=\"vertical-align:top;width:60%;\">";
-				echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-					echo "<tr style=\"background-color: Silver;\">";
-						echo "<td style=\"text-align:center;width:20px;\"><em>".$Eliminar."</em></td>";
-						echo "<td style=\"text-align:center;width:300px;\">".$Usuario." / ".$Email."</td>";
-						echo "<td style=\"text-align:center;width:20px;\"><em>".$Editar."</em></td>";
-						echo "<td style=\"text-align:center;width:20px;\"><em>".$Permisos."</em></td>";
-					echo "</tr>";
-					$sql = "select id,usuario from sgm_users where activo=1 and id_origen=".$_GET["id"];
-					$result = mysqli_query($dbhandle,convertSQL($sql));
-					while ($row = mysqli_fetch_array($result)) {
-						echo "<tr>";
-							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=200&sop=22&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-							echo "<td style=\"color:".$color.";\">".$row["usuario"]."</td>";
-							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=200&sop=20&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/page_white_edit.png\" style=\"border:0px\"></a></td>";
-							$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$row["id"];
-							$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
-							$rowt = mysqli_fetch_array($resultt);
-							if ($rowt["total"] > 0) {
-								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=200&sop=23&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/application_key.png\" style=\"border:0px;\"></a></td>";
-							} else {
-								echo "<td style=\"text-align:center;\"><a href=\"index.php?op=200&sop=23&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/application.png\" style=\"border:0px;\"></a></td>";
-							}
-							busca_usuarios($row["id"],($x+10));
-						echo "</tr>";
-					}
-				echo "</table>";
-			echo "</td>";
-			echo "<td style=\"width:70px\">&nbsp;</td>";
-			echo "<td style=\"vertical-align:top;width:40%;\">";
-			$sql = "select usuario,mail from sgm_users where id=".$_GET["id_user"];
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			$row = mysqli_fetch_array($result);
-			if ($_GET["id_user"] == "") {
-				echo "<strong>".$Anadir." ".$Nuevo." ".$Usuario."</strong>";
-			} else {
-				echo "<strong>".$Modificar." ".$Usuario." : ".$row["usuario"]."</strong>";
-			}
-			echo "<br><br>";
-			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-				echo "<tr>";
-				echo "<td></td>";
-				if ($_GET["id_user"] == "") {
-					echo "<form action=\"index.php?op=200&sop=20&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<tr><td><strong>*".$Usuario." / ".$Email."</strong></td><td style=\"vertical-align:middle;width:160px;\"><input style=\"width:150px;\" type=\"text\" name=\"mail\" value=\"".$row["mail"]."\">*</td></tr>";
-				} else {
-					echo "<form action=\"index.php?op=200&sop=20&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
-					echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$_GET["id_user"]."\">";
-				}
-				echo "<tr><td><strong>*".$Contrasena."</strong></td><td style=\"vertical-align:middle;width:160px;\"><input style=\"width:150px;\" type=\"Password\" name=\"pass1\" class=\"px100\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\">*</td></tr>";
-				echo "<tr><td><strong>*".$Repetir." ".$Contrasena."</strong></td><td style=\"vertical-align:middle;width:160px;\"><input style=\"width:150px;\" type=\"Password\" name=\"pass2\" class=\"px100\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\">*</td></tr>";
-				echo "<tr>";
-					echo "<td></td><td class=\"submit\">";
-						if ($_GET["id_user"] == "") {
-							echo "<input type=\"submit\" value=\"".$Anadir."\">";
-						}else{
-							echo "<input type=\"submit\" value=\"".$Modificar."\">";
-						}
-					echo "</td>";
+		echo "<center>";
+		echo "<table><tr><td style=\"vertical-align:top\">";
+			echo "<table cellspacing=\"0\" style=\"width:450px;\">";
+				echo "<tr style=\"background-color: Silver;\">";
+					echo "<td style=\"text-align:center;width:20px;\"><em>".$Eliminar."</em></td>";
+					echo "<td style=\"text-align:center;width:220px;\">".$Usuario." / ".$Email."</td>";
+					echo "<td style=\"text-align:center;width:20px;\"><em>".$Editar."</em></td>";
+					echo "<td style=\"text-align:center;width:20px;\"><em>".$Permisos."</em></td>";
 				echo "</tr>";
-				echo "</form>";
-				echo "<tr><td></td><td>* ".$Campos." ".$Obligatorios."</td><tr>";
+				$sql = "select id,usuario from sgm_users where activo=1 and id_origen=".$_GET["id"];
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				while ($row = mysqli_fetch_array($result)) {
+					echo "<tr>";
+						echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=22&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+						echo "<td style=\"color:".$color.";width:220px;\">".$row["usuario"]."</td>";
+						echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=20&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/page_white_edit.png\" style=\"border:0px\"></a></td>";
+						$sqlt = "select count(*) as total from sgm_users_clients where id_user=".$row["id"];
+						$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+						$rowt = mysqli_fetch_array($resultt);
+						if ($rowt["total"] > 0) {
+							echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=23&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/application_key.png\" style=\"border:0px;\"></a></td>";
+						} else {
+							echo "<td style=\"text-align:center;width:20px;\"><a href=\"index.php?op=200&sop=23&id=".$_GET["id"]."&id_user=".$row["id"]."\"><img src=\"images/icons-mini/application.png\" style=\"border:0px;\"></a></td>";
+						}
+						busca_usuarios($row["id"],($x+10));
+					echo "</tr>";
+				}
 			echo "</table>";
-			if ($mensa == 1) { echo mensaje_error($PassIncorrecto.$Completa);}
-			if ($mensa == 2) { echo mensaje_error($MailIncorrecto.$Completa);}
-			if ($mensa == 3) { echo mensaje_error($UsuarioYaReg.$Completa);}
-			if ($mensa == 4) { echo mensaje_error($MailYaReg.$Completa);}
-			if ($mensa == 5) { echo mensaje_error_c("cambio de contraseña correcto", "verde");}
-		echo "</td></tr>";
-	echo "</table>";
+		echo "</td>";
+		echo "<td style=\"width:70px\">&nbsp;</td>";
+		echo "<td style=\"vertical-align:top;\">";
+		$sql = "select usuario,mail from sgm_users where id=".$_GET["id_user"];
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		$row = mysqli_fetch_array($result);
+		if ($_GET["id_user"] == "") {
+			echo "<strong>".$Anadir." ".$Nuevo." ".$Usuario."</strong>";
+		} else {
+			echo "<strong>".$Modificar." ".$Usuario." : ".$row["usuario"]."</strong>";
+		}
+		echo "<br><br>";
+		echo "<center>";
+		echo "<table>";
+			echo "<tr>";
+			echo "<td></td>";
+			if ($_GET["id_user"] == "") {
+				echo "<form action=\"index.php?op=200&sop=20&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<tr><td><strong>*".$Usuario." / ".$Mail."</strong></td><td style=\"vertical-align : middle;\"><input type=\"text\" name=\"mail\" class=\"px200\" value=\"".$row["mail"]."\">*</td></tr>";
+			} else {
+				echo "<form action=\"index.php?op=200&sop=20&ssop=2&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$_GET["id_user"]."\">";
+			}
+			echo "<tr><td><strong>*".$Contrasena."</strong><br>".$Maximo." 10 ".$Caracteres.".</td><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass1\" class=\"px100\" maxlength=\"10\">*</td></tr>";
+			echo "<tr><td><strong>*".$Repetir." ".$Contrasena."</strong><br>".$Maximo." 10 ".$Caracteres.".</td><td style=\"vertical-align : middle;\"><input type=\"Password\" name=\"pass2\" class=\"px100\" maxlength=\"10\">*</td></tr>";
+			echo "<tr>";
+				echo "<td class=\"submit\">";
+					if ($_GET["id_user"] == "") {
+						echo "<input type=\"submit\" value=\"".$Anadir."\">";
+					}else{
+						echo "<input type=\"submit\" value=\"".$Modificar."\">";
+					}
+				echo "</td>";
+			echo "</tr>";
+			echo "</form>";
+			echo "<tr><td>* ".$Campos." ".$Obligatorios."</td><tr>";
+		echo "</table>";
+		echo "</center>";
+		if ($mensa == 1) { echo mensaje_error($PassIncorrecto.$Completa);}
+		if ($mensa == 2) { echo mensaje_error($MailIncorrecto.$Completa);}
+		if ($mensa == 3) { echo mensaje_error($UsuarioYaReg.$Completa);}
+		if ($mensa == 4) { echo mensaje_error($MailYaReg.$Completa);}
+		if ($mensa == 5) { echo mensaje_error_c("cambio de contraseña correcto", "verde");}
+	echo "</td></tr></table>";
+	echo "</center>";
 	}
 
 	if (($soption == 22) and ($gusuarios != 1)) {echo $UseNoAutorizado;}
@@ -504,7 +518,11 @@ $simclau = "Solucions00";
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 		echo "<strong>".$Permisos." ".$Usuario.": </strong> ".$row["usuario"]."<br>";
-		echo boton_area_cliente(array("op=200&sop=20&id=".$_GET["id"]),array($Volver));
+		echo "<table><tr>";
+			echo "<td style=\"width:60px;height:20px;text-align:center;vertical-align:middle;background-color:grey;border:1px solid black\">";
+				echo "<a href=\"index.php?op=200&sop=20&id=".$_GET["id"]."\" style=\"color:white;\">&laquo; ".$Volver."</a>";
+			echo "</td>";
+		echo "</tr></table>";
 		echo "<center>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\">";
 		$sqlc = "select * from sgm_users_clients where id_user=".$_GET["id_user"];
@@ -1325,8 +1343,8 @@ $simclau = "Solucions00";
 		echo "<center>";
 		echo "<table>";
 		echo "<tr><td>".$Mail."</td><td style=\"vertical-align : middle;width:250px;\"><input type=\"Text\" name=\"mail\" style=\"width:240px;\" value=\"".$rowuser["mail"]."\"></td></tr>";
-		echo "<tr><td><strong>".$Nueva." ".$Contrasena."</strong></td><td style=\"vertical-align:middle;width:250px;\"><input type=\"Password\" name=\"pass1\" style=\"width:240px;\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\">*</td></tr>";
-		echo "<tr><td><strong>".$Repetir." ".$Contrasena."</strong></td><td style=\"vertical-align:middle;width:250px;\"><input type=\"Password\" name=\"pass2\" style=\"width:240px;\" maxlength=\"10\" placeholder=\"M&aacute;ximo 10 caracteres\">*</td></tr>";
+		echo "<tr><td><strong>".$Nueva." ".$Contrasena."</strong><br>".$Maximo." 10 ".$Caracteres.".</td><td style=\"vertical-align : middle;width:250px;\"><input type=\"Password\" name=\"pass1\" style=\"width:240px;\" maxlength=\"10\">*</td></tr>";
+		echo "<tr><td><strong>".$Repetir." ".$Contrasena."</strong><br>".$Maximo." 10 ".$Caracteres.".</td><td style=\"vertical-align : middle;width:250px;\"><input type=\"Password\" name=\"pass2\" style=\"width:240px;\" maxlength=\"10\">*</td></tr>";
 		echo "<input type=\"Hidden\" name=\"id_user\" value=\"".$userid."\">";
 		echo "<tr><td></td><td><input type=\"submit\" value=\"".$Cambiar."\" width=\"350px\"></td>";
 		echo "</tr></table>";

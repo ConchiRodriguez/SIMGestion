@@ -187,7 +187,7 @@ function correoIncidencias(){
 						$rowser = mysqli_fetch_array($resultser);
 	//enviar notificación nueva nota en la incidencia
 						if (($rowser["auto_email"] == 1) and ($incidencia_propia == 1)){
-							enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,$mensaje,$id_inc);
+							enviarNotificacion($correo_remitente,$id_inc,$rowser["codigo_catalogo"],$id_codigo_externo,2,'',$id_inc,$mensaje);
 						}
 					}
 				} else {
@@ -230,7 +230,7 @@ function correoIncidencias(){
 
 //enviar notificación nueva incidencia
 					if ($incidencia_propia == 1){
-						enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1,$mensaje,$rowin["id"]);
+						enviarNotificacion($correo_remitente,$rowin["id"],$rowser["codigo_catalogo"],$id_codigo_externo,1,'',$rowin["id"],$mensaje);
 					}
 				}
 				// guardar ficheros adjuntos

@@ -3,7 +3,17 @@
 error_reporting(~E_ALL);
 #date_default_timezone_set('Europe/Paris');
 
-include ("config.php");
+### BUSCA SI ES UNA IP LOCAL
+$accesolocal = true;
+$ip = $_SERVER['REMOTE_ADDR'];
+$subxarxa = "192.168.1.";
+$x = 0;
+for ($x = 0 ; $x < strlen($subxarxa) ; $x++) {
+	if ($ip[$x] != $subxarxa[$x]) { $accesolocal = false ; }
+}
+
+if ($accesolocal == true) { include ("config3.php"); }
+if ($accesolocal == false) { include ("config4.php"); }
 
 foreach (glob("../sim/auxiliar/*.php") as $filename)
 {
@@ -17,7 +27,7 @@ foreach (glob("../sim/pantallas/*.php") as $filename2)
 
 #include ("functions.php");
 #include ("../archivos_comunes/funciones.php");
-#if(!isset($HTTP_SERVER_VARS[HTTPS])) { header("Location: ".$urlclientes); }
+#if(!isset($HTTP_SERVER_VARS[HTTPS])) { header("Location: ".$urlmgestion); }
 
 #	$basededatos = "MSSQL";
 	$basededatos = "MYSQL";
@@ -38,7 +48,7 @@ $userid = 0;
 
 if ($option == 667) {
 	setcookie("idioma", "".$_GET["i"]."", time()+31536000*$cookiestime, "/clientes", $domain);
-	header("Location: ".$urlclientes);
+	header("Location: ".$urlmgestion);
 }
 
 
@@ -72,33 +82,51 @@ if ($soption == 666) {
 	setcookie("mpassword", "", time()-1, "/clientes");
 	unset($_COOKIE["musername"]); 
 	unset($_COOKIE["mpassword"]); 
-	header("Location: ".$urlclientes."/logout.php");
+	header("Location: ".$urlmgestion."/logout.php");
 }
 
+echo $_COOKIE["musername"];
 if ($_COOKIE["musername"] == "") {
 	if ($_POST["user"] != "") {
 		$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_POST["user"] ."' AND validado=1 AND activo=1";
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 		if ($row["total"] == 1) {
-			$sql = "select * from sgm_users WHERE usuario='" .$_POST["user"]."'";
+			$sql = "select * from sgm_users WHERE usuario='".$_POST["user"]."'";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-#			if ($row["pass"] == $_POST["pass"]) {
+			echo crypt($_POST["pass"], $row["pass"])."-".$row["pass"];
 			if (crypt($_POST["pass"], $row["pass"]) == $row["pass"]){
+				$user = true;
+				echo $username = $row["usuario"].$url_raiz.$domain;
+				$userid = $row["id"];
+				$sgm = $row["sgm"];
+				setcookie("musername", $_POST["user"], time()+60*$cookiestime, $url_raiz, $domain);
+echo $_COOKIE["musername"];
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
+echo $_COOKIE["mpassword"]."xx";
+				header("Location: ".$urlmgestion."/index.php?op=200");
+			}
+		}
+	}
+	if ($_GET["idp"] != "") {
+		$sql = "select * from sgm_users WHERE validado=1 AND activo=1";
+		$result = mysqli_query($dbhandle,convertSQL($sql));
+		while ($row = mysqli_fetch_array($result)){
+			if ($_GET["idp"] == $row["pass"]){
 				$user = true;
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $_POST["user"], time()+60*$cookiestime, "/clientes");
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/clientes");
-				header("Location: ".$urlclientes."/index.php?op=200");
+				setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
+				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
+				header("Location: ".$urlmgestion."/index.php?op=200&sop=70");
 			}
 		}
 	}
 } else { 
 	$sql = "select Count(*) AS total from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
-	$result = mysqli_query($dbhandle,$sql);
+	$result = mysqli_query($dbhandle,convertSQL($sql));
 	$row = mysqli_fetch_array($result);
 	if ( $row["total"] == 1 ) {
 		$sql = "select * from sgm_users WHERE usuario='".$_COOKIE["musername"]."' AND validado=1 AND activo=1";
@@ -109,11 +137,12 @@ if ($_COOKIE["musername"] == "") {
 			$username = $row["usuario"];
 			$userid = $row["id"];
 			$sgm = $row["sgm"];
-			setcookie("musername", $row["usuario"], time()+60*$cookiestime, "/clientes");
-			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, "/clientes");
+			setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
+			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
 		}
 	}
 }
+
 
 lopd($userid,$username,$option,$soption);
 
@@ -255,17 +284,16 @@ lopd($userid,$username,$option,$soption);
 			if ($option == 200) { include ("mgestion/user.php");}
 		echo "</td>";
 	echo "</tr><tr>";
-		echo "<td style=\"text-align:center;\">".$Horario." ".$Atencion." ".$Cliente." : <strong>9h.</strong> a <strong>17h.</strong> de <strong>".$Lunes."</strong> a <strong>".$Viernes."</strong>. ".$Soporte." : <strong>soporte@solucions-im.com</strong>";
+		echo "<td style=\"text-align:center;\">".$Horario." ".$Atencion." ".$Cliente." : <strong>9</strong> a <strong>17</strong> de <strong>".$Lunes."</strong> a <strong>".$Viernes."</strong>. ".$Soporte." : <strong>soporte@solucions-im.com</strong>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"https://twitter.com/Solucions_im\" target=\"_blank\" name=\"@solucions_im\">@solucions_im</a>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"https://www.facebook.com/pages/Solucions-Informatiques-Maresme-SLU/384997628255026\" target=\"_blank\" name=\"facebook\">Facebook</a>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.solucions-im.com/blogs/tecnic/\" target=\"_blank\" name=\"blog\">Blog</a>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.solucions-im.com\" target=\"_blank\" name=\"blog\">www.solucions-im.com</a>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.nagios.org\" target=\"_blank\" name=\"blog\">Nagios.org</a>";
 		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.nagios.com\" target=\"_blank\" name=\"blog\">Nagios.com</a>";
-		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.nagios-es.org\" target=\"_blank\" name=\"blog\">Nagios-es.org</a>";
-		echo "&nbsp;&nbsp;&nbsp;<a href=\"https://www.op5.com\" target=\"_blank\" name=\"blog\">op5.com</a></td>";
+		echo "&nbsp;&nbsp;&nbsp;<a href=\"http://www.nagios-es.org\" target=\"_blank\" name=\"blog\">Nagios-es.org</a></td>";
 	echo "</tr><tr><td>&nbsp;</td></tr><tr>";
-		echo "<td style=\"height:20px;width:1250px;background-color:grey;color:white;padding-left:5px;text-align:center;\">&copy;".date("Y")." Solucions-im.com</td>";
+		echo "<td style=\"height:20px;width:1250px;background-color:grey;color:white;padding-left:5px;text-align:center;\">&copy;2013 Solucions-im.com</td>";
 	echo "</tr>";
 echo "</table>";
 

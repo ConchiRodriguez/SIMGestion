@@ -5,6 +5,7 @@
 	foreach (glob("../../sim/auxiliar/*.php") as $filename)
 	{
 		include ($filename);
+#		echo $filename;
 	}
 	$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");

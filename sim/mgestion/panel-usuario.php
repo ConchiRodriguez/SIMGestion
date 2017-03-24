@@ -25,10 +25,6 @@ if (($option == 200) AND ($user == true)) {
 
 
 	if ($soption == 0) {
-		$sqlx = "select id_tipus from sgm_users where sgm=1 and activo=1 and validado=1 and id=".$userid;
-		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
-		$rowx = mysqli_fetch_array($resultx);
-
 		$sqldiv = "select * from sgm_divisas where predefinido=1";
 		$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
 		$rowdiv = mysqli_fetch_array($resultdiv);
@@ -58,7 +54,55 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr><td></td><td></td><td style=\"text-align:right;\"><a href=\"index.php?op=200&sop=20\">".$VerMas."</a></td></tr>";
 			echo "</table>";
 		}
+
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+		$sqltipo = "select * from sgm_users_permisos where (id_modulo=1008 or id_modulo=1018) and id_user=".$userid;
+		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+		$rowtipo = mysqli_fetch_array($resulttipo);
+		if ($rowtipo){
+			echo "<tr>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
+					echo "<h4>".$Contactos."</h4>";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+						echo "<tr>";
+							echo "<th colspan=\"2\" style=\"width:800px;\">C.A.E.</th>";
+							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "</th>";
+						echo "</tr>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:300px;\">".$Cliente."</th>";
+							echo "<th style=\"width:500px;\">URL</th>";
+							echo "<th style=\"width:100px;\">".$Estado."</th>";
+						echo "</tr>";
+						$sqlcc = "select id,nombre,cognom1,cognom2,cae_url from sgm_clients where visible=1 and cae=1";
+						$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+						while ($rowcc = mysqli_fetch_array($resultcc)) {
+							$estado = 1;
+							$sqlcdc = "select * from sim_clientes_docs_cae where id_cliente=".$rowcc["id"];
+							$resultcdc = mysqli_query($dbhandle,convertSQL($sqlcdc));
+							while ($rowcdc = mysqli_fetch_array($resultcdc)){
+								if ((date('U',strtotime($rowcdc["caducidad"])) < date('U')) and ($estado == 1)){
+									$estado = 0;
+								}
+							}
+							if ($estado == 1) { $color = "LimeGreen";} elseif ($estado == 0) { $color = "red";}
+							echo "<tr>";
+								echo "<td><a href=\"index.php?op=1008&sop=125&id=".$rowcc["id"]."\">".$rowcc["nombre"]." ".$rowcc["cognom1"]." ".$rowcc["cognom2"]."</a></td>";
+								echo "<td><a href=\"".$rowcc["cae_url"]."\">".$rowcc["cae_url"]."</a></td>";
+								echo "<td style=\"background-color:".$color."\"></td>";
+							echo "</tr>";
+						}
+					echo "</table>";
+				echo "</td>";
+				echo "<td style=\"width:50%;vertical-align:top;\">";
+				echo "</td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+		}
+		$sqltipo1 = "select * from sgm_users_permisos where id_modulo=1011 and id_user=".$userid;
+		$resulttipo1 = mysqli_query($dbhandle,convertSQL($sqltipo1));
+		$rowtipo1 = mysqli_fetch_array($resulttipo1);
+		if ($rowtipo1){
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Contratos."</h4>";
@@ -126,7 +170,7 @@ if (($option == 200) AND ($user == true)) {
 						}
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -190,7 +234,7 @@ if (($option == 200) AND ($user == true)) {
 						}
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr>";
@@ -255,11 +299,16 @@ if (($option == 200) AND ($user == true)) {
 						}
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
-				echo "<td>";
+				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
+		}
+		$sqltipo2 = "select * from sgm_users_permisos where id_modulo=1003 and id_user=".$userid;
+		$resulttipo2 = mysqli_query($dbhandle,convertSQL($sqltipo2));
+		$rowtipo2 = mysqli_fetch_array($resulttipo2);
+		if ($rowtipo2){
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Facturacion."</h4>";
@@ -317,7 +366,7 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -372,7 +421,7 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr>";
@@ -431,7 +480,7 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<tr>";
@@ -489,9 +538,14 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
+		}
+		$sqltipo3 = "select * from sgm_users_permisos where id_modulo=1018 and id_user=".$userid;
+		$resulttipo3 = mysqli_query($dbhandle,convertSQL($sqltipo3));
+		$rowtipo3 = mysqli_fetch_array($resulttipo3);
+		if ($rowtipo3){
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Incidencias."</h4>";
@@ -547,7 +601,7 @@ if (($option == 200) AND ($user == true)) {
 						}
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -643,8 +697,9 @@ if (($option == 200) AND ($user == true)) {
 						}
 #					}
 					echo "</table>";
-				echo "<td>";
+				echo "</td>";
 			echo "</tr>";
+		}
 		echo "</table>";
 	}
 

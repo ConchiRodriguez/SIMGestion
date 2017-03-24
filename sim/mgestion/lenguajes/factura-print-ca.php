@@ -4,6 +4,7 @@ $meses = array('Gener','Febrer','Març','Abril','Maig','Juny','Juliol','Agost','S
 $abierta = "Oberta";
 $abiertas = "Obertes";
 $acreedor = "Acreedor";
+$antecedentes = "Antecedents";
 $articulos = "Articles";
 $asunto = "Assumpte";
 
@@ -16,9 +17,10 @@ $cobertura = "Cobertura";
 $cuenta_corriente= "Nombre de Compte";
 $codigo = "Codi";
 $cp = "CP";
+$cuenta_corriente= "Numero de Compte";
 
-$descuento = "descompte";
 $descripcion = "Descripció";
+$descuento = "descompte";
 $deudor = "Deudor";
 $direccion = "Direcció";
 $duracion = "Duració";
@@ -27,7 +29,6 @@ $e_mail = "E-mail";
 $estado = "Estat";
 
 $fecha = "Data";
-$fecha = "Data";
 $fecha_entrega = "Data d'entrega";
 $fecha_vencimiento = "Data de venciment";
 $fecha_fin = "Data Finalizació";
@@ -35,21 +36,26 @@ $fecha_ini = "Data Inici";
 $forma_de_pago = "Forma de pagament";
 $fuera_sla = "Fora de SLA";
 
+$descripcion_general = "Descripció General";
+
+$importe = "Import";
 $incidencias= "Incidències";
 $incidencias_pendientes = "Incidències Pendents";
 $indice = "Índex";
-$importe = "Import";
 $IVA = "IVA";
 
 $listado_articulos = "Llistat d'Articles";
 
+$propuesta_mejoras = "Proposta i Millores";
+
 $Nacion = "País";
+$necesidades_objetivos = "Necessitats i objectius";
+$nif = "NIF";
+$nombre = "Nom";
+$notas = "Notes";
 $numero = "Número";
 $numero_cliente = "Referencia comanda";
 $numero_rfq = "Número RFQ";
-$nombre = "Nom";
-$nif = "NIF";
-$notas = "Notes";
 
 $pausada = "Pausada";
 $pausadas = "Pausades";
@@ -68,10 +74,10 @@ $retenciones = "Retencions";
 $subtotal = "Subtotal";
 
 $telefono = "Telf.";
+$tiempo = "Temps";
 $titulo1 = "Informació Client";
 $titulo2 = "Dades d'Enviament";
 $total = "Total";
-$tiempo = "Temps";
 $total_contrato = "Total Contracte";
 
 $unitats = "Unitats";

@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
-	global $db,$dbhandle,$Uso,$Memoria,$simclau;
+	global $db,$dbhandle,$Uso,$Memoria,$simclau,$urlmgestion;
 	echo "<tr>";
 	$i = 1;
 	$sqlcs2 = "select * from sgm_clients_servidors where id_client in (".$id_cliente.") and visible=1";
@@ -62,7 +62,7 @@ function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
 				echo "<td style=\"text-align:center;vertical-align:top;background-color:".$color_linea.";color:".$color_letras.";\">";
 					$fecha_ser = date("Y-m-d H:i:s", $rowna["time_server"]);
 					echo $fecha_ser."<br>";
-					echo "<a href=\"index.php?op=".$_GET["op"]."&sop=".$ssop."&id=".$_GET["id"]."&id_serv=".$rowcs2["servidor"]."&id_cli=".$id_cliente."\" style=\"text-decoration: none;\"><img src=\"".$urlmgestion."/archivos_comunes/images/server_nagios.JPG\" style=\"border:0px;\"></a>";
+					echo "<a href=\"index.php?op=".$_GET["op"]."&sop=".$ssop."&id=".$_GET["id"]."&id_serv=".$rowcs2["servidor"]."&id_cli=".$id_cliente."\" style=\"text-decoration: none;\"><img src=\"".$urlmgestion."/mgestion/pics/server_nagios.JPG\" style=\"border:0px;\"></a>";
 				echo "</td>";
 				echo "<td style=\"vertical-align:top;\">";
 					echo "<table>";

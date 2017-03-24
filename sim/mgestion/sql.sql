@@ -204,6 +204,7 @@ ALTER TABLE `sgm_clients` ADD `id_formato_facturacion` int(11) NOT NULL default 
 ALTER TABLE `sgm_clients` ADD `id_contacto_facturacion` int(11) NOT NULL default '0' AFTER `id_formato_facturacion`;
 ALTER TABLE `sgm_clients` ADD `notas_facturacion` longtext AFTER `id_contacto_facturacion`;
 ALTER TABLE `sgm_clients` ADD `cae` tinyint(1) NOT NULL default '0' AFTER `notas_facturacion`;
+ALTER TABLE `sgm_clients` ADD `cae_url` varchar(150) NOT NULL default '' AFTER `cae`;
 
 /*
 ALTER TABLE `sgm_clients` ADD `clienttipus` tinyint(1) NOT NULL default '0' AFTER `client`;
@@ -278,6 +279,11 @@ ALTER TABLE `sgm_clients_dias_recibos` ADD `id_cliente` int(11) NOT NULL default
 CREATE TABLE `sgm_clients_dias_vencimiento` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_dias_vencimiento` ADD `dia` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_clients_dias_vencimiento` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `dia`;
+
+CREATE TABLE `sim_clientes_docs_cae` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_clientes_docs_cae` ADD `nombre` varchar(100) default NULL AFTER `id`;
+ALTER TABLE `sim_clientes_docs_cae` ADD `caducidad` date NOT NULL default '0000-00-00' AFTER `nombre`;
+ALTER TABLE `sim_clientes_docs_cae` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `caducidad`;
 
 CREATE TABLE `sgm_clients_origen` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sgm_clients_origen` ADD `origen` varchar(30) NOT NULL default '' AFTER `id`;
@@ -385,6 +391,9 @@ ALTER TABLE `sim_comercial_oferta` ADD `visible` tinyint(1) NOT NULL default '1'
 ALTER TABLE `sim_comercial_oferta` ADD `versionado` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sim_comercial_oferta` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `versionado`;
 ALTER TABLE `sim_comercial_oferta` ADD `cerrada` tinyint(1) NOT NULL default '0' AFTER `aceptada`;
+ALTER TABLE `sim_comercial_oferta` ADD `contenido_antecedentes` longtext AFTER `cerrada`;
+ALTER TABLE `sim_comercial_oferta` ADD `contenido_necesidades` longtext AFTER `contenido_antecedentes`;
+ALTER TABLE `sim_comercial_oferta` ADD `contenido_mejoras` longtext AFTER `contenido_necesidades`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;

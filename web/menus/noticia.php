@@ -31,6 +31,8 @@ if ($_GET["id"] != 0){
 		$texto_noticia = str_replace( "[embed]", "</td></tr><tr><td>&nbsp;</td></tr><tr><td style=\"text-align:center;\"><iframe src=\"",utf8_encode ($row["post_content"]));
 		$texto_noticia = str_replace( "[/embed]", "\" width=\"600\" height=\"400\"></iframe></td></tr>",$texto_noticia);
 		$texto_noticia = str_replace( "watch?v=", "embed/",$texto_noticia);
+		$texto_noticia = str_replace( '[pdf-embedder url="', "</td></tr><tr><td>&nbsp;</td></tr><tr><td style=\"text-align:center;\"><iframe src=\"",$texto_noticia);
+		$texto_noticia = str_replace( "]", " width=\"600\" height=\"800\"></iframe></td></tr>",$texto_noticia);
 		echo "<tr><td>".$texto_noticia."</td></tr>";
 	echo "</table>";
 }
@@ -66,6 +68,8 @@ if ($_GET["tax"] != 0){
 		$texto_noticia = str_replace( "[embed]", "</td></tr><tr><td>&nbsp;</td></tr><tr><td style=\"text-align:center;\"><iframe src=\"",utf8_encode ($row["post_content"]));
 		$texto_noticia = str_replace( "[/embed]", "\" width=\"600\" height=\"400\"></iframe></td></tr>",$texto_noticia);
 		$texto_noticia = str_replace( "watch?v=", "embed/",$texto_noticia);
+		$texto_noticia = str_replace( "[pdf-embedder url=\"", "</td></tr><tr><td>&nbsp;</td></tr><tr><td style=\"text-align:center;\"><iframe src=\"",$texto_noticia);
+		$texto_noticia = str_replace( "]", "\" width=\"600\" height=\"800\"></iframe></td></tr>",$texto_noticia);
 		echo "<tr><td>".$texto_noticia."</td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 		}

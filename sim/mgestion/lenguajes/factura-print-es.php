@@ -4,6 +4,7 @@ $meses = array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto'
 $abierta = "Abierta";
 $abiertas = "Abiertas";
 $acreedor = "Acreedor";
+$antecedentes = "Antecedentes";
 $articulos = "Articulos";
 $asunto = "Asunto";
 
@@ -34,6 +35,8 @@ $fecha_ini = "Fecha Inicio";
 $forma_de_pago = "Forma de pago";
 $fuera_sla = "Fuera de SLA";
 
+$descripcion_general = "Descripción General";
+
 $importe = "Importe";
 $incidencias = "Incidencias";
 $incidencias_pendientes = "Incidencias Pendientes";
@@ -42,7 +45,10 @@ $IVA = "IVA";
 
 $listado_articulos = "Listado de Articulos";
 
+$propuesta_mejoras = "Propuesta y Mejoras";
+
 $Nacion = "País";
+$necesidades_objetivos = "Necesidades y objetivos";
 $nif = "NIF";
 $nombre = "Nombre";
 $notas = "Notas";
@@ -66,10 +72,10 @@ $retenciones = "Retenciones";
 
 $subtotal = "Subtotal";
 
+$telefono = "Telf.";
 $tiempo = "Tiempo";
 $titulo1 = "Información Cliente";
 $titulo2 = "Datos de Envio";
-$telefono = "Telf.";
 $total = "Total";
 $total_contrato = "Total Contrato";
 

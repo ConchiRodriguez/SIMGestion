@@ -1825,40 +1825,86 @@ if (($option == 1008) AND ($autorizado == true)) {
 #Gestión C.A.E.
 	if ($soption == 125){
 		if ($ssoption == 1) {
-			$camposUpdate = array('cae');
-			$datosUpdate = array($_POST["cae"]);
+			$camposUpdate = array('cae','cae_url');
+			$datosUpdate = array($_POST["cae"],$_POST["cae_url"]);
 			updateFunction("sgm_clients",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 2){
+			$camposInsert = "id_cliente,nombre,caducidad";
+			$datosInsert = array($id_client,comillas($_POST["nombre"]),$_POST["caducidad"]);
+			insertFunction ("sim_clientes_docs_cae",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 3) {
+			deleteFunction ("sim_clientes_docs_cae",$_GET["id_doc"]);
+		}
+		if ($ssoption == 4) {
+			$camposUpdate = array('nombre','caducidad');
+			$datosUpdate = array($_POST["nombre"],$_POST["caducidad"]);
+			updateFunction("sim_clientes_docs_cae",$_GET["id_doc"],$camposUpdate,$datosUpdate);
 		}
 		$sql = "select * from sgm_clients where id=".$id_client;
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
+				echo "<form action=\"index.php?op=1008&sop=125&ssop=1&id=".$id_client."\"  method=\"post\">";
+				echo "<th class=\"formclient\">C.A.E. ".$Activo."</th>";
 				echo "<td>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-						echo "<tr>";
-							echo "<form action=\"index.php?op=1008&sop=125&ssop=1&id=".$id_client."\"  method=\"post\">";
-							echo "<th class=\"formclient\">C.A.E. ".$Activo."</th>";
-							echo "<td>";
-							echo "<select name=\"cae\" style=\"width:50px;\">";
-							if ($row["cae"] == 0){
-								echo "<option value=\"0\" selected>".$No."</option>";
-								echo "<option value=\"1\">".$Si."</option>";
-							} else {
-								echo "<option value=\"0\">".$No."</option>";
-								echo "<option value=\"1\" selected>".$Si."</option>";
-							}
-							echo "</select>";
-							echo "</td>";
-							echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Guardar."\"></td>";
-							echo "</form>";
-						echo "</tr>";
-					echo "</table>";
+				echo "<select name=\"cae\" style=\"width:50px;\">";
+				if ($row["cae"] == 0){
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				} else {
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+				}
+				echo "</select>";
 				echo "</td>";
+				echo "<td><input type=\"text\" name=\"cae_url\" style=\"width:400px;\" placeholder=\"URL\" value=\"".$row["cae_url"]."\"></td>";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Guardar."\"></td>";
+				echo "</form>";
 			echo "</tr>";
 		echo "</table>";
+		echo "<br><br>";
+		if ($row["cae"] == 1) {
+			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+				echo "<tr style=\"background-color:silver\">";
+					echo "<th></th>";
+					echo "<th>".$Tipo." ".$Archivo."</th>";
+					echo "<th>".$Caducidad."</th>";
+				echo "</tr>";
+				echo "<tr>";
+					echo "<form action=\"index.php?op=1008&sop=125&ssop=2&id=".$id_client."\"  method=\"post\">";
+					echo "<td></td>";
+					echo "<td><input type=\"text\" name=\"nombre\" style=\"width:400px;\" required></td>";
+					echo "<td><input type=\"text\" name=\"caducidad\" style=\"width:100px;\" value=\"".date('Y-m-d')."\" required></td>";
+					echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Guardar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+				echo "<tr><td>&nbsp;</td></tr>";
+				$sqldoc = "select * from sim_clientes_docs_cae where id_cliente=".$id_client;
+				$resultdoc = mysqli_query($dbhandle,convertSQL($sqldoc));
+				while ($rowdoc = mysqli_fetch_array($resultdoc)){
+					echo "<tr>";
+						echo "<form action=\"index.php?op=1008&sop=125&ssop=4&id=".$id_client."&id_doc=".$rowdoc["id"]."\"  method=\"post\">";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=126&id=".$id_client."&id_doc=".$rowdoc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+						echo "<td><input type=\"text\" name=\"nombre\" style=\"width:400px;\" value=\"".$rowdoc["nombre"]."\"  required></td>";
+						echo "<td><input type=\"text\" name=\"caducidad\" style=\"width:100px;\" value=\"".$rowdoc["caducidad"]."\" required></td>";
+						echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
+						echo "</form>";
+					echo "</tr>";
+				}
+			echo "</table>";
+		}
 	}
 	
+	if ($soption == 126) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1008&sop=125&ssop=3&id=".$_GET["id"]."&id_doc=".$_GET["id_doc"],"op=1008&sop=125&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
+	}
+
 #Informes
 	if ($soption == 130) {
 		informesContratos($_GET["id"]);

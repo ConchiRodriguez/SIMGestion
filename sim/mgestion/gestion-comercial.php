@@ -632,6 +632,38 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
+	if ($soption == 130) {
+		if ($ssoption == 1) {
+			$camposUpdate=array('contenido_antecedentes','contenido_necesidades','contenido_mejoras');
+			$datosUpdate=array(comillas($_POST["contenido_antecedentes"]),comillas($_POST["contenido_necesidades"]),comillas($_POST["contenido_mejoras"]));
+			updateFunction("sim_comercial_oferta",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Contenidos." ".$Especificos."</h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			$sql = "select contenido_antecedentes,contenido_necesidades,contenido_mejoras from sim_comercial_oferta where id=".$_GET["id"];
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			echo "<form action=\"index.php?op=1009&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+			echo "<tr>";
+				echo "<td style=\"text-align:right;vertical-align:top;\">".$Antecedentes." : </td><td><textarea name=\"contenido_antecedentes\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido_antecedentes"]."</textarea></td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr>";
+				echo "<td style=\"text-align:right;vertical-align:top;\">".$Necesidades." : </td><td><textarea name=\"contenido_necesidades\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido_necesidades"]."</textarea></td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr>";
+				echo "<td style=\"text-align:right;vertical-align:top;\">".$Mejoras." : </td><td><textarea name=\"contenido_mejoras\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido_mejoras"]."</textarea></td>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<td></td><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
+			echo "</tr>";
+			echo "</form>";
+		echo "</table>";
+	}
+
+
 	if ($soption == 500) {
 		if ($admin == true) {
 			$ruta_botons = array("op=1009&sop=510","op=1009&sop=520","op=1009&sop=530");
@@ -1026,15 +1058,15 @@ if (($option == 1009) AND ($autorizado == true)) {
 
 	if ($soption == 535) {
 		if ($ssoption == 1) {
-			if ($_POST["orden"] < 10) {$orden = "0".$_POST["orden"];} else {$orden = $_POST["orden"];}
+#			if ($_POST["orden"] < 10) {$orden = "0".$_POST["orden"];} else {$orden = $_POST["orden"];}
 			$camposInsert="orden,id_comercial_contenido,id_comercial_oferta";
-			$datosInsert=array($orden,$_POST["id_contenido"],$_GET["id"]);
+			$datosInsert=array($_POST["orden"],$_POST["id_contenido"],$_GET["id"]);
 			insertFunction("sim_comercial_oferta_rel_contenido",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
-			if ($_POST["orden"] < 10) {$orden = "0".$_POST["orden"];} else {$orden = $_POST["orden"];}
+#			if ($_POST["orden"] < 10) {$orden = "0".$_POST["orden"];} else {$orden = $_POST["orden"];}
 			$camposUpdate=array('orden','id_comercial_contenido');
-			$datosUpdate=array($orden,$_POST["id_contenido"]);
+			$datosUpdate=array($_POST["orden"],$_POST["id_contenido"]);
 			updateFunction("sim_comercial_oferta_rel_contenido",$_GET["id_con"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
@@ -1059,10 +1091,11 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "<td style=\"text-align:right;\"><input type=\"Text\" name=\"orden\" value=\"0\" style=\"width:50px\"></td>";
 				echo "<td><select style=\"width:450px\" name=\"id_contenido\">";
 					echo "<option value=\"0\">-</option>";
-					$sqlg = "select id,titulo from sim_comercial_contenido where visible=1 and id_idioma=".$rowc["id_idioma"];
+					$sqlg = "select id,titulo from sim_comercial_contenido where visible=1 and versionado=0 and id_idioma=".$rowc["id_idioma"];
 					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
-					$rowg = mysqli_fetch_array($resultg);
-					echo "<option value=\"".$rowg["id"]."\">".$rowg["titulo"]."</option>";
+					while ($rowg = mysqli_fetch_array($resultg)){
+						echo "<option value=\"".$rowg["id"]."\">".$rowg["titulo"]."</option>";
+					}
 				echo "</select></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
