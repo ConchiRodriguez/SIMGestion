@@ -19,30 +19,21 @@ function refactura($idfactura) {
 	$result = mysqli_query($dbhandle,convertSQL($sql));
 	$row = mysqli_fetch_array($result);
 	if ($row["total_forzado"] == 0) {
-		$sql = "update sgm_cabezera set ";
-		$sql = $sql."subtotal=".$subtotal;
 		if ($row["descuento_absoluto"] == 0) { $x = $subtotal - (($subtotal / 100) * $row["descuento"]) ; }
 		if ($row["descuento"] == 0) { $x = $subtotal - $row["descuento_absoluto"] ;	}
-		$sql = $sql.",subtotaldescuento=".$x;
 		$xx = (($x / 100) * $row["iva"]) + $x;
 		$xxx = $xx -(($x / 100) * $row["retenciones"]);
-		$sql = $sql.",total=".$xxx;
-		$sql = $sql." WHERE id=".$idfactura;
-		mysqli_query($dbhandle,convertSQL($sql));
-#		echo $sql;
+		$camposUpdate = array("subtotal","subtotaldescuento","total");
+		$datosUpdate = array($subtotal,$x,$xxx);
+		updateFunction ("sgm_cabezera",$idfactura,$camposUpdate,$datosUpdate);
 	}
 	if ($row["total_forzado"] == 1) {
-		$sql = "update sgm_cabezera set ";
-		$sql = $sql."subtotal=".$subtotal;
 		$x = $row["total"]/(1+(($row["iva"]/100) - ($row["retenciones"]/100)));
-		$sql = $sql.",subtotaldescuento=".$x;
 		$xx = 100-($x/($subtotal/100));
-		$sql = $sql.",descuento=".$xx;
-		$sql = $sql.",descuento_absoluto=".($subtotal-$x);
-		$sql = $sql.",total=".$row["total"];
-		$sql = $sql." WHERE id=".$idfactura;
-		mysqli_query($dbhandle,convertSQL($sql));
-#		echo $sql;
+		$xxx = $subtotal-$x;
+		$camposUpdate = array("subtotal","subtotaldescuento","descuento","descuento_absoluto","total");
+		$datosUpdate = array($subtotal,$x,$xx,$xxx,$row["total"]);
+		updateFunction ("sgm_cabezera",$idfactura,$camposUpdate,$datosUpdate);
 	}
 }
 

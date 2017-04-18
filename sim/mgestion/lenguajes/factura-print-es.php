@@ -7,6 +7,7 @@ $acreedor = "Acreedor";
 $antecedentes = "Antecedentes";
 $articulos = "Articulos";
 $asunto = "Asunto";
+$autor = "Autor";
 
 $cambio = "Cambio";
 $cerrada = "Cerrada";
@@ -73,7 +74,9 @@ $retenciones = "Retenciones";
 $subtotal = "Subtotal";
 
 $telefono = "Telf.";
+$tema = "Tema";
 $tiempo = "Tiempo";
+$titulo = "Título";
 $titulo1 = "Información Cliente";
 $titulo2 = "Datos de Envio";
 $total = "Total";
@@ -81,6 +84,7 @@ $total_contrato = "Total Contrato";
 
 $unitats = "Unidades";
 
+$version = "Versión";
 $valoracion_economica = "Valoración Económica";
 
 #protecci&oacute;n de datos#

@@ -20,8 +20,8 @@ if (($option == 200) AND ($user == true)) {
 			echo "</table>";
 		echo "</td></tr>";
 	echo "</table><br>";
-	echo "<table  class=\"principal\"><tr>";
-		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
+	echo "<table class=\"principal\"><tr>";
+		echo "<td style=\"width:100%;vertical-align:top;text-align:left;\">";
 
 
 	if ($soption == 0) {
@@ -55,7 +55,7 @@ if (($option == 200) AND ($user == true)) {
 			echo "</table>";
 		}
 
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+		echo "<table cellpadding=\"1\" cellspacing=\"10\" class=\"lista\" style=\"width:100%;\">";
 		$sqltipo = "select * from sgm_users_permisos where (id_modulo=1008 or id_modulo=1018) and id_user=".$userid;
 		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
 		$rowtipo = mysqli_fetch_array($resulttipo);
@@ -63,11 +63,11 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Contactos."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"2\" style=\"width:800px;\">C.A.E.</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
-							echo "</th>";
+							echo "<th colspan=\"3\">C.A.E.</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
+#							echo "</th>";
 						echo "</tr>";
 						echo "<tr style=\"background-color:silver;\">";
 							echo "<th style=\"width:300px;\">".$Cliente."</th>";
@@ -106,10 +106,10 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Contratos."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"3\" style=\"width:750px;\">".$Bolsa." ".$Horas."</th>";
-							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<th colspan=\"5\">".$Bolsa." ".$Horas."</th>";
+#							echo "<th style=\"text-align:right;width:150px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["bh"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -128,7 +128,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["bh"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -173,10 +173,10 @@ if (($option == 200) AND ($user == true)) {
 				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"2\" style=\"width:750px;\">".$Resumen." ".$Contratos."</th>";
-							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<th colspan=\"4\">".$Resumen." ".$Contratos."</th>";
+#							echo "<th style=\"text-align:right;width:150px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["rc"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -195,7 +195,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["rc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -239,10 +239,10 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"2\" style=\"width:750px;\">".$Facturacion." ".$Mensual." ".$Horas."</th>";
-							echo "<th style=\"text-align:right;width:150px;\">";
+							echo "<th colspan=\"4\">".$Facturacion." ".$Mensual." ".$Horas."</th>";
+#							echo "<th style=\"text-align:right;width:150px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["fm"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -261,7 +261,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["fm"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -312,10 +312,10 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Facturacion."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"3\" style=\"width:800px;\">".$Facturacion." 15 ".$Dias."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"4\">".$Facturacion." 15 ".$Dias."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["fd"] == 0){ 
 ##								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -334,7 +334,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["fd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -369,10 +369,10 @@ if (($option == 200) AND ($user == true)) {
 				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"3\" style=\"width:800px;\">".$Presupuesto." ".$Aprobado."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"4\">".$Presupuesto." ".$Aprobado."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["pa"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -391,7 +391,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["pa"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -428,8 +428,8 @@ if (($option == 200) AND ($user == true)) {
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 						echo "<tr>";
-							echo "<th colspan=\"3\" style=\"width:800px;\">".$Pagos." 15 ".$Dias."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"5\">".$Pagos." 15 ".$Dias."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["pd"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -448,7 +448,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["pd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -482,10 +482,10 @@ if (($option == 200) AND ($user == true)) {
 					echo "</table>";
 				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"4\" style=\"width:800px;\">".$Cobros." 15 ".$Dias."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"4\">".$Cobros." 15 ".$Dias."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["cd"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -504,7 +504,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["cd"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -549,10 +549,10 @@ if (($option == 200) AND ($user == true)) {
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>".$Incidencias."</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"2\" style=\"width:800px;\">".$Sin." ".$Contrato."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"3\">".$Sin." ".$Contrato."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["sc"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -571,7 +571,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
 #								echo "<input type=\"hidden\" name=\"ua\" value=\"".$_POST["ua"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["sc"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
@@ -604,10 +604,10 @@ if (($option == 200) AND ($user == true)) {
 				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
 					echo "<h4>&nbsp;</h4>";
-					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
-							echo "<th colspan=\"2\" style=\"width:800px;\">".$Usuario." ".$Actual."</th>";
-							echo "<th style=\"text-align:right;width:100px;\">";
+							echo "<th colspan=\"3\">".$Usuario." ".$Actual."</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
 #							echo "<form action=\"index.php?op=200&sop=0\" method=\"post\">";
 #							if ($_POST["ua"] == 0){ 
 #								echo "<input type=\"image\" src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" value=\"boton\" style=\"width:20px;height:20px;border:0\">";
@@ -626,7 +626,7 @@ if (($option == 200) AND ($user == true)) {
 #								echo "<input type=\"hidden\" name=\"cd\" value=\"".$_POST["cd"]."\">";
 #								echo "<input type=\"hidden\" name=\"sc\" value=\"".$_POST["sc"]."\">";
 #							echo "</form>";
-							echo "</th>";
+#							echo "</th>";
 						echo "</tr>";
 #					if ($_POST["ua"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";

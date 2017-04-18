@@ -346,10 +346,10 @@ function factura_print_e($id)
 
 		$content .= "				<InvoiceLine>\n";
 	if ($rowco){
-		$content .= "					<IssuerContractReference>".comillasInver(quitarAcentos(substr($rowco["descripcion"],0,20)))."</IssuerContractReference>\n";
-		$content .= "					<IssuerContractDate>".$rowco["fecha_ini"]."</IssuerContractDate>\n";
-		$content .= "					<IssuerTransactionReference>".substr($rowco["num_contrato"],0,20)."</IssuerTransactionReference>\n";
-		$content .= "					<IssuerTransactionDate>".$rowco["fecha_ini"]."</IssuerTransactionDate>\n";
+#		$content .= "					<IssuerContractReference>".comillasInver(quitarAcentos(substr($rowco["descripcion"],0,20)))."</IssuerContractReference>\n";
+#		$content .= "					<IssuerContractDate>".$rowco["fecha_ini"]."</IssuerContractDate>\n";
+#		$content .= "					<IssuerTransactionReference>".substr($rowco["num_contrato"],0,20)."</IssuerTransactionReference>\n";
+#		$content .= "					<IssuerTransactionDate>".$rowco["fecha_ini"]."</IssuerTransactionDate>\n";
 	}
 #		$content .= "					<ReceiverContractReference></ReceiverContractReference>\n";
 #		$content .= "					<ReceiverContractDate></ReceiverContractDate>\n";
@@ -399,10 +399,10 @@ function factura_print_e($id)
 		$content .= "						</Tax>\n";
 		$content .= "					</TaxesOutputs>\n";
 	if ($rowco){
-		$content .= "					<LineItemPeriod>\n";
-		$content .= "						<StartDate>".$rowco["fecha_ini"]."</StartDate>\n";
-		$content .= "						<EndDate>".$rowco["fecha_fin"]."</EndDate>\n";
-		$content .= "					</LineItemPeriod>\n";
+#		$content .= "					<LineItemPeriod>\n";
+#		$content .= "						<StartDate>".$rowco["fecha_ini"]."</StartDate>\n";
+#		$content .= "						<EndDate>".$rowco["fecha_fin"]."</EndDate>\n";
+#		$content .= "					</LineItemPeriod>\n";
 	}
 #		$content .= "					<AdditionalLineItemInformation></AdditionalLineItemInformation>\n";
 #		$content .= "					<SpecialTaxableEvent>\n";

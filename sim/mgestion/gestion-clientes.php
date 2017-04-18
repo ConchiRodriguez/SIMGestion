@@ -1149,7 +1149,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 								$sqlsec2 = "select id,sector from sgm_clients_sectores where id_sector=".$row1["id"];
 								$resultsec2 = mysqli_query($dbhandle,convertSQL($sqlsec2));
 								while ($rowsec2 = mysqli_fetch_array($resultsec2)){
-									echo "<option value=\"".$row1["id"]."\">".$row1["sector"]."-".$rowsec2["sector"]."</option>";
+									echo "<option value=\"".$rowsec2["id"]."\">".$row1["sector"]."-".$rowsec2["sector"]."</option>";
 								}
 							}
 						echo "</select></td></tr>";
@@ -1159,12 +1159,14 @@ if (($option == 1008) AND ($autorizado == true)) {
 							$sqlsec = "select id,sector,id_sector from sgm_clients_sectores where id=".$rowse["id_sector"];
 							$resultsec = mysqli_query($dbhandle,convertSQL($sqlsec));
 							$rowsec = mysqli_fetch_array($resultsec);
-							$sqlsec2 = "select sector from sgm_clients_sectores where id_sector=".$rowsec["id"];
+							$sector_cli = $rowsec["sector"];
+							$sqlsec2 = "select sector from sgm_clients_sectores where id=".$rowsec["id_sector"];
 							$resultsec2 = mysqli_query($dbhandle,convertSQL($sqlsec2));
 							$rowsec2 = mysqli_fetch_array($resultsec2);
+							if ($rowsec2["sector"]){$sector_cli = $rowsec2["sector"]."-".$rowsec["sector"];}
 							echo "<tr>";
 								echo "<td style=\"text-align:right;\" class=\"formclient\"><a href=\"index.php?op=1008&sop=106&id_sec=".$rowse["id"]."&id=".$id_client."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
-								echo "<td class=\"formclient\">".$rowsec["sector"]."-".$rowsec2["sector"]."</td>";
+								echo "<td class=\"formclient\">".$sector_cli."</td>";
 							echo "</tr>";
 						}
 					echo "</table>";

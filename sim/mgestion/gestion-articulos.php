@@ -599,11 +599,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 
-		$camposInsert = "codigo,nombre,id_subgrupo,img1,img2,img3,notas,escandall,recalc_escandall,stock_max,stock_min,codigoext,descatalogat,id_divisa";
-		$datosInsert = array($row["codigo"],$row["nombre"],$row["id_subgrupo"],$row["img1"],$row["img2"],$row["img3"],$row["notas"],$row["escandall"],$row["recalc_escandall"],$row["stock_max"],$row["stock_min"],$row["codigoext"],$row["descatalogat"],$row["id_divisa"]);
+		$camposInsert = "codigo,nombre,id_subgrupo,img1,img2,img3,notas,escandall,recalc_escandall,stock_max,stock_min,descatalogat,id_divisa";
+		$datosInsert = array($row["codigo"],$row["nombre"],$row["id_subgrupo"],$row["img1"],$row["img2"],$row["img3"],$row["notas"],$row["escandall"],$row["recalc_escandall"],$row["stock_max"],$row["stock_min"],$row["descatalogat"],$row["id_divisa"]);
 		insertFunction ("sgm_articles",$camposInsert,$datosInsert);
 
-		$sqlart = "select id from sgm_articles where visible=1 order by id desc";
+		$sqlart = "select id from sgm_articles where visible=1 and codigo='".$row["codigo"]."' order by id desc";
 		$resultart = mysqli_query($dbhandle,convertSQL($sqlart));
 		$rowart = mysqli_fetch_array($resultart);
 

@@ -26,7 +26,7 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			$numeroc = $rowc["num_contrato"];
 			echo "<input type=\"Hidden\" name=\"id_contrato\" value=\"".$id_contrato."\">";
 		} else {
-			echo "<form action=\"index.php?op=".$option."&sop=100&ssop=1\" method=\"post\">";
+			echo "<form action=\"index.php?op=".$option."&sop=101\" method=\"post\">";
 			$numeroc = 0;
 			$sqln = "select num_contrato from sgm_contratos where visible=1 order by num_contrato desc";
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));

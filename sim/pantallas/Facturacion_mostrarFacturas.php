@@ -169,36 +169,54 @@ function mostrarFacturas($row){
 			echo "<td style=\"text-align:right;\">".$row["numero"]."</td>";
 			if ($rowtipos["presu"] == 1) { echo "<td>/".$row["version"]."</td>"; } else { echo "<td></td>"; }
 ############ CALCULOS SOBRE LAS FECHAS OFICIALES
-				$a = date("Y", strtotime($row["fecha"]));
-				$m = date("m", strtotime($row["fecha"]));
-				$d = date("d", strtotime($row["fecha"]));
-				$date = getdate();
-				if ($date["year"]."-".$date["mon"]."-".$date["mday"] < $row["fecha"]) {
-					$fecha_proxima = $row["fecha"];
-				} else { 
-					$fecha_proxima = $row["fecha"];
-					$multiplica = 0;
-					$sql00 = "select fecha from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
-					$result00 = mysqli_query($dbhandle,convertSQL($sql00));
-					while ($row00 = mysqli_fetch_array($result00)) {
-						if ($fecha_proxima == $row00["fecha"]) {
-							$multiplica++;
-							$fecha_proxima = date("Y-m-d", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
-						}
-					}
-				}
-				if ($rowtipos["dias"] == 0) {
+#				$a = date("Y", strtotime($row["fecha"]));
+#				$m = date("m", strtotime($row["fecha"]));
+#				$d = date("d", strtotime($row["fecha"]));
+#				$date = getdate();
+#				if ($date["year"]."-".$date["mon"]."-".$date["mday"] < $row["fecha"]) {
+#					$fecha_proxima = $row["fecha"];
+#				} else { 
+#					$fecha_proxima = $row["fecha"];
+#					$multiplica = 0;
+#					$sql00 = "select fecha from sgm_facturas_relaciones where id_plantilla=".$row["id"]." order by fecha";
+#					$result00 = mysqli_query($dbhandle,convertSQL($sql00));
+#					while ($row00 = mysqli_fetch_array($result00)) {
+#						if ($fecha_proxima == $row00["fecha"]) {
+#							$multiplica++;
+#							$fecha_proxima = date("Y-m-d", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
+#						}
+#					}
+#				}
+
+
+
+				if (($rowtipos["facturable"] == 0) and ($rowtipos["dias"] == 0)) {
 					echo "<td style=\"text-align:right\">".cambiarFormatoFechaDMY($row["fecha"])."</td>";
 				} else { 
-					if ($fecha_proxima > $date1) {
-						$fecha_aviso = date("Y-m-d", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*($multiplica))-10, $a));
-						if ($fecha_aviso <  $date1) {
-							echo "<td style=\"background-color:orange;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".cambiarFormatoFechaDMY($fecha_proxima)."</td>";
+					$a = date("Y", strtotime($row["fecha"]));
+					$m = date("m", strtotime($row["fecha"]));
+					$d = date("d", strtotime($row["fecha"]));
+					$dias_facturable = $rowtipos["dias"]*60*60*24;
+					$fecha_venci = date("U",strtotime($row["fecha"]));
+					$dia_actual = date("U");
+					$multiplica = 0;
+					$fv = $fecha_venci;
+					while ($fv<=$dia_actual){
+						$multiplica++;
+						$fv += $dias_facturable;
+					}
+					$fecha_proxima = date("d-m-Y", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
+					$fecha_proxima2 = date("U", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*$multiplica), $a));
+
+					if ($fecha_proxima2 > date('U')) {
+						$fecha_aviso = date("U", mktime(0,0,0,$m ,$d+($rowtipos["dias"]*($multiplica))-10, $a));
+						if ($fecha_aviso <  date('U')) {
+							echo "<td style=\"background-color:orange;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".$fecha_proxima."</td>";
 						} else {
-							echo "<td>I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".cambiarFormatoFechaDMY($fecha_proxima)."</td>";
+							echo "<td>I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".$fecha_proxima."</td>";
 						}
 					} else {
-						echo "<td style=\"background-color:red;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".cambiarFormatoFechaDMY($fecha_proxima)."</td>";
+						echo "<td style=\"background-color:red;color:White;\">I: ".cambiarFormatoFechaDMY($row["fecha"])."<br>P: ".$fecha_proxima."</td>";
 					}
 				}
 				if ($rowtipos["v_fecha_prevision"] == 1) { echo "<td>".cambiarFormatoFechaDMY($row["fecha_prevision"])."</td>"; } else { echo "<td></td>"; }

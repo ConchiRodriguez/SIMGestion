@@ -241,14 +241,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 					else { $color = "white"; $color_letra = "";}
 					echo "<tr style=\"background-color:".$color."\">";
 						echo "<td style=\"text-align:center;color:".$color_letra."\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
-						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]."</a></td>";
-						$sql = "select id,nombre from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
+						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
-						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\" style=\"color:".$color_letra."\">".$rowcc["descripcion"]."</a></td>";
 						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_ini"]."</td>";
 						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_fin"]."</td>";
@@ -299,6 +299,16 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 				$rowc = mysqli_fetch_array($resultc);
 				$id_contrato = $rowc["id"];
+			}
+
+			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 order by servicio";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				if ($_POST["servicios".$row["id"]] == 1){
+					$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
+					$datosInsert = array($id_contrato,$_POST["servicio".$row["id"]],$_POST["obligatorio".$row["id"]],$_POST["extranet".$row["id"]],$_POST["incidencias".$row["id"]],$_POST["id_cobertura".$row["id"]],$_POST["temps_resposta".$row["id"]],$_POST["nbd".$row["id"]],$_POST["sla".$row["id"]],$_POST["duracion".$row["id"]],$_POST["precio_hora".$row["id"]],$_POST["codigo_catalogo".$row["id"]],$_POST["auto_email".$row["id"]]);
+					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
+				}
 			}
 		}
 		if (($soption == 100) and ($ssoption == 2)) {
@@ -396,6 +406,151 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if ($soption == 100) {
 		echo "<h4>".$Datos." ".$Contrato." : </h4>";
 		mostrarContrato ($id_contrato,0,$_GET["id_cli"]);
+	}
+
+	if ($soption == 101) {
+		echo "<h4>".$Servicios." : </h4>";
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th></th>";
+				echo "<th>".$Servicio."</th>";
+				echo "<th>".$Codigo." ".$Catalogo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios9."\"></th>";
+				echo "<th>".$Prefijo." ".$Notificacion."</th>";
+				echo "<th>".$Obligatorio."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios1."\"></th>";
+				echo "<th>".$Extranet."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios2."\"></th>";
+				echo "<th>".$Incidencias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios3."\"></th>";
+				echo "<th>".$Duracion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios4."\"></th>";
+				echo "<th>".$Cobertura."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios5."\"></th>";
+				echo "<th>".$Tiempo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios6."\"></th>";
+				echo "<th>".$NBD."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios7."\"></th>";
+				echo "<th>".$SLA." %<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios8."\"></th>";
+				echo "<th>".$Precio."</th>";
+				echo "<th>".$AutoEmail."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios10."\"></th>";
+				echo "<th>".$Funcion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios11."\"></th>";
+				echo "<th>".$Origen."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios12."\"></th>";
+				echo "<th></th>";
+			echo "</tr>";
+			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 order by servicio";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<form action=\"index.php?op=1011&sop=100&ssop=1\" method=\"post\">";
+				echo "<tr>";
+					echo "<td style=\"color:black;text-align: center;\"><input type=\"Checkbox\" name=\"servicios".$row["id"]."\" value=\"1\" style=\"border:0px solid black\"></td>";
+					echo "<td><input type=\"text\" value=\"".$row["servicio"]."\" style=\"width:250px\" name=\"servicio".$row["id"]."\"></td>";
+					echo "<td><input type=\"text\" value=\"".$row["codigo_catalogo"]."\" style=\"width:100px\" name=\"codigo_catalogo".$row["id"]."\"></td>";
+					echo "<td><input type=\"text\" value=\"".$row["prefijo_notificacion"]."\" style=\"width:100px\" name=\"prefijo_notificacion".$row["id"]."\"></td>";
+					echo "<td><select style=\"width:70px\" name=\"obligatorio".$row["id"]."\">";
+						if ($row["obligatorio"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"extranet".$row["id"]."\">";
+						if ($row["extranet"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"incidencias".$row["id"]."\">";
+						if ($row["incidencias"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"duracion".$row["id"]."\">";
+						if ($row["duracion"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"id_cobertura".$row["id"]."\">";
+						echo "<option value=\"0\">-</option>";
+						$sqls = "select id,nombre from sgm_contratos_sla_cobertura where visible=1 order by nombre";
+						$results = mysqli_query($dbhandle,convertSQL($sqls));
+						while ($rows = mysqli_fetch_array($results)) {
+							if ($rows["id"] == $row["id_cobertura"]){
+								echo "<option value=\"".$rows["id"]."\" selected>".$rows["nombre"]."</option>";
+							} else {
+								echo "<option value=\"".$rows["id"]."\">".$rows["nombre"]."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"temps_resposta".$row["id"]."\">";
+						for ($i = 0; $i <= 24 ; $i++) {
+							if ($i == $row["temps_resposta"]){
+								echo "<option value=\"".$i."\" selected>".$i."</option>";
+							} else {
+								echo "<option value=\"".$i."\">".$i."</option>";
+							}
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"nbd".$row["id"]."\">";
+						if ($row["nbd"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><input type=\"number\" min=\"0\" value=\"".$row["sla"]."\" style=\"text-align:right;width:70px\" name=\"sla".$row["id"]."\"></td>";
+					echo "<td><input type=\"number\" min=\"0\" step=\"any\" value=\"".$row["precio_hora"]."\" style=\"text-align:right;width:70px\" name=\"precio_hora".$row["id"]."\"></td>";
+					echo "<td><select style=\"width:70px\" name=\"auto_email".$row["id"]."\">";
+						if ($row["auto_email"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><input type=\"text\" value=\"".$row["funcion"]."\" style=\"width:150px\" name=\"funcion".$row["id"]."\"></td>";
+					echo "<td><select style=\"width:70px\" name=\"id_servicio_origen".$row["id"]."\">";
+						echo "<option value=\"0\">-</option>";
+						$sqlcso = "select id,codigo_origen from sgm_contratos_servicio_origen where visible=1 order by codigo_origen";
+						$resultcso = mysqli_query($dbhandle,convertSQL($sqlcso));
+						while ($rowcso = mysqli_fetch_array($resultcso)) {
+							if ($rowcso["id"] == $row["id_servicio_origen"]){
+								echo "<option value=\"".$rowcso["id"]."\" selected>".$rowcso["codigo_origen"]."</option>";
+							} else {
+								echo "<option value=\"".$rowcso["id"]."\">".$rowcso["codigo_origen"]."</option>";
+							}
+						}
+					echo "</select></td>";
+				echo "</tr>";
+			}
+			echo "<tr>";
+				echo "<td></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+			echo "</tr>";
+			echo "<input type=\"hidden\" name=\"id_contrato_tipo\" value=\"".$_POST["id_contrato_tipo"]."\">";
+			echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$_POST["id_cliente"]."\">";
+			echo "<input type=\"hidden\" name=\"id_cliente_final\" value=\"".$_POST["id_cliente_final"]."\">";
+			echo "<input type=\"hidden\" name=\"num_contrato\" value=\"".$_POST["num_contrato"]."\">";
+			echo "<input type=\"hidden\" name=\"fecha_ini\" value=\"".$_POST["fecha_ini"]."\">";
+			echo "<input type=\"hidden\" name=\"fecha_fin\" value=\"".$_POST["fecha_fin"]."\">";
+			echo "<input type=\"hidden\" name=\"descripcion\" value=\"".$_POST["descripcion"]."\">";
+			echo "<input type=\"hidden\" name=\"id_responsable\" value=\"".$_POST["id_responsable"]."\">";
+			echo "<input type=\"hidden\" name=\"id_tecnico\" value=\"".$_POST["id_tecnico"]."\">";
+			echo "<input type=\"hidden\" name=\"id_tarifa\" value=\"".$_POST["id_tarifa"]."\">";
+			echo "<input type=\"hidden\" name=\"pack_horas\" value=\"".$_POST["pack_horas"]."\">";
+			echo "<input type=\"hidden\" name=\"num_horas\" value=\"".$_POST["num_horas"]."\">";
+			echo "<input type=\"hidden\" name=\"id_articulo_desplazamiento\" value=\"".$_POST["id_articulo_desplazamiento"]."\">";
+		echo "</form>";
+		echo "</table>";
+		echo "<br><br>";
 	}
 
 	if ($soption == 110) {

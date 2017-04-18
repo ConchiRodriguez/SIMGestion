@@ -394,6 +394,7 @@ ALTER TABLE `sim_comercial_oferta` ADD `cerrada` tinyint(1) NOT NULL default '0'
 ALTER TABLE `sim_comercial_oferta` ADD `contenido_antecedentes` longtext AFTER `cerrada`;
 ALTER TABLE `sim_comercial_oferta` ADD `contenido_necesidades` longtext AFTER `contenido_antecedentes`;
 ALTER TABLE `sim_comercial_oferta` ADD `contenido_mejoras` longtext AFTER `contenido_necesidades`;
+ALTER TABLE `sim_comercial_oferta` ADD `id_autor` int(11) NOT NULL default '0' AFTER `contenido_mejoras`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
@@ -403,7 +404,7 @@ ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `orden` varchar(10) NOT NUL
 CREATE TABLE `sim_comercial_oferta_valoracion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `id_comercial_oferta`;
-ALTER TABLE `sim_comercial_oferta_valoracion` ADD `total` decimal(11,3) NOT NULL default '0' AFTER `descripcion` ;
+ALTER TABLE `sim_comercial_oferta_valoracion` ADD `total` decimal(11,2) NOT NULL default '0' AFTER `descripcion` ;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descuento` decimal(11,2) NOT NULL default '0' AFTER `total` ;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `descuento`;
 
@@ -411,6 +412,7 @@ CREATE TABLE `sim_comercial_oferta_valoracion_rel_articulos` ( `id` int(11) NOT 
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_comercial_oferta_valoracion` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_articulo` int(11) NOT NULL default '0' AFTER `id_comercial_oferta_valoracion`;
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `unidades` int(11) NOT NULL default '0' AFTER `id_articulo`;
+ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `pvp` decimal(11,2) NOT NULL default '0.00' AFTER `unidades`;
 
 CREATE TABLE `sim_comunidades_autonomas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comunidades_autonomas` ADD `comunidad_autonoma` varchar(50) default NULL AFTER `id`;

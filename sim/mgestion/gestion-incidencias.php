@@ -883,8 +883,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 			if (($_POST["notas_desarrollo"] != "") and ($_POST["duracion"] != "")){
 				$fecha_registro_inicio = time();
 				$fecha_inicio = date(U, strtotime($_POST["fecha_inicio"]));
-				$camposInsert = "id_incidencia,id_usuario_registro,fecha_registro_inicio,fecha_inicio,notas_desarrollo,duracion,visible_cliente,pausada,notificar_cliente";
-				$datosInsert = array($_GET["id"],$userid,$fecha_registro_inicio,$fecha_inicio,$_POST["notas_desarrollo"],$_POST["duracion"],$_POST["visible_cliente"],$_POST["pausada"],$_POST["notificar_cliente"]);
+				$camposInsert = "id_incidencia,id_usuario_registro,fecha_registro_inicio,fecha_inicio,notas_desarrollo,duracion,visible_cliente,pausada,notificar_cliente,nivel_tecnico";
+				$datosInsert = array($_GET["id"],$userid,$fecha_registro_inicio,$fecha_inicio,$_POST["notas_desarrollo"],$_POST["duracion"],$_POST["visible_cliente"],$_POST["pausada"],$_POST["notificar_cliente"],$_POST["nivel_tecnico"]);
 				insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
 				$sqlii = "select id from sgm_incidencias where id_incidencia=".$_GET["id"]." and notas_desarrollo='".comillas($_POST["notas_desarrollo"])."' and fecha_registro_inicio=".$fecha_registro_inicio;
@@ -949,8 +949,8 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$datosUpdate = array($_POST["id_usuario_registro"],$_POST["id_incidencia"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["notas_desarrollo"]);
 				updateFunction ("sgm_incidencias",$_GET["id_not"],$camposUpdate,$datosUpdate);
 			} else {
-				$camposUpdate = array("id_usuario_registro","id_incidencia","fecha_inicio","visible_cliente","pausada","notas_desarrollo","duracion","notificar_cliente");
-				$datosUpdate = array($_POST["id_usuario_registro"],$_POST["id_incidencia"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["visible_cliente"],$_POST["pausada"],$_POST["notas_desarrollo"],$duracion,$_POST["notificar_cliente"]);
+				$camposUpdate = array("id_usuario_registro","id_incidencia","fecha_inicio","visible_cliente","pausada","notas_desarrollo","duracion","notificar_cliente","nivel_tecnico");
+				$datosUpdate = array($_POST["id_usuario_registro"],$_POST["id_incidencia"],date(U, strtotime($_POST["fecha_inicio"])),$_POST["visible_cliente"],$_POST["pausada"],$_POST["notas_desarrollo"],$duracion,$_POST["notificar_cliente"],$_POST["nivel_tecnico"]);
 				updateFunction ("sgm_incidencias",$_GET["id_not"],$camposUpdate,$datosUpdate);
 				if ((($rowx["notas_desarrollo"] != $_POST["notas_desarrollo"]) or ($rowix["pausada"] != $_POST["pausada"])) and ($_POST["notificar_cliente"] == 1)){
 					$editada[$puntero] = 1;
@@ -1468,6 +1468,13 @@ if (($option == 1018) AND ($autorizado == true)) {
 								}
 							echo "</select></td>";
 						echo "</tr>";
+						echo "<th style=\"text-align:right;vertical-align:top;\">".$Nivel." ".$Tecnico." :</th>";
+							echo "<td><select name=\"nivel_tecnico\" style=\"width:50px\">";
+								echo "<option value=\"1\" selected>1</option>";
+								echo "<option value=\"2\">2</option>";
+								echo "<option value=\"3\">3</option>";
+							echo "</select></td>";
+						echo "</tr>";
 						echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Visible." ".$Cliente." :</th>";
 							echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
 								if ($rowincid["visible_cliente"] == 0){
@@ -1495,9 +1502,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 					echo "<table cellspacing=\"0\" style=\"width:100%\">";
 						echo "<tr><th style=\"text-align:left;vertical-align:top;\">".$Notas." ".$Desarrollo." :</th></tr>";
 						if (($_POST["notas_desarrollo"] != "") and ($_POST["duracion"] != "")){
-							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\"></textarea></td></tr>";
+							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"5\"></textarea></td></tr>";
 						} else {
-							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"4\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
+							echo "<tr><td><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"5\">".$_POST["notas_desarrollo"]."</textarea></td></tr>";
 						}
 						if ($rowincid["id_estado"] != -2){
 							echo "<tr><td class=\"Submit\"><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td></tr>";
@@ -1563,6 +1570,28 @@ if (($option == 1018) AND ($autorizado == true)) {
 								}
 								echo "</select></td>";
 							echo "</tr>";
+						echo "<tr>";
+						echo "<th style=\"text-align:right;vertical-align:top;\">".$Nivel." ".$Tecnico." :</th>";
+							echo "<td><select name=\"nivel_tecnico\" style=\"width:50px\">";
+								if ($rowc["nivel_tecnico"] == 1){
+									echo "<option value=\"1\" selected>1</option>";
+									echo "<option value=\"2\">2</option>";
+									echo "<option value=\"3\">3</option>";
+								} elseif  ($rowc["nivel_tecnico"] == 2){
+									echo "<option value=\"1\">1</option>";
+									echo "<option value=\"2\" selected>2</option>";
+									echo "<option value=\"3\">3</option>";
+								} elseif  ($rowc["nivel_tecnico"] == 3){
+									echo "<option value=\"1\">1</option>";
+									echo "<option value=\"2\">2</option>";
+									echo "<option value=\"3\" selected>3</option>";
+								} else {
+									echo "<option value=\"1\">1</option>";
+									echo "<option value=\"2\">2</option>";
+									echo "<option value=\"3\">3</option>";
+								}
+							echo "</select></td>";
+						echo "</tr>";
 							echo "<tr><th style=\"text-align:right;vertical-align:top;\">".$Visible." ".$Cliente." :</th>";
 								echo "<td><select name=\"visible_cliente\" style=\"width:50px\">";
 								if ($rowc["visible_cliente"] == 0){
@@ -1603,7 +1632,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					echo "</td><td style=\"text-align:right;vertical-align:top;width:60%;\">";
 						echo "<table cellspacing=\"0\" cellspacing=\"0\" style=\"width:100%;\">";
 						if ($rowc["id_usuario_registro"] == $userid){
-							echo "<tr><td colspan=\"3\"><textarea name=\"notas_desarrollo\" style=\"width:100%;height:125px\">".$rowc["notas_desarrollo"]."</textarea></td></tr>";
+							echo "<tr><td colspan=\"3\"><textarea name=\"notas_desarrollo\" style=\"width:100%;\" rows=\"8\">".$rowc["notas_desarrollo"]."</textarea></td></tr>";
 						} else {
 							echo "<tr><td colspan=\"2\" style=\"width:100%;height:125px;background-color:silver;vertical-align:top;\">".$rowc["notas_desarrollo"]."&nbsp;</td></tr>";
 							echo "<input type=\"hidden\" name=\"notas_desarrollo\" value=\"".$rowc["notas_desarrollo"]."\">";
@@ -1662,7 +1691,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 				echo "</td><td style=\"text-align:right;vertical-align:top;width:60%;\">";
 					echo "<table cellspacing=\"0\" style=\"width:100%;\">";
 						echo "<tr><th style=\"text-align:left;vertical-align:top;\" colspan=\"2\">".$Notas." ".$Conclusion." :</th></tr>";
-						echo "<tr><td colspan=\"2\"><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"4\" required>".$rowincid["notas_conclusion"]."</textarea></td></tr>";
+						echo "<tr><td colspan=\"2\"><textarea name=\"notas_conclusion\" style=\"width:100%;\" rows=\"5\" required>".$rowincid["notas_conclusion"]."</textarea></td></tr>";
 						if ($rowincid["id_estado"] == -2){
 							echo "<tr>";
 								echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Abrir."\" style=\"width:100px\"></td>";

@@ -51,6 +51,24 @@ function calendari_economic($rec){
 			$ingre2 = 0;
 		}
 
+		$sqlgasto2 = "select id,dias from sgm_factura_tipos where contabilidad=-1 and facturable=1";
+		$resultgasto2 = mysqli_query($dbhandle,$sqlgasto2);
+		while ($rowgasto2 = mysqli_fetch_array($resultgasto2)){
+			$dias_facturable = $rowgasto2["dias"]*60*60*24;
+			$gasto = 0;
+			$sqlgasto3 = "select fecha_vencimiento,total from sgm_cabezera where visible=1 and tipo=".$rowgasto2["id"]." and id_pagador=1";
+			$resultgasto3 = mysqli_query($dbhandle,$sqlgasto3);
+			while ($rowgasto3 = mysqli_fetch_array($resultgasto3)){
+				$fecha_venci = date("U",strtotime($rowgasto3["fecha_vencimiento"]));
+				$fv = $fecha_venci;
+				while ($fv<=$dia_actual){
+					if ($fv == $dia_actual) { $gasto += $rowgasto3["total"]; }
+					$fv += $dias_facturable;
+				}
+			}
+		}
+
+
 		$sqlingre3 = "select sum(total) as total_ingre3 from sgm_cabezera where visible=1 and tipo in (select id from sgm_factura_tipos where contabilidad=1 and v_recibos=0) and fecha_vencimiento='".$dia_actual2."' and id_pagador=1 and cerrada=0 and cobrada=0";
 		$resultingre3 = mysqli_query($dbhandle,$sqlingre3);
 		$rowingre3 = mysqli_fetch_array($resultingre3);
@@ -59,7 +77,7 @@ function calendari_economic($rec){
 		$resultex = mysqli_query($dbhandle,$sqlex);
 		$rowex = mysqli_fetch_array($resultex);
 
-		$total_gastos = $rowgasto["total_gasto"]+$rowgasto["total_gasto2"];
+		$total_gastos = $rowgasto["total_gasto"]+$rowgasto["total_gasto2"]+$gasto;
 		$total_ingresos = ($rowingre1["total_ingre1"] + $ingre2 + $rowingre3["total_ingre3"]);
 		$saldo_actual = $saldo_inicial - $total_gastos + $total_ingresos;
 		$pagos_externos = $pagos_externos + $rowex["total_externos"];

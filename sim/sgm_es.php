@@ -66,6 +66,7 @@ $Atributo = "Atributo";
 $Atributos = "Atributos";
 $Auditoria = "Auditoria";
 $AutoEmail = "AutoEmail";
+$Autor = "Autor";
 $Auxiliares = "Auxiliares";
 $Aviso = "Aviso";
 $Ayer = "Ayer";

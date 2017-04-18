@@ -30,15 +30,33 @@
 	if ($rowi["idioma"] == 'es') { $texto_lopd = $texto.$texto_es; } else { $texto_lopd = $texto.$texto_ca; }
 
 	define("FPDF_FONTPATH","../font/");
-#	require('fpdf.php');
-	require('html_table2fpdf.php');
+	require('fpdf.php');
 
-class PDF extends PDF_html
+class PDF extends FPDF
 {
+	protected $B = 0;
+	protected $I = 0;
+	protected $U = 0;
+	protected $HREF = '';
+
 	protected $_toc=array();
 	protected $_numbering=false;
 	protected $_numberingFooter=false;
 	protected $_numPageNum=3;
+
+    protected $tableborder=0;
+    protected $tdbegin=false;
+    protected $tdwidth=0;
+    protected $tdheight=0;
+    protected $tdalign="L";
+    protected $tdbgcolor=false;
+
+    protected $oldx=0;
+    protected $oldy=0;
+
+    protected $fontlist=array("arial","times","courier","helvetica","symbol");
+    protected $issetfont=false;
+    protected $issetcolor=false;
 
     function AddPage($orientation='', $format='', $rotation=0) {
         parent::AddPage($orientation,$format,$rotation);
@@ -129,6 +147,298 @@ class PDF extends PDF_html
         if(!$this->_numbering)
             $this->_numberingFooter=false;
     }
+
+	function WriteHTML($html)
+	{
+		// Intérprete de HTML
+		$html = strip_tags($html,"<b><u><i><a><img><p><br><strong><em><font><tr><blockquote><h1><h2><h3><h4><pre><red><blue><ul><li><hr><tbody><td><table><sup>");
+		$html = str_replace("\n",' ',$html);
+		$html = str_replace("\t",'',$html);
+		$html = str_replace('&trade;','™',$html);
+		$html = str_replace('&copy;','©',$html);
+		$html = str_replace('&euro;','€',$html);
+		$html = str_replace('&rsquo;',"'",$html);
+		$html = str_replace('&ndash;','-',$html);
+		$html = str_replace('&ldquo;','"',$html);
+		$html = str_replace('&rdquo;','"',$html);
+		$a = preg_split('/<(.*)>/U',$html,-1,PREG_SPLIT_DELIM_CAPTURE);
+		foreach($a as $i=>$e)
+		{
+			if($i%2==0)
+			{
+				// new line
+				if($this->PRE)
+					$e=str_replace("\r","\n",$e);
+				else
+					$e=str_replace("\r","",$e);
+				// Text
+				if($this->HREF)
+					$this->PutLink($this->HREF,$e);
+				elseif($this->tdbegin) {
+					if(trim($e)!='' && $e!="&nbsp;") {
+						$this->Cell($this->tdwidth,$this->tdheight,$e,$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+					}
+					elseif($e=="&nbsp;") {
+						$this->Cell($this->tdwidth,$this->tdheight,'',$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+					}
+				} else
+						$this->Write(5,stripslashes($e));
+			}
+			else
+			{
+				// Etiqueta
+				if($e[0]=='/')
+					$this->CloseTag(strtoupper(substr($e,1)));
+				else
+				{
+					// Extraer atributos
+					$a2 = explode(' ',$e);
+					$tag = strtoupper(array_shift($a2));
+					$attr = array();
+					foreach($a2 as $v)
+					{
+						if(preg_match('/([^=]*)=["\']?([^"\']*)/',$v,$a3))
+							$attr[strtoupper($a3[1])] = $a3[2];
+					}
+					$this->OpenTag($tag,$attr);
+				}
+			}
+		}
+	}
+
+	function OpenTag($tag, $attr)
+	{
+		// Etiqueta de apertura
+		switch($tag){
+			case 'TABLE': // TABLE-BEGIN
+			case 'table': // TABLE-BEGIN
+				if( !empty($attr['border']) ) $this->tableborder=$attr['border'];
+				else $this->tableborder=0;
+				break;
+			case 'TR': //TR-BEGIN
+			case 'tr': //TR-BEGIN
+				break;
+			case 'TD': // TD-BEGIN
+			case 'td': // TD-BEGIN
+				if( !empty($attr['WIDTH']) ) $this->tdwidth=($attr['WIDTH']/4);
+				else $this->tdwidth=40; // Set to your own width if you need bigger fixed cells
+				if( !empty($attr['HEIGHT']) ) $this->tdheight=($attr['HEIGHT']/6);
+				else $this->tdheight=6; // Set to your own height if you need bigger fixed cells
+				if( !empty($attr['ALIGN']) ) {
+					$align=$attr['ALIGN'];        
+					if($align=='LEFT') $this->tdalign='L';
+					if($align=='CENTER') $this->tdalign='C';
+					if($align=='RIGHT') $this->tdalign='R';
+				}
+				else $this->tdalign='L'; // Set to your own
+				if( !empty($attr['BGCOLOR']) ) {
+					$coul=hex2dec($attr['BGCOLOR']);
+						$this->SetFillColor($coul['R'],$coul['G'],$coul['B']);
+						$this->tdbgcolor=true;
+					}
+				$this->tdbegin=true;
+				break;
+			case 'STRONG':
+			case 'B':
+				$this->SetStyle('B',true);
+				break;
+            case 'H1':
+                $this->Ln(5);
+                $this->SetTextColor(150,0,0);
+                $this->SetFontSize(22);
+                break;
+            case 'H2':
+                $this->Ln(5);
+                $this->SetFontSize(18);
+                $this->SetStyle('U',true);
+                break;
+            case 'H3':
+                $this->Ln(5);
+                $this->SetFontSize(16);
+                $this->SetStyle('U',true);
+                break;
+            case 'H4':
+                $this->Ln(5);
+                $this->SetTextColor(51,51,159);
+                $this->SetFontSize(14);
+                $this->SetStyle('B',true);
+                break;
+            case 'PRE':
+                $this->SetFontSize(11);
+                $this->SetStyle('B',false);
+                $this->SetStyle('I',false);
+                $this->PRE=true;
+                break;
+           case 'BLOCKQUOTE':
+                $this->mySetTextColor(100,0,45);
+                $this->Ln(3);
+                break;
+            case 'I':
+            case 'EM':
+                $this->SetStyle('I',true);
+                break;
+            case 'U':
+                $this->SetStyle('U',true);
+                break;
+            case 'A':
+                $this->HREF=$attr['HREF'];
+                break;
+            case 'IMG':
+            case 'img':
+                if(isset($attr['SRC']) && (isset($attr['WIDTH']) || isset($attr['HEIGHT']))) {
+                    if(!isset($attr['WIDTH']))
+                        $attr['WIDTH'] = 0;
+                    if(!isset($attr['HEIGHT']))
+                        $attr['HEIGHT'] = 0;
+					echo $attr['SRC'];
+                    $this->Image($attr['SRC'], $this->GetX(), $this->GetY(), px2mm($attr['WIDTH']), px2mm($attr['HEIGHT']));
+                    $this->Ln(3);
+                }
+                break;
+            case 'LI':
+                $this->Ln(4);
+                $this->Write(5,'    - ');
+                $this->mySetTextColor(-1);
+                break;
+#			case 'TR':
+#				$this->Ln(7);
+#				$this->PutLine();
+#				break;
+            case 'BR':
+                $this->Ln(2);
+                break;
+            case 'P':
+                $this->Ln(5);
+                break;
+            case 'HR':
+                $this->PutLine();
+                break;
+            case 'FONT':
+                if (isset($attr['COLOR']) && $attr['COLOR']!='') {
+                    $coul=hex2dec($attr['COLOR']);
+                    $this->mySetTextColor($coul['R'],$coul['G'],$coul['B']);
+                    $this->issetcolor=true;
+                }
+                if (isset($attr['FACE']) && in_array(strtolower($attr['FACE']), $this->fontlist)) {
+                    $this->SetFont(strtolower($attr['FACE']));
+                    $this->issetfont=true;
+                }
+                break;
+        }
+	}
+
+	function CloseTag($tag)
+	{
+		// Etiqueta de cierre
+        if ($tag=='H1' || $tag=='H2' || $tag=='H3' || $tag=='H4'){
+            $this->Ln(6);
+            $this->SetFont('Calibri','',10);
+            $this->SetFontSize(10);
+            $this->SetStyle('U',false);
+            $this->SetStyle('B',false);
+            $this->mySetTextColor(-1);
+        }
+        if ($tag=='PRE'){
+            $this->SetFont('Calibri','',10);
+            $this->SetFontSize(10);
+            $this->PRE=false;
+        }
+        if ($tag=='RED' || $tag=='BLUE')
+            $this->mySetTextColor(-1);
+        if ($tag=='BLOCKQUOTE'){
+            $this->mySetTextColor(0,0,0);
+            $this->Ln(3);
+        }
+        if($tag=='STRONG')
+            $tag='B';
+        if($tag=='EM')
+            $tag='I';
+        if((!$this->bi) && $tag=='B')
+            $tag='U';
+        if($tag=='B' || $tag=='I' || $tag=='U')
+            $this->SetStyle($tag,false);
+        if($tag=='A')
+            $this->HREF='';
+        if($tag=='FONT'){
+            if ($this->issetcolor==true) {
+                $this->SetTextColor(0,0,0);
+            }
+            if ($this->issetfont) {
+                $this->SetFont('Calibri','',10);
+                $this->issetfont=false;
+            }
+        }
+		if($tag=='TD') { // TD-END
+			$this->tdbegin=false;
+			$this->tdwidth=0;
+			$this->tdheight=0;
+			$this->tdalign="L";
+			$this->tdbgcolor=false;
+		}
+		if($tag=='TR') { // TR-END
+			$this->Ln();
+		}
+		if($tag=='TABLE') { // TABLE-END
+			$this->tableborder=0;
+		}
+
+	}
+
+	function SetStyle($tag, $enable)
+	{
+		// Modificar estilo y escoger la fuente correspondiente
+		$this->$tag += ($enable ? 1 : -1);
+		$style = '';
+		foreach(array('B', 'I', 'U') as $s)
+		{
+			if($this->$s>0)
+				$style .= $s;
+		}
+		$this->SetFont('',$style);
+	}
+
+	function PutLink($URL, $txt)
+	{
+		// Escribir un hiper-enlace
+		$this->SetTextColor(0,0,255);
+		$this->SetStyle('U',true);
+		$this->Write(5,$txt,$URL);
+		$this->SetStyle('U',false);
+		$this->SetTextColor(0);
+		$this->SetFont('Calibri','',10);
+ 	}
+
+    function PutLine()
+    {
+        $this->Ln(2);
+        $this->Line($this->GetX(),$this->GetY(),$this->GetX()+187,$this->GetY());
+        $this->Ln(3);
+    }
+
+    function mySetTextColor($r,$g=0,$b=0){
+        static $_r=0, $_g=0, $_b=0;
+
+        if ($r==-1) 
+            $this->SetTextColor($_r,$_g,$_b);
+        else {
+            $this->SetTextColor($r,$g,$b);
+            $_r=$r;
+            $_g=$g;
+            $_b=$b;
+        }
+    }
+
+	function hex2dec($color = "#000000"){
+		$tbl_color = array();
+		$tbl_color['R']=hexdec(substr($color, 1, 2));
+		$tbl_color['G']=hexdec(substr($color, 3, 2));
+		$tbl_color['B']=hexdec(substr($color, 5, 2));
+		return $tbl_color;
+	}
+
+	function px2mm($px){
+		return $px*25.4/72;
+	}
 
 	function WriteTableValoraciones($id){
 		global $db,$dbhandle,$valoracion_economica,$unitats,$articulos,$precio,$total,$descuento;
@@ -230,6 +540,10 @@ class PDF extends PDF_html
 	{
 		global $db,$dbhandle,$titulo,$tema,$fecha,$version,$autor,$adress,$texto_lopd;
 
+		$sql1 = "select id,usuario from sgm_users where sgm=1 and id=".$aut;
+		$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+		$row1 = mysqli_fetch_array($result1);
+
 		$this->AddPage();
 		$this->SetFillColor(51,51,159);
 		$this->Cell(0,15,'',0,1,'C',true);
@@ -241,7 +555,7 @@ class PDF extends PDF_html
 		$this->SetFont('Arial','',25);
 		$this->Cell(70,20,$titul,0,0,'L',true);
 		$this->SetFont('Arial','',18);
-		$this->Cell(0,20,$descripcio,0,1,'L',true);
+		$this->Cell(0,20,$descripcion,0,1,'L',true);
 		$this->Ln(2);
 		$this->SetFillColor(51,51,159);
 		$this->Cell(0,80,'',0,1,'C',true);
@@ -265,7 +579,7 @@ class PDF extends PDF_html
 		$this->Cell(43,10,$descripcio,1,0,'C');
 		$this->Cell(30,10,$data,1,0,'C');
 		$this->Cell(30,10,$versio,1,0,'C');
-		$this->Cell(43,10,$aut,1,1,'C');
+		$this->Cell(43,10,$row1['usuario'],1,1,'C');
 		
 		
 		
@@ -299,10 +613,8 @@ class PDF extends PDF_html
 
 }
 
-	$sql1 = "select id,usuario from sgm_users where sgm=1 and id=".$rowof["id_autor"];
-	$result1 = mysqli_query($dbhandle,convertSQL($sql1));
-	$row1 = mysqli_fetch_array($result1);
 
+	
  	$pdf=new PDF();
 	$pdf->AddFont('Calibri','','../font/Calibri.php');
 	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
@@ -310,10 +622,9 @@ class PDF extends PDF_html
 	$pdf->SetCreator("Solucions-IM");
 	$pdf->SetDisplayMode('real');
 	$pdf->SetTitle($rowof["descripcion"]);
-	$pdf->Portada('Oferta Comercial',$rowof["descripcion"],$rowof["fecha"],$rowof["version"],$row1["usuario"]);
+	$pdf->Portada('Oferta Comercial',$rowof["descripcion"],$rowof["fecha"],$rowof["version"],$rowof["id_autor"]);
 	$pdf->startPageNums();
 
-	$pdf->SetMargins(20,30,15);
 	$pdf->AddPage();
 	$contenido_antecedentes = html_entity_decode(utf8_decode($rowof["contenido_antecedentes"]));
 	$contenido_necesidades = html_entity_decode(utf8_decode($rowof["contenido_necesidades"]));
@@ -371,7 +682,7 @@ class PDF extends PDF_html
 			$pdf->AddPage();
 			$orden_contenido = substr($rowofc["orden"],0,2);
 		} else {
-			$pdf->Ln(10);
+			$pdf->Ln(15);
 		}
 		$sqlcon = "select * from sim_comercial_contenido where id=".$rowofc["id_comercial_contenido"];
 		$resultcon = mysqli_query($dbhandle,convertSQL($sqlcon));
@@ -381,8 +692,10 @@ class PDF extends PDF_html
 		$pdf->SetTextColor(51,51,159);
 		$pdf->SetFontSize(14);
 		$pdf->SetStyle('B',true);
+		
 		$pdf->Cell(180,5,ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0,1);
 		$pdf->entryTOC(ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0);
+		$pdf->Ln(5);
 
 		$texto_html = html_entity_decode(utf8_decode($contenido))."<br>";
 		$pdf->SetTextColor(0,0,0);
