@@ -7,7 +7,7 @@ $tipo: 1=incidencia nueva externa, 2=nota de incidencia externa, 3=incidencia nu
 
 
 function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$tipo,$body,$id_nota_inci){
-	global $db,$dbhandle,$buzon_usuario;
+	global $db,$dbhandle,$buzon_usuario2;
 	
 	$cuerpo = '';
 
@@ -24,7 +24,7 @@ function enviarNotificacion($correo_remitente,$id,$codigo,$id_codigo_externo,$ti
 	if ($codigo != '') { $asunto.= " ".$codigo." ";}
 	if (($id_codigo_externo != '')) { $asunto.= " ".$id_codigo_externo." ";}
 	$asunto.= comillasInver($rowm["asunto"]);
-	$email=$buzon_usuario;
+	$email=$buzon_usuario2;
 
 	if (($id_codigo_externo == '')) {$cuerpo.="**Aquest &eacute;s un missatge autom&agrave;tic.**<br><br>";}
 	

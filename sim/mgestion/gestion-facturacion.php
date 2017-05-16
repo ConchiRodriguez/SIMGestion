@@ -1892,6 +1892,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 		$mes_anterior = date("U", mktime(0,0,0,$mes,1,$any));
 		$mes_ultimo = date("U", mktime(0,0,0,$mes+12, 1-1, $yact));
 		$dia_actual=$mes_anterior;
+		$dia_anterior=$mes_anterior;
 		$iva2 = 0;
 		while ($dia_actual<=$mes_ultimo){
 			$contador=$m;
@@ -1925,7 +1926,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$iva = ($rowingre1["total_ingre"]-$rowingre1["subtotal_ingre"]) - ($rowgasto["total_gasto"]-$rowgasto["subtotal_gasto"]);
 			}
 			
-			$sqliva = "select id from sgm_cabezera where visible=1 and tipo=12 and fecha='".$dia_actual2."' and id_pagador=1";
+			$sqliva = "select id from sgm_cabezera where visible=1 and tipo=12 and fecha>='".$dia_anterior."' and fecha<='".$dia_actual2."' and id_pagador=1";
 			$resultiva = mysqli_query($dbhandle,$sqliva);
 			$rowiva = mysqli_fetch_array($resultiva);
 			if ($rowiva){
@@ -1954,6 +1955,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$proxim_any = date("Y",$dia_actual);
 			$proxim_mes = date("m",$dia_actual);
 			$proxim_dia = date("d",$dia_actual);
+			$dia_anterior = date("Y-m-d",mktime(0,0,0,$proxim_mes,$proxim_dia-6,$proxim_any));
 			$dia_actual = date("U",mktime(0,0,0,$proxim_mes,$proxim_dia+1,$proxim_any));
 		}
 		echo "</table>";
