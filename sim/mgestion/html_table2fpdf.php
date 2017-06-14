@@ -55,6 +55,7 @@ function __construct($orientation='P', $unit='mm', $format='A4')
 
     $this->tableborder=0;
     $this->tdbegin=false;
+    $this->tdlibegin=false;
     $this->tdwidth=0;
     $this->tdheight=0;
     $this->tdalign="L";
@@ -63,7 +64,7 @@ function __construct($orientation='P', $unit='mm', $format='A4')
     $this->oldx=0;
     $this->oldy=0;
 
-    $this->fontlist=array("arial","times","courier","helvetica","symbol");
+    $this->fontlist=array("Calibri");
     $this->issetfont=false;
     $this->issetcolor=false;
 }
@@ -73,9 +74,13 @@ function __construct($orientation='P', $unit='mm', $format='A4')
 
 function WriteHTML($html)
 {
-    $html=strip_tags($html,"<b><u><i><a><img><p><br><strong><em><font><tr><blockquote><hr><td><tr><table><sup><ul><li>"); //remove all unsupported tags
-    $html=str_replace("\n",'',$html); //replace carriage returns with spaces
-    $html=str_replace("\t",'',$html); //replace carriage returns with spaces
+	$html = str_replace ('<p>&nbsp;</p>','<p></p>',$html);
+	$html = str_replace ('<caption>&nbsp;</caption>','<caption></caption>',$html);
+	$html = str_replace ('background-color','BGCOLOR',$html);
+	$html = html_entity_decode(utf8_decode($html));
+    $html = strip_tags($html,"<b><u><i><a><img><p><br><strong><em><font><tr><blockquote><hr><td><tr><table><sup><ul><li></lu>"); //remove all unsupported tags
+    $html = str_replace("\n",'',$html); //replace carriage returns with spaces
+    $html = str_replace("\t",'',$html); //replace carriage returns with spaces
 	$html = str_replace('&trade;','™',$html);
 	$html = str_replace('&copy;','©',$html);
 	$html = str_replace('&euro;','€',$html);
@@ -83,7 +88,14 @@ function WriteHTML($html)
 	$html = str_replace('&ndash;','-',$html);
 	$html = str_replace('&ldquo;','"',$html);
 	$html = str_replace('&rdquo;','"',$html);
-    $a=preg_split('/<(.*)>/U',$html,-1,PREG_SPLIT_DELIM_CAPTURE); //explode the string
+	$html = str_replace('&#39;',"'",$html);
+    $html = str_replace( '</ul>', "\n" , $html );
+    $html = str_replace( '<strong>', "<b>" , $html );
+    $html = str_replace( '</strong>', "</b>" , $html );
+    $html = str_replace( '&#160;', "\n" , $html );
+    $html = str_replace( '&nbsp;', " " , $html );
+    $html = str_replace( '&quot;', "\"" , $html ); 
+   $a = preg_split('/<(.*)>/U',$html,-1,PREG_SPLIT_DELIM_CAPTURE); //explode the string
     foreach($a as $i=>$e)
     {
         if($i%2==0)
@@ -93,10 +105,12 @@ function WriteHTML($html)
                 $this->PutLink($this->HREF,$e);
             elseif($this->tdbegin) {
                 if(trim($e)!='' && $e!="&nbsp;") {
-                    $this->Cell($this->tdwidth,$this->tdheight,$e,$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+#                    $this->Cell($this->tdwidth,$this->tdheight,$e,$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+                    $this->MultiCell($this->tdwidth,$this->tdheight,$e,$this->tableborder,$this->tdalign,$this->tdbgcolor);
                 }
                 elseif($e=="&nbsp;") {
-                    $this->Cell($this->tdwidth,$this->tdheight,'',$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+#                    $this->Cell($this->tdwidth,$this->tdheight,'',$this->tableborder,'',$this->tdalign,$this->tdbgcolor);
+                    $this->MultiCell($this->tdwidth,$this->tdheight,'',$this->tableborder,$this->tdalign,$this->tdbgcolor);
                 }
             }
             else
@@ -161,7 +175,7 @@ function OpenTag($tag, $attr)
                 $coul=hex2dec($attr['BGCOLOR']);
                     $this->SetFillColor($coul['R'],$coul['G'],$coul['B']);
                     $this->tdbgcolor=true;
-                }
+            }
             $this->tdbegin=true;
             break;
 
@@ -223,8 +237,8 @@ function OpenTag($tag, $attr)
             }
             break;
 		case 'LI':
-			$this->Ln(4);
-			$this->Write(5,'	- ');
+			if(!$this->tdbegin) {$this->Ln(4);}
+			$this->Write(5,chr(127).' ');
 			break;
     }
 }
@@ -262,7 +276,7 @@ function CloseTag($tag)
             $this->SetTextColor(0);
         }
         if ($this->issetfont) {
-            $this->SetFont('arial');
+            $this->SetFont('Calibri');
             $this->issetfont=false;
         }
     }
@@ -284,9 +298,11 @@ function PutLink($URL, $txt)
 {
     //Put a hyperlink
     $this->SetTextColor(0,0,255);
-    $this->SetStyle('U',true);
+#    $this->SetStyle('U',true);
+	$this->SetFont('Calibri','U',10);
     $this->Write(5,$txt,$URL);
-    $this->SetStyle('U',false);
+#    $this->SetStyle('U',false);
+	$this->SetFont('Calibri','',10);
     $this->SetTextColor(0);
 }
 

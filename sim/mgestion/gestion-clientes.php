@@ -805,7 +805,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=150&id=".$row["id"]."\" style=\"color:white;\">".$Usuarios."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=190&id=".$row["id"]."\" style=\"color:white;\">".$Servidores."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=135&id=".$row["id"]."\" style=\"color:white;\">".$Bases_Datos."</a></td>";
-							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=125&id=".$row["id"]."\" style=\"color:white;\">".$Gestión." C.A.E</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=125&id=".$row["id"]."\" style=\"color:white;\">".$Gestion." C.A.E</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1008&sop=155&id=".$row["id"]."\" style=\"color:white;\">".$Comercial."</a></td>";
 						echo "</tr>";
 					echo "</table>";
 				echo "</td>";
@@ -1847,6 +1848,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 		$sql = "select * from sgm_clients where id=".$id_client;
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
+		echo "<h4>".$Gestion." C.A.E</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1008&sop=125&ssop=1&id=".$id_client."\"  method=\"post\">";
@@ -1884,7 +1886,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "</form>";
 				echo "</tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
-				$sqldoc = "select * from sim_clientes_docs_cae where id_cliente=".$id_client;
+				$sqldoc = "select * from sim_clientes_docs_cae where id_cliente=".$id_client." order by caducidad";
 				$resultdoc = mysqli_query($dbhandle,convertSQL($sqldoc));
 				while ($rowdoc = mysqli_fetch_array($resultdoc)){
 					echo "<tr>";
@@ -2071,6 +2073,54 @@ if (($option == 1008) AND ($autorizado == true)) {
 #Modificar Permisos dels Usuaris
 	if ($soption == 152) {
 		echo modificarPermisosUsuaris ("op=1008&sop=150&id=".$_GET["id"],"op=1008&sop=152&id=".$_GET["id"]);
+	}
+
+#Contractes
+	if ($soption == 155) {
+		echo "<h4>".$Comercial." : </h4>";
+		if ($_GET["hist"] == 0) {echo boton(array("op=1008&sop=140&id=".$_GET["id"]."&hist=1"),array($Historico));}
+		if ($_GET["hist"] == 1) {echo boton(array("op=1008&sop=140&id=".$_GET["id"]."&hist=0"),array($Activos));}
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Cliente."</th>";
+				echo "<th>".$Cliente." ".$Final."</th>";
+				echo "<th>".$Descripcion."</th>";
+				echo "<th></th>";
+				echo "<th></th>";
+			echo "</tr>";
+			$sqlcc = "select id,id_cliente,id_cliente_final,descripcion from sim_comercial_oferta where visible=1 and id_cliente=".$_GET["id"]."";
+#			if ($_GET["hist"] == 0) { $sqlcc .= " and activo=1";}
+			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+			while ($rowcc = mysqli_fetch_array($resultcc)){
+				echo "<tr>";
+					$sql = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
+					echo "<td>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</td>";
+					$sql = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
+					echo "<td>".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
+					echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\">".$rowcc["descripcion"]."</a></td>";
+					echo "<form action=\"index.php?op=1008&sop=156&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+					echo "</form>";
+					echo "<form action=\"index.php?op=1008&sop=157&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Comentarios."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+	}
+
+#Detall del Contracte
+	if ($soption == 156) {
+		echo "<h4>".$Oferta." : </h4>";
+		echo boton(array("op=1008&sop=140&id=".$_GET["id"]),array("&laquo; ".$Volver));
+	}
+
+	if ($soption == 157) {
+
 	}
 
 #Facturació

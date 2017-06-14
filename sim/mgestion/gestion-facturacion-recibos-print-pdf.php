@@ -2,7 +2,7 @@
 	error_reporting(E_ALL);
 
 	include ("../config.php");
-
+#	include ("../../archivos_comunes/functions.php");
 	foreach (glob("../auxiliar/*.php") as $filename)
 	{
 		include ($filename);
@@ -23,7 +23,7 @@
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
 
-	$pdf->Image('pics/logo1.jpg',5,5,50,11);
+	$pdf->Image('../../archivos_comunes/images/logo1.jpg',5,5,50,11);
 
 	$pdf->SetXY(40,5);
 	$pdf->SetFont('Calibri','B',18);

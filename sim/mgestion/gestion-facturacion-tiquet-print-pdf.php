@@ -26,7 +26,7 @@
 	$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
 	$rowele = mysqli_fetch_array($resultele);
 
-	$pdf->Image('pics/logo3.jpg',3,5,10,10);
+	$pdf->Image('../../archivos_comunes/images/logo3.jpg',3,5,10,10);
 	$pdf->SetFont('Calibri','',6);
 	$pdf->SetXY(15,5);
 	$pdf->Cell(50,3,$rowele["nombre"],0,1,'C');

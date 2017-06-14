@@ -395,6 +395,17 @@ ALTER TABLE `sim_comercial_oferta` ADD `contenido_antecedentes` longtext AFTER `
 ALTER TABLE `sim_comercial_oferta` ADD `contenido_necesidades` longtext AFTER `contenido_antecedentes`;
 ALTER TABLE `sim_comercial_oferta` ADD `contenido_mejoras` longtext AFTER `contenido_necesidades`;
 ALTER TABLE `sim_comercial_oferta` ADD `id_autor` int(11) NOT NULL default '0' AFTER `contenido_mejoras`;
+ALTER TABLE `sim_comercial_oferta` ADD `num_dispositivos` int(11) NOT NULL default '0' AFTER `id_autor`;
+ALTER TABLE `sim_comercial_oferta` ADD `num_servicios` int(11) NOT NULL default '0' AFTER `num_dispositivos`;
+ALTER TABLE `sim_comercial_oferta` ADD `id_tipo_servidor` int(11) NOT NULL default '0' AFTER `num_servicios`;
+ALTER TABLE `sim_comercial_oferta` ADD `id_software` int(11) NOT NULL default '0' AFTER `id_tipo_servidor`;
+
+CREATE TABLE `sim_comercial_oferta_comentarios` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_comercial_oferta_comentarios` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_comercial_oferta_comentarios` ADD `comentario` varchar(255) NOT NULL default '' AFTER `id_comercial_oferta`;
+ALTER TABLE `sim_comercial_oferta_comentarios` ADD `fecha` datetime NOT NULL default '0000-00-00 00:00:00' AFTER `comentario`;
+ALTER TABLE `sim_comercial_oferta_comentarios` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `fecha`;
+ALTER TABLE `sim_comercial_oferta_comentarios` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_usuario`;
 
 CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
@@ -413,6 +424,14 @@ ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_comercial_of
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_articulo` int(11) NOT NULL default '0' AFTER `id_comercial_oferta_valoracion`;
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `unidades` int(11) NOT NULL default '0' AFTER `id_articulo`;
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `pvp` decimal(11,2) NOT NULL default '0.00' AFTER `unidades`;
+
+CREATE TABLE `sim_comercial_software` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_comercial_software` ADD `software` varchar(255) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_comercial_software` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `software`;
+
+CREATE TABLE `sim_comercial_tipos_servidores` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_comercial_tipos_servidores` ADD `tipo_servidor` varchar(255) NOT NULL default '' AFTER `id`;
+ALTER TABLE `sim_comercial_tipos_servidores` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `tipo_servidor`;
 
 CREATE TABLE `sim_comunidades_autonomas` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comunidades_autonomas` ADD `comunidad_autonoma` varchar(50) default NULL AFTER `id`;

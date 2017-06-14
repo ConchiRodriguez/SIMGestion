@@ -990,7 +990,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			$rows = mysqli_fetch_array($results);
 			if ($row) {
 				$total = $_POST["unidades"] * $rows["pvp"];
-				if ($_POST["descuento"] > 0){ $total = ($total/100)*$_POST["descuento"] ; }
+				if ($_POST["descuento"] > 0){ $total = $total-($total/100)*$_POST["descuento"] ; }
 				if ($_POST["descuento_absoluto"] > 0){ $total = $total-$_POST["descuento_absoluto"] ; }
 				$camposInsert = "idfactura,linea,codigo,nombre,pvd,pvp,unidades,descuento,descuento_absoluto,total,fecha_prevision,id_article,fecha_prevision_propia";
 				$datosInsert = array($_GET["id"],$_POST["linea"],$row["codigo"],$row["nombre"],$rows["pvd"],$rows["pvp"],$_POST["unidades"],$_POST["descuento"],$_POST["descuento_absoluto"],$total,$fecha_prev,$row["id"],$fecha_prev);

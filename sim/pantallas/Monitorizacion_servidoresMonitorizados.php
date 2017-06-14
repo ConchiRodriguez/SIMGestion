@@ -62,6 +62,7 @@ function servidoresMonitorizados ($id_cliente, $serv_linea,$ssop){
 				echo "<td style=\"text-align:center;vertical-align:top;background-color:".$color_linea.";color:".$color_letras.";\">";
 					$fecha_ser = date("Y-m-d H:i:s", $rowna["time_server"]);
 					echo $fecha_ser."<br>";
+					echo $urlmgestion."/mgestion/pics/server_nagios.JPG";
 					echo "<a href=\"index.php?op=".$_GET["op"]."&sop=".$ssop."&id=".$_GET["id"]."&id_serv=".$rowcs2["servidor"]."&id_cli=".$id_cliente."\" style=\"text-decoration: none;\"><img src=\"".$urlmgestion."/mgestion/pics/server_nagios.JPG\" style=\"border:0px;\"></a>";
 				echo "</td>";
 				echo "<td style=\"vertical-align:top;\">";

@@ -31,9 +31,9 @@
 
 	define("FPDF_FONTPATH","../font/");
 #	require('fpdf.php');
-	require('html_table2fpdf.php');
+	require('html_table.php');
 
-class PDF extends PDF_html
+class PDF extends PDF_HTML_Table
 {
 	protected $_toc=array();
 	protected $_numbering=false;
@@ -315,9 +315,6 @@ class PDF extends PDF_html
 
 	$pdf->SetMargins(20,30,15);
 	$pdf->AddPage();
-	$contenido_antecedentes = html_entity_decode(utf8_decode($rowof["contenido_antecedentes"]));
-	$contenido_necesidades = html_entity_decode(utf8_decode($rowof["contenido_necesidades"]));
-	$contenido_mejoras = html_entity_decode(utf8_decode($rowof["contenido_mejoras"]));
 
 	$pdf->SetTextColor(51,51,159);
 	$pdf->SetFontSize(14);
@@ -330,10 +327,9 @@ class PDF extends PDF_html
 	$pdf->entryTOC("1.1 ".$antecedentes,0);
 	$pdf->Ln(5);
 
-	$texto_html = $contenido_antecedentes."<br>";
 	$pdf->SetTextColor(0,0,0);
 	$pdf->SetFont('Calibri','',10);
-	$pdf->WriteHTML($texto_html);
+	$pdf->WriteHTML($rowof["contenido_antecedentes"]);
 	$pdf->Ln(15);
 
 	$pdf->SetTextColor(51,51,159);
@@ -343,10 +339,9 @@ class PDF extends PDF_html
 	$pdf->entryTOC("1.2 ".$necesidades_objetivos,0);
 	$pdf->Ln(5);
 
-	$texto_html = $contenido_necesidades."<br>";
 	$pdf->SetTextColor(0,0,0);
 	$pdf->SetFont('Calibri','',10);
-	$pdf->WriteHTML($texto_html);
+	$pdf->WriteHTML($rowof["contenido_necesidades"]);
 	$pdf->Ln(15);
 
 	$pdf->SetTextColor(51,51,159);
@@ -356,10 +351,9 @@ class PDF extends PDF_html
 	$pdf->entryTOC("1.3 ".$propuesta_mejoras,0);
 	$pdf->Ln(5);
 
-	$texto_html = $contenido_mejoras."<br>";
 	$pdf->SetTextColor(0,0,0);
 	$pdf->SetFont('Calibri','',10);
-	$pdf->WriteHTML($texto_html);
+	$pdf->WriteHTML($rowof["contenido_mejoras"]);
 	$pdf->Ln(15);
 
 	$orden_contenido = 1;
@@ -384,10 +378,9 @@ class PDF extends PDF_html
 		$pdf->Cell(180,5,ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0,1);
 		$pdf->entryTOC(ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0);
 
-		$texto_html = html_entity_decode(utf8_decode($contenido))."<br>";
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Calibri','',10);
-		$pdf->WriteHTML($texto_html);
+		$pdf->WriteHTML($contenido);
 	}
 	$pdf->AddPage();
 	$pdf->WriteTableValoraciones($_GET["id"]);
@@ -395,8 +388,9 @@ class PDF extends PDF_html
 	$pdf->insertTOC(3);
 	$pdf->Contraportada();
 
-	$pdf->Output("../pdf/oferta.pdf");
-	header("Location: ../pdf/oferta.pdf");
+	$pdf->Output();
+#	$pdf->Output("../pdf/oferta.pdf");
+#	header("Location: ../pdf/oferta.pdf");
 
 	// Cerrar la conexión
 	mysql_close($dbhandle);

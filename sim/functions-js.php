@@ -105,6 +105,13 @@
 				document.forms.form2.submit();
 			}
 
+			function desplegableCombinado6(){
+				document.forms.form3.action='';
+				document.forms.form3.target='';
+				document.forms.form3.method='POST';
+				document.forms.form3.submit();
+			}
+
 		</script>
 
 		<script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
@@ -164,9 +171,5 @@
 				title: 'Test template 2',
 				content: 'Test 2'
 			  }],
-			  content_css: [
-				'//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-				'//www.tinymce.com/css/codepen.min.css'
-			  ]
 			});
 		</script>

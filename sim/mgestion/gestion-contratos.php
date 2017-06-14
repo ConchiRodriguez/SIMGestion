@@ -24,8 +24,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=200\" class=".$class.">".$Buscar." ".$Contrato."</a></td>";
 					if ($soption == 210) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=210\" class=".$class.">".$Indicadores."</a></td>";
-					if ($soption == 290) {$class = "menu_select";} else {$class = "menu";}
-					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=290\" class=".$class.">".$Informes."</a></td>";
+					if ($soption == 300) {$class = "menu_select";} else {$class = "menu";}
+					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=300\" class=".$class.">".$Informes."</a></td>";
 					if (($soption >= 500) and ($soption < 600)) {$class = "menu_select";} else {$class = "menu";}
 					echo "<td class=".$class."><a href=\"index.php?op=1011&sop=500\" class=".$class.">".$Administrar."</a></td>";
 				echo "</tr>";
@@ -1003,7 +1003,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	}
 
 	#Informes
-	if ($soption == 290) {
+	if ($soption == 300) {
 		informesContratos(0);
 	}
 
