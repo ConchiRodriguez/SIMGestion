@@ -629,6 +629,7 @@ $Sistema = "Sistema";
 $Situacion = "Situaci&oacute;";
 $SLA = "SLA";
 $Sobre = "Sobre";
+$Socio_tecnologico = "Soci Tecnol&ograve;gic";
 $Solo = "Solament";
 $Solo_predeterminado = "Solament predeterminat";
 $Solucionado = "Solucionat";
@@ -783,6 +784,7 @@ $info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el siste
 $info_contrato_servicios10 = "Enviament autom&agrave;tic de email en el modulo de incid&egrave;ncies.";
 $info_contrato_servicios11 = "Nom de la funci&oacute; a executar per gestionar les incid&egrave;ncies obertes dels email rebuts a Soporte.";
 $info_contrato_servicios12 = "Codi de qui obre incid&egrave;ncies relacionades amb aquest servei.";
+$info_contrato_servicios13 = "Comptabilitat de les hores si es tracta d'un contracte de borsa d'hores.";
 #Facturas
 $info_facturacion_orden = "Ordre - Ordre en que apareixen els diferents tipus en el llistat superior.";
 $info_facturacion_plantilla = "Plantilla - (Plantilla) Fa refer&egrave;ncia a si aquest tipus ha de poder facturar-se de forma continua.";

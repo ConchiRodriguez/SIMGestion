@@ -1,6 +1,7 @@
 <?php
 $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
+echo comprobarTipoCliente();
 
 if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>"; }
 if (($option == 1008) AND ($autorizado == true)) {

@@ -106,8 +106,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 				$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id"];
 				$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 				while ($rowcs = mysqli_fetch_array($resultcs)) {
-					$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,funcion";
-					$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$_POST["funcion"]);
+					$camposInsert = "id_contrato,servicio,obligatorio,,horas,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,funcion";
+					$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["horas"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$_POST["funcion"]);
 					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 				}
 
@@ -305,15 +305,15 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				if ($_POST["servicios".$row["id"]] == 1){
-					$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
-					$datosInsert = array($id_contrato,$_POST["servicio".$row["id"]],$_POST["obligatorio".$row["id"]],$_POST["extranet".$row["id"]],$_POST["incidencias".$row["id"]],$_POST["id_cobertura".$row["id"]],$_POST["temps_resposta".$row["id"]],$_POST["nbd".$row["id"]],$_POST["sla".$row["id"]],$_POST["duracion".$row["id"]],$_POST["precio_hora".$row["id"]],$_POST["codigo_catalogo".$row["id"]],$_POST["auto_email".$row["id"]]);
+					$camposInsert = "id_contrato,servicio,obligatorio,horas,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
+					$datosInsert = array($id_contrato,$_POST["servicio".$row["id"]],$_POST["obligatorio".$row["id"]],$_POST["horas".$row["id"]],$_POST["extranet".$row["id"]],$_POST["incidencias".$row["id"]],$_POST["id_cobertura".$row["id"]],$_POST["temps_resposta".$row["id"]],$_POST["nbd".$row["id"]],$_POST["sla".$row["id"]],$_POST["duracion".$row["id"]],$_POST["precio_hora".$row["id"]],$_POST["codigo_catalogo".$row["id"]],$_POST["auto_email".$row["id"]]);
 					insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 				}
 			}
 		}
 		if (($soption == 100) and ($ssoption == 2)) {
-			$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
-			$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$rowcs["auto_email"]);
+			$camposInsert = "id_contrato,servicio,obligatorio,horas,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email";
+			$datosInsert = array($rowc["id"],$rowcs["servicio"],$rowcs["obligatorio"],$rowcs["horas"],$rowcs["extranet"],$rowcs["incidencias"],$rowcs["id_cobertura"],$rowcs["temps_resposta"],$rowcs["nbd"],$rowcs["sla"],$rowcs["duracion"],$rowcs["precio_hora"],$rowcs["codigo_catalogo"],$rowcs["auto_email"]);
 			insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 		}
 		if ($id_contrato == '') {$id_contrato = $_GET["id"];}
@@ -417,6 +417,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<th>".$Codigo." ".$Catalogo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios9."\"></th>";
 				echo "<th>".$Prefijo." ".$Notificacion."</th>";
 				echo "<th>".$Obligatorio."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios1."\"></th>";
+				echo "<th>".$Horas."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios13."\"></th>";
 				echo "<th>".$Extranet."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios2."\"></th>";
 				echo "<th>".$Incidencias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios3."\"></th>";
 				echo "<th>".$Duracion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios4."\"></th>";
@@ -441,6 +442,15 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<td><input type=\"text\" value=\"".$row["prefijo_notificacion"]."\" style=\"width:100px\" name=\"prefijo_notificacion".$row["id"]."\"></td>";
 					echo "<td><select style=\"width:70px\" name=\"obligatorio".$row["id"]."\">";
 						if ($row["obligatorio"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"horas".$row["id"]."\">";
+						if ($row["horas"] == 1){
 							echo "<option value=\"1\" selected>".$Si."</option>";
 							echo "<option value=\"0\">".$No."</option>";
 						} else {
@@ -1288,7 +1298,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 		$rowcc = mysqli_fetch_array($resultcc);
 		echo "<h4>".$Servicios." ".$Contrato." : ".$rowcc["num_contrato"]."-".$rowcc["descripcion"]."</h4>";
-		echo boton(array("op=1011&sop=530"),array("&laquo; ".$Volver));
+		echo boton(array("op=1011&sop=500"),array("&laquo; ".$Volver));
 		mostrarServicio(0,0,541);
 	}
 

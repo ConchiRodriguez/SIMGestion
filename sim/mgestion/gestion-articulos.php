@@ -765,8 +765,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 
 	if ($soption == 130) {
 		if ($ssoption == 1){
-			$camposInsert = "id_article,unidades,pvd,pvp,id_divisa_pvd,id_divisa_pvp,vigente,fecha,id_user";
-			$datosInsert = array($_GET["id"],$_POST["unidades"],$_POST["pvd"],$_POST["pvp"],$_POST["id_divisa_pvd"],$_POST["id_divisa_pvp"],$_POST["vigente"],$_POST["fecha"],$userid);
+			$camposInsert = "id_article,pvd,pvp,id_divisa_pvd,id_divisa_pvp,vigente,fecha,id_user,descuento";
+			$datosInsert = array($_GET["id"],$_POST["pvd"],$_POST["pvp"],$_POST["id_divisa_pvd"],$_POST["id_divisa_pvp"],$_POST["vigente"],$_POST["fecha"],$userid,$_POST["descuento"]);
 			insertFunction ("sgm_stock",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
@@ -781,8 +781,8 @@ if (($option == 1004) AND ($autorizado == true)) {
 			mysqli_query($dbhandle,convertSQL($sql));
 		}
 		if ($ssoption == 3) {
-			$camposUpdate = array("unidades","pvd","pvp","id_divisa_pvd","id_divisa_pvp","fecha");
-			$datosUpdate = array($_POST["unidades"],$_POST["pvd"],$_POST["pvp"],$_POST["id_divisa_pvd"],$_POST["id_divisa_pvp"],$_POST["fecha"]);
+			$camposUpdate = array("pvd","pvp","id_divisa_pvd","id_divisa_pvp","fecha","descuento");
+			$datosUpdate = array($_POST["pvd"],$_POST["pvp"],$_POST["id_divisa_pvd"],$_POST["id_divisa_pvp"],$_POST["fecha"],$_POST["descuento"]);
 			updateFunction ("sgm_stock",$_GET["id_stock"],$camposUpdate,$datosUpdate);
 		}
 
@@ -816,11 +816,11 @@ if (($option == 1004) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<th></th>";
 				echo "<th>".$Fecha." ".$Entrada."</th>";
-				echo "<th>".$Unidades."</th>";
 				echo "<th>".$PVD."</th>";
 				echo "<th>".$Divisa."</th>";
 				echo "<th>".$PVP."</th>";
 				echo "<th>".$Divisa."</th>";
+				echo "<th>".$Descuento."</th>";
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<tr>";
@@ -828,7 +828,6 @@ if (($option == 1004) AND ($autorizado == true)) {
 				echo "<input type=\"Hidden\" name=\"vigente\" value=\"".$vigente."\">";
 				echo "<td></td>";
 				echo "<td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".date("Y-m-d")."\"></td>";
-				echo "<td><input type=\"text\" name=\"unidades\" style=\"width:70px\" value=\"0\"></td>";
 				echo "<td><input type=\"text\" name=\"pvd\" style=\"width:50px\" value=\"0\"></td>";
 				echo "<td><select name=\"id_divisa_pvd\" type=\"Text\" style=\"width:100px\">";
 					echo "<option value=\"0\">-</option>";
@@ -847,6 +846,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 						echo "<option value=\"".$rowp["id"]."\">".$rowp["divisa"]."</option>";
 					}
 				echo "</select></td>";
+				echo "<td><input type=\"text\" name=\"descuento\" style=\"width:50px\" value=\"0.00\"> %</td>";
 				echo "<td class=\"Submit\"><input type=\"submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
@@ -866,7 +866,6 @@ if (($option == 1004) AND ($autorizado == true)) {
 					echo "</form>";
 					echo "<form action=\"index.php?op=1004&sop=130&ssop=3&id=".$_GET["id"]."&id_stock=".$rows["id"]."\" method=\"post\" name=\"formulario".$rows["id"]."\">";
 					echo "<td><input type=\"text\" name=\"fecha\" style=\"width:100px\" value=\"".$rows["fecha"]."\"></td>";
-					echo "<td><input type=\"text\" name=\"unidades\" style=\"width:70px\" value=\"".$rows["unidades"]."\"></td>";
 					echo "<td><input type=\"text\" name=\"pvd\" style=\"width:50px\" value=\"".$rows["pvd"]."\"></td>";
 					echo "<td><select name=\"id_divisa_pvd\" type=\"Text\" style=\"width:100px\">";
 						echo "<option value=\"0\">-</option>";
@@ -893,6 +892,7 @@ if (($option == 1004) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
+					echo "<td><input type=\"text\" name=\"descuento\" style=\"width:50px\" value=\"".$rows["descuento"]."\"> %</td>";
 					if ($rows["idfactura"] == 0){
 						echo "<td class=\"Submit\"><input type=\"submit\" value=\"".$Modificar."\"></td>";
 					}

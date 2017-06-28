@@ -905,7 +905,7 @@ $simclau = "Solucions00";
 				$sql = $sql." and id IN (select id_incidencia from sgm_incidencias where id_incidencia<>0 and fecha_inicio between ".$data1." and ".$data2." and visible=1)";
 			}
 			if ($_POST["texto"] != "") { $sql = $sql." and (notas_registro like '%".$_POST["texto"]."%' or notas_conclusion like '%".$_POST["texto"]."%' or id in (select id_incidencia from sgm_incidencias where visible=1 and id_incidencia<>0 and notas_desarrollo like '%".$_POST["texto"]."%')) ";}
-			if ($_POST["id_contrato"] != "") { $sql = $sql." and id_servicio in (select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_POST["id_contrato"].")"; }
+			if ($_POST["id_contrato"] != "") { $sql = $sql." and id_servicio in (select id from sgm_contratos_servicio where visible=1 and extranet=1 and id_contrato=".$_POST["id_contrato"].")"; }
 			if ($_POST["id_incidencia"] != "") { $sql = $sql." and id=".$_POST["id_incidencia"].""; }
 			if ($_POST["id_estado"] != 0) { $sql = $sql." and id_estado=".$_POST["id_estado"].""; }
 			$sql = $sql." order by fecha_inicio desc";

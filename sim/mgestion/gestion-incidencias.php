@@ -590,7 +590,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 					} else {
 						$duration = $horas[0]."h. ".$minutos."m.";
 					}
-					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:100px;\" nowrap>".$duration."</td>";
+					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:50px;\" nowrap>".$duration."</td>";
 					if (($soption == 0) or ($soption == 1)){
 						echo "<form action=\"index.php?op=1018&sop=3&id=".$rowi["id"]."&id_cli=".$_GET["id_cli"]."\" method=\"post\">";
 						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;width:50px;\"><input type=\"number\" name=\"id_inc_rel\" style=\"width:100%\" min=\"1\"></td>";

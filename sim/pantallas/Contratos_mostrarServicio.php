@@ -17,16 +17,16 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
 			if (!$row){
-				$camposInsert = "id_contrato,servicio,obligatorio,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email,funcion,id_servicio_origen,prefijo_notificacion";
-				$datosInsert = array($_GET["id"],$_POST["servicio"],$_POST["obligatorio"],$_POST["extranet"],$_POST["incidencias"],$_POST["id_cobertura"],$_POST["temps_resposta"],$_POST["nbd"],$_POST["sla"],$_POST["duracion"],$_POST["precio_hora"],$_POST["codigo_catalogo"],$_POST["auto_email"],$_POST["funcion"],$_POST["id_servicio_origen"],$_POST["prefijo_notificacion"]);
+				$camposInsert = "id_contrato,servicio,obligatorio,horas,extranet,incidencias,id_cobertura,temps_resposta,nbd,sla,duracion,precio_hora,codigo_catalogo,auto_email,funcion,id_servicio_origen,prefijo_notificacion";
+				$datosInsert = array($_GET["id"],$_POST["servicio"],$_POST["obligatorio"],$_POST["horas"],$_POST["extranet"],$_POST["incidencias"],$_POST["id_cobertura"],$_POST["temps_resposta"],$_POST["nbd"],$_POST["sla"],$_POST["duracion"],$_POST["precio_hora"],$_POST["codigo_catalogo"],$_POST["auto_email"],$_POST["funcion"],$_POST["id_servicio_origen"],$_POST["prefijo_notificacion"]);
 				insertFunction ("sgm_contratos_servicio",$camposInsert,$datosInsert);
 			} else {
 				echo $ErrorServicio;
 			}
 		}
 		if ($_GET["ssop"] == 3) {
-			$camposUpdate = array("servicio","obligatorio","extranet","incidencias","id_cobertura","temps_resposta","nbd","sla","duracion","precio_hora","codigo_catalogo","auto_email","funcion","id_servicio_origen","prefijo_notificacion");
-			$datosUpdate = array($_POST["servicio"],$_POST["obligatorio"],$_POST["extranet"],$_POST["incidencias"],$_POST["id_cobertura"],$_POST["temps_resposta"],$_POST["nbd"],$_POST["sla"],$_POST["duracion"],$_POST["precio_hora"],$_POST["codigo_catalogo"],$_POST["auto_email"],$_POST["funcion"],$_POST["id_servicio_origen"],$_POST["prefijo_notificacion"]);
+			$camposUpdate = array("servicio","obligatorio","horas","extranet","incidencias","id_cobertura","temps_resposta","nbd","sla","duracion","precio_hora","codigo_catalogo","auto_email","funcion","id_servicio_origen","prefijo_notificacion");
+			$datosUpdate = array($_POST["servicio"],$_POST["obligatorio"],$_POST["horas"],$_POST["extranet"],$_POST["incidencias"],$_POST["id_cobertura"],$_POST["temps_resposta"],$_POST["nbd"],$_POST["sla"],$_POST["duracion"],$_POST["precio_hora"],$_POST["codigo_catalogo"],$_POST["auto_email"],$_POST["funcion"],$_POST["id_servicio_origen"],$_POST["prefijo_notificacion"]);
 			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
 		}
 		if ($_GET["ssop"] == 4) {
@@ -45,6 +45,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<th>".$Codigo." ".$Catalogo."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios9."\"></th>";
 				echo "<th>".$Prefijo." ".$Notificacion."</th>";
 				echo "<th>".$Obligatorio."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios1."\"></th>";
+				echo "<th>".$Horas."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios13."\"></th>";
 				echo "<th>".$Extranet."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios2."\"></th>";
 				echo "<th>".$Incidencias."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios3."\"></th>";
 				echo "<th>".$Duracion."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios4."\"></th>";
@@ -64,6 +65,10 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<td><input style=\"width:100px\" type=\"Text\" name=\"codigo_catalogo\"></td>";
 				echo "<td><input style=\"width:100px\" type=\"Text\" name=\"prefijo_notificacion\"></td>";
 				echo "<td><select style=\"width:70px\" name=\"obligatorio\">";
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				echo "</select></td>";
+				echo "<td><select style=\"width:70px\" name=\"horas\">";
 					echo "<option value=\"0\">".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				echo "</select></td>";
@@ -126,6 +131,15 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 					echo "<td><input type=\"text\" value=\"".$row["prefijo_notificacion"]."\" style=\"width:100px\" name=\"prefijo_notificacion\"></td>";
 					echo "<td><select style=\"width:70px\" name=\"obligatorio\">";
 						if ($row["obligatorio"] == 1){
+							echo "<option value=\"1\" selected>".$Si."</option>";
+							echo "<option value=\"0\">".$No."</option>";
+						} else {
+							echo "<option value=\"1\">".$Si."</option>";
+							echo "<option value=\"0\" selected>".$No."</option>";
+						}
+					echo "</select></td>";
+					echo "<td><select style=\"width:70px\" name=\"horas\">";
+						if ($row["horas"] == 1){
 							echo "<option value=\"1\" selected>".$Si."</option>";
 							echo "<option value=\"0\">".$No."</option>";
 						} else {
@@ -223,9 +237,9 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 					$hora = $rowind["total"]/60;
 					$horas = explode(".",$hora);
 					$minutos = $rowind["total"] % 60;
-					echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
+					echo "<td style=\"text-align:right;\" nowrap><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
 					$total_euros = $hora * $row["precio_hora"];
-					echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
+					echo "<td style=\"text-align:right;\" nowrap><strong>".number_format ($total_euros,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 				}
 				echo "</tr>";
 				$total_horas_contracte += $rowind["total"];
@@ -236,9 +250,9 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				$hora = $total_horas_contracte/60;
 				$horas = explode(".",$hora);
 				$minutos = $rowind["total"] % 60;
-				echo "<td style=\"text-align:right;\" colspan=\"17\"><strong>".$Total."&nbsp;&nbsp;</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
-				echo "<td style=\"text-align:right;\"><strong>".number_format ($total_euros_contracte,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
+				echo "<td style=\"text-align:right;\" colspan=\"18\"><strong>".$Total."&nbsp;&nbsp;</strong></td>";
+				echo "<td style=\"text-align:right;\" nowrap><strong>".$horas[0]." h. ".$minutos." m.&nbsp;&nbsp;</strong></td>";
+				echo "<td style=\"text-align:right;\" nowrap><strong>".number_format ($total_euros_contracte,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 			echo "</tr>";
 		}
 		echo "</table></center>";

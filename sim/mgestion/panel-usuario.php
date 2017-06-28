@@ -146,7 +146,7 @@ if (($option == 200) AND ($user == true)) {
 							$rowa = mysqli_fetch_array($resulta);
 
 							$total_horas = 0;
-							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowch["id"];
+							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and horas=1 and id_contrato=".$rowch["id"];
 							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 							while ($rowcs = mysqli_fetch_array($resultcs)) {
 								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and visible=1";
@@ -160,12 +160,13 @@ if (($option == 200) AND ($user == true)) {
 							if ($rowch["num_horas"] <= $horas[0]) { $color = "red"; $color_letra = "white";}
 							elseif (($rowch["num_horas"]-$horas[0]) <= 5) { $color = "orange"; $color_letra = "";}
 							else { $color = "white"; $color_letra = "";}
+							if ($minutos < 10) { $minutos_total = "0".$minutos;} else {$minutos_total = $minutos;}
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
 								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
 								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$rowch["num_horas"]." ".$Horas."</td>";
-								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos_total." ".$Minutos."</td>";
 							echo "</tr>";
 						}
 #					}
@@ -225,11 +226,12 @@ if (($option == 200) AND ($user == true)) {
 							$minutos = $total_horas % 60;
 							if (date('U',strtotime($rowch["fecha_fin"])) <= date('U')) { $color = "red"; $color_letra = "white";}
 							else { $color = "white"; $color_letra = "";}
+							if ($minutos < 10) { $minutos_total = "0".$minutos;} else {$minutos_total = $minutos;}
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
 								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
-								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos_total." ".$Minutos."</td>";
 							echo "</tr>";
 						}
 #					}

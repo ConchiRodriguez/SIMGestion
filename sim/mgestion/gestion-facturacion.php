@@ -2,6 +2,7 @@
 
 $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
+
 if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>";  }
 if (($option == 1003) AND ($autorizado == true)) {
 	$sqldiv = "select * from sgm_divisas where predefinido=1";
@@ -985,22 +986,25 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-			$sqls = "select pvd,pvp from sgm_stock where id_article=".$row["id"];
+			echo $sqls = "select pvd,pvp,descuento from sgm_stock where id_article=".$row["id"];
 			$results = mysqli_query($dbhandle,convertSQL($sqls));
 			$rows = mysqli_fetch_array($results);
+			if ($_POST["descuento"] > 0) { $descuento_art = $_POST["descuento"]; } elseif ($rows["descuento"] > 0) { $descuento_art = $rows["descuento"]; } else { $descuento_art = '0.00'; }
+			if ($_POST["pvp"] > 0) { $pvp_art = $_POST["pvp"]; } elseif ($rows["pvp"] > 0) { $pvp_art = $rows["pvp"]; } else { $pvp_art = '0.00'; }
+			if ($_POST["nombre"] != "") { $nombre_art = $_POST["nombre"]; } elseif ($row["nombre"] != '') { $nombre_art = $row["nombre"]; } else { $nombre_art = ''; }
 			if ($row) {
-				$total = $_POST["unidades"] * $rows["pvp"];
-				if ($_POST["descuento"] > 0){ $total = $total-($total/100)*$_POST["descuento"] ; }
+				$total = $_POST["unidades"] * $pvp_art;
+				if ($descuento_art > 0){ $total = $total-($total/100)*$descuento_art ; }
 				if ($_POST["descuento_absoluto"] > 0){ $total = $total-$_POST["descuento_absoluto"] ; }
 				$camposInsert = "idfactura,linea,codigo,nombre,pvd,pvp,unidades,descuento,descuento_absoluto,total,fecha_prevision,id_article,fecha_prevision_propia";
-				$datosInsert = array($_GET["id"],$_POST["linea"],$row["codigo"],$row["nombre"],$rows["pvd"],$rows["pvp"],$_POST["unidades"],$_POST["descuento"],$_POST["descuento_absoluto"],$total,$fecha_prev,$row["id"],$fecha_prev);
+				$datosInsert = array($_GET["id"],$_POST["linea"],$row["codigo"],$nombre_art,$rows["pvd"],$pvp_art,$_POST["unidades"],$descuento_art,$_POST["descuento_absoluto"],$total,$fecha_prev,$row["id"],$fecha_prev);
 				insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 			} else {
-				$total = $_POST["unidades"] * $_POST["pvp"];
-				if ($_POST["descuento"] > 0){ $total = $total-(($total/100)*$_POST["descuento"]) ; }
+				$total = $_POST["unidades"] * $pvp_art;
+				if ($descuento_art > 0){ $total = $total-(($total/100)*$descuento_art) ; }
 				if ($_POST["descuento_absoluto"] > 0){ $total = $total-$_POST["descuento_absoluto"] ; }
 				$camposInsert = "idfactura,linea,codigo,nombre,pvd,pvp,unidades,descuento,descuento_absoluto,total,fecha_prevision,id_article,fecha_prevision_propia";
-				$datosInsert = array($_GET["id"],$_POST["linea"],$codigo,$_POST["nombre"],$_POST["pvd"],$_POST["pvp"],$_POST["unidades"],$_POST["descuento"],$_POST["descuento_absoluto"],$total,$fecha_prev,0,$fecha_prev);
+				$datosInsert = array($_GET["id"],$_POST["linea"],$codigo,$nombre_art,$_POST["pvd"],$pvp_art,$_POST["unidades"],$descuento_art,$_POST["descuento_absoluto"],$total,$fecha_prev,0,$fecha_prev);
 				insertFunction ("sgm_cuerpo",$camposInsert,$datosInsert);
 			}
 			refactura($_GET["id"]);
@@ -1055,6 +1059,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$sqls = "select pvd,pvp from sgm_stock where id_article=".$rowa["id"];
 				$results = mysqli_query($dbhandle,convertSQL($sqls));
 				$rows = mysqli_fetch_array($results);
+
+				if ($_POST["descuento"] > 0) { $descuento_art = $_POST["descuento".$row["id"].""]; } elseif ($rows["descuento"] > 0) { $descuento_art = $rows["descuento"]; } else { $descuento_art = '0.00'; }
+				if ($_POST["pvp"] > 0) { $pvp_art = $_POST["pvp".$row["id"].""]; } elseif ($rows["pvp"] > 0) { $pvp_art = $rows["pvp"]; } else { $pvp_art = '0.00'; }
+				if ($_POST["nombre"] != "") { $nombre_art = $_POST["nombre".$row["id"].""]; } elseif ($row["nombre"] != '') { $nombre_art = $row["nombre"]; } else { $nombre_art = ''; }
+
 				if ($rows) {
 					$ini_pvd = $rows["pvd"];
 					$ini_pvp = $rows["pvp"];
@@ -1842,6 +1851,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 	if ($soption == 410) {
 		if ($ssoption == 1) {
 			echo calendari_economic(1);
+		} else {
+			echo calendari_economic(0);
 		}
 		echo "<h4>".$Calendario_Economico." (".$Gastos."/".$Ingresos."/".$Externo."/".$Total.") : </h4>";
 		echo "<form action=\"index.php?op=1003&sop=411\" method=\"post\">";

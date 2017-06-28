@@ -634,6 +634,7 @@ $Sistema = "Sistema";
 $Situacion = "Situaci&oacute;n";
 $SLA = "SLA";
 $Sobre = "Sobre";
+$Socio_tecnologico = "Socio Tecnol&oacute;gico";
 $Solo = "Solo";
 $Solo_predeterminado = "Solo predeterminado";
 $Solucionado = "Solucionado";
@@ -790,6 +791,7 @@ $info_contrato_servicios9 = "Identificador &uacute;nico del servicio en el siste
 $info_contrato_servicios10 = "Envio autom&aacute;tico de email en el modulo de incidencias.";
 $info_contrato_servicios11 = "Nombre de la funci&oacute;n a ejecutar para gestionar las incidencias abiertas de los email recibidos en Soporte.";
 $info_contrato_servicios12 = "Codigo de quien abre incidencias relacionadas con este servicio.";
+$info_contrato_servicios13 = "Contabilidad de las horas si se trata de un contrato de bolsa de horas.";
 #Facturacion
 $info_facturacion_orden = "Orden - Orden en que aparecen los difrentes tipos en el listado superior.";
 $info_facturacion_plantilla = "Plantilla - Hace referencia a si este tipo debe de poder facturarse de forma continua.";
