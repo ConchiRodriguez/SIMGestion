@@ -786,10 +786,10 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "<h4>".$Contenidos." ".$Especificos."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<form action=\"index.php?op=1009&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-			$sqlci = "select id,titulo,contenido from sim_comercial_contenido where visible=1 and editable=1";
+			$sqlci = "select id,titulo,contenido from sim_comercial_contenido where visible=1 and editable=1 where id in (select id_comercial_contenido from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"].")";
 			$resultci = mysqli_query($dbhandle,convertSQL($sqlci));
 			while ($rowci = mysqli_fetch_array($resultci)){
-				$sqlcc = "select contenido from sim_comercial_contenido where visible=1 and id_comercial_contenido=".$rowci["id"]." and id_comercial_oferta=".$_GET["id"];
+				$sqlcc = "select contenido from sim_comercial_oferta_rel_contenido where visible=1 and id_comercial_contenido=".$rowci["id"]." and id_comercial_oferta=".$_GET["id"];
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				$rowcc = mysqli_fetch_array($resultcc);
 				if ($rowcc){ $content = $rowcc["contenido"]; } else { $content = $rowci["contenido"]; }
