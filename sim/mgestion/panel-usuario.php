@@ -56,12 +56,12 @@ if (($option == 200) AND ($user == true)) {
 		}
 
 		echo "<table cellpadding=\"1\" cellspacing=\"10\" class=\"lista\" style=\"width:100%;\">";
-		$sqltipo = "select * from sgm_users_permisos where (id_modulo=1008 or id_modulo=1018) and id_user=".$userid;
-		$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
-		$rowtipo = mysqli_fetch_array($resulttipo);
-		if ($rowtipo){
 			echo "<tr>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
+				$sqltipo = "select * from sgm_users_permisos where (id_modulo=1008 or id_modulo=1018) and id_user=".$userid;
+				$resulttipo = mysqli_query($dbhandle,convertSQL($sqltipo));
+				$rowtipo = mysqli_fetch_array($resulttipo);
+				if ($rowtipo){
 					echo "<h4>".$Contactos."</h4>";
 					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
 						echo "<tr>";
@@ -93,12 +93,57 @@ if (($option == 200) AND ($user == true)) {
 							echo "</tr>";
 						}
 					echo "</table>";
+				}
 				echo "</td>";
 				echo "<td style=\"width:50%;vertical-align:top;\">";
+				$sqltipo0 = "select * from sgm_users_permisos where id_modulo=1026 and id_user=".$userid;
+				$resulttipo0 = mysqli_query($dbhandle,convertSQL($sqltipo0));
+				$rowtipo0 = mysqli_fetch_array($resulttipo0);
+				if ($rowtipo0){
+					echo "<h4>".$Licencias."</h4>";
+					echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"width:100%;\">";
+						echo "<tr>";
+							echo "<th colspan=\"3\">&nbsp;</th>";
+#							echo "<th style=\"text-align:right;width:100px;\">";
+#							echo "</th>";
+						echo "</tr>";
+						echo "<tr style=\"background-color:silver;\">";
+							echo "<th style=\"width:300px;\">".$Cliente."</th>";
+							echo "<th style=\"width:300px;\">".$Cliente." ".$Final."</th>";
+							echo "<th style=\"width:100px;\">".$Producto."</th>";
+							echo "<th style=\"width:100px;\">".$Cantidad."</th>";
+							echo "<th style=\"width:100px;\">".$Caducidad."</th>";
+						echo "</tr>";
+						$sqll = "select id,id_cliente,id_cliente_final,fecha_fin,num_elementos,id_producto from sim_licencias where visible=1 and renovado=0 order by fecha_fin";
+						$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+						while ($rowl = mysqli_fetch_array($resultl)) {
+							$sqlc1 = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowl["id_cliente"];
+							$resultc1 = mysqli_query($dbhandle,convertSQL($sqlc1));
+							$rowc1 = mysqli_fetch_array($resultc1);
+							$sqlc2 = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowl["id_cliente_final"];
+							$resultc2 = mysqli_query($dbhandle,convertSQL($sqlc2));
+							$rowc2 = mysqli_fetch_array($resultc2);
+							$sqlc3 = "select * from sim_licencias_productos where id=".$rowl["id_producto"];
+							$resultc3 = mysqli_query($dbhandle,convertSQL($sqlc3));
+							$rowc3 = mysqli_fetch_array($resultc3);
+							$color = '';
+							$fecha_fin_lic = date('U', strtotime($rowl["fecha_fin"]));
+							$fecha_hoy_30 = date('U',(mktime(0,0,0,date('m')+1,date('d')-1,date('Y'))));
+							if ($fecha_fin_lic <= date('U')) { $color = "red";}
+							elseif ($fecha_fin_lic <= $fecha_hoy_30) { $color = "orange";}
+							echo "<tr>";
+								echo "<td><a href=\"index.php?op=1008&sop=125&id=".$rowc1["id"]."\">".$rowc1["nombre"]." ".$rowc1["cognom1"]." ".$rowc1["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1008&sop=125&id=".$rowc2["id"]."\">".$rowc2["nombre"]." ".$rowc2["cognom1"]." ".$rowc2["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1026&sop=100&id=".$rowl["id"]."\">".$rowc3["producto"]."</a></td>";
+								echo "<td>".$rowl["num_elementos"]."</td>";
+								echo "<td style=\"background-color:".$color."\">".$rowl["fecha_fin"]."</td>";
+							echo "</tr>";
+						}
+					echo "</table>";
+				}
 				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-		}
 		$sqltipo1 = "select * from sgm_users_permisos where id_modulo=1011 and id_user=".$userid;
 		$resulttipo1 = mysqli_query($dbhandle,convertSQL($sqltipo1));
 		$rowtipo1 = mysqli_fetch_array($resulttipo1);

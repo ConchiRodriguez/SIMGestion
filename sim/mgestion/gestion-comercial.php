@@ -231,14 +231,13 @@ if (($option == 1009) AND ($autorizado == true)) {
 			$sqlc = "select * from sim_comercial_oferta where visible=1 and id=".$_GET["id"];
 			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 			$rowc = mysqli_fetch_array($resultc);
-			echo $rowc["id_plantilla"]."- -".$_POST["id_plantilla"];
 			if ($rowc["id_plantilla"] != $_POST["id_plantilla"]){
 				$sqlco = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"]." order by orden";
 				$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
 				while ($rowco = mysqli_fetch_array($resultco)) {
 					deleteFunction ("sim_comercial_oferta_rel_contenido",$rowco["id"]);
 				}
-				echo $sqlco2 = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_POST["id_plantilla"]." order by orden";
+				$sqlco2 = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_POST["id_plantilla"]." order by orden";
 				$resultco2 = mysqli_query($dbhandle,convertSQL($sqlco2));
 				while ($rowco2 = mysqli_fetch_array($resultco2)) {
 					$camposInsert="orden,id_comercial_contenido,id_comercial_oferta";
@@ -265,9 +264,17 @@ if (($option == 1009) AND ($autorizado == true)) {
 					deleteFunction ("sim_comercial_oferta_rel_servicios",$rowcs["id"]);
 				}
 			}
+			if($_POST["servidores"] != ''){
+				$camposInsert="id_comercial_oferta,servidores";
+				$datosInsert=array($_GET["id"],$_POST["servidores"]);
+				insertFunction("sim_comercial_oferta_servidores",$camposInsert,$datosInsert);
+			}
 		}
 		if (($soption == 100) and ($ssoption == 3)) {
 			deleteFunction ("sim_comercial_oferta",$_GET["id"]);
+		}
+		if (($soption == 100) and ($ssoption == 4)) {
+			deleteFunction ("sim_comercial_oferta_servidores",$_GET["id_ser"]);
 		}
 		if (($soption == 100) and ($ssoption == 7)) {
 			$sqlcov = "select id from sim_comercial_oferta_valors where visible=1 and id_comercial_oferta=".$_GET["id"]." and id_comercial_camps=".$_GET["id_cam"].")";
@@ -451,6 +458,17 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "</td>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr><td style=\"text-align:right;\">".$Servidores.": </td><td><input style=\"width:200px\" type=\"Text\" name=\"servidores\"></td></tr>";
+			$sqlser = "select * from sim_comercial_oferta_servidores where id_comercial_oferta=".$_GET["id"]." order by servidores";
+			$resultser = mysqli_query($dbhandle,convertSQL($sqlser));
+			while ($rowser = mysqli_fetch_array($resultser)) {
+				echo "<tr style=\"background-color:".$color.";\">";
+					echo "<td style=\"text-align:right;\"><a href=\"index.php?op=1009&sop=100&ssop=4&id=".$_GET["id"]."&id_ser=".$rowser["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<td>".$rowser["servidores"]."</td>";
+				echo "</tr>";
+			}
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "<tr><td style=\"text-align:right;\">".$Servicios.":</td></tr>";
 			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 order by servicio";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
@@ -458,7 +476,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 				$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 				$rowcs = mysqli_fetch_array($resultcs);
 				echo "<tr>";
-					echo "<td style=\"color:black;text-align:right;\"><input type=\"Checkbox\" name=\"servicios".$row["id"]."\" value=\"1\"";
+					echo "<td style=\"vertical-align:middle;text-align:right;\"><input type=\"checkbox\" name=\"servicios".$row["id"]."\" value=\"1\"";
 					if (($row["obligatorio"] == 1) or ($rowcs["id"])){ echo "checked";}
 					if ($row["obligatorio"] == 1) { echo " disabled";}
 					echo "></td>";
@@ -786,16 +804,20 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "<h4>".$Contenidos." ".$Especificos."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<form action=\"index.php?op=1009&sop=130&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-			$sqlci = "select id,titulo,contenido from sim_comercial_contenido where visible=1 and editable=1 where id in (select id_comercial_contenido from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"].")";
-			$resultci = mysqli_query($dbhandle,convertSQL($sqlci));
-			while ($rowci = mysqli_fetch_array($resultci)){
-				$sqlcc = "select contenido from sim_comercial_oferta_rel_contenido where visible=1 and id_comercial_contenido=".$rowci["id"]." and id_comercial_oferta=".$_GET["id"];
-				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
-				$rowcc = mysqli_fetch_array($resultcc);
-				if ($rowcc){ $content = $rowcc["contenido"]; } else { $content = $rowci["contenido"]; }
-				echo "<tr>";
-					echo "<td style=\"text-align:right;vertical-align:top;\">".$rowci["titulo"]." : </td><td><textarea name=\"contenido".$rowci["id"]."\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$content."</textarea></td>";
-				echo "</tr>";
+			$sqlofc = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"]." order by orden";
+			$resultofc = mysqli_query($dbhandle,convertSQL($sqlofc));
+			while ($rowofc = mysqli_fetch_array($resultofc)){
+				$sqlci = "select id,titulo,contenido from sim_comercial_contenido where visible=1 and editable=1 and id=".$rowofc["id_comercial_contenido"];
+				$resultci = mysqli_query($dbhandle,convertSQL($sqlci));
+				while ($rowci = mysqli_fetch_array($resultci)){
+					$sqlcc = "select contenido from sim_comercial_contenido where visible=1 and id_comercial_contenido=".$rowci["id"]." and id_comercial_oferta=".$_GET["id"];
+					$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+					$rowcc = mysqli_fetch_array($resultcc);
+					if ($rowcc){ $content = $rowcc["contenido"]; } else { $content = $rowci["contenido"]; }
+					echo "<tr>";
+						echo "<td style=\"text-align:right;vertical-align:top;\">".$rowci["titulo"]." : </td><td><textarea name=\"contenido".$rowci["id"]."\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$content."</textarea></td>";
+					echo "</tr>";
+				}
 			}
 			echo "<tr>";
 				echo "<td></td><td><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
@@ -968,7 +990,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sqlci = "select * from sim_comercial_contenido where visible=1";
+			$sqlci = "select * from sim_comercial_contenido where visible=1 and id_comercial_oferta=0";
 			if ($_GET["ver"] == 0) { $sqlci .= " and versionado=0";}
 			$resultci = mysqli_query($dbhandle,convertSQL($sqlci));
 			while ($rowci = mysqli_fetch_array($resultci)){

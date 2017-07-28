@@ -429,6 +429,10 @@ CREATE TABLE `sim_comercial_oferta_rel_servicios` ( `id` int(11) NOT NULL auto_i
 ALTER TABLE `sim_comercial_oferta_rel_servicios` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_comercial_oferta_rel_servicios` ADD `id_servicio` int(11) NOT NULL default '0' AFTER `id_comercial_oferta`;
 
+CREATE TABLE `sim_comercial_oferta_servidores` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_comercial_oferta_servidores` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_comercial_oferta_servidores` ADD `servidores` varchar(255) NOT NULL default '' AFTER `id_comercial_oferta`;
+
 CREATE TABLE `sim_comercial_software` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_software` ADD `software` varchar(255) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sim_comercial_software` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `software`;
@@ -918,6 +922,9 @@ ALTER TABLE `sim_licencias` ADD `num_elementos` int(11) NOT NULL default '0' AFT
 ALTER TABLE `sim_licencias` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `num_elementos`;
 ALTER TABLE `sim_licencias` ADD `renovado` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sim_licencias` ADD `facturado` tinyint(1) NOT NULL default '0' AFTER `renovado`;
+ALTER TABLE `sim_licencias` ADD `id_producto` int(11) NOT NULL default '0' AFTER `facturado`;
+ALTER TABLE `sim_licencias` ADD `num_poller` int(11) NOT NULL default '0' AFTER `id_producto`;
+ALTER TABLE `sim_licencias` ADD `num_peer` int(11) NOT NULL default '0' AFTER `num_poller`;
 
 CREATE TABLE `sim_licencias_articulos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_licencias_articulos` ADD `id_licencia` int(11) NOT NULL default '0' AFTER `id`;
@@ -926,6 +933,10 @@ ALTER TABLE `sim_licencias_articulos` ADD `visible` tinyint(1) NOT NULL default 
 
 CREATE TABLE `sim_licencias_familias_articulos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_licencias_familias_articulos` ADD `id_familia` int(11) NOT NULL default '0' AFTER `id`;
+
+CREATE TABLE `sim_licencias_productos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_licencias_productos` ADD `producto` varchar(100) default NULL AFTER `id`;
+ALTER TABLE `sim_licencias_productos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `producto`;
 
 CREATE TABLE `sim_medio_comunicacion` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_medio_comunicacion` ADD `medio_comunicacion` varchar(50) default NULL AFTER `id`;

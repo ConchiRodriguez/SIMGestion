@@ -123,7 +123,7 @@ class PDF extends PDF_HTML_Table
             return;
         //Go to 1.5 cm from bottom
         $this->SetY(-15);
-        //Select Arial italic 8
+        //Select Calibri italic 8
         $this->SetFont('Calibri','',8);
         $this->Cell(0,7,$this->numPageNo(),0,0,'C'); 
         if(!$this->_numbering)
@@ -136,7 +136,7 @@ class PDF extends PDF_HTML_Table
 		$this->SetTextColor(51,51,159);
 		$this->SetFontSize(14);
 		$this->SetStyle('B',true);
-		$this->Cell(180,5,$valoracion_economica,0,1);
+		$this->Cell(170,5,$valoracion_economica,0,1);
 		$this->entryTOC($valoracion_economica,0);
 		$this->Ln(5);
  
@@ -148,12 +148,12 @@ class PDF extends PDF_HTML_Table
 		$rowov = mysqli_fetch_array($resultov);
 		if ($rowov){
 			$this->SetFont('Calibri','',12);
-			$this->Cell(180,5,$rowov["descripcion"],0,1);
+			$this->Cell(170,5,$rowov["descripcion"],0,1);
 			$this->Ln();
 			$this->SetFont('Calibri','',10);
-			$this->Cell(100,5,$articulos,0,0);
-			$this->Cell(40,5,$unitats,0,0);
-			$this->Cell(40,5,$precio." ".$total,0,1,'R');
+			$this->Cell(100,5,$articulos,'B',0);
+			$this->Cell(40,5,$unitats,'B',0);
+			$this->Cell(30,5,$precio." ".$total,'B',1,'R');
 
 			$total_val = 0;
 			$sqlcova = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$rowov["id"];
@@ -175,12 +175,12 @@ class PDF extends PDF_HTML_Table
 				$this->SetFont('Calibri','',9);
 				$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
 				$this->Cell(40,5,$rowcova["unidades"],0,0);
-				$this->Cell(40,5,$total_art." ".$rowd["abrev"],0,1,'R');
+				$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
 			}
-			$this->Cell(40,5,'','T',0);
-			$this->Cell(100,5,$descuento.": ".$rowov["descuento"]."%",'T',0);
+			$this->Cell(100,5,'','T',0);
+			$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0);
 			$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
-			$this->Cell(40,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+			$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
 			$this->Ln(15);
 		} else {
 			$sqlov = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$id;
@@ -188,12 +188,12 @@ class PDF extends PDF_HTML_Table
 			while ($rowov = mysqli_fetch_array($resultov)){
 
 				$this->SetFont('Calibri','',12);
-				$this->Cell(180,5,$rowov["descripcion"],0,1);
+				$this->Cell(170,5,$rowov["descripcion"],0,1);
 				$this->Ln();
 				$this->SetFont('Calibri','',10);
-				$this->Cell(100,5,$articulos,0,0);
-				$this->Cell(40,5,$unitats,0,0);
-				$this->Cell(40,5,$precio." ".$total,0,1,'R');
+				$this->Cell(100,5,$articulos,'B',0);
+				$this->Cell(40,5,$unitats,'B',0);
+				$this->Cell(30,5,$precio." ".$total,'B',1,'R');
 
 				$total_val = 0;
 				$sqlcova = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$rowov["id"];
@@ -215,12 +215,12 @@ class PDF extends PDF_HTML_Table
 					$this->SetFont('Calibri','',9);
 					$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
 					$this->Cell(40,5,$rowcova["unidades"],0,0);
-					$this->Cell(40,5,$total_art." ".$rowd["abrev"],0,1,'R');
+					$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
 				}
-				$this->Cell(40,5,'','T',0);
-				$this->Cell(100,5,$descuento.": ".$rowov["descuento"]."%",'T',0);
+				$this->Cell(100,5,'','T',0);
+				$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0,'L');
 				$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
-				$this->Cell(40,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+				$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
 				$this->Ln(15);
 			}
 		}
@@ -238,15 +238,15 @@ class PDF extends PDF_HTML_Table
 		$this->Ln(112);
 		$this->SetFillColor(180,180,237);
 		$this->SetTextColor(255,255,255);
-		$this->SetFont('Arial','',25);
+		$this->SetFont('Calibri','',25);
 		$this->Cell(70,20,$titul,0,0,'L',true);
-		$this->SetFont('Arial','',18);
+		$this->SetFont('Calibri','',18);
 		$this->Cell(0,20,$descripcio,0,1,'L',true);
 		$this->Ln(2);
 		$this->SetFillColor(51,51,159);
 		$this->Cell(0,80,'',0,1,'C',true);
 		$this->Ln(0.5);
-		$this->SetFont('Arial','B',9);
+		$this->SetFont('Calibri','B',9);
 		$this->SetTextColor(255,255,255);
 		$this->SetDrawColor(255,255,255);
 		$this->MultiCell(0,5,$adress,0,'C',true);
@@ -260,16 +260,13 @@ class PDF extends PDF_HTML_Table
 		$this->Cell(30,10,$fecha,1,0,'C');
 		$this->Cell(30,10,$version,1,0,'C');
 		$this->Cell(43,10,$autor,1,1,'C');
-		$this->SetFont('Arial','',8);
+		$this->SetFont('Calibri','',8);
 		$this->Cell(43,10,$titul,1,0,'C');
 		$this->Cell(43,10,$descripcio,1,0,'C');
 		$this->Cell(30,10,$data,1,0,'C');
 		$this->Cell(30,10,$versio,1,0,'C');
 		$this->Cell(43,10,$aut,1,1,'C');
-		
-		
-		
-		
+	
 		$this->SetDrawColor(51,51,159);
 		$this->Rect(10,190,190,1,'F');
 		$this->Image('pics/fpdf/logo_sim.jpg',10,195,50,10,'JPG');
@@ -289,7 +286,7 @@ class PDF extends PDF_HTML_Table
 		$this->Image('pics/fpdf/64x64-youtube.jpg',105,200,12,12,'JPG','http://www.youtube.com/channel/UCB6v5clKL3SdF34VqrnUGTg');
 		$this->Image('pics/fpdf/64x64-twitter.jpg',117,200,12,12,'JPG','https://twitter.com/Solucions_im');
 		$this->SetXY(10,220);
-		$this->SetFont('Arial','B',9);
+		$this->SetFont('Calibri','B',9);
 		$this->SetTextColor(255,255,255);
 		$this->SetFillColor(51,51,159);
 		$this->MultiCell(0,5,"\n\n\n".$adress."\n\n\n\n\n\n",0,'C',true);
@@ -317,6 +314,7 @@ class PDF extends PDF_HTML_Table
 	$pdf->AddPage();
 
 	$orden_contenido = 1;
+
 	$sqlofc = "select * from sim_comercial_oferta_rel_contenido where id_comercial_oferta=".$_GET["id"]." order by orden";
 	$resultofc = mysqli_query($dbhandle,convertSQL($sqlofc));
 	while ($rowofc = mysqli_fetch_array($resultofc)){
@@ -327,20 +325,72 @@ class PDF extends PDF_HTML_Table
 		} else {
 			$pdf->Ln(10);
 		}
-		$sqlcon = "select * from sim_comercial_contenido where id=".$rowofc["id_comercial_contenido"];
+		$sqlcon = "select * from sim_comercial_contenido where visible=1 and id=".$rowofc["id_comercial_contenido"];
 		$resultcon = mysqli_query($dbhandle,convertSQL($sqlcon));
 		$rowcon = mysqli_fetch_array($resultcon);
-		if ($_POST["tipo"] == 0) {$contenido = $rowcon["contenido"];} else {$contenido = $rowcon["contenido"].$rowcon["contenido_extenso"];}
+		if ($rowcon["editable"] == 1){
+			$sqlcc = "select contenido from sim_comercial_contenido where visible=1 and id_comercial_contenido=".$rowcon["id"]." and id_comercial_oferta=".$_GET["id"];
+			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+			$rowcc = mysqli_fetch_array($resultcc);
+			if ($rowcc){ $content = $rowcc["contenido"]; $content_ext = $rowcc["contenido_extenso"]; } else { $content = $rowcon["contenido"]; $content_ext = $rowcon["contenido_extenso"]; }
+		} else {
+			$content = $rowcon["contenido"];
+			$content_ext = $rowcon["contenido_extenso"];
+		}
+		if ($_POST["tipo"] == 0) {$contenido = $content;} else {$contenido = $content.$content_ext;}
 
 		$pdf->SetTextColor(51,51,159);
 		$pdf->SetFontSize(14);
 		$pdf->SetStyle('B',true);
-		$pdf->Cell(180,5,ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0,1);
-		$pdf->entryTOC(ltrim($rowofc["orden"],'0')." ".$rowcon["titulo"],0);
+		$pdf->Cell(180,5,ltrim($rowofc["orden"],'0')." ".comillasInver($rowcon["titulo"]),0,1);
+		$pdf->entryTOC(ltrim($rowofc["orden"],'0')." ".comillasInver($rowcon["titulo"]),0);
 
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Calibri','',10);
-		$pdf->WriteHTML($contenido);
+
+
+		$sqlcli = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowof["id_cliente"];
+		$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
+		$rowcli = mysqli_fetch_array($resultcli);
+		$sqlts = "select tipo_servidor from sim_comercial_tipos_servidores where visible=1 and id=".$rowof["id_tipo_servidor"];
+		$resultts = mysqli_query($dbhandle,convertSQL($sqlts));
+		$rowts = mysqli_fetch_array($resultts);
+		$sqlso = "select software from sim_comercial_software where visible=1 and id=".$rowof["id_software"];
+		$resultso = mysqli_query($dbhandle,convertSQL($sqlso));
+		$rowso = mysqli_fetch_array($resultso);
+
+		$servidores = array();
+		$sqlcse = "select servidores from sim_comercial_oferta_servidores where id_comercial_oferta=".$_GET["id"];
+		$resultcse = mysqli_query($dbhandle,convertSQL($sqlcse));
+		while ($rowcse = mysqli_fetch_array($resultcse)){
+			$servidores[] = $rowcse["servidores"];
+		}
+		$taula_resum = "<table style=\"width: 868px;\">";
+		$taula_resum .= "<tr><td>".$Servicio."</td>";
+		for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".$servidores[$i]."</td>";}
+		$taula_resum .= "</tr>";
+		$sqlsr = "select id_servicio from sim_comercial_oferta_rel_servicios where id_comercial_oferta=".$_GET["id"];
+		$resultsr = mysqli_query($dbhandle,convertSQL($sqlsr));
+		while ($rowsr = mysqli_fetch_array($resultsr)){
+			$sqlse = "select servicio,id_servicio_origen from sgm_contratos_servicio where visible=1 and id=".$rowsr["id_servicio"];
+			$resultse = mysqli_query($dbhandle,convertSQL($sqlse));
+			$rowse = mysqli_fetch_array($resultse);
+			$sqlseo = "select codigo_origen from sgm_contratos_servicio_origen where visible=1 and id=".$rowse["id_servicio_origen"];
+			$resultseo = mysqli_query($dbhandle,convertSQL($sqlseo));
+			$rowseo = mysqli_fetch_array($resultseo);
+			$taula_resum .= "<tr><td>".utf8_encode($rowse["servicio"])."</td>";
+			for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".utf8_encode($rowseo["codigo_origen"])."</td>";}
+			$taula_resum .= "</tr>";
+		}
+		$taula_resum .= "</table>";
+
+		$contenido = str_replace( '[CLIENT]', utf8_encode($rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]), $contenido );
+		$contenido = str_replace( '[NUM_DISP]', $rowof["num_dispositivos"], $contenido );
+		$contenido = str_replace( '[NUM_SERVEIS]', $rowof["num_servicios"], $contenido );
+		$contenido = str_replace( '[TIPUS_SERVIDOR]', $rowts["tipo_servidor"], $contenido );
+		$contenido = str_replace( '[SOFTWARE]', $rowso["software"], $contenido );
+		$contenido = str_replace( '[TAULA_RESUM]', $taula_resum, $contenido );
+		$pdf->WriteHTML($contenido,0);
 	}
 	$pdf->AddPage();
 	$pdf->WriteTableValoraciones($_GET["id"]);

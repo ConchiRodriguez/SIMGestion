@@ -1326,7 +1326,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			updateFunction ("sgm_contratos_servicio_origen",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 
-		echo "<h4>".$Cobertura." ".$SLA."</h4>";
+		echo "<h4>".$Origen." ".$Servicios."</h4>";
 		echo boton(array("op=1011&sop=500"),array("&laquo; ".$Volver));
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";

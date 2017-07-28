@@ -36,7 +36,7 @@ ul,li {
 	margin : 0px 0px 0px 8px;
 }
 
-input,textarea,select {
+input:not([type="checkbox"]),textarea,select {
 	padding : 0px 0px 0px 0px;
 	margin : 0px 0px 0px 0px;
 	font-size: 13px;

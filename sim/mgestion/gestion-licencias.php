@@ -27,6 +27,18 @@ if (($option == 1026) AND ($autorizado == true)) {
 	echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
 
 	if (($soption == 0) or ($soption == 1) or ($soption == 200)) {
+		if ($ssoption == 2) {
+			$camposUpdate = array("renovado");
+			$datosUpdate = array(1);
+			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
+
+			$sqln = "select * from sim_licencias where visible=1 and id=".$_GET["id"];
+			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
+			$rown = mysqli_fetch_array($resultn);
+			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos";
+			$datosInsert = array($rown["id_cliente"],$rown["id_cliente_final"],$rown["fecha_ini"],$rown["fecha_fin"],$rown["num_elementos"]);
+			insertFunction ("sim_licencias",$camposInsert,$datosInsert);
+		}
 		if ($ssoption == 3) {
 			$camposUpdate = array("visible");
 			$datosUpdate = array(0);
@@ -60,7 +72,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "<th></th>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td><select style=\"width:250px\" name=\"id_cliente2\">";
+					echo "<td><select style=\"width:500px\" name=\"id_cliente2\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -72,7 +84,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td><select style=\"width:250px\" name=\"id_cliente_final2\">";
+					echo "<td><select style=\"width:500px\" name=\"id_cliente_final2\">";
 						echo "<option value=\"0\">-</option>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 order by nombre";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -84,7 +96,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 							}
 						}
 					echo "</select></td>";
-					echo "<td><input type=\"Submit\" value=\"".$Filtrar."\"></td>";
+					echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 				echo "</tr>";
 			echo "</form>";
 			echo "</table>";
@@ -92,13 +104,13 @@ if (($option == 1026) AND ($autorizado == true)) {
 		}
 		if (($soption != 200) or ($_POST["id_cliente2"] > 0) or ($_POST["id_cliente_final2"] > 0)){
 			echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-				echo "<form action=\"index.php?op=1026&sop=100&ssop=1\" method=\"post\">";
 				echo "<tr style=\"background-color:silver\">";
 					echo "<th>".$Eliminar."</th>";
-					echo "<th style=\"width:500px;\">".$Cliente."</th>";
-					echo "<th style=\"width:500px;\">".$Cliente." ".$Final."</th>";
-					echo "<th>".$Fin." ".$Licencia."</th>";
-					echo "<th>".$Editar."</td>";
+					echo "<th style=\"width:400px;\">".$Cliente."</th>";
+					echo "<th style=\"width:400px;\">".$Cliente." ".$Final."</th>";
+					echo "<th style=\"width:100px;\">".$Fin." ".$Licencia."</th>";
+					echo "<th></td>";
+					echo "<th></td>";
 				echo "</tr>";
 				$sqlcc = "select id,id_cliente,id_cliente_final,fecha_fin from sim_licencias where visible=1 ";
 				if ($_POST["id_cliente2"] > 0) {
@@ -113,6 +125,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 				while ($rowcc = mysqli_fetch_array($resultcc)){
 					echo "<tr>";
+						echo "<form action=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\" method=\"post\">";
 						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -123,7 +136,11 @@ if (($option == 1026) AND ($autorizado == true)) {
 						$row = mysqli_fetch_array($result);
 						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 						echo "<td><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\">".$rowcc["fecha_fin"]."</a></td>";
-						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_edit.png\" alt=\"Editar\" border=\"0\"></a></td>";
+						echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+						echo "<form action=\"index.php?op=1026&sop=0&ssop=2&id=".$rowcc["id"]."\" method=\"post\">";
+						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Renovar."\"></td>";
+						echo "</form>";
+						echo "</form>";
 					echo "</tr>";
 				}
 			echo "</table>";
@@ -140,8 +157,8 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if ($soption == 100) {
 		if ($ssoption == 1) {
-			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos";
-			$datosInsert = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
+			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos,id_producto,num_poller,num_peer";
+			$datosInsert = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"],$_POST["id_producto"],$_POST["num_poller"],$_POST["num_peer"]);
 			insertFunction ("sim_licencias",$camposInsert,$datosInsert);
 			$sqln = "select id from sim_licencias where visible=1 and id_cliente_final=".$_POST["id_cliente_final"]." and fecha_fin='".$_POST["fecha_fin"]."'";
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
@@ -149,13 +166,8 @@ if (($option == 1026) AND ($autorizado == true)) {
 			$id_lic = $rown["id"];
 		}
 		if ($ssoption == 2) {
-			$camposUpdate = array("id_cliente","id_cliente_final","fecha_ini","fecha_fin","num_elementos");
-			$datosUpdate = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"]);
-			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 3) {
-			$camposUpdate = array("renovado");
-			$datosUpdate = array(1);
+			$camposUpdate = array("id_cliente","id_cliente_final","fecha_ini","fecha_fin","num_elementos","id_producto","num_poller","num_peer");
+			$datosUpdate = array($_POST["id_cliente"],$_POST["id_cliente_final"],$_POST["fecha_ini"],$_POST["fecha_fin"],$_POST["num_elementos"],$_POST["id_producto"],$_POST["num_poller"],$_POST["num_peer"]);
 			updateFunction ("sim_licencias",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 4) {
@@ -205,7 +217,22 @@ if (($option == 1026) AND ($autorizado == true)) {
 					}
 				echo "</td>";
 			echo "</tr>";
+			echo "<tr><td style=\"text-align:right;\">".$Producto.": </td>";
+				echo "<td><select style=\"width:200px\" name=\"id_producto\">";
+					$sqld = "select * from sim_licencias_productos where visible=1 order by producto";
+					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+					while ($rowd = mysqli_fetch_array($resultd)) {
+						if ($rowd["id"] == $rowc["id_producto"]){
+							echo "<option value=\"".$rowd["id"]."\" selected>".$rowd["producto"]."</option>";
+						} else {
+							echo "<option value=\"".$rowd["id"]."\">".$rowd["producto"]."</option>";
+						}
+					}
+				echo "</td>";
+			echo "</tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Numero." ".$Elementos.": </td><td><input style=\"width:100px\" type=\"Text\" name=\"num_elementos\" value=\"".$rowc["num_elementos"]."\"></td></tr>";
+			echo "<tr><td style=\"text-align:right;\">".$Numero." Poller: </td><td><input style=\"width:100px\" type=\"Text\" name=\"num_poller\" value=\"".$rowc["num_poller"]."\"></td></tr>";
+			echo "<tr><td style=\"text-align:right;\">".$Numero." Peer: </td><td><input style=\"width:100px\" type=\"Text\" name=\"num_peer\" value=\"".$rowc["num_peer"]."\"></td></tr>";
 			if ($id_lic != "") {
 				$date1 = $rowc["fecha_ini"];
 				$date2 = $rowc["fecha_fin"];
@@ -215,26 +242,18 @@ if (($option == 1026) AND ($autorizado == true)) {
 			}
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Inicio.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_ini\" value=\"".$date1."\"></td></tr>";
 			echo "<tr><td style=\"text-align:right;\">".$Fecha." ".$Fin.": </td><td><input style=\"width:100px\" type=\"text\" name=\"fecha_fin\" value=\"".$date2."\"></td></tr>";
-				if ($id_lic != "") {
+			echo "<tr>";
+			if ($id_lic != "") {
 					if ($rowc["renovado"] == 0) {
-						echo "<td></td><td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
+						echo "<td></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
 					} else {
 						echo "<td></td><td></td>";
 					}
 				} else {
-					echo "<td></td><td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+					echo "<td></td><td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
 				}
 			echo "</form>";
-			echo "<td></td>";
-			if ($id_lic != "") {
-				if ($rowc["renovado"] == 0) {
-					echo "<form action=\"index.php?op=1026&sop=100&ssop=3&id=".$id_lic."\" method=\"post\">";
-					echo "<td><input type=\"Submit\" value=\"renovar".$Renovar."\" style=\"width:100px\"></td>";
-					echo "</form>";
-				} else {
-					echo "<td></td>";
-				}
-			}
+			echo "</tr>";
 		echo "</table>";
 		echo "</center>";
 		echo "<br><br>";
@@ -262,7 +281,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 								echo "<option value=\"".$row["id"]."\">".$rowg["subgrupo"]."(".$row["codigo"].") - ".$row["nombre"]."</option>";
 							}
 						echo "</td>";
-						echo "<td><input type=\"Submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 					echo "<tr><td>&nbsp;</td></tr>";
@@ -291,7 +310,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 					echo "<form action=\"index.php?op=1026&sop=102&id=".$id_lic."\" method=\"post\">";
 						echo "<input type=\"hidden\" name=\"id_cliente\" value=\"".$rowc["id_cliente"]."\">";
 						echo "<input type=\"hidden\" name=\"id_licencia\" value=\"".$id_lic."\">";
-						echo "<td><input type=\"Submit\" value=\"".$Crear." ".$Factura."\"></td>";
+						echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Crear." ".$Factura."\"></td>";
 					echo "</form>";
 					echo "</tr>";
 				}
@@ -366,7 +385,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			echo boton(array("op=1026&sop=510"),array($Articulos));
+			echo boton(array("op=1026&sop=510","op=1026&sop=520"),array($Articulos, $Producto));
 		}
 		if ($admin == false) {
 			echo $UseNoAutorizado;
@@ -406,7 +425,7 @@ if (($option == 1026) AND ($autorizado == true)) {
 						echo "<option value=\"".$row["id"]."\">".$row["grupo"]."</option>";
 					}
 				echo "</td>";
-				echo "<td><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
@@ -429,6 +448,61 @@ if (($option == 1026) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1026&sop=510&ssop=3&id=".$_GET["id"],"op=1026&sop=510"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if (($soption == 520) and ($admin == true)) {
+		if ($ssoption == 1){
+			$camposinsert = "producto";
+			$datosInsert = array($_POST["producto"]);
+			insertFunction ("sim_licencias_productos",$camposinsert,$datosInsert);
+		}
+		if ($ssoption == 2){
+			$camposUpdate = array("producto");
+			$datosUpdate = array($_POST["producto"]);
+			updateFunction ("sim_licencias_productos",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 3) {
+			$camposUpdate = array("visible");
+			$datosUpdate = array(0);
+			updateFunction ("sim_licencias_productos",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+
+		echo "<h4>".$Productos."</h4>";
+		echo boton(array("op=1026&sop=500"),array("&laquo; ".$Volver));
+		echo "<center>";
+		echo "<table cellspacing=\"0\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th style=\"text-align:center;\">".$Producto."</th>";
+				echo "<th></th>";
+			echo "</tr><tr>";
+				echo "<form action=\"index.php?op=1026&sop=520&ssop=1\" method=\"post\">";
+				echo "<td></td>";
+				echo "<td><input style=\"width:200px\" type=\"Text\" name=\"producto\"></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			$sqll = "select producto,id from sim_licencias_productos where visible=1 order by producto";
+			$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+			while ($rowl = mysqli_fetch_array($resultl)) {
+				echo "<tr>";
+					echo "<form action=\"index.php?op=1026&sop=520&ssop=2&id=".$rowl["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1026&sop=521&id=".$rowl["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					echo "<td><input style=\"width:200px\" type=\"Text\" name=\"producto\" value=\"".$rowl["producto"]."\"></td>";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+			}
+		echo "</table>";
+		echo "</center>";
+	}
+
+	if (($soption == 521) AND ($admin == true)) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1026&sop=520&ssop=3&id=".$_GET["id"],"op=1026&sop=520"),array($Si,$No));
 		echo "</center>";
 	}
 
