@@ -33,10 +33,13 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 			echo "<table style=\"font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;font-size: 10px;\">";
 				echo "<tr><td><h3>Produccio</h3></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/web\" target=\"_blank\">Web</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left\"><a href=\"https://serviciodecorreo.es/\" target=\"_blank\">Mail</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left\"><a href=\"https://serviciodecorreo.es/\" target=\"_blank\">Mail Arsys</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left\"><a href=\"https://outlook.office365.com/owa/\" target=\"_blank\">Mail Office 365</a></td></tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left\"><a href=\"http://77.227.173.151:8080/nagios/\" target=\"_blank\">GhostBuster</a></td></tr>";
+				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://solucionsim.sharepoint.com/SitePages/Inicio.aspx\" target=\"_blank\">Gestor Documental</a></td></tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
+#				echo "<tr><td style=\"vertical-align:top;text-align:left\"><a href=\"http://77.227.173.151:8080/nagios/\" target=\"_blank\">GhostBuster</a></td></tr>";
+#				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/sim\" target=\"_blank\">SIMGestion</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/clientes\" target=\"_blank\">Area Clientes</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.20/faqs/\" target=\"_blank\">PHPmyFAQ</a></td></tr>";
@@ -72,16 +75,6 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 				echo "<tr><td><h3>Bases de dades</h3></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qnc882.dbname.net\" target=\"_blank\">SIMGestion PRO</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qqk106.dbname.net\" target=\"_blank\">SIMGestion DES</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qpz494.dbname.net\" target=\"_blank\">SIMPolice proves</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qqm138.dbname.net\" target=\"_blank\">SIMPolice CSMS</a></td></tr>";
-#				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qqs228.dbname.net\" target=\"_blank\">SIMPolice Can Ruti</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qrn780.dbname.net\" target=\"_blank\">SIMPolice TMB</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qrj446.dbname.net\" target=\"_blank\">SIMPolice SERHS</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qsd905.dbname.net\" target=\"_blank\">SIMPolice Garraf</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qtf064.solucions-im.com\" target=\"_blank\">SIMPolice IN2</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qui471.solucions-im.com\" target=\"_blank\">SIMPolice Leng-D'or</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qui473.solucions-im.com\" target=\"_blank\">SIMPolice SISinf</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://qvu498.solucions-im.com\" target=\"_blank\">SIMPolice Mango</a></td></tr>";
 			echo "</table>";
 		echo "</td>";
 		echo "<td style=\"vertical-align:top;text-align:center;width:15%;\">";
@@ -97,9 +90,9 @@ echo "</table></center>";
 
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
-echo calendari_economic(0);
+#echo calendari_economic(0);
 echo correoIncidencias();
-echo comprobarTipoCliente();
+#echo comprobarTipoCliente();
 echo calculSLAtotal();
 #echo simAlert();
 

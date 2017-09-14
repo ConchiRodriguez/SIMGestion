@@ -5,11 +5,13 @@ $abierta = "Oberta";
 $abiertas = "Obertes";
 $acreedor = "Acreedor";
 $antecedentes = "Antecedents";
+$apellidos = "Cogmons";
 $articulos = "Articles";
 $asunto = "Assumpte";
 $autor = "Autor";
 
 $cambio = "Canvi";
+$cargo = "Càrrec";
 $cerrada = "Tancada";
 $cerradas = "Tancades";
 $cnombre = "Contacte";
@@ -21,12 +23,14 @@ $cp = "CP";
 $cuenta_corriente= "Numero de Compte";
 
 $descripcion = "Descripció";
+$descripcion_general = "Descripció General";
 $descuento = "descompte";
 $deudor = "Deudor";
 $direccion = "Direcció";
 $duracion = "Duració";
 
 $e_mail = "E-mail";
+$edificio = "Edifici";
 $estado = "Estat";
 
 $fecha = "Data";
@@ -34,10 +38,11 @@ $fecha_entrega = "Data d'entrega";
 $fecha_vencimiento = "Data de venciment";
 $fecha_fin = "Data Finalizació";
 $fecha_ini = "Data Inici";
+$firma_oferta = "Signatura de l'oferta";
 $forma_de_pago = "Forma de pagament";
 $fuera_sla = "Fora de SLA";
 
-$descripcion_general = "Descripció General";
+$gerente = "Gerent";
 
 $importe = "Import";
 $incidencias= "Incidències";
@@ -63,6 +68,7 @@ $pausadas = "Pausades";
 $pedido = "Comanda";
 $pendientes = "Pendents";
 $poblacion = "Població";
+$por = "Per";
 $porcentaje_sla = "% SLA Cumplert";
 $precio = "Preu";
 $provincia = "Provincia";
@@ -91,5 +97,6 @@ $valoracion_economica = "Valoració Económica";
 #protecci&oacute;n de datos#
 $texto_pdatos = "Li recordem, que les seves dades es troben recollides en un fitxer tituralitat de SOLUCIONS INFORMATIQUES MARESME SL amb la finalitat de prestar els seus serveis. D'acord amb la Ley Orgànica 15/1999 de Protección de Datos de Caracter Personal pot exercir el dret d'accés, rectificació, cancelació i oposició enviant un escrit de sol·licitud i fotocopia del DNI a SOLUCIONS INFORMATIQUES MARESME SL, AVDA MARESME, 44 BAJOS, 2 de TORDERA provincia de BARCELONA.";
 
+$texto_firma = "Queda aprovada l'oferta de servei i la valoració econòmica per part de:"
 
 ?>

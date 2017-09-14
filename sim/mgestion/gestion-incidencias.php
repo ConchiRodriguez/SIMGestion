@@ -117,6 +117,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$sqlip = "select count(*) as total from sgm_incidencias where visible=1 and id_estado<>-2 and pausada=1 and id_incidencia=0";
 								$resultip = mysqli_query($dbhandle,convertSQL($sqlip));
 								$rowip = mysqli_fetch_array($resultip);
+								$sqlit = "select count(*) as total from sgm_incidencias where visible=1 and id_estado<>-2 and pausada=0 and fecha_prevision=0 and id_incidencia=0";
+								$resultit = mysqli_query($dbhandle,convertSQL($sqlit));
+								$rowit = mysqli_fetch_array($resultit);
 								$novedades = 0;
 								$contador1 = 0;
 								$sqlind = "select * from sgm_incidencias where visible=1 and id_estado<>-2 and id_usuario_destino=".$userid." and id_incidencia=0";
@@ -129,6 +132,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 									echo "<table class=\"lista\"><tr>";
 										echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1018&sop=0\" class=".$class.">".$Todos."</a></td>";
 										echo "<td style=\"width:10px;\">&nbsp;</td>";
+										echo "<td style=\"width:10px;background-color:#00BFFF;\"><a href=\"index.php?op=1018&sop=1&bt=5\">".$rowit["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1\">".$rowiw["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2\">".$rowic["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3\">".$rowip["total"]."</a></td>";
@@ -149,6 +153,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 								$sqlip = "select count(*) as total from sgm_incidencias where visible=1 and id_estado<>-2 and pausada=1 and id_incidencia=0 and id_cliente=".$rowcli["id"];
 								$resultip = mysqli_query($dbhandle,convertSQL($sqlip));
 								$rowip = mysqli_fetch_array($resultip);
+								$sqlit = "select count(*) as total from sgm_incidencias where visible=1 and id_estado<>-2 and pausada=0 and fecha_prevision=0 and id_incidencia=0 and id_cliente=".$rowcli["id"];
+								$resultit = mysqli_query($dbhandle,convertSQL($sqlit));
+								$rowit = mysqli_fetch_array($resultit);
 								$novedades = 0;
 								$contador1 = 0;
 								$sqlind = "select * from sgm_incidencias where visible=1 and id_estado<>-2 and id_usuario_destino=".$userid." and id_cliente=".$rowcli["id"]." and id_incidencia=0";
@@ -163,8 +170,9 @@ if (($option == 1018) AND ($autorizado == true)) {
 									echo "<table class=\"lista\"><tr>";
 										echo "<td style=\"text-align:left;\"><a href=\"index.php?op=1018&sop=0&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\" class=".$class.">".$rowcli["alias"]."</a></td>";
 										echo "<td style=\"width:10px;\">&nbsp;</td>";
+										echo "<td style=\"width:10px;background-color:#00BFFF;\"><a href=\"index.php?op=1018&sop=1&bt=5&id_cli=".$rowcli["id"]."\">".$rowit["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:Orange;\"><a href=\"index.php?op=1018&sop=1&bt=1&id_cli=".$rowcli["id"]."\"&id_user=".$_GET["id_user"].">".$rowiw["total"]."</a></td>";
-										echo "<td style=\"width:10px;background-color:red;color:white\"><a href=\"index.php?op=1018&sop=1&bt=2&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$rowic["total"]."</a></td>";
+										echo "<td style=\"width:10px;background-color:red;\"><a href=\"index.php?op=1018&sop=1&bt=2&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$rowic["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:silver;\"><a href=\"index.php?op=1018&sop=1&bt=3&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$rowip["total"]."</a></td>";
 										echo "<td style=\"width:10px;background-color:yellow;\"><a href=\"index.php?op=1018&sop=1&bt=4&id_cli=".$rowcli["id"]."&id_user=".$_GET["id_user"]."\">".$contador1."</a></td>";
 									echo "</tr></table>";
@@ -439,17 +447,11 @@ if (($option == 1018) AND ($autorizado == true)) {
 			if (($soption == 0) and ($_POST["id_estado"] == 0)) { $sqli = $sqli." and (id_estado <> -2)"; }
 #			if ($_GET["pausa"] == 0) { $sqli = $sqli." and pausada=0"; }
 			if ($soption == 1) {
-				if ($_GET["id_cli"] > 0) {
-					if ($_GET["bt"] == 1) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and fecha_prevision>0 and (temps_pendent<14400 and temps_pendent>0)";}
-					if ($_GET["bt"] == 2) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and fecha_prevision>0 and temps_pendent<0";}
-					if ($_GET["bt"] == 3) { $sqli = $sqli." and id_estado<>-2 and id_cliente=".$_GET["id_cli"]." and pausada=1";}
-					if ($_GET["bt"] == 4) { $sqli = $sqli." and id_estado<>-2 and id_usuario_destino=".$userid;}
-				} else {
-					if ($_GET["bt"] == 1) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and (temps_pendent<14400 and temps_pendent>0)";}
-					if ($_GET["bt"] == 2) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and temps_pendent<0";}
-					if ($_GET["bt"] == 3) { $sqli = $sqli." and id_estado<>-2 and pausada=1";}
-					if ($_GET["bt"] == 4) { $sqli = $sqli." and id_estado<>-2 and id_usuario_destino=".$userid;}
-				}
+				if ($_GET["bt"] == 1) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and (temps_pendent<14400 and temps_pendent>0)";}
+				if ($_GET["bt"] == 2) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision>0 and temps_pendent<0";}
+				if ($_GET["bt"] == 3) { $sqli = $sqli." and id_estado<>-2 and pausada=1";}
+				if ($_GET["bt"] == 4) { $sqli = $sqli." and id_estado<>-2 and id_usuario_destino=".$userid;}
+				if ($_GET["bt"] == 5) { $sqli = $sqli." and id_estado<>-2 and fecha_prevision=0 and pausada=0";}
 				$i = 4;
 			} else {
 				if ($i == 0) { $sqli = $sqli." and id_servicio = 0 and pausada=0"; }

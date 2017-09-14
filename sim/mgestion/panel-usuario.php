@@ -88,7 +88,7 @@ if (($option == 200) AND ($user == true)) {
 							if ($estado == 1) { $color = "LimeGreen";} elseif ($estado == 0) { $color = "red";}
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1008&sop=125&id=".$rowcc["id"]."\">".$rowcc["nombre"]." ".$rowcc["cognom1"]." ".$rowcc["cognom2"]."</a></td>";
-								echo "<td><a href=\"".$rowcc["cae_url"]."\">".$rowcc["cae_url"]."</a></td>";
+								echo "<td><a href=\"".$rowcc["cae_url"]."\" target=\"_blank\">".$rowcc["cae_url"]."</a></td>";
 								echo "<td style=\"background-color:".$color."\"></td>";
 							echo "</tr>";
 						}
@@ -177,7 +177,8 @@ if (($option == 200) AND ($user == true)) {
 						echo "</tr>";
 #					if ($_POST["bh"] == 1){ 
 						echo "<tr style=\"background-color:silver;\">";
-							echo "<th style=\"width:400px;\">".$Cliente."</th>";
+							echo "<th style=\"width:300px;\">".$Cliente."</th>";
+							echo "<th style=\"width:100px;\">".$Alias."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
 							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
 							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
@@ -186,7 +187,7 @@ if (($option == 200) AND ($user == true)) {
 						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=1 order by fecha_ini desc";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
 						while ($rowch = mysqli_fetch_array($resultch)) {
-							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
+							$sqla = "select id,nombre,cognom1,cognom2,alias from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
 							$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 							$rowa = mysqli_fetch_array($resulta);
 
@@ -208,6 +209,7 @@ if (($option == 200) AND ($user == true)) {
 							if ($minutos < 10) { $minutos_total = "0".$minutos;} else {$minutos_total = $minutos;}
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
+								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["alias"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
 								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
 								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$rowch["num_horas"]." ".$Horas."</td>";
@@ -325,7 +327,7 @@ if (($option == 200) AND ($user == true)) {
 							$rowa = mysqli_fetch_array($resulta);
 
 							$total_horas = 0;
-							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowch["id"];
+							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and horas=1 and id_contrato=".$rowch["id"];
 							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 							while ($rowcs = mysqli_fetch_array($resultcs)) {
 								$ultimaDiaMes = date("d",(mktime(0,0,0,date("m")+1,1,date("Y"))-1));

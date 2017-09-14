@@ -181,6 +181,7 @@ class PDF extends PDF_HTML_Table
 			$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0);
 			$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
 			$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+			$this->WriteHTML($rowov["comentarios"],0);
 			$this->Ln(15);
 		} else {
 			$sqlov = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$id;
@@ -196,12 +197,17 @@ class PDF extends PDF_HTML_Table
 				$this->Cell(30,5,$precio." ".$total,'B',1,'R');
 
 				$total_val = 0;
+				$count_art = 0;
 				$sqlcova = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$rowov["id"];
 				$resultcova = mysqli_query($dbhandle,convertSQL($sqlcova));
 				while ($rowcova = mysqli_fetch_array($resultcova)){
 					$sqla = "select * from sgm_articles where id=".$rowcova["id_articulo"];
 					$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 					$rowa = mysqli_fetch_array($resulta);
+					if ($count_art == 0){
+						$nombre_art = comillasInver($rowa["nombre"]);
+						$count_art++;
+					}
 
 					$sql = "select id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$rowcova["id_articulo"];
 					$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -212,20 +218,55 @@ class PDF extends PDF_HTML_Table
 					$total_art = $rowcova["pvp"] * $rowcova["unidades"];
 					$total_val += $total_art;
 					
+					if ($rowov["desglosar"] == 1){
+						$this->SetFont('Calibri','',9);
+						$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
+						$this->Cell(40,5,$rowcova["unidades"],0,0);
+						$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
+					}
+				}
+				if ($rowov["desglosar"] == 0){
 					$this->SetFont('Calibri','',9);
-					$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
-					$this->Cell(40,5,$rowcova["unidades"],0,0);
-					$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
+					$this->Cell(100,5,$nombre_art,0,0);
+					$this->Cell(40,5,'',0,0);
+					$this->Cell(30,5,$total_val." ".$rowd["abrev"],0,1,'R');
 				}
 				$this->Cell(100,5,'','T',0);
 				$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0,'L');
 				$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
 				$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+				$this->WriteHTML($rowov["comentarios"],0);
 				$this->Ln(15);
 			}
 		}
 	}
 	
+	function Firma($nombre_cliente){
+		global $db,$dbhandle,$firma_oferta,$por,$nombre,$apellidos,$cargo,$gerente,$texto_firma;
+
+		$this->SetTextColor(51,51,159);
+		$this->SetFontSize(14);
+		$this->SetStyle('B',true);
+		$this->Cell(170,5,$firma_oferta,0,1);
+		$this->entryTOC($firma_oferta,0);
+		$this->Ln(5);
+ 
+		$this->SetTextColor(0,0,0);
+		$this->SetDrawColor(0,0,0);
+		$this->SetFont('Calibri','',10);
+		$this->Cell(180,5,$texto_firma,0,1);
+		$this->Ln();
+ 		$this->Cell(90,5,$por." ".$nombre_cliente,0,0);
+		$this->Cell(90,5,$por." Solucions-IM",0,1);
+		$this->Ln(50);
+ 		$this->Cell(90,5,$nombre." ".$apellidos." :",0,0);
+		$this->Cell(90,5,"Concepción Rodríguez Gómez",0,1);
+		$this->Ln();
+		$this->Cell(90,5,$cargo." :",0,0);
+		$this->Cell(90,5,$gerente." Solucions-IM",0,1);
+		
+	}
+
 	function Portada($titul,$descripcio,$data,$versio,$aut)
 	{
 		global $db,$dbhandle,$titulo,$tema,$fecha,$version,$autor,$adress,$texto_lopd;
@@ -349,9 +390,12 @@ class PDF extends PDF_HTML_Table
 		$pdf->SetFont('Calibri','',10);
 
 
-		$sqlcli = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowof["id_cliente"];
+		$sqlcli = "select nombre,cognom1,cognom2,direccion,poblacion,cp,provincia from sgm_clients where visible=1 and id=".$rowof["id_cliente"];
 		$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
 		$rowcli = mysqli_fetch_array($resultcli);
+		$sqlclic = "select nombre,apellido1,apellido2,mail from sgm_clients_contactos where visible=1 and id=".$rowof["id_contacto"];
+		$resultclic = mysqli_query($dbhandle,convertSQL($sqlclic));
+		$rowclic = mysqli_fetch_array($resultclic);
 		$sqlts = "select tipo_servidor from sim_comercial_tipos_servidores where visible=1 and id=".$rowof["id_tipo_servidor"];
 		$resultts = mysqli_query($dbhandle,convertSQL($sqlts));
 		$rowts = mysqli_fetch_array($resultts);
@@ -365,6 +409,11 @@ class PDF extends PDF_HTML_Table
 		while ($rowcse = mysqli_fetch_array($resultcse)){
 			$servidores[] = $rowcse["servidores"];
 		}
+		$taula_adres1 = "<table style=\"width: 868px;\">";
+		$taula_adres1 .= "<tr><td>".$edificio."</td><td>".utf8_encode($direccion)."</td><td>".utf8_encode($poblacion)."</td><td>".$cp."</td><td>".$provincia."</td></tr>";
+		$taula_adres1 .= "<tr><td></td><td>".utf8_encode($rowcli["direccion"])."</td><td>".utf8_encode($rowcli["poblacion"])."</td><td>".utf8_encode($rowcli["cp"])."</td><td>".utf8_encode($rowcli["provincia"])."</td></tr>";
+		$taula_adres1 .= "</table>";
+
 		$taula_resum = "<table style=\"width: 868px;\">";
 		$taula_resum .= "<tr><td>".$Servicio."</td>";
 		for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".$servidores[$i]."</td>";}
@@ -372,28 +421,50 @@ class PDF extends PDF_HTML_Table
 		$sqlsr = "select id_servicio from sim_comercial_oferta_rel_servicios where id_comercial_oferta=".$_GET["id"];
 		$resultsr = mysqli_query($dbhandle,convertSQL($sqlsr));
 		while ($rowsr = mysqli_fetch_array($resultsr)){
-			$sqlse = "select servicio,id_servicio_origen from sgm_contratos_servicio where visible=1 and id=".$rowsr["id_servicio"];
+			$sqlse = "select servicio,id_servicio_origen,id_cobertura,temps_resposta,sla from sgm_contratos_servicio where visible=1 and id=".$rowsr["id_servicio"];
 			$resultse = mysqli_query($dbhandle,convertSQL($sqlse));
 			$rowse = mysqli_fetch_array($resultse);
 			$sqlseo = "select codigo_origen from sgm_contratos_servicio_origen where visible=1 and id=".$rowse["id_servicio_origen"];
 			$resultseo = mysqli_query($dbhandle,convertSQL($sqlseo));
 			$rowseo = mysqli_fetch_array($resultseo);
+			$sqlsla = "select nombre from sgm_contratos_sla_cobertura where visible=1 and id=".$rowse["id_cobertura"];
+			$resultsla = mysqli_query($dbhandle,convertSQL($sqlsla));
+			$rowsla = mysqli_fetch_array($resultsla);
 			$taula_resum .= "<tr><td>".utf8_encode($rowse["servicio"])."</td>";
-			for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".utf8_encode($rowseo["codigo_origen"])."</td>";}
+			for ($i=0;$i<count($servidores);$i++) {
+				$taula_resum .= "<td>";
+				if ($rowseo["codigo_origen"] != '') {$taula_resum .= $rowseo["codigo_origen"]."-";}
+				if ($rowsla["nombre"] != '') {$taula_resum .= $rowsla["nombre"]."-";}
+				if ($rowse["temps_resposta"] > 0) {$taula_resum .= $rowse["temps_resposta"]."h.-";}
+				if ($rowse["sla"] > 0) {$taula_resum .= $rowse["sla"]."%";}
+				$taula_resum .= "</td>";
+			}
 			$taula_resum .= "</tr>";
 		}
 		$taula_resum .= "</table>";
 
+		if ($rowof["socio_tecnologico"] == 1){
+			$sql = "select * from sim_comercial_socio_tecnologico where id_idioma=".$rowi["id"];
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			$row = mysqli_fetch_array($result);
+			$contenido = str_replace( '[SOCI_TEC]', utf8_encode($row["texto"]), $contenido );
+		} else {
+			$contenido = str_replace( '[SOCI_TEC]', '', $contenido );
+		}
 		$contenido = str_replace( '[CLIENT]', utf8_encode($rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]), $contenido );
+		$contenido = str_replace( '[CONTACTO_CLIENT]', utf8_encode($rowclic["nombre"]." ".$rowclic["apellido1"]." ".$rowclic["apellido2"]." - ".$rowclic["mail"]), $contenido );
 		$contenido = str_replace( '[NUM_DISP]', $rowof["num_dispositivos"], $contenido );
 		$contenido = str_replace( '[NUM_SERVEIS]', $rowof["num_servicios"], $contenido );
 		$contenido = str_replace( '[TIPUS_SERVIDOR]', $rowts["tipo_servidor"], $contenido );
 		$contenido = str_replace( '[SOFTWARE]', $rowso["software"], $contenido );
+		$contenido = str_replace( '[TAULA_ADRES1]', $taula_adres1, $contenido );
 		$contenido = str_replace( '[TAULA_RESUM]', $taula_resum, $contenido );
 		$pdf->WriteHTML($contenido,0);
 	}
 	$pdf->AddPage();
 	$pdf->WriteTableValoraciones($_GET["id"]);
+	$pdf->AddPage();
+	$pdf->Firma($rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]);
 	$pdf->stopPageNums();
 	$pdf->insertTOC(3);
 	$pdf->Contraportada();

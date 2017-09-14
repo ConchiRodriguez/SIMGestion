@@ -219,6 +219,7 @@ $Descuento = "Descuento";
 $Desde= "Desde";
 $desde = "desde";
 $Desde_archivo = "Desde archivo";
+$Desglosar = "Desglosar";
 $Desmarcar = "Desmarcar";
 $Desplazamiento = "Desplazamiento";
 $Desplazamientos = "Desplazamientos";
@@ -328,6 +329,7 @@ $Firmante = "Firmante";
 $Fiscal = "Fiscal";
 $Fisica = "F&iacute;sica";
 $Forma = "Forma";
+$Forma_pago = "Forma de pago";
 $Formacion = "Formaci&oacute;n";
 $Formacion_general = "Formaci&oacute;n General";
 $Formacion_especifica = "Formaci&oacute;n Espec&iacute;fica";
@@ -868,7 +870,9 @@ $NotasDes = "No se puede introducir una incidencia sin texto";
 $cambiarDatos = "Si desea cambiar los datos de la empresa, pongase en contacto con ";
 #Comercial
 $pregunta_versionar = "¿Desea versionar el elemento seleccionado?";
-#Texto
+$infoServidores = "Nombre descriptivo de cada servidor necesario en el cliente";
+$infoDesglosar = "Se muestran o no todos los articulos de la oferta en la impresi&oacute; en PDF. Si es no, solo se muestra el primer articulo de la oferta con el precio total de todos los articulos.";
+#Texto Ajuda
 $FacturasAyudaColores = "
 	<p>En el listado general, las factura se muestran en diferentes colores para diferenciarlas seg&uacute;n diferentes motivos.</p>
 	<ul>

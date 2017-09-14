@@ -211,6 +211,8 @@ if (($option == 1011) AND ($autorizado == true)) {
 			echo "<table cellpadding=\"3\" cellspacing=\"0\" class=\"lista\">";
 				echo "<tr style=\"background-color:silver\">";
 					echo "<th>".$Eliminar."</th>";
+					echo "<th>".$Numero."</th>";
+					echo "<th>".$Alias."</th>";
 					echo "<th>".$Cliente."</th>";
 					echo "<th>".$Cliente." ".$Final."</th>";
 					echo "<th>".$Descripcion."</th>";
@@ -221,7 +223,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<th></th>";
 				echo "</tr>";
 #				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_plantilla<>0 ";
-				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado,fecha_ini,fecha_fin from sgm_contratos where visible=1 ";
+				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado,fecha_ini,fecha_fin,num_contrato from sgm_contratos where visible=1 ";
 				if ($_POST["id_contrato_tipo2"] > 0) {
 					$sqlcc = $sqlcc." and id_contrato_tipo=".$_POST["id_contrato_tipo2"]."";
 				}
@@ -241,9 +243,11 @@ if (($option == 1011) AND ($autorizado == true)) {
 					else { $color = "white"; $color_letra = "";}
 					echo "<tr style=\"background-color:".$color."\">";
 						echo "<td style=\"text-align:center;color:".$color_letra."\"><a href=\"index.php?op=1011&sop=10&id=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"".$Eliminar."\" title=\"".$Eliminar."\" border=\"0\"></a></td>";
-						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
+						$sql = "select id,nombre,cognom1,cognom2,alias from sgm_clients where visible=1 and id=".$rowcc["id_cliente"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
 						$row = mysqli_fetch_array($result);
+						echo "<td style=\"color:".$color_letra."\">".$rowcc["num_contrato"]."</td>";
+						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["alias"]."</a></td>";
 						echo "<td><a href=\"index.php?op=1008&sop=140&id=".$row["id"]."\" style=\"color:".$color_letra."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 						$sql = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowcc["id_cliente_final"]."";
 						$result = mysqli_query($dbhandle,convertSQL($sql));
@@ -1305,7 +1309,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 	if (($soption == 541) AND ($admin == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1011&sop=535&ssop=3&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"],"op=1011&sop=535&id=".$_GET["id"]),array($Si,$No));
+		echo boton(array("op=1011&sop=540&ssop=4&id=".$_GET["id"]."&id_ser=".$_GET["id_ser"],"op=1011&sop=540&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 

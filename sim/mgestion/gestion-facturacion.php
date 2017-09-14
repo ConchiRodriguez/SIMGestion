@@ -986,7 +986,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			}
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-			$sqls = "select pvd,pvp,descuento from sgm_stock where id_article=".$row["id"];
+			$sqls = "select pvd,pvp,descuento from sgm_stock where vigente=1 and id_article=".$row["id"];
 			$results = mysqli_query($dbhandle,convertSQL($sqls));
 			$rows = mysqli_fetch_array($results);
 			if ($_POST["descuento"] > 0) { $descuento_art = $_POST["descuento"]; } elseif ($rows["descuento"] > 0) { $descuento_art = $rows["descuento"]; } else { $descuento_art = '0.00'; }
@@ -1056,7 +1056,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				} else { $sqla = '';}
 				$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 				$rowa = mysqli_fetch_array($resulta);
-				$sqls = "select pvd,pvp from sgm_stock where id_article=".$rowa["id"];
+				$sqls = "select pvd,pvp from sgm_stock where vigente=1 and id_article=".$rowa["id"];
 				$results = mysqli_query($dbhandle,convertSQL($sqls));
 				$rows = mysqli_fetch_array($results);
 				if ($rows) {

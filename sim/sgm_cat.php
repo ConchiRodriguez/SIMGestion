@@ -215,10 +215,11 @@ $Descatalogado = "Descatalogat";
 $Descatalogados = "Descatalogats";
 $Descatalogar = "Descatalogar";
 $Descripcion = "Descripci&oacute;";
-$Descuento = "Desconte";
+$Descuento = "Descompte";
 $Desde= "Desde";
 $desde = "desde";
 $Desde_archivo = "Des de archiu";
+$Desglosar = "Desglossar";
 $Desmarcar = "Desmarcar";
 $Desplazamiento = "Despla&ccedilament";
 $Desplazamientos = "Despla&ccedilaments";
@@ -329,6 +330,7 @@ $Firmante = "Firmant";
 $Fiscal = "Fiscal";
 $Fisica = "F&iacute;sica";
 $Forma = "Forma";
+$Forma_pago = "Forma de pagament";
 $Formacion = "Formaci&oacute;";
 $Formacion_general = "Formaci&oacute; General";
 $Formacion_especifica = "Formaci&oacute; Espec&iacute;fica";
@@ -869,6 +871,8 @@ $NotasDes = "No es pot introduir una incidencia sense text";
 $cambiarDatos = "Si desitja canviar les dades de l'empresa, posis en contacte amb ";
 #Comercial
 $pregunta_versionar = "¿Desitja versionar l'element seleccionat?";
+$infoServidores = "Nom descriptiu de cadascun d'els servidors necessari al client";
+$infoDesglosar = "Es mostren o no tot els articles de l'oferta en la impresi&oacute; en PDF. Si es no, nom&eacute;s es mostra el primer article de l'oferta amb el preu total de tots els articles.";
 #Texto
 $FacturasAyudaColores = "
 	<p>En el llistat general, les factures es mostren en diferents colors per diferenciar-les segons diferents motius.</p>

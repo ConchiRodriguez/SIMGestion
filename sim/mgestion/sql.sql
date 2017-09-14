@@ -373,9 +373,7 @@ ALTER TABLE `sim_comercial_contenido` ADD `contenido` longtext AFTER `titulo`;
 ALTER TABLE `sim_comercial_contenido` ADD `contenido_extenso` longtext AFTER `contenido`;
 ALTER TABLE `sim_comercial_contenido` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `contenido_extenso`;
 ALTER TABLE `sim_comercial_contenido` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `visible`;
-ALTER TABLE `sim_comercial_contenido` ADD `obligatorio` int(11) NOT NULL default '0' AFTER `id_idioma`;
-ALTER TABLE `sim_comercial_contenido` ADD `id_servicio` int(11) NOT NULL default '0' AFTER `obligatorio`;
-ALTER TABLE `sim_comercial_contenido` ADD `version` int(11) NOT NULL default '0' AFTER `id_servicio`;
+ALTER TABLE `sim_comercial_contenido` ADD `version` int(11) NOT NULL default '0' AFTER `id_idioma`;
 ALTER TABLE `sim_comercial_contenido` ADD `versionado` tinyint(1) NOT NULL default '0' AFTER `version`;
 ALTER TABLE `sim_comercial_contenido` ADD `editable` tinyint(1) NOT NULL default '0' AFTER `versionado`;
 ALTER TABLE `sim_comercial_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `editable`;
@@ -399,6 +397,7 @@ ALTER TABLE `sim_comercial_oferta` ADD `num_servicios` int(11) NOT NULL default 
 ALTER TABLE `sim_comercial_oferta` ADD `id_tipo_servidor` int(11) NOT NULL default '0' AFTER `num_servicios`;
 ALTER TABLE `sim_comercial_oferta` ADD `id_software` int(11) NOT NULL default '0' AFTER `id_tipo_servidor`;
 ALTER TABLE `sim_comercial_oferta` ADD `socio_tecnologico` tinyint(1) NOT NULL default '0' AFTER `id_software`;
+ALTER TABLE `sim_comercial_oferta` ADD `id_contacto` int(11) NOT NULL default '0' AFTER `socio_tecnologico`;
 
 CREATE TABLE `sim_comercial_oferta_comentarios` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_comentarios` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
@@ -418,6 +417,8 @@ ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descripcion` varchar(255) NOT
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `total` decimal(11,2) NOT NULL default '0' AFTER `descripcion` ;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `descuento` decimal(11,2) NOT NULL default '0' AFTER `total` ;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `aceptada` tinyint(1) NOT NULL default '0' AFTER `descuento`;
+ALTER TABLE `sim_comercial_oferta_valoracion` ADD `comentarios` longtext AFTER `aceptada`;
+ALTER TABLE `sim_comercial_oferta_valoracion` ADD `desglosar` tinyint(1) NOT NULL default '0' AFTER `comentarios`;
 
 CREATE TABLE `sim_comercial_oferta_valoracion_rel_articulos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_comercial_oferta_valoracion` int(11) NOT NULL default '0' AFTER `id`;
@@ -432,6 +433,10 @@ ALTER TABLE `sim_comercial_oferta_rel_servicios` ADD `id_servicio` int(11) NOT N
 CREATE TABLE `sim_comercial_oferta_servidores` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_oferta_servidores` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_comercial_oferta_servidores` ADD `servidores` varchar(255) NOT NULL default '' AFTER `id_comercial_oferta`;
+
+CREATE TABLE `sim_comercial_socio_tecnologico` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
+ALTER TABLE `sim_comercial_socio_tecnologico` ADD `texto` longtext AFTER `id`;
+ALTER TABLE `sim_comercial_socio_tecnologico` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `texto`;
 
 CREATE TABLE `sim_comercial_software` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`) );
 ALTER TABLE `sim_comercial_software` ADD `software` varchar(255) NOT NULL default '' AFTER `id`;

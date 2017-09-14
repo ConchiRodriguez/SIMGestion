@@ -5,13 +5,16 @@ $abierta = "Abierta";
 $abiertas = "Abiertas";
 $acreedor = "Acreedor";
 $antecedentes = "Antecedentes";
+$apellidos = "Apellidos";
 $articulos = "Articulos";
 $asunto = "Asunto";
 $autor = "Autor";
 
 $cambio = "Cambio";
+$cargo = "Cargo";
 $cerrada = "Cerrada";
 $cerradas = "Cerradas";
+$cnombre = "Contacto";
 $cmail= "E-mail Contacto";
 $cnombre = "Contacto";
 $cobertura = "Cobertura";
@@ -20,12 +23,14 @@ $cp = "CP";
 $cuenta_corriente= "Numero de Cuenta";
 
 $descripcion = "Descripción";
+$descripcion_general = "Descripción General";
 $descuento = "Descuento";
 $deudor = "Deudor";
 $direccion = "Dirección";
 $duracion = "Duración";
 
 $e_mail = "E-mail";
+$edificio = "Edificio";
 $estado = "Estado";
 
 $fecha = "Fecha";
@@ -33,10 +38,11 @@ $fecha_entrega = "Fecha de entrega";
 $fecha_vencimiento = "Fecha de vencimiento";
 $fecha_fin = "Fecha Finalización";
 $fecha_ini = "Fecha Inicio";
+$firma_oferta = "Firma de la oferta";
 $forma_de_pago = "Forma de pago";
 $fuera_sla = "Fuera de SLA";
 
-$descripcion_general = "Descripción General";
+$gerente = "Gerente";
 
 $importe = "Importe";
 $incidencias = "Incidencias";
@@ -61,6 +67,7 @@ $pausada = "Pausada";
 $pausadas = "Pausadas";
 $pedido = "Pedido";
 $pendientes = "Pendientes";
+$por = "Por";
 $porcentaje_sla = "% SLA Cumplido";
 $poblacion = "Población";
 $precio = "Precio";
@@ -90,6 +97,6 @@ $valoracion_economica = "Valoración Económica";
 #protecci&oacute;n de datos#
 $texto_pdatos = "Le recordamos, que sus datos se encuentran recogidos en un fichero tituralidad de SOLUCIONS INFORMATIQUES MARESME SL con la finalidad de prestar sus servicios. De acuerdo con la Ley Orgánica 15/1999 de Protección de Datos de Caracter Personal puede ejercer el derecho al acceso, rectificación, cancelación y oposición enviando un escrito de solicitud y fotocopia del DNI a SOLUCIONS INFORMATIQUES MARESME SL, AVDA MARESME, 44 BAJOS, 2 de TORDERA provincia de BARCELONA.";
 
-
+$texto_firma = "Queda aprobada la oferta de servicio y la valoración económica por parte de:"
 
 ?>
