@@ -17,6 +17,7 @@ $cerradas = "Tancades";
 $cnombre = "Contacte";
 $cmail= "E-mail Contacte";
 $cobertura = "Cobertura";
+$condiciones_pago = "Condicions de pagament";
 $cuenta_corriente= "Nombre de Compte";
 $codigo = "Codi";
 $cp = "CP";
@@ -79,6 +80,8 @@ $responsable_tecnico = "Responsable Tènic";
 $retenciones = "Retencions";
 
 $subtotal = "Subtotal";
+$servicio = "Servei";
+$servidor = "Servidor";
 
 $telefono = "Telf.";
 $tema = "Tema";

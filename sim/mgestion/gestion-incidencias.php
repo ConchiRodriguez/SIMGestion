@@ -645,17 +645,22 @@ if (($option == 1018) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 3) {
-		$sqlinc = "select id from sgm_incidencias where visible=1 and id_incidencia=0";
-		$resultinc = mysqli_query($dbhandle,convertSQL($sqlinc));
-		while ($rowinc = mysqli_fetch_array($resultinc)){
-			$ids[] = $rowinc["id"];
-		}
-		if ((is_numeric($_POST["id_inc_rel"])) and (in_array($_POST["id_inc_rel"],$ids))){
-			echo "<center>";
-			echo "<br><br>¿Seguro que desea relacionar esta incidencias?<br><br>".$_GET["id"]." y ".$_POST["id_inc_rel"];
-			echo "<br>La incidencia ".$_GET["id"]." se convertirá en una nota de la incidencia ".$_POST["id_inc_rel"]."<br><br>";
-			echo boton(array("op=1018&sop=0&ssop=1&id=".$_GET["id"]."&id_inc_rel=".$_POST["id_inc_rel"].$adres,"op=1018&sop=0".$adres),array($Si,$No));
-			echo "</center>";
+		if ($_GET["id"] != $_POST["id_inc_rel"]){
+			$sqlinc = "select id from sgm_incidencias where visible=1 and id_incidencia=0";
+			$resultinc = mysqli_query($dbhandle,convertSQL($sqlinc));
+			while ($rowinc = mysqli_fetch_array($resultinc)){
+				$ids[] = $rowinc["id"];
+			}
+			if ((is_numeric($_POST["id_inc_rel"])) and (in_array($_POST["id_inc_rel"],$ids))){
+				echo "<center>";
+				echo "<br><br>¿Seguro que desea relacionar esta incidencias?<br><br>".$_GET["id"]." y ".$_POST["id_inc_rel"];
+				echo "<br>La incidencia ".$_GET["id"]." se convertirá en una nota de la incidencia ".$_POST["id_inc_rel"]."<br><br>";
+				echo boton(array("op=1018&sop=0&ssop=1&id=".$_GET["id"]."&id_inc_rel=".$_POST["id_inc_rel"].$adres,"op=1018&sop=0".$adres),array($Si,$No));
+				echo "</center>";
+			} else {
+				echo boton(array("op=1018&sop=0"),array("&laquo; ".$Volver));
+				mensageError($ErrorRelacion);
+			}
 		} else {
 			echo boton(array("op=1018&sop=0"),array("&laquo; ".$Volver));
 			mensageError($ErrorRelacion);

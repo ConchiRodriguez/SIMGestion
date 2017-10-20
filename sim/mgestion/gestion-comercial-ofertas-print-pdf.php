@@ -241,6 +241,117 @@ class PDF extends PDF_HTML_Table
 		}
 	}
 	
+	function WriteTableCondicionesPago($id){
+		global $db,$dbhandle,$condiciones_pago,$unitats,$articulos,$precio,$total,$descuento;
+
+		$this->SetTextColor(51,51,159);
+		$this->SetFontSize(14);
+		$this->SetStyle('B',true);
+		$this->Cell(170,5,$condiciones_pago,0,1);
+		$this->entryTOC($condiciones_pago,0);
+		$this->Ln(5);
+ 
+		$this->SetTextColor(0,0,0);
+		$this->SetDrawColor(0,0,0);
+
+ 		$sqlov = "select * from sim_comercial_oferta_valoracion where aceptada=1 and id_comercial_oferta=".$id;
+		$resultov = mysqli_query($dbhandle,convertSQL($sqlov));
+		$rowov = mysqli_fetch_array($resultov);
+		if ($rowov){
+			$this->SetFont('Calibri','',12);
+			$this->Cell(170,5,$rowov["descripcion"],0,1);
+			$this->Ln();
+			$this->SetFont('Calibri','',10);
+			$this->Cell(100,5,$articulos,'B',0);
+			$this->Cell(40,5,$unitats,'B',0);
+			$this->Cell(30,5,$precio." ".$total,'B',1,'R');
+
+			$total_val = 0;
+			$sqlcova = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$rowov["id"];
+			$resultcova = mysqli_query($dbhandle,convertSQL($sqlcova));
+			while ($rowcova = mysqli_fetch_array($resultcova)){
+				$sqla = "select * from sgm_articles where id=".$rowcova["id_articulo"];
+				$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+				$rowa = mysqli_fetch_array($resulta);
+
+				$sql = "select id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$rowcova["id_articulo"];
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				$row = mysqli_fetch_array($result);
+				$sqld = "select abrev from sgm_divisas where id=".$row["id_divisa_pvp"];
+				$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+				$rowd = mysqli_fetch_array($resultd);
+				$total_art = $rowcova["pvp"] * $rowcova["unidades"];
+				$total_val += $total_art;
+				
+				$this->SetFont('Calibri','',9);
+				$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
+				$this->Cell(40,5,$rowcova["unidades"],0,0);
+				$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
+			}
+			$this->Cell(100,5,'','T',0);
+			$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0);
+			$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
+			$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+			$this->WriteHTML($rowov["comentarios"],0);
+			$this->Ln(15);
+		} else {
+			$sqlov = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$id;
+			$resultov = mysqli_query($dbhandle,convertSQL($sqlov));
+			while ($rowov = mysqli_fetch_array($resultov)){
+
+				$this->SetFont('Calibri','',12);
+				$this->Cell(170,5,$rowov["descripcion"],0,1);
+				$this->Ln();
+				$this->SetFont('Calibri','',10);
+				$this->Cell(100,5,$articulos,'B',0);
+				$this->Cell(40,5,$unitats,'B',0);
+				$this->Cell(30,5,$precio." ".$total,'B',1,'R');
+
+				$total_val = 0;
+				$count_art = 0;
+				$sqlcova = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$rowov["id"];
+				$resultcova = mysqli_query($dbhandle,convertSQL($sqlcova));
+				while ($rowcova = mysqli_fetch_array($resultcova)){
+					$sqla = "select * from sgm_articles where id=".$rowcova["id_articulo"];
+					$resulta = mysqli_query($dbhandle,convertSQL($sqla));
+					$rowa = mysqli_fetch_array($resulta);
+					if ($count_art == 0){
+						$nombre_art = comillasInver($rowa["nombre"]);
+						$count_art++;
+					}
+
+					$sql = "select id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$rowcova["id_articulo"];
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
+					$sqld = "select abrev from sgm_divisas where id=".$row["id_divisa_pvp"];
+					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+					$rowd = mysqli_fetch_array($resultd);
+					$total_art = $rowcova["pvp"] * $rowcova["unidades"];
+					$total_val += $total_art;
+					
+					if ($rowov["desglosar"] == 1){
+						$this->SetFont('Calibri','',9);
+						$this->Cell(100,5,comillasInver($rowa["nombre"]),0,0);
+						$this->Cell(40,5,$rowcova["unidades"],0,0);
+						$this->Cell(30,5,$total_art." ".$rowd["abrev"],0,1,'R');
+					}
+				}
+				if ($rowov["desglosar"] == 0){
+					$this->SetFont('Calibri','',9);
+					$this->Cell(100,5,$nombre_art,0,0);
+					$this->Cell(40,5,'',0,0);
+					$this->Cell(30,5,$total_val." ".$rowd["abrev"],0,1,'R');
+				}
+				$this->Cell(100,5,'','T',0);
+				$this->Cell(40,5,$descuento.": ".$rowov["descuento"]."%",'T',0,'L');
+				$total_valoracion = $total_val - (($total_val*$rowov["descuento"])/100);
+				$this->Cell(30,5,$total_valoracion." ".$rowd["abrev"],'T',1,'R');
+				$this->WriteHTML($rowov["comentarios"],0);
+				$this->Ln(15);
+			}
+		}
+	}
+	
 	function Firma($nombre_cliente){
 		global $db,$dbhandle,$firma_oferta,$por,$nombre,$apellidos,$cargo,$gerente,$texto_firma;
 
@@ -378,7 +489,7 @@ class PDF extends PDF_HTML_Table
 			$content = $rowcon["contenido"];
 			$content_ext = $rowcon["contenido_extenso"];
 		}
-		if ($_POST["tipo"] == 0) {$contenido = $content;} else {$contenido = $content.$content_ext;}
+		if ($_POST["tipo"] == 0) {$contenido = utf8_encode($content);} else {$contenido = utf8_encode($content.$content_ext);}
 
 		$pdf->SetTextColor(51,51,159);
 		$pdf->SetFontSize(14);
@@ -415,8 +526,8 @@ class PDF extends PDF_HTML_Table
 		$taula_adres1 .= "</table>";
 
 		$taula_resum = "<table style=\"width: 868px;\">";
-		$taula_resum .= "<tr><td>".$Servicio."</td>";
-		for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".$servidores[$i]."</td>";}
+		$taula_resum .= "<tr><td>".$servicio." --- ".$servidor."</td>";
+		for ($i=0;$i<count($servidores);$i++) {$taula_resum .= "<td>".utf8_encode($servidores[$i])."</td>";}
 		$taula_resum .= "</tr>";
 		$sqlsr = "select id_servicio from sim_comercial_oferta_rel_servicios where id_comercial_oferta=".$_GET["id"];
 		$resultsr = mysqli_query($dbhandle,convertSQL($sqlsr));
@@ -463,6 +574,7 @@ class PDF extends PDF_HTML_Table
 	}
 	$pdf->AddPage();
 	$pdf->WriteTableValoraciones($_GET["id"]);
+	$pdf->WriteTableCondicionesPago($_GET["id"]);
 	$pdf->AddPage();
 	$pdf->Firma($rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]);
 	$pdf->stopPageNums();

@@ -18,6 +18,7 @@ $cnombre = "Contacto";
 $cmail= "E-mail Contacto";
 $cnombre = "Contacto";
 $cobertura = "Cobertura";
+$condiciones_pago = "Condiciones de pago";
 $codigo = "Código";
 $cp = "CP";
 $cuenta_corriente= "Numero de Cuenta";
@@ -79,6 +80,8 @@ $responsable_tecnico = "Responsable Técnico";
 $retenciones = "Retenciones";
 
 $subtotal = "Subtotal";
+$servicio = "Servicio";
+$servidor = "Servidor";
 
 $telefono = "Telf.";
 $tema = "Tema";

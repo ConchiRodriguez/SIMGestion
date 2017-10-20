@@ -51,10 +51,6 @@ if (($option == 1009) AND ($autorizado == true)) {
 					insertFunction("sim_comercial_oferta_rel_servicios",$camposInsert,$datosInsert);
 				}
 			}
-
-			$camposInsert="id_comercial_oferta,servidores";
-			$datosInsert=array($rowcc["id"],$_POST["servidores"]);
-			insertFunction("sim_comercial_oferta_servidores",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2) {
 			$camposUpdate=array('aceptada');
@@ -414,7 +410,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1009&sop=110&id=".$rowc["id"]."\" style=\"color:white;\">".$Contenidos." ".$Genericos."</a></td>";
 						echo "<tr></tr>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1009&sop=120&id=".$rowc["id"]."\" style=\"color:white;\">".$Valoraciones."</a></td>";
-							echo "<td class=\"ficha\"><a href=\"index.php?op=1009&sop=150&id=".$rowc["id"]."\" style=\"color:white;\">".$Forma_pago."</a></td>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1009&sop=150&id=".$rowc["id"]."\" style=\"color:white;\">".$Condiciones_pago."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1009&sop=140&id=".$rowc["id"]."\" style=\"color:white;\">".$Comentarios."</a></td>";
 						echo "</tr>";
 					echo "</table>";
@@ -702,17 +698,30 @@ if (($option == 1009) AND ($autorizado == true)) {
 
 	if ($soption == 120) {
 		if ($ssoption == 1){
-			$camposInsert = "id_comercial_oferta,descripcion,descuento,desglosar";
-			$datosInsert = array($_GET["id"],comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"]);
+			$camposInsert = "id_comercial_oferta,descripcion,descuento,desglosar,orden";
+			$datosInsert = array($_GET["id"],comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"],$_POST["orden"]);
 			insertFunction ("sim_comercial_oferta_valoracion",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2){
-			$camposUpdate = array("descripcion","descuento","desglosar");
-			$datosUpdate = array(comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"]);
+			$camposUpdate = array("descripcion","descuento","desglosar","orden");
+			$datosUpdate = array(comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"],$_POST["orden"]);
 			updateFunction ("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
 			deleteFunction("sim_comercial_oferta_valoracion",$_GET["id_val"]);
+			$num = 1;
+			$sqll = "select orden,id from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by orden";
+			$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+			while ($rowl = mysqli_fetch_array($resultl)) {
+				if ($num == $rowl["orden"]) {
+					$num++;
+				} else {
+					$camposUpdate = array("orden");
+					$datosUpdate = array($num);
+					updateFunction ("sim_comercial_oferta_valoracion",$rowl["id"],$camposUpdate,$datosUpdate);
+					$num++;
+				}
+			}
 		}
 		if ($ssoption == 4) {
 			$sql = "select id from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
@@ -732,11 +741,11 @@ if (($option == 1009) AND ($autorizado == true)) {
 			updateFunction("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 6){
-			$sql = "select id,descripcion,descuento,total from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"];
+			$sql = "select id,descripcion,descuento,total,orden from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"];
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-			$camposInsert = "id_comercial_oferta,descripcion,descuento,total";
-			$datosInsert = array($_GET["id"],comillas($row["descripcion"]),$row["descuento"],$row["total"]);
+			$camposInsert = "id_comercial_oferta,descripcion,descuento,total,orden";
+			$datosInsert = array($_GET["id"],comillas($row["descripcion"]),$row["descuento"],$row["total"],$row["orden"]);
 			insertFunction ("sim_comercial_oferta_valoracion",$camposInsert,$datosInsert);
 
 			$sqlc = "select id from sim_comercial_oferta_valoracion where descripcion='".$row["descripcion"]."' and id<>".$row["id"];
@@ -755,6 +764,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:Silver;\">";
 				echo "<th style=\"width:50px;text-align:right;\">".$Eliminar."</th>";
+				echo "<th style=\"width:40px;text-align:left;\">".$Orden."</th>";
 				echo "<th style=\"width:300px;text-align:left;\">".$Descripcion."</th>";
 				echo "<th style=\"width:50px;text-align:left;\">".$Descuento."</th>";
 				echo "<th style=\"width:60px;text-align:left;vertical-align:center;\">".$Desglosar."</th><th><img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$infoDesglosar."\"></th>";
@@ -767,6 +777,11 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1009&sop=120&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
+				$sqlxx = "select orden from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by orden desc";
+				$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+				$rowxx = mysqli_fetch_array($resultxx);
+				$orden = $rowxx["orden"] +1;
+				echo "<td><input type=\"number\" name=\"orden\" value=\"".$orden."\"></td>";
 				echo "<td><input type=\"Text\" name=\"descripcion\"></td>";
 				echo "<td><input type=\"Number\" name=\"descuento\" min=\"0\" style=\"text-align:right;\"></td>";
 				echo "<td><select style=\"width:60px\" name=\"desglosar\">";
@@ -778,13 +793,14 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
+			$sql = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by orden";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				if ($row["aceptada"] == 1){$color = $color_verde;} else {$color = "white";}
 				echo "<tr style=\"background-color:".$color.";\">";
 					echo "<form action=\"index.php?op=1009&sop=120&ssop=2&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
 					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1009&sop=121&id=".$_GET["id"]."&id_val=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<td><input type=\"number\" name=\"orden\" value=\"".$row["orden"]."\"></td>";
 					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$row["descripcion"]."\"></td>";
 					echo "<td><input type=\"Number\" name=\"descuento\" value=\"".$row["descuento"]."\" step=\"0.00\" min=\"0\" style=\"text-align:right;\"></td>";
 					echo "<td><select style=\"width:60px\" name=\"desglosar\">";
@@ -836,17 +852,38 @@ if (($option == 1009) AND ($autorizado == true)) {
 			$sql = "select pvp from sgm_stock where vigente=1 and id_article=".$_POST["id_articulo"];
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			$row = mysqli_fetch_array($result);
-			$camposInsert = "id_comercial_oferta_valoracion,id_articulo,unidades,pvp";
-			$datosInsert = array($_GET["id_val"],$_POST["id_articulo"],$_POST["unidades"],$row["pvp"]);
+			$camposInsert = "id_comercial_oferta_valoracion,id_articulo,unidades,pvp,orden";
+			$datosInsert = array($_GET["id_val"],$_POST["id_articulo"],$_POST["unidades"],$row["pvp"],$_POST["orden"]);
 			insertFunction ("sim_comercial_oferta_valoracion_rel_articulos",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2){
-			$camposUpdate = array("id_articulo","unidades","pvp");
-			$datosUpdate = array($_POST["id_articulo"],$_POST["unidades"],$_POST["pvp"]);
+			$camposUpdate = array("id_articulo","unidades","pvp","orden");
+			if ($_POST["pvp"] == 0){
+				$sql = "select pvp from sgm_stock where vigente=1 and id_article=".$_POST["id_articulo"];
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				$row = mysqli_fetch_array($result);
+				$pvp = $row["pvp"];
+			} else {
+				$pvp = $_POST["pvp"];
+			}
+			$datosUpdate = array($_POST["id_articulo"],$_POST["unidades"],$pvp,$_POST["orden"]);
 			updateFunction ("sim_comercial_oferta_valoracion_rel_articulos",$_GET["id_art"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
 			deleteFunction("sim_comercial_oferta_valoracion_rel_articulos",$_GET["id_art"]);
+			$num = 1;
+			$sqll = "select orden,id from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"]." order by orden";
+			$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+			while ($rowl = mysqli_fetch_array($resultl)) {
+				if ($num == $rowl["orden"]) {
+					$num++;
+				} else {
+					$camposUpdate = array("orden");
+					$datosUpdate = array($num);
+					updateFunction ("sim_comercial_oferta_valoracion_rel_articulos",$rowl["id"],$camposUpdate,$datosUpdate);
+					$num++;
+				}
+			}
 		}
 		if ($ssoption == 4){
 			$camposUpdate = array("comentarios");
@@ -871,6 +908,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Orden."</th>";
 				echo "<th>".$Articulo."</th>";
 				echo "<th>".$Unidades."</th>";
 				echo "<th>".$PVP."</th>";
@@ -880,6 +918,11 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td></td>";
 				echo "<form action=\"index.php?op=1009&sop=122&ssop=1&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."\" method=\"post\">";
+				$sqlxx = "select orden from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"]." order by orden desc";
+				$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+				$rowxx = mysqli_fetch_array($resultxx);
+				$orden = $rowxx["orden"] +1;
+				echo "<td><input type=\"number\" name=\"orden\" value=\"".$orden."\" style=\"width:40px\"></td>";
 				echo "<td><select style=\"width:450px\" name=\"id_articulo\">";
 					echo "<option value=\"0\">-</option>";
 					$sqlg = "select id,nombre from sgm_articles where visible=1 order by id_subgrupo,nombre";
@@ -888,7 +931,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
 					}
 				echo "</select></td>";
-				echo "<td style=\"text-align:right;\"><input type=\"number\" name=\"unidades\" min=\"0\" style=\"width:50px\"></td>";
+				echo "<td style=\"text-align:right;\"><input type=\"number\" name=\"unidades\" min=\"0\"></td>";
 				echo "<td style=\"text-align:right;width:50px\"></td>";
 				echo "<td></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
@@ -896,12 +939,13 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			$total_val=0;
-			$sqlco = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"];
+			$sqlco = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"]." order by orden";
 			$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
 			while ($rowco = mysqli_fetch_array($resultco)) {
 				echo "<form action=\"index.php?op=1009&sop=122&ssop=2&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."&id_art=".$rowco["id"]."\" method=\"post\">";
 				echo "<tr>";
 					echo "<td><a href=\"index.php?op=1009&sop=123&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."&id_art=".$rowco["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
+					echo "<td><input type=\"number\" name=\"orden\" value=\"".$rowco["orden"]."\" style=\"width:40px\"></td>";
 					echo "<td><select style=\"width:450px\" name=\"id_articulo\">";
 						$sqls = "select id,nombre from sgm_articles where visible=1";
 						$results = mysqli_query($dbhandle,convertSQL($sqls));
@@ -914,7 +958,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 						}
 					echo "</select></td>";
 					echo "<td style=\"text-align:right;width:50px;\"><input type=\"number\" name=\"unidades\" value=\"".$rowco["unidades"]."\" min=\"0\" style=\"width:50px\"></td>";
-					echo "<td style=\"text-align:right;width:50px;\"><input type=\"number\" name=\"pvp\" value=\"".number_format($rowco["pvp"],2,',','.')."\" step=\"0.01\" style=\"width:50px\"></td>";
+					echo "<td style=\"text-align:right;width:50px;\"><input type=\"number\" name=\"pvp\" value=\"".$rowco["pvp"]."\" step=\"0.01\" style=\"width:50px\"></td>";
 					$sql = "select pvp,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$rowco["id_articulo"];
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					$row = mysqli_fetch_array($result);
@@ -928,19 +972,19 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "</tr>";
 				echo "</form>";
 			}
-			echo "<tr><td colspan=\"3\"></td><td>".$Total."</td><td style=\"width:100px;text-align:right\">".number_format($total_val,2,',','.')." ".$rowd["abrev"]."</td></tr>";
+			echo "<tr><td colspan=\"4\"></td><td>".$Total."</td><td style=\"width:100px;text-align:right\">".number_format($total_val,2,',','.')." ".$rowd["abrev"]."</td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<form action=\"index.php?op=1009&sop=122&ssop=4&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."\" method=\"post\">";
 			echo "<tr>";
-				echo "<td style=\"text-align:left;vertical-align:top;\" colspan='6'>".$Comentarios." : </td>";
+				echo "<td style=\"text-align:left;vertical-align:top;\" colspan='7'>".$Comentarios." : </td>";
 			echo "</tr><tr>";
 				$sqlval = "select comentarios from sim_comercial_oferta_valoracion where id=".$_GET["id_val"];
 				$resultval = mysqli_query($dbhandle,convertSQL($sqlval));
 				$rowval = mysqli_fetch_array($resultval);
-				echo "<td colspan='6'><textarea name=\"comentarios\" class=\"contenidos\" rows=\"10\">".$rowval["comentarios"]."</textarea></td>";
+				echo "<td colspan='7'><textarea name=\"comentarios\" class=\"contenidos\" rows=\"10\">".$rowval["comentarios"]."</textarea></td>";
 			echo "</tr><tr>";
-				echo "<td colspan='6'><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
+				echo "<td colspan='7'><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
 			echo "</tr>";
 			echo "</form>";
 		echo "</table>";
@@ -1068,64 +1112,49 @@ if (($option == 1009) AND ($autorizado == true)) {
 
 	if ($soption == 150) {
 		if ($ssoption == 1){
-			$camposInsert = "id_comercial_oferta,descripcion,descuento,desglosar";
-			$datosInsert = array($_GET["id"],comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"]);
-			insertFunction ("sim_comercial_oferta_valoracion",$camposInsert,$datosInsert);
+			$sqlxx = "select orden from sim_comercial_oferta_valoracion where id=".$_POST["id_valoracion"];
+			$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+			$rowxx = mysqli_fetch_array($resultxx);
+			$camposInsert = "id_comercial_oferta,id_comercial_oferta_valoracion,descripcion,orden";
+			$datosInsert = array($_GET["id"],$_POST["id_valoracion"],$_POST["descripcion"],$rowxx["orden"]);
+			insertFunction ("sim_comercial_oferta_condiciones_pago",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2){
-			$camposUpdate = array("descripcion","descuento","desglosar");
-			$datosUpdate = array(comillas($_POST["descripcion"]),$_POST["descuento"],$_POST["desglosar"]);
-			updateFunction ("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
+			$sqlxx = "select orden from sim_comercial_oferta_valoracion where id=".$_POST["id_valoracion"];
+			$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+			$rowxx = mysqli_fetch_array($resultxx);
+			$camposUpdate = array("id_comercial_oferta_valoracion","descripcion","orden");
+			$datosUpdate = array($_POST["id_valoracion"],$_POST["descripcion"],$rowxx["orden"]);
+			updateFunction ("sim_comercial_oferta_condiciones_pago",$_GET["id_con"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
-			deleteFunction("sim_comercial_oferta_valoracion",$_GET["id_val"]);
+			deleteFunction("sim_comercial_oferta_condiciones_pago",$_GET["id_con"]);
 		}
 		if ($ssoption == 4) {
-			$sql = "select id from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
+			$sql = "select id from sim_comercial_oferta_condiciones_pago where id_comercial_oferta=".$_GET["id"]." order by descripcion";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				$camposUpdate=array('aceptada');
 				$datosUpdate=array(0);
-				updateFunction("sim_comercial_oferta_valoracion",$row["id"],$camposUpdate,$datosUpdate);
+				updateFunction("sim_comercial_oferta_condiciones_pago",$row["id"],$camposUpdate,$datosUpdate);
 			}
 			$camposUpdate=array('aceptada');
 			$datosUpdate=array(1);
-			updateFunction("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
+			updateFunction("sim_comercial_oferta_condiciones_pago",$_GET["id_con"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 5) {
 			$camposUpdate=array('aceptada');
 			$datosUpdate=array(0);
-			updateFunction("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption == 6){
-			$sql = "select id,descripcion,descuento,total from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"];
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			$row = mysqli_fetch_array($result);
-			$camposInsert = "id_comercial_oferta,descripcion,descuento,total";
-			$datosInsert = array($_GET["id"],comillas($row["descripcion"]),$row["descuento"],$row["total"]);
-			insertFunction ("sim_comercial_oferta_valoracion",$camposInsert,$datosInsert);
-
-			$sqlc = "select id from sim_comercial_oferta_valoracion where descripcion='".$row["descripcion"]."' and id<>".$row["id"];
-			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-			$rowc = mysqli_fetch_array($resultc);
-			$sqlco = "select id_articulo,unidades,pvp from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$row["id"];
-			$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
-			while ($rowco = mysqli_fetch_array($resultco)) {
-				$camposInsert = "id_comercial_oferta_valoracion,id_articulo,unidades,pvp";
-				$datosInsert = array($rowc["id"],$rowco["id_articulo"],$rowco["unidades"],$rowco["pvp"]);
-				insertFunction ("sim_comercial_oferta_valoracion_rel_articulos",$camposInsert,$datosInsert);
-			}
+			updateFunction("sim_comercial_oferta_condiciones_pago",$_GET["id_con"],$camposUpdate,$datosUpdate);
 		}
 
-		echo "<h4>".$Valoraciones."</h4>";
+		echo "<h4>".$Condiciones_pago."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:Silver;\">";
 				echo "<th style=\"width:50px;text-align:right;\">".$Eliminar."</th>";
-				echo "<th style=\"width:300px;text-align:left;\">".$Descripcion."</th>";
-				echo "<th style=\"width:50px;text-align:left;\">".$Descuento."</th>";
-				echo "<th style=\"width:60px;text-align:left;vertical-align:center;\">".$Desglosar."</th><th><img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$infoDesglosar."\"></th>";
-				echo "<th style=\"width:100px;text-align:right;\">".$Total."</th>";
-				echo "<th></th>";
+				echo "<th style=\"width:40px;text-align:left;\">".$Orden."</th>";
+				echo "<th style=\"width:450px;text-align:left;\">".$Valoracion."</th>";
+				echo "<th style=\"width:350px;text-align:left;\">".$Descripcion."</th>";
 				echo "<th></th>";
 				echo "<th></th>";
 				echo "<th></th>";
@@ -1133,57 +1162,53 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<form action=\"index.php?op=1009&sop=150&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
 				echo "<td></td>";
-				echo "<td><input type=\"Text\" name=\"descripcion\"></td>";
-				echo "<td><input type=\"Number\" name=\"descuento\" min=\"0\" style=\"text-align:right;\"></td>";
-				echo "<td><select style=\"width:60px\" name=\"desglosar\">";
-					echo "<option value=\"0\">".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</td><td></td>";
 				echo "<td></td>";
+				echo "<td><select style=\"width:450px\" name=\"id_valoracion\">";
+					$sqlg = "select id,descripcion from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by orden";
+					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
+					while ($rowg = mysqli_fetch_array($resultg)){
+						echo "<option value=\"".$rowg["id"]."\">".$rowg["descripcion"]."</option>";
+					}
+				echo "</select></td>";
+				echo "<td><input type=\"Text\" name=\"descripcion\"></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 				echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select * from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by descripcion";
+			$sql = "select * from sim_comercial_oferta_condiciones_pago where id_comercial_oferta=".$_GET["id"]." order by orden";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				if ($row["aceptada"] == 1){$color = $color_verde;} else {$color = "white";}
 				echo "<tr style=\"background-color:".$color.";\">";
-					echo "<form action=\"index.php?op=1009&sop=150&ssop=2&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
-					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1009&sop=151&id=".$_GET["id"]."&id_val=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
-					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$row["descripcion"]."\"></td>";
-					echo "<td><input type=\"Number\" name=\"descuento\" value=\"".$row["descuento"]."\" step=\"0.00\" min=\"0\" style=\"text-align:right;\"></td>";
-					echo "<td><select style=\"width:60px\" name=\"desglosar\">";
-						if ($row["desglosar"] == 0){
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						} elseif ($row["desglosar"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
+					echo "<form action=\"index.php?op=1009&sop=150&ssop=2&id=".$_GET["id"]."&id_con=".$row["id"]."\" method=\"post\">";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1009&sop=151&id=".$_GET["id"]."&id_con=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+					echo "<td>".$row["orden"]."</td>";
+					echo "<td><select style=\"width:450px\" name=\"id_valoracion\">";
+						$sqls = "select id,descripcion from sim_comercial_oferta_valoracion where id_comercial_oferta=".$_GET["id"]." order by orden";
+						$results = mysqli_query($dbhandle,convertSQL($sqls));
+						while ($rows = mysqli_fetch_array($results)){
+							if ($rows["id"] == $row["id_comercial_oferta_valoracion"]){
+								echo "<option value=\"".$rows["id"]."\" selected>".$rows["descripcion"]."</option>";
+							} else {
+								echo "<option value=\"".$rows["id"]."\">".$rows["descripcion"]."</option>";
+							}
 						}
-					echo "</td><td></td>";
-					$total_valoracion = $row["total"] - (($row["total"]*$row["descuento"])/100);
-					$sqld = "select abrev from sgm_divisas where predefinido=1";
-					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
-					$rowd = mysqli_fetch_array($resultd);
-					echo "<td style=\"text-align:right\">".number_format($total_valoracion,2,',','.')." ".$rowd["abrev"]."</td>";
+					echo "</select></td>";
+					echo "<td><input type=\"Text\" name=\"descripcion\" value=\"".$row["descripcion"]."\"></td>";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 					echo "</form>";
-					echo "<form action=\"index.php?op=1009&sop=122&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1009&sop=152&id=".$_GET["id"]."&id_con=".$row["id"]."\" method=\"post\">";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
 					echo "</form>";
 				if ($row["aceptada"] == 0){
-					echo "<form action=\"index.php?op=1009&sop=150&ssop=4&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1009&sop=150&ssop=4&id=".$_GET["id"]."&id_con=".$row["id"]."\" method=\"post\">";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Aprobar."\"></td>";
 					echo "</form>";
 				} else {
-					echo "<form action=\"index.php?op=1009&sop=150&ssop=5&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=1009&sop=150&ssop=5&id=".$_GET["id"]."&id_con=".$row["id"]."\" method=\"post\">";
 					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Desaprobar."\"></td>";
 					echo "</form>";
 				}
-					echo "<form action=\"index.php?op=1009&sop=150&ssop=6&id=".$_GET["id"]."&id_val=".$row["id"]."\" method=\"post\">";
-					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Duplicar."\"></td>";
-					echo "</form>";
 				echo "</tr>";
 			}
 		echo "</table>";
@@ -1193,120 +1218,104 @@ if (($option == 1009) AND ($autorizado == true)) {
 	if ($soption == 151) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1009&sop=150&ssop=3&id=".$_GET["id"]."&id_val=".$_GET["id_val"],"op=1009&sop=150&id=".$_GET["id"]),array($Si,$No));
+		echo boton(array("op=1009&sop=150&ssop=3&id=".$_GET["id"]."&id_con=".$_GET["id_con"],"op=1009&sop=150&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
 	if ($soption == 152) {
 		if ($ssoption == 1){
-			$sql = "select pvp from sgm_stock where vigente=1 and id_article=".$_POST["id_articulo"];
-			$result = mysqli_query($dbhandle,convertSQL($sql));
-			$row = mysqli_fetch_array($result);
-			$camposInsert = "id_comercial_oferta_valoracion,id_articulo,unidades,pvp";
-			$datosInsert = array($_GET["id_val"],$_POST["id_articulo"],$_POST["unidades"],$row["pvp"]);
-			insertFunction ("sim_comercial_oferta_valoracion_rel_articulos",$camposInsert,$datosInsert);
+			$camposInsert = "id_comercial_oferta_condiciones_pago,orden,fecha,fecha_texto,concepto,importe,descuento,dias_vencimiento";
+			$datosInsert = array($_GET["id_con"],$_POST["orden"],$_POST["fecha"],$_POST["fecha_texto"],$_POST["concepto"],$_POST["importe"],$_POST["descuento"],$_POST["dias_vencimiento"]);
+			insertFunction ("sim_comercial_oferta_condiciones_pago_facturas",$camposInsert,$datosInsert);
 		}
 		if ($ssoption == 2){
-			$camposUpdate = array("id_articulo","unidades","pvp");
-			$datosUpdate = array($_POST["id_articulo"],$_POST["unidades"],$_POST["pvp"]);
-			updateFunction ("sim_comercial_oferta_valoracion_rel_articulos",$_GET["id_art"],$camposUpdate,$datosUpdate);
+			$camposUpdate = array("orden","fecha","fecha_texto","concepto","importe","descuento","dias_vencimiento");
+			$datosUpdate = array($_POST["orden"],$_POST["fecha"],$_POST["fecha_texto"],$_POST["concepto"],$_POST["importe"],$_POST["descuento"],$_POST["dias_vencimiento"]);
+			updateFunction ("sim_comercial_oferta_condiciones_pago_facturas",$_GET["id_fac"],$camposUpdate,$datosUpdate);
 		}
 		if ($ssoption == 3) {
-			deleteFunction("sim_comercial_oferta_valoracion_rel_articulos",$_GET["id_art"]);
+			deleteFunction("sim_comercial_oferta_condiciones_pago_facturas",$_GET["id_fac"]);
+			$num = 1;
+			$sqll = "select orden,id from sim_comercial_oferta_condiciones_pago_facturas where id_comercial_oferta_condiciones_pago=".$_GET["id_con"]." order by orden";
+			$resultl = mysqli_query($dbhandle,convertSQL($sqll));
+			while ($rowl = mysqli_fetch_array($resultl)) {
+				if ($num == $rowl["orden"]) {
+					$num++;
+				} else {
+					$camposUpdate = array("orden");
+					$datosUpdate = array($num);
+					updateFunction ("sim_comercial_oferta_condiciones_pago_facturas",$rowl["id"],$camposUpdate,$datosUpdate);
+					$num++;
+				}
+			}
 		}
 		if ($ssoption == 4){
 			$camposUpdate = array("comentarios");
 			$datosUpdate = array($_POST["comentarios"]);
-			updateFunction ("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
-		}
-		if ($ssoption > 0){
-			$total_val=0;
-			$sqlco = "select id_articulo,unidades,pvp from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"];
-			$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
-			while ($rowco = mysqli_fetch_array($resultco)) {
-				$total_art = $rowco["pvp"] * $rowco["unidades"];
-				$total_val += $total_art;
-			}
-			$camposUpdate = array("total");
-			$datosUpdate = array($total_val);
-			updateFunction ("sim_comercial_oferta_valoracion",$_GET["id_val"],$camposUpdate,$datosUpdate);
+			updateFunction ("sim_comercial_oferta_condiciones_pago",$_GET["id_con"],$camposUpdate,$datosUpdate);
 		}
 
-		echo boton(array("op=1009&sop=120&id=".$_GET["id"]),array("&laquo; ".$Volver));
-		echo "<h4>".$Articulos."</h4>";
+		echo boton(array("op=1009&sop=150&id=".$_GET["id"]),array("&laquo; ".$Volver));
+		echo "<h4>".$Facturas."</h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<th>".$Eliminar."</th>";
-				echo "<th>".$Articulo."</th>";
-				echo "<th>".$Unidades."</th>";
-				echo "<th>".$PVP."</th>";
-				echo "<th>".$Total."</th>";
+				echo "<th>".$Orden."</th>";
+				echo "<th>".$Fecha."</th>";
+				echo "<th>".$Texto." ".$Fecha."</th>";
+				echo "<th>".$Concepto."</th>";
+				echo "<th>".$Descuento."</th>";
+				echo "<th>".$Importe."</th>";
+				echo "<th>".$Vencimiento."</th>";
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<tr>";
 				echo "<td></td>";
-				echo "<form action=\"index.php?op=1009&sop=152&ssop=1&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."\" method=\"post\">";
-				echo "<td><select style=\"width:450px\" name=\"id_articulo\">";
-					echo "<option value=\"0\">-</option>";
-					$sqlg = "select id,nombre from sgm_articles where visible=1 order by id_subgrupo,nombre";
-					$resultg = mysqli_query($dbhandle,convertSQL($sqlg));
-					while ($rowg = mysqli_fetch_array($resultg)){
-						echo "<option value=\"".$rowg["id"]."\">".$rowg["nombre"]."</option>";
-					}
-				echo "</select></td>";
-				echo "<td style=\"text-align:right;\"><input type=\"number\" name=\"unidades\" min=\"0\" style=\"width:50px\"></td>";
-				echo "<td style=\"text-align:right;width:50px\"></td>";
-				echo "<td></td>";
+				echo "<form action=\"index.php?op=1009&sop=152&ssop=1&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."\" method=\"post\">";
+				$sqlxx = "select orden from sim_comercial_oferta_condiciones_pago_facturas where id_comercial_oferta_condiciones_pago=".$_GET["id_con"]." order by orden desc";
+				$resultxx = mysqli_query($dbhandle,convertSQL($sqlxx));
+				$rowxx = mysqli_fetch_array($resultxx);
+				$orden = $rowxx["orden"] +1;
+				echo "<td><input type=\"number\" name=\"orden\" value=\"".$orden."\" style=\"width:40px\"></td>";
+				echo "<td><input type=\"text\" name=\"fecha\"  value=\"".date('Y-m-d')."\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"text\" name=\"fecha_texto\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"text\" name=\"concepto\" style=\"width:300px\"></td>";
+				echo "<td><input type=\"number\" name=\"descuento\" style=\"width:100px\"></td>";
+				echo "<td><input type=\"number\" name=\"importe\" style=\"width:200px\"></td>";
+				echo "<td><input type=\"number\" name=\"dias_vencimiento\" style=\"width:100px\"></td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
 			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$total_val=0;
-			$sqlco = "select * from sim_comercial_oferta_valoracion_rel_articulos where id_comercial_oferta_valoracion=".$_GET["id_val"];
+			$sqlco = "select * from sim_comercial_oferta_condiciones_pago_facturas where id_comercial_oferta_condiciones_pago=".$_GET["id_con"]." order by orden";
 			$resultco = mysqli_query($dbhandle,convertSQL($sqlco));
 			while ($rowco = mysqli_fetch_array($resultco)) {
-				echo "<form action=\"index.php?op=1009&sop=152&ssop=2&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."&id_art=".$rowco["id"]."\" method=\"post\">";
+				echo "<form action=\"index.php?op=1009&sop=152&ssop=2&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_fac=".$rowco["id"]."\" method=\"post\">";
 				echo "<tr>";
-					echo "<td><a href=\"index.php?op=1009&sop=153&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."&id_art=".$rowco["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
-					echo "<td><select style=\"width:450px\" name=\"id_articulo\">";
-						$sqls = "select id,nombre from sgm_articles where visible=1";
-						$results = mysqli_query($dbhandle,convertSQL($sqls));
-						while ($rows = mysqli_fetch_array($results)){
-							if ($rows["id"] == $rowco["id_articulo"]){
-								echo "<option value=\"".$rows["id"]."\" selected>".$rows["nombre"]."</option>";
-							} else {
-								echo "<option value=\"".$rows["id"]."\">".$rows["nombre"]."</option>";
-							}
-						}
-					echo "</select></td>";
-					echo "<td style=\"text-align:right;width:50px;\"><input type=\"number\" name=\"unidades\" value=\"".$rowco["unidades"]."\" min=\"0\" style=\"width:50px\"></td>";
-					echo "<td style=\"text-align:right;width:50px;\"><input type=\"number\" name=\"pvp\" value=\"".number_format($rowco["pvp"],2,',','.')."\" step=\"0.01\" style=\"width:50px\"></td>";
-					$sql = "select pvp,id_divisa_pvp from sgm_stock where vigente=1 and id_article=".$rowco["id_articulo"];
-					$result = mysqli_query($dbhandle,convertSQL($sql));
-					$row = mysqli_fetch_array($result);
-					$sqld = "select abrev from sgm_divisas where id=".$row["id_divisa_pvp"];
-					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
-					$rowd = mysqli_fetch_array($resultd);
-					$total_art = $rowco["pvp"] * $rowco["unidades"];
-					$total_val += $total_art;
-					echo "<td style=\"width:100px;text-align:right\">".number_format($total_art,2,',','.')." ".$rowd["abrev"]."</td>";
+					echo "<td><a href=\"index.php?op=1009&sop=153&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_fac=".$rowco["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" border=\"0\"></a></td>";
+					echo "<td><input type=\"number\" name=\"orden\" value=\"".$rowco["orden"]."\" style=\"width:40px\"></td>";
+					echo "<td><input type=\"text\" name=\"fecha\" value=\"".$rowco["fecha"]."\" style=\"width:100px\"></td>";
+					echo "<td><input type=\"text\" name=\"fecha_texto\" value=\"".$rowco["fecha_texto"]."\" style=\"width:200px\"></td>";
+					echo "<td><input type=\"text\" name=\"concepto\" value=\"".$rowco["concepto"]."\" style=\"width:300px\"></td>";
+					echo "<td><input type=\"number\" name=\"descuento\" value=\"".$rowco["descuento"]."\" style=\"width:100px\"></td>";
+					echo "<td><input type=\"number\" name=\"importe\" value=\"".$rowco["importe"]."\" style=\"width:200px\"></td>";
+					echo "<td><input type=\"number\" name=\"dias_vencimiento\" value=\"".$rowco["dias_vencimiento"]."\" style=\"width:100px\"></td>";
 					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
 				echo "</tr>";
 				echo "</form>";
 			}
-			echo "<tr><td colspan=\"3\"></td><td>".$Total."</td><td style=\"width:100px;text-align:right\">".number_format($total_val,2,',','.')." ".$rowd["abrev"]."</td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			echo "<form action=\"index.php?op=1009&sop=152&ssop=4&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."\" method=\"post\">";
+			echo "<form action=\"index.php?op=1009&sop=152&ssop=4&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."\" method=\"post\">";
 			echo "<tr>";
-				echo "<td style=\"text-align:left;vertical-align:top;\" colspan='6'>".$Comentarios." : </td>";
+				echo "<td style=\"text-align:left;vertical-align:top;\" colspan='9'>".$Comentarios." : </td>";
 			echo "</tr><tr>";
-				$sqlval = "select comentarios from sim_comercial_oferta_valoracion where id=".$_GET["id_val"];
+				$sqlval = "select comentarios from sim_comercial_oferta_condiciones_pago where id=".$_GET["id_con"];
 				$resultval = mysqli_query($dbhandle,convertSQL($sqlval));
 				$rowval = mysqli_fetch_array($resultval);
-				echo "<td colspan='6'><textarea name=\"comentarios\" class=\"contenidos\" rows=\"10\">".$rowval["comentarios"]."</textarea></td>";
+				echo "<td colspan='9'><textarea name=\"comentarios\" class=\"contenidos\" rows=\"10\">".$rowval["comentarios"]."</textarea></td>";
 			echo "</tr><tr>";
-				echo "<td colspan='6'><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
+				echo "<td colspan='9'><input type=\"Submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
 			echo "</tr>";
 			echo "</form>";
 		echo "</table>";
@@ -1315,7 +1324,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 	if ($soption == 153) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1009&sop=152&ssop=3&id=".$_GET["id"]."&id_val=".$_GET["id_val"]."&id_art=".$_GET["id_art"],"op=1009&sop=152&id=".$_GET["id"]."&id_val=".$_GET["id_val"]),array($Si,$No));
+		echo boton(array("op=1009&sop=152&ssop=3&id=".$_GET["id"]."&id_con=".$_GET["id_con"]."&id_fac=".$_GET["id_fac"],"op=1009&sop=152&id=".$_GET["id"]."&id_con=".$_GET["id_con"]),array($Si,$No));
 		echo "</center>";
 	}
 

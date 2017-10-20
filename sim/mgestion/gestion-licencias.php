@@ -137,9 +137,9 @@ if (($option == 1026) AND ($autorizado == true)) {
 						echo "<td><a href=\"index.php?op=1008&sop=201&id=".$row["id"]."\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 						echo "<td><a href=\"index.php?op=1026&sop=100&id=".$rowcc["id"]."\">".$rowcc["fecha_fin"]."</a></td>";
 						echo "<td class=\"submit\" style=\"vertical-align:top;\"><input type=\"Submit\" value=\"".$Editar."\"></td>";
+						echo "</form>";
 						echo "<form action=\"index.php?op=1026&sop=0&ssop=2&id=".$rowcc["id"]."\" method=\"post\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Renovar."\"></td>";
-						echo "</form>";
 						echo "</form>";
 					echo "</tr>";
 				}

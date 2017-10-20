@@ -67,8 +67,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $_POST["user"], time()+60*$cookiestime, $url_raiz, $domain);
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
+				setcookie("musername", $_POST["user"], 0, $url_raiz, $domain);
+				setcookie("mpassword", $row["pass"], 0, $url_raiz, $domain);
 				header("Location: ".$urlmgestion."/index.php?op=200");
 			}
 		}
@@ -82,8 +82,8 @@ if ($_COOKIE["musername"] == "") {
 				$username = $row["usuario"];
 				$userid = $row["id"];
 				$sgm = $row["sgm"];
-				setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
-				setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
+				setcookie("musername", $row["usuario"], 0, $url_raiz, $domain);
+				setcookie("mpassword", $row["pass"], 0, $url_raiz, $domain);
 				header("Location: ".$urlmgestion."/index.php?op=200&sop=70");
 			}
 		}
@@ -101,8 +101,8 @@ if ($_COOKIE["musername"] == "") {
 			$username = $row["usuario"];
 			$userid = $row["id"];
 			$sgm = $row["sgm"];
-			setcookie("musername", $row["usuario"], time()+60*$cookiestime, $url_raiz, $domain);
-			setcookie("mpassword", $row["pass"], time()+60*$cookiestime, $url_raiz, $domain);
+			setcookie("musername", $row["usuario"], 0, $url_raiz, $domain);
+			setcookie("mpassword", $row["pass"], 0, $url_raiz, $domain);
 		}
 	}
 }
