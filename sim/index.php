@@ -116,7 +116,7 @@ lopd($userid,$username,$option,$soption);
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>SIMGESTION DES</title>
 
 		<?php include ("functions-js.php"); ?>

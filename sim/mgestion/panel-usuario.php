@@ -252,7 +252,7 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
 							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
-						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=0 order by fecha_fin";
+						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and (id_plantilla<>0 xor id_contrato_tipo<>0) and pack_horas=0 order by fecha_fin";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
 						while ($rowch = mysqli_fetch_array($resultch)) {
 							$sqla = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowch["id_cliente"];
@@ -330,8 +330,7 @@ if (($option == 200) AND ($user == true)) {
 							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and horas=1 and id_contrato=".$rowch["id"];
 							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 							while ($rowcs = mysqli_fetch_array($resultcs)) {
-								$ultimaDiaMes = date("d",(mktime(0,0,0,date("m")+1,1,date("Y"))-1));
-								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and fecha_inicio between ".date("U",mktime(0,0,0,date("m"),1,date("Y")))." and ".date("U",mktime(23,59,59,date("m"),$ultimaDiaMes,date("Y")))." and visible=1";
+								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado=-2 and facturada=0 and visible=1) and visible=1";
 								$resultd = mysqli_query($dbhandle,convertSQL($sqld));
 								$rowd = mysqli_fetch_array($resultd);
 								$total_horas += $rowd["total"];
@@ -339,11 +338,12 @@ if (($option == 200) AND ($user == true)) {
 							$hora = $total_horas/60;
 							$horas = explode(".",$hora);
 							$minutos = $total_horas % 60;
+							if ($minutos < 10) { $minutos_total = "0".$minutos;} else {$minutos_total = $minutos;}
 							echo "<tr>";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
 								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\">".$rowch["descripcion"]."</a></td>";
 								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
-								echo "<td>".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
+								echo "<td style=\"text-align:right;\">".$horas[0]." ".$Horas." ".$minutos." ".$Minutos."</td>";
 							echo "</tr>";
 						}
 #					}

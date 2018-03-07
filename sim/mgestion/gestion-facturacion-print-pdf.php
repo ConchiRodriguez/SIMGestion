@@ -73,7 +73,7 @@ class PDF extends FPDF
 	}
 
 	function factura_print($id,$tipo){
-		global $db,$dbhandle,$retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
+		global $db,$dbhandle,$retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nombre_empresa,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas,$texto_reg_mercantil,$desc,$IVA;
 		//Creación del objeto de la clase heredada
 	
 		$sqlele = "select * from sgm_dades_origen_factura";
@@ -120,7 +120,7 @@ class PDF extends FPDF
 			$this->Cell(90,5,$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"]),1,0);
 			$this->Cell(90,5,$fecha_vencimiento." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_vencimiento"]),1,1);
 			$this->Cell(90,5,$fecha_entrega." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_entrega"]),1,0);
-			$this->Cell(90,5,$nombre." : ".str_replace("&#39;", "'", $rowcabezera["nombre"]),1,1);
+			$this->Cell(90,5,$nombre_empresa." : ".str_replace("&#39;", "'", $rowcabezera["nombre"]),1,1);
 			$this->Cell(90,5,$nif." / CIF: ".$rowcabezera["nif"],1,0);
 			$this->Cell(90,5,$direccion." : ".str_replace("&#39;", "'", $rowcabezera["direccion"]),1,1);
 			$this->Cell(90,5,$poblacion.": ".str_replace("&#39;", "'", $rowcabezera["poblacion"]),1,0);
@@ -184,7 +184,7 @@ class PDF extends FPDF
 		$this->Cell(80,5,"".$nombre."",'TB',0);
 		$this->Cell(20,5,"".$unitats."",'TB',0,'R');
 		$this->Cell(20,5,"".$precio."",'TB',0,'R');
-		$this->Cell(20,5,"Desc.%",'TBR',0,'R');
+		$this->Cell(20,5,$desc."%",'TBR',0,'R');
 		$this->Cell(20,5,"".$total."",'TBR',1,'R');
 	
 		$this->SetFont('Calibri','',9);
@@ -225,6 +225,7 @@ class PDF extends FPDF
 				$this->Cell(20,5,"".$unitats."",'TB',0);
 				$this->Cell(20,5,"".$precio."",'TB',0);
 				$this->Cell(20,5,"".$total."",'TBR',1);
+				$this->Cell(20,5,$desc."%",'TBR',0,'R');
 				$this->SetFont('Calibri','',10);
 				$lineas = -16;
 			}
@@ -247,7 +248,7 @@ class PDF extends FPDF
 			$this->Cell(30,5,$descuento,'LTR',0);
 		}
 		$this->Cell(30,5,$subtotal,'LTR',0);
-		$this->Cell(30,5,"IVA (".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+		$this->Cell(30,5, $IVA." (".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
 		$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
 		$this->Cell(30,5,$total,'LTR',1);
 	
@@ -270,7 +271,7 @@ class PDF extends FPDF
 			$this->Cell(25,5,"".$importe."",'LTR',0);
 			$this->Cell(35,5,"".$descuento."",'LTR',0);
 			$this->Cell(25,5,"".$subtotal."",'LTR',0);
-			$this->Cell(25,5,"IVA(".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+			$this->Cell(25,5,$IVA."(".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
 			$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
 			$this->Cell(25,5,"".$total."",'LTR',1);
 		
@@ -296,7 +297,8 @@ class PDF extends FPDF
 		$this->Cell(180,3,' ',0,1);
 		$this->SetFont('Calibri','',6);
 		$this->MultiCell(180,3,$texto_pdatos,0,'J');
-
+		$this->MultiCell(180,5,'',0,'C');
+		$this->MultiCell(180,3,$texto_reg_mercantil,0,'C');
 	}
 }
 

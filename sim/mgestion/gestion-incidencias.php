@@ -1311,18 +1311,18 @@ if (($option == 1018) AND ($autorizado == true)) {
 							echo "<th style=\"text-align:left;vertical-align:top;width:13%;\">".$Servicio." SIM :</th>";
 							echo "<td><select name=\"id_servicio\" id=\"id_servicio\" style=\"width:100%\" onchange=\"desplegableCombinado()\">";
 								echo "<option value=\"0\">-</option>";
-								$sqlc = "select id from sgm_contratos where visible=1 and id_cliente=".$rowcli["id"]." and activo=1 order by num_contrato";
+								$sqlc = "select id,descripcion from sgm_contratos where visible=1 and id_cliente=".$rowcli["id"]." and activo=1 order by num_contrato";
 								$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 								while ($rowc = mysqli_fetch_array($resultc)) {
 									$sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$rowc["id"];
 									$results = mysqli_query($dbhandle,convertSQL($sqls));
 									while ($rows = mysqli_fetch_array($results)){
 										if ($_POST["id_servicio"] == $rows["id"]){
-											echo "<option value=\"".$rows["id"]."\" selected>".$rows["servicio"]."</option>";
+											echo "<option value=\"".$rows["id"]."\" selected>(".$rowc["descripcion"].")".$rows["servicio"]."</option>";
 										} elseif (($_POST["id_servicio"] == "") and ($rowincid["id_servicio"] == $rows["id"])){
-											echo "<option value=\"".$rows["id"]."\" selected>".$rows["servicio"]."</option>";
+											echo "<option value=\"".$rows["id"]."\" selected>(".$rowc["descripcion"].")".$rows["servicio"]."</option>";
 										} else {
-											echo "<option value=\"".$rows["id"]."\">".$rows["servicio"]."</option>";
+											echo "<option value=\"".$rows["id"]."\">(".$rowc["descripcion"].")".$rows["servicio"]."</option>";
 										}
 									}
 								}

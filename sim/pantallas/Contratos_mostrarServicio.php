@@ -2,7 +2,7 @@
 error_reporting(~E_ALL);
 
 
-function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
+function mostrarServicio ($id_contrato,$id_cliente,$sop_delete,$activo,$contrato){
 	global $db,$dbhandle,$idioma;
 
 	if ($idioma == "es"){ include ("sgm_es.php");}
@@ -34,6 +34,16 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			$datosUpdate = array("0");
 			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
 		}
+		if ($_GET["ssop"] == 5) {
+			$camposUpdate = array("activo");
+			$datosUpdate = array("0");
+			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
+		}
+		if ($_GET["ssop"] == 6) {
+			$camposUpdate = array("activo");
+			$datosUpdate = array("1");
+			updateFunction ("sgm_contratos_servicio",$_GET["id_ser"],$camposUpdate,$datosUpdate);
+		}
 
 		if (isset($id_contrato)){ $id_contrato = $id_contrato;} else { $id_contrato = 0;}
 		if ($id_cliente > 0){ $contrato_adress = $id_cliente."&id_con=".$id_contrato;} else { $contrato_adress = $id_contrato;}
@@ -59,6 +69,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<th>".$Origen."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios12."\"></th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
+			if ($contrato == 0) {
 				echo "<td></td>";
 				echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=2&id=".$contrato_adress."\" method=\"post\">";
 				echo "<td><input style=\"width:250px\" type=\"Text\" name=\"servicio\"></td>";
@@ -120,7 +131,10 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$id_contrato." order by servicio";
+			}
+			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$id_contrato."";
+			if (($activo == 1) and ($contrato == 0)) { $sql .= " and activo=1";} elseif (($activo == 0) and ($contrato == 0)) { $sql .= " and activo=0";}
+			$sql .= " order by servicio";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
 				echo "<tr>";
@@ -230,6 +244,14 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 					echo "</select></td>";
 					echo "<td><input type=\"Submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
 					echo "</form>";
+				if (($activo == 1) and ($contrato == 0)) {
+					echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=5&id_ser=".$row["id"]."&act=".$_GET["act"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Desactivar."\"></td>";
+				} elseif (($activo == 0) and ($contrato == 0)) {
+					echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=6&id_ser=".$row["id"]."&act=".$_GET["act"]."\" method=\"post\">";
+					echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Activar."\"></td>";
+				}
+				echo "</form>";
 				if ($id_contrato > 0){
 					$sqlind = "select sum(duracion) as total from sgm_incidencias where visible=1 and id_incidencia IN (select id from sgm_incidencias where visible=1 and id_servicio=".$row["id"].")";
 					$resultind = mysqli_query($dbhandle,convertSQL($sqlind));
@@ -255,7 +277,7 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete){
 				echo "<td style=\"text-align:right;\" nowrap><strong>".number_format ($total_euros_contracte,2,',','')." ".$rowdiv["abrev"]."</strong></td>";
 			echo "</tr>";
 		}
-		echo "</table></center>";
+		echo "</table>";
 		echo "<br><br>";
 }
 

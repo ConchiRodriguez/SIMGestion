@@ -651,6 +651,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<th style=\"white-space:nowrap\">".$Nombre."</th>";
 						echo "<th>".$Telefono."</th>";
 						echo "<th>".$Movil."</th>";
+						echo "<th>".$Email."</th>";
 						echo "<th>".$Empresa."</th>";
 						echo "<th>".$Cargo."</th>";
 					echo "</tr>";
@@ -678,7 +679,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 							echo "<td style=\"white-space:nowrap;\"><a href=\"index.php?op=1008&sop=122&ssop=2&id=".$rowt["id_client"]."&id_contacto=".$rowt["id"]."\">".$rowt["nombre"]." ".$rowt["apellido1"]." ".$rowt["apellido2"]."</a></td>";
 							echo "<td>".$rowt["telefono"]."</td>";
 							echo "<td>".$rowt["movil"]."</td>";
-							echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowt["id_client"]."\">".$rowc["nombre"]." ".$rowc["apellido1"]."  ".$rowc["apellido2"]." </a></td>";
+							echo "<td>".$rowt["mail"]."</td>";
+							echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowt["id_client"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]."  ".$rowc["cognom2"]." </a></td>";
 							echo "<td>".$rowt["carrec"]."</td>";
 						echo "</tr>";
 					}
@@ -2231,7 +2233,9 @@ if (($option == 1008) AND ($autorizado == true)) {
 		if ($ssoption == 1) {
 			$duracion = 0;
 			$sql = "select id from sgm_incidencias where visible=1";
+			if (($_POST["id_contrato"] >= 0) and ($_POST["id_servicio"] == 0)) { $sql = $sql." and id_servicio in (select id from sgm_contratos_servicio where id_contrato=".$_POST["id_contrato"].")";}
 			if ($_POST["id_servicio"] != 0){ $sql = $sql." and id_servicio=".$_POST["id_servicio"];}
+			if ($_POST["id_contrato"] == -1){ $sql = $sql." and id_servicio=".$_POST["id_contrato"];}
 			if (($_POST["mes"] != 0) or ($_GET["m"] != 0)){
 				$mes = $_POST["mes"].$_GET["m"];
 				$data1 = date(U, mktime(0, 0, 0, $mes, 1, 2013));
@@ -2239,6 +2243,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$sql = $sql." and id in (select id_incidencia from sgm_incidencias_notas_desarrollo where data_registro2 between ".$data1." and ".$data2.")";
 			}
 			if (($_POST["id_usuario"] != 0) or ($_GET["u"] != 0)) { $sql = $sql." and id_usuario=".$_POST["id_usuario"].$_GET["u"]; }
+			echo $sql;
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				if ($_POST["facturada".$row["id"]] == 1){
@@ -2275,39 +2280,42 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\" style=\"background-color:silver;\">";
 			echo "<tr>";
 				echo "<th>".$Contrato."</th>";
+				echo "<th>".$Servicio."</th>";
 				echo "<th>".$Fecha." (".$Mes.")</th>";
 				echo "<th>".$Usuario."</th>";
 				echo "<th></th>";
 				echo "<th></th>";
 			echo "</tr>";
 			echo "<tr>";
-			echo "<form action=\"index.php?op=1008&sop=180&id=".$_GET["id"]."\" method=\"post\">";
-				echo "<td><select name=\"id_servicio\" style=\"width:800px\" >";
+			echo "<form  name=\"form2\" action=\"index.php?op=1008&sop=180&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<td><select name=\"id_contrato\" style=\"width:400px\" onchange=\"desplegableCombinado5()\">";
 					echo "<option value=\"0\" selected>-</option>";
-					if ($_POST["id_servicio"] == "-1"){
+					if ($_POST["id_contrato"] == "-1"){
 						echo "<option value=\"-1\" selected>".$SinContrato."</option>";
 					} else {
 						echo "<option value=\"-1\">".$SinContrato."</option>";
 					}
-					$sqlc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_cliente=".$_GET["id"]." order by num_contrato";
+					$sqlc = "select id,id_cliente,id_cliente_final,descripcion,horas_mensual from sgm_contratos where visible=1 and id_cliente=".$_GET["id"]." order by num_contrato";
 					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 					while ($rowc = mysqli_fetch_array($resultc)) {
-						$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowc["id_cliente"]." order by nombre";
-						$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
-						$rowcl = mysqli_fetch_array($resultcl);
-						$sqlcli = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rowc["id_cliente_final"]." order by nombre";
-						$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
-						$rowcli = mysqli_fetch_array($resultcli);
-						$sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$rowc["id"];
+						if ($_POST["id_contrato"] == $rowc["id"]){
+							echo "<option value=\"".$rowc["id"]."\" selected>".$rowc["descripcion"]."</option>";
+						} else {
+							echo "<option value=\"".$rowc["id"]."\">".$rowc["descripcion"]."</option>";
+						}
+					}
+				echo "</select></td>";
+				echo "<td><select name=\"id_servicio\" style=\"width:400px\" >";
+					echo "<option value=\"0\" selected>".$Todos."</option>";
+						echo $sqls = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=".$_POST["id_contrato"];
 						$results = mysqli_query($dbhandle,convertSQL($sqls));
 						while ($rows = mysqli_fetch_array($results)){
 							if ($_POST["id_servicio"] == $rows["id"]){
-								echo "<option value=\"".$rows["id"]."\" selected>".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rowc["descripcion"]."-".$rows["servicio"]."</option>";
+								echo "<option value=\"".$rows["id"]."\" selected>".$rows["servicio"]."</option>";
 							} else {
-								echo "<option value=\"".$rows["id"]."\">".$rowcl["nombre"]." ".$rowcl["cognom1"]." ".$rowcl["cognom2"]."(".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"].")".$rowc["descripcion"]."-".$rows["servicio"]."</option>";
+								echo "<option value=\"".$rows["id"]."\">".$rows["servicio"]."</option>";
 							}
 						}
-					}
 				echo "</select></td>";
 				echo "<td><select name=\"mes\" style=\"width:100px\">";
 					echo "<option value=\"0\" selected>-</option>";
@@ -2331,15 +2339,23 @@ if (($option == 1008) AND ($autorizado == true)) {
 							}
 					}
 				echo "</select></td>";
+				$sqlcl = "select id from sgm_contratos where horas_mensual=1 and id=".$_POST["id_contrato"];
+				$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+				$rowcl = mysqli_fetch_array($resultcl);
+				if ($rowcl){
+					echo "<input type=\"Hidden\" name=\"horas_mensual\" value=\"1\">";
+				} else {
+					unset($_POST["horas_mensual"]);
+				}
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Buscar."\"></td>";
 			echo "</tr>";
 		echo "</form>";
 		echo "</table>";
 		echo "<br><br>";
-		if (($_POST["id_servicio"] != 0) or ($_POST["mes"] != 0) or ($_POST["id_usuario"] != 0)){
-			echo "<table cellpadding=\"2\" cellspacing=\"0\" class=\"lista\" style=\"background-color:silver;\">";
+		if (($_POST["id_contrato"] != 0) or ($_POST["mes"] != 0) or ($_POST["id_usuario"] != 0)){
+			echo "<table cellpadding=\"5\" cellspacing=\"0\" class=\"lista\" style=\"background-color:silver;\">";
 				echo "<tr style=\"background-color:silver;\">";
-					if ($_POST["id_servicio"] == "-1"){echo "<th></th>";}
+					if (($_POST["id_contrato"] == "-1") or ($_POST["horas_mensual"] == "1")){echo "<th></th>";}
 					echo "<th>".$SLA."</th>";
 					echo "<th>".$Fecha." ".$Prevision."</th>";
 					echo "<th>".$Asunto."</th>";
@@ -2351,11 +2367,15 @@ if (($option == 1008) AND ($autorizado == true)) {
 				echo "</tr>";
 
 			echo "<form action=\"index.php?op=1008&sop=180&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+			echo "<input type=\"Hidden\" name=\"id_contrato\" value=\"".$_POST["id_contrato"]."\">";
+			echo "<input type=\"Hidden\" name=\"horas_mensual\" value=\"".$_POST["horas_mensual"]."\">";
 			echo "<input type=\"Hidden\" name=\"id_servicio\" value=\"".$_POST["id_servicio"]."\">";
 			echo "<input type=\"Hidden\" name=\"id_usuario\" value=\"".$_POST["id_usuario"]."\">";
 			echo "<input type=\"Hidden\" name=\"mes\" value=\"".$_POST["mes"]."\">";
 			$sql = "select * from sgm_incidencias where visible=1 and id_estado=-2 and id_cliente=".$_GET["id"];
+			if (($_POST["id_contrato"] >= 0) and ($_POST["id_servicio"] == 0)) { $sql = $sql." and id_servicio in (select id from sgm_contratos_servicio where id_contrato=".$_POST["id_contrato"].")";}
 			if ($_POST["id_servicio"] != 0){ $sql = $sql." and id_servicio=".$_POST["id_servicio"];}
+			if ($_POST["id_contrato"] == -1){ $sql = $sql." and id_servicio=".$_POST["id_contrato"];}
 			if ($_POST["mes"] != 0){
 				$mes = $_POST["mes"];
 				$data1 = date(U, mktime(0, 0, 0, $mes, 1, 2013));
@@ -2366,16 +2386,16 @@ if (($option == 1008) AND ($autorizado == true)) {
 			$sql = $sql." order by fecha_prevision asc";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
-				$sqlcli = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rows["id_cliente_final"]." order by nombre";
-				$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
-				$rowcli = mysqli_fetch_array($resultcli);
 				$sqlc = "select id,temps_resposta,servicio from sgm_contratos_servicio where id=".$row["id_servicio"];
 				if ($_POST["id_servicio"] != 0) { $sqlc = $sqlc." and id=".$_POST["id_servicio"].""; }
 				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 				$rowc = mysqli_fetch_array($resultc);
-				$sqls = "select id,id_cliente_final,descripcion from sgm_contratos where id_cliente=".$_GET["id"]." and id=".$rowc["id_contrato"]." order by fecha_ini desc";
+				$sqls = "select id,id_cliente_final,descripcion from sgm_contratos where id_cliente=".$_GET["id"]." and id=".$_POST["id_contrato"]." order by fecha_ini desc";
 				$results = mysqli_query($dbhandle,convertSQL($sqls));
 				$rows = mysqli_fetch_array($results);
+				$sqlcli = "select nombre,cognom1,cognom2 from sgm_clients where visible=1 and id=".$rows["id_cliente_final"]." order by nombre";
+				$resultcli = mysqli_query($dbhandle,convertSQL($sqlcli));
+				$rowcli = mysqli_fetch_array($resultcli);
 
 				$estado_color = "White";
 				$estado_color_letras = "Black";
@@ -2414,7 +2434,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 					$fecha_prev = "";
 				}
 				echo "<tr style=\"background-color:".$estado_color.";\">";
-					if ($_POST["id_servicio"] == "-1"){
+					if (($_POST["id_contrato"] == "-1") or ($_POST["horas_mensual"] == "1")){
 						echo "<td style=\"color:black;text-align: center;\"><input type=\"Checkbox\" name=\"facturada".$row["id"]."\"";
 						if ($row["facturada"] == 1) { echo " disabled"; }
 						echo " value=\"1\" style=\"border:0px solid black\"></td>";
@@ -2427,7 +2447,11 @@ if (($option == 1008) AND ($autorizado == true)) {
 						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$row["asunto"]."</a></td>";
 					}
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rowcli["nombre"]." ".$rowcli["cognom1"]." ".$rowcli["cognom2"]."</td>";
-					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rows["descripcion"]." - ".$rowc["servicio"]."</td>";
+					if ($_POST["id_contrato"] > "-1"){
+						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rows["descripcion"]." - ".$rowc["servicio"]."</td>";
+					} else {
+						echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$SinContrato."</td>";
+					}
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$horas[0]."h. ".$minutos."m.</td>";
 					echo "<td style=\"color:".$estado_color_letras.";vertical-align:top;\">".$rowu["usuario"]."</td>";
 					echo "<td style=\"text-align:center;vertical-align:top;\">";
@@ -2435,18 +2459,22 @@ if (($option == 1008) AND ($autorizado == true)) {
 					echo "</td>";
 				echo "</tr>";
 			}
-			echo "<tr>";
-			echo "<td colspan=\"7\"><table><tr>";
-			if ($_POST["id_servicio"] == "-1"){
-				echo "<td>".$Concepto."</td>";
-				echo "<td><input type=\"text\" name=\"nombre\" style=\"width:250px;\" required></td>";
-				echo "<td>".$Precio."/".$Hora."</td>";
-				echo "<td><input type=\"number\" name=\"pvp\" style=\"width:50px;\" required></td>";
-				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Facturar."\"></td>";
+			if (($_POST["id_contrato"] == "-1") or ($_POST["horas_mensual"] == "1")){
+				echo "<tr>";
+					echo "<td colspan=\"9\">";
+						echo "<table>";
+							echo "<tr>";
+								echo "<td>".$Concepto."</td>";
+								echo "<td><input type=\"text\" name=\"nombre\" style=\"width:250px;\" required></td>";
+								echo "<td>".$Precio."/".$Hora."</td>";
+								echo "<td><input type=\"number\" name=\"pvp\" style=\"width:50px;\" required></td>";
+								echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Facturar."\"></td>";
+							echo "</tr>";
+						echo "</table>";
+					echo "</td>";
+				echo "</tr>";
 			}
 			echo "</form>";
-			echo "</tr>";
-			echo "</table></td></tr>";
 		echo "</table>";
 		}
 	}

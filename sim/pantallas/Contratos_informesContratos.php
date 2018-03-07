@@ -78,7 +78,7 @@ function informesContratos(){
 				$mes_act = $mes_ini;
 			} else {
 				$count = 1;
-				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1";
+				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1 and (id_plantilla<>0 or id_contrato_tipo<>0)";
 				if ($_POST["id_cliente"] > 0) { $sqlco2.=" and id_cliente=".$_POST["id_cliente"]; }
 				$sqlco2.=" order by fecha_ini";
 				$resultco2 = mysqli_query($dbhandle,convertSQL($sqlco2));
@@ -258,7 +258,7 @@ function informesContratos(){
 				$mes_act = $mes_ini;
 			} else {
 				$count = 1;
-				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1";
+				$sqlco2 = "select fecha_ini,fecha_fin from sgm_contratos where visible=1 and (id_plantilla<>0 or id_contrato_tipo<>0)";
 				if ($_POST["id_cliente"] > 0) { $sqlco2.=" and id_cliente=".$_POST["id_cliente2"]; }
 				$sqlco2.=" order by fecha_ini";
 				$resultco2 = mysqli_query($dbhandle,convertSQL($sqlco2));
@@ -272,13 +272,13 @@ function informesContratos(){
 				}
 				$mes_act = $mes_ini;
 			}
-			echo "<td style=\"width:100px;\"><select name=\"fecha2\" style=\"width:150px;\" onchange=\"desplegableCombinado5()\">";
+			echo "<td style=\"width:100px;\"><select name=\"fecha2\" style=\"width:150px;\" onchange=\"desplegableCombinado6()\">";
 
 				while (($mes_ini<=$mes_act) and (($mes_act<=$mes_fin) and ($mes_act<=time()))){
 					$any_inicio = date("Y",$mes_act);
 					$mes_inicio = date("m",$mes_act);
 
-					if ($_POST["fecha"] == $mes_inicio."-".$any_inicio){
+					if ($_POST["fecha2"] == $mes_inicio."-".$any_inicio){
 						echo "<option value=\"".$mes_inicio."-".$any_inicio."\" selected>".$mes_inicio."-".$any_inicio."</option>";
 					} else {
 						echo "<option value=\"".$mes_inicio."-".$any_inicio."\">".$mes_inicio."-".$any_inicio."</option>";
@@ -311,9 +311,9 @@ function informesContratos(){
 				}
 			}
 
-			$fecha_ini = date("U",strtotime("01-".$_POST["fecha"]));
-			if (($_POST["fecha"] > 0) and ($fecha_ini > $mes_ini)){
-				list($mes,$any) = explode ("-",$_POST["fecha"]);
+			$fecha_ini = date("U",strtotime("01-".$_POST["fecha2"]));
+			if (($_POST["fecha2"] > 0) and ($fecha_ini > $mes_ini)){
+				list($mes,$any) = explode ("-",$_POST["fecha2"]);
 			} else {
 				$any = date("Y",$mes_ini);
 				$mes = date("m",$mes_ini);

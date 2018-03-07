@@ -16,7 +16,6 @@ $cerrada = "Cerrada";
 $cerradas = "Cerradas";
 $cnombre = "Contacto";
 $cmail= "E-mail Contacto";
-$cnombre = "Contacto";
 $cobertura = "Cobertura";
 $condiciones_pago = "Condiciones de pago";
 $codigo = "Código";
@@ -25,6 +24,7 @@ $cuenta_corriente= "Numero de Cuenta";
 
 $descripcion = "Descripción";
 $descripcion_general = "Descripción General";
+$desc = "Desc.";
 $descuento = "Descuento";
 $deudor = "Deudor";
 $direccion = "Dirección";
@@ -53,12 +53,11 @@ $IVA = "IVA";
 
 $listado_articulos = "Listado de Articulos";
 
-$propuesta_mejoras = "Propuesta y Mejoras";
-
 $Nacion = "País";
 $necesidades_objetivos = "Necesidades y objetivos";
-$nif = "NIF";
+$nif = "CIF";
 $nombre = "Nombre";
+$nombre_empresa = "Nombre Empresa";
 $notas = "Notas";
 $numero = "Número";
 $numero_cliente = "Referencia pedido";
@@ -72,6 +71,7 @@ $por = "Por";
 $porcentaje_sla = "% SLA Cumplido";
 $poblacion = "Población";
 $precio = "Precio";
+$propuesta_mejoras = "Propuesta y Mejoras";
 $provincia = "Provincia";
 
 $recibo = "Recibo";
@@ -79,9 +79,9 @@ $responsable_cliente = "Responsable Cliente";
 $responsable_tecnico = "Responsable Técnico";
 $retenciones = "Retenciones";
 
-$subtotal = "Subtotal";
 $servicio = "Servicio";
 $servidor = "Servidor";
+$subtotal = "Subtotal";
 
 $telefono = "Telf.";
 $tema = "Tema";
@@ -99,6 +99,8 @@ $valoracion_economica = "Valoración Económica";
 
 #protecci&oacute;n de datos#
 $texto_pdatos = "Le recordamos, que sus datos se encuentran recogidos en un fichero tituralidad de SOLUCIONS INFORMATIQUES MARESME SL con la finalidad de prestar sus servicios. De acuerdo con la Ley Orgánica 15/1999 de Protección de Datos de Caracter Personal puede ejercer el derecho al acceso, rectificación, cancelación y oposición enviando un escrito de solicitud y fotocopia del DNI a SOLUCIONS INFORMATIQUES MARESME SL, AVDA MARESME, 44 BAJOS, 2 de TORDERA provincia de BARCELONA.";
+
+$texto_reg_mercantil = "Inscrita en el Registro Mercatil Barcelona: Tomo 42967, Folio 141, Sección 8, Hoja B 421165, Incripción 1, NIF-VAT ESB65702227";
 
 $texto_firma = "Queda aprobada la oferta de servicio y la valoración económica por parte de:"
 

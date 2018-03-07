@@ -5,7 +5,7 @@ ALTER TABLE `sgm_articles` ADD `nombre` varchar(70) NOT NULL default '' AFTER `c
 ALTER TABLE `sgm_articles` ADD `id_subgrupo` int(11) NOT NULL default '0' AFTER `nombre` ;
 ALTER TABLE `sgm_articles` ADD `notas` longtext AFTER `id_subgrupo` ;
 ALTER TABLE `sgm_articles` ADD `descatalogat` tinyint(1) NOT NULL default '0' AFTER `notas` ;
-ALTER TABLE `sgm_articles` ADD `precio` decimal(11,3) NOT NULL default '0' AFTER `descatalogat` ;
+ALTER TABLE `sgm_articles` ADD `precio` decimal(11,2) NOT NULL default '0' AFTER `descatalogat` ;
 ALTER TABLE `sgm_articles` ADD `id_divisa` int(11) NOT NULL default '0' AFTER `precio` ;
 ALTER TABLE `sgm_articles` ADD `img1` varchar(100) NOT NULL default '' AFTER `id_divisa` ;
 ALTER TABLE `sgm_articles` ADD `img2` varchar(100) NOT NULL default '' AFTER `img1` ;
@@ -15,6 +15,8 @@ ALTER TABLE `sgm_articles` ADD `recalc_escandall` tinyint(1) NOT NULL default '0
 ALTER TABLE `sgm_articles` ADD `fecha` date NOT NULL default '0000-00-00' AFTER `recalc_escandall` ;
 ALTER TABLE `sgm_articles` ADD `stock_min` int(11) NOT NULL default '0' AFTER `fecha` ;
 ALTER TABLE `sgm_articles` ADD `stock_max` int(11) NOT NULL default '0' AFTER `stock_min` ;
+ALTER TABLE `sgm_articles` ADD CONSTRAINT `fksubgrupo` FOREIGN KEY(`id_subgrupo`) REFERENCES `sgm_articles_subgrupos`(`id`);
+ALTER TABLE `sgm_articles` ADD CONSTRAINT `fkdivisa` FOREIGN KEY(`id_divisa`) REFERENCES `sgm_divisas`(`id`);
 
 CREATE TABLE `sgm_articles_caracteristicas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM ;
 ALTER TABLE `sgm_articles_caracteristicas` ADD `id_caracteristica` int(11) NOT NULL default '0' AFTER `id`;
@@ -23,11 +25,13 @@ ALTER TABLE `sgm_articles_caracteristicas` ADD `visible` tinyint(1) NOT NULL def
 ALTER TABLE `sgm_articles_caracteristicas` ADD `unidad` varchar(25) NOT NULL default '' AFTER `visible`;
 ALTER TABLE `sgm_articles_caracteristicas` ADD `unidad_abr` varchar(10) NOT NULL default '' AFTER `unidad`;
 ALTER TABLE `sgm_articles_caracteristicas` ADD `valor` varchar(25) NOT NULL default '' AFTER `unidad_abr`;
+ALTER TABLE `sgm_articles_caracteristicas` ADD CONSTRAINT `fkcaracteristica` FOREIGN KEY(`id_caracteristica`) REFERENCES `sgm_articles_caracteristicas`(`id`);
 
 CREATE TABLE `sgm_articles_caracteristicas_tablas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM ;
 ALTER TABLE `sgm_articles_caracteristicas_tablas` ADD `id_caracteristica` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_caracteristicas_tablas` ADD `valor` varchar(25) NOT NULL default '' AFTER `id_caracteristica`;
 ALTER TABLE `sgm_articles_caracteristicas_tablas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `valor`;
+ALTER TABLE `sgm_articles_caracteristicas_tablas` ADD CONSTRAINT `fkcaracteristica` FOREIGN KEY(`id_caracteristica`) REFERENCES `sgm_articles_caracteristicas`(`id`);
 
 CREATE TABLE `sgm_articles_grupos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_grupos` ADD `codigo` varchar(5) NOT NULL default '' AFTER `id`;
@@ -37,32 +41,42 @@ CREATE TABLE `sgm_articles_grupos_idiomas` ( `id` int(11) NOT NULL auto_incremen
 ALTER TABLE `sgm_articles_grupos_idiomas` ADD `id_grupo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_grupos_idiomas` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `id_grupo` ;
 ALTER TABLE `sgm_articles_grupos_idiomas` ADD `grupo` varchar(30) NOT NULL default '' AFTER `id_idioma`;
+ALTER TABLE `sgm_articles_grupos_idiomas` ADD CONSTRAINT `fkgrupo` FOREIGN KEY(`id_grupo`) REFERENCES `sgm_articles_grupos`(`id`);
+ALTER TABLE `sgm_articles_grupos_idiomas` ADD CONSTRAINT `fkidioma` FOREIGN KEY(`id_idioma`) REFERENCES `sgm_idiomas`(`id`);
 
 CREATE TABLE `sgm_articles_rel_caracteristicas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_rel_caracteristicas` ADD `id_articulo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_rel_caracteristicas` ADD `id_valor` int(11) NOT NULL default '0' AFTER `id_articulo`;
 ALTER TABLE `sgm_articles_rel_caracteristicas` ADD `valor` varchar(50) NOT NULL default '' AFTER `id_valor`;
+ALTER TABLE `sgm_articles_rel_caracteristicas` ADD CONSTRAINT `fkarticulo` FOREIGN KEY(`id_articulo`) REFERENCES `sgm_articles`(`id`);
+ALTER TABLE `sgm_articles_rel_caracteristicas` ADD CONSTRAINT `fkvalor` FOREIGN KEY(`id_valor`) REFERENCES `sgm_articles_rel_caracteristicas`(`id`);
 
 CREATE TABLE `sgm_articles_rel_proveedores` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_rel_proveedores` ADD `id_articulo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_rel_proveedores` ADD `id_proveedor` int(11) NOT NULL default '0' AFTER `id_articulo`;
 ALTER TABLE `sgm_articles_rel_proveedores` ADD `codigo_proveedor` varchar(30) NOT NULL default '' AFTER `id_proveedor`;
 ALTER TABLE `sgm_articles_rel_proveedores` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `codigo_proveedor`;
+ALTER TABLE `sgm_articles_rel_proveedores` ADD CONSTRAINT `fkarticulo` FOREIGN KEY(`id_articulo`) REFERENCES `sgm_articles`(`id`);
+ALTER TABLE `sgm_articles_rel_proveedores` ADD CONSTRAINT `fkproveedor` FOREIGN KEY(`id_proveedor`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_articles_subgrupos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_subgrupos` ADD `id_grupo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_subgrupos` ADD `codigo` varchar(5) NOT NULL default '' AFTER `id_grupo`;
 ALTER TABLE `sgm_articles_subgrupos` ADD `subgrupo` varchar(30) NOT NULL default '' AFTER `codigo`;
 ALTER TABLE `sgm_articles_subgrupos` ADD `contador` int(11) NOT NULL default '0' AFTER `subgrupo`;
+ALTER TABLE `sgm_articles_subgrupos` ADD CONSTRAINT `fkgrupo` FOREIGN KEY(`id_grupo`) REFERENCES `sgm_articles_grupos`(`id`);
 
 CREATE TABLE `sgm_articles_subgrupos_caracteristicas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_subgrupos_caracteristicas` ADD `id_subgrupo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_subgrupos_caracteristicas` ADD `id_caracteristica` int(11) NOT NULL default '0' AFTER `id_subgrupo` ;
+ALTER TABLE `sgm_articles_subgrupos_caracteristicas` ADD CONSTRAINT `fkcaracteristica` FOREIGN KEY(`id_caracteristica`) REFERENCES `sgm_articles_caracteristicas`(`id`);
 
 CREATE TABLE `sgm_articles_subgrupos_idiomas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_subgrupos_idiomas` ADD `id_subgrupo` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_articles_subgrupos_idiomas` ADD `id_idioma` int(11) NOT NULL default '0' AFTER `id_subgrupo` ;
 ALTER TABLE `sgm_articles_subgrupos_idiomas` ADD `subgrupo` varchar(30) NOT NULL default '' AFTER `id_idioma`;
+ALTER TABLE `sgm_articles_subgrupos_idiomas` ADD CONSTRAINT `fksubgrupo` FOREIGN KEY(`id_subgrupo`) REFERENCES `sgm_articles_subgrupos`(`id`);
+ALTER TABLE `sgm_articles_subgrupos_idiomas` ADD CONSTRAINT `fkidioma` FOREIGN KEY(`id_idioma`) REFERENCES `sgm_idiomas`(`id`);
 
 CREATE TABLE `sgm_articles_seccions` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_articles_seccions` ADD `id_article` int(11) NOT NULL default '0' AFTER `id`;
@@ -71,6 +85,11 @@ ALTER TABLE `sgm_articles_seccions` ADD `id_estanteria` int(11) NOT NULL default
 ALTER TABLE `sgm_articles_seccions` ADD `id_pasillo` int(11) NOT NULL default '0' AFTER `id_estanteria` ;
 ALTER TABLE `sgm_articles_seccions` ADD `id_almacen` int(11) NOT NULL default '0' AFTER `id_pasillo`;
 ALTER TABLE `sgm_articles_seccions` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_almacen`;
+ALTER TABLE `sgm_articles_seccions` ADD CONSTRAINT `fkarticulo` FOREIGN KEY(`id_article`) REFERENCES `sgm_articles`(`id`);
+ALTER TABLE `sgm_articles_seccions` ADD CONSTRAINT `fkseccion` FOREIGN KEY(`id_seccion`) REFERENCES `sgm_stock_almacenes_pasillo_estanteria_seccion`(`id`);
+ALTER TABLE `sgm_articles_seccions` ADD CONSTRAINT `fkestanteria` FOREIGN KEY(`id_estanteria`) REFERENCES `sgm_stock_almacenes_pasillo_estanteria`(`id`);
+ALTER TABLE `sgm_articles_seccions` ADD CONSTRAINT `fkpasillo` FOREIGN KEY(`id_pasillo`) REFERENCES `sgm_stock_almacenes_pasillo`(`id`);
+ALTER TABLE `sgm_articles_seccions` ADD CONSTRAINT `fkalmacen` FOREIGN KEY(`id_almacen`) REFERENCES `sgm_stock_almacenes`(`id`);
 
 CREATE TABLE `sgm_cabezera` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_cabezera` ADD `id_origen` int(11) NOT NULL default '0' AFTER `id`;
@@ -108,12 +127,12 @@ ALTER TABLE `sgm_cabezera` ADD `ecp` varchar(5) NOT NULL default '' AFTER `epobl
 ALTER TABLE `sgm_cabezera` ADD `eprovincia` varchar(50) NOT NULL default '' AFTER `ecp`;
 ALTER TABLE `sgm_cabezera` ADD `eid_pais` int(11) NOT NULL default '0' AFTER `eprovincia`;
 ALTER TABLE `sgm_cabezera` ADD `notas` longtext AFTER `eid_pais`;
-ALTER TABLE `sgm_cabezera` ADD `subtotal` decimal(11,3) NOT NULL default '0.000' AFTER `notas`;
-ALTER TABLE `sgm_cabezera` ADD `descuento` decimal(11,3) NOT NULL default '0.000' AFTER `subtotal`;
-ALTER TABLE `sgm_cabezera` ADD `descuento_absoluto` decimal(11,3) NOT NULL default '0.000' AFTER `descuento`;
-ALTER TABLE `sgm_cabezera` ADD `subtotaldescuento` decimal(11,3) NOT NULL default '0.000' AFTER `descuento_absoluto`;
-ALTER TABLE `sgm_cabezera` ADD `iva` decimal(11,3) NOT NULL default '21.000' AFTER `subtotaldescuento`;
-ALTER TABLE `sgm_cabezera` ADD `total` decimal(11,3) NOT NULL default '0.000' AFTER `iva`;
+ALTER TABLE `sgm_cabezera` ADD `subtotal` decimal(11,2) NOT NULL default '0.000' AFTER `notas`;
+ALTER TABLE `sgm_cabezera` ADD `descuento` decimal(11,2) NOT NULL default '0.000' AFTER `subtotal`;
+ALTER TABLE `sgm_cabezera` ADD `descuento_absoluto` decimal(11,2) NOT NULL default '0.000' AFTER `descuento`;
+ALTER TABLE `sgm_cabezera` ADD `subtotaldescuento` decimal(11,2) NOT NULL default '0.000' AFTER `descuento_absoluto`;
+ALTER TABLE `sgm_cabezera` ADD `iva` decimal(11,2) NOT NULL default '21.000' AFTER `subtotaldescuento`;
+ALTER TABLE `sgm_cabezera` ADD `total` decimal(11,2) NOT NULL default '0.000' AFTER `iva`;
 ALTER TABLE `sgm_cabezera` ADD `total_forzado` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `total` ;
 ALTER TABLE `sgm_cabezera` ADD `id_cliente` int(5) NOT NULL default '0' AFTER `total_forzado`;
 ALTER TABLE `sgm_cabezera` ADD `id_user` int(5) NOT NULL default '0' AFTER `id_cliente`;
@@ -143,7 +162,13 @@ ALTER TABLE `sgm_cabezera` ADD `id_contrato` int(11) NOT NULL default '0' AFTER 
 ALTER TABLE `sgm_cabezera` ADD `id_licencia` int(11) NOT NULL default '0' AFTER `id_contrato`;
 ALTER TABLE `sgm_cabezera` ADD `id_pagador` int(11) NOT NULL default '0' AFTER `id_licencia`;
 ALTER TABLE `sgm_cabezera` ADD `id_dades_origen_factura_iban` int(11) NOT NULL default '0' AFTER `id_pagador`;
-ALTER TABLE `sgm_cabezera` ADD `retenciones` decimal(11,3) NOT NULL default '0.000' AFTER `id_dades_origen_factura_iban`;
+ALTER TABLE `sgm_cabezera` ADD `retenciones` decimal(11,2) NOT NULL default '0.000' AFTER `id_dades_origen_factura_iban`;
+ALTER TABLE `sgm_cabezera` ADD CONSTRAINT `fkorigen` FOREIGN KEY(`id_origen`) REFERENCES `sgm_cabezera`(`id`);
+ALTER TABLE `sgm_cabezera` ADD CONSTRAINT `fktipo` FOREIGN KEY(`tipo`) REFERENCES `sgm_factura_tipos`(`id`);
+ALTER TABLE `sgm_cabezera` ADD CONSTRAINT `fksubtipo` FOREIGN KEY(`subtipo`) REFERENCES `sgm_factura_subtipos`(`id`);
+ALTER TABLE `sgm_cabezera` ADD CONSTRAINT `fkpais` FOREIGN KEY(`id_pais`) REFERENCES `sim_paises`(`id`);
+ALTER TABLE `sgm_cabezera` ADD CONSTRAINT `fkdivisa` FOREIGN KEY(`id_divisa`) REFERENCES `sgm_divisas`(`id`);
+
 
 CREATE TABLE `sgm_calendario` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_calendario` ADD `dia` int(11) NOT NULL default '0' AFTER `id` ;
@@ -205,6 +230,13 @@ ALTER TABLE `sgm_clients` ADD `id_contacto_facturacion` int(11) NOT NULL default
 ALTER TABLE `sgm_clients` ADD `notas_facturacion` longtext AFTER `id_contacto_facturacion`;
 ALTER TABLE `sgm_clients` ADD `cae` tinyint(1) NOT NULL default '0' AFTER `notas_facturacion`;
 ALTER TABLE `sgm_clients` ADD `cae_url` varchar(150) NOT NULL default '' AFTER `cae`;
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkorigen` FOREIGN KEY(`id_origen`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkagrupacio` FOREIGN KEY(`id_agrupacio`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkpais` FOREIGN KEY(`id_pais`) REFERENCES `sim_paises`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkidioma` FOREIGN KEY(`id_idioma`) REFERENCES `sgm_idiomas`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkmediofacturacion` FOREIGN KEY(`id_medio_facturacion`) REFERENCES `sim_medio_comunicacion`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkformatofacturacion` FOREIGN KEY(`id_formato_facturacion`) REFERENCES `sim_formato_documento`(`id`);
+ALTER TABLE `sgm_clients` ADD CONSTRAINT `fkcontactofacturacion` FOREIGN KEY(`id_contacto_facturacion`) REFERENCES `sgm_clients_contactos`(`id`);
 
 /*
 ALTER TABLE `sgm_clients` ADD `clienttipus` tinyint(1) NOT NULL default '0' AFTER `client`;
@@ -221,9 +253,9 @@ ALTER TABLE `sgm_clients` ADD `id_ubicacion` int(11) NOT NULL default '0' AFTER 
 ALTER TABLE `sgm_clients` ADD `id_grupo` int(11) NOT NULL default '0' AFTER `id_ubicacion`;
 ALTER TABLE `sgm_clients` ADD `general` tinyint(1) NOT NULL default '0' AFTER `id_grupo`;
 ALTER TABLE `sgm_clients` ADD `servicio` tinyint(1) NOT NULL default '0' AFTER `general`;
-ALTER TABLE `sgm_clients` ADD `coste_ekl` decimal(11,3) NOT NULL default '0.000' AFTER `servicio`;
-ALTER TABLE `sgm_clients` ADD `coste_em3` decimal(11,3) NOT NULL default '0.000' AFTER `coste_ekl`;
-ALTER TABLE `sgm_clients` ADD `coste_miledia` decimal(11,3) NOT NULL default '0.000' AFTER `coste_em3`;
+ALTER TABLE `sgm_clients` ADD `coste_ekl` decimal(11,2) NOT NULL default '0.000' AFTER `servicio`;
+ALTER TABLE `sgm_clients` ADD `coste_em3` decimal(11,2) NOT NULL default '0.000' AFTER `coste_ekl`;
+ALTER TABLE `sgm_clients` ADD `coste_miledia` decimal(11,2) NOT NULL default '0.000' AFTER `coste_em3`;
 ALTER TABLE `sgm_clients` ADD `dades_adicionals` longtext AFTER `fax2`;
 ALTER TABLE `sgm_clients` ADD `text_lliure` longtext AFTER `dades_adicionals`;
 ALTER TABLE `sgm_clients` ADD `codcliente` varchar(11) NOT NULL default '' AFTER `cognom2`;
@@ -242,6 +274,7 @@ ALTER TABLE `sgm_clients_bases_dades` ADD `usuario` varchar(50) NOT NULL default
 ALTER TABLE `sgm_clients_bases_dades` ADD `pass` varchar(50) NOT NULL default '' AFTER `usuario`;
 ALTER TABLE `sgm_clients_bases_dades` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `pass`;
 ALTER TABLE `sgm_clients_bases_dades` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
+ALTER TABLE `sgm_clients_bases_dades` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_client`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_clients_busquedas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_busquedas` ADD `nombre` varchar(20) default NULL AFTER `id`;
@@ -271,19 +304,25 @@ ALTER TABLE `sgm_clients_contactos` ADD `id_idioma` int(11) NOT NULL default '0'
 ALTER TABLE `sgm_clients_contactos` ADD `pred` tinyint(1) NOT NULL default '0' AFTER `id_idioma`;
 ALTER TABLE `sgm_clients_contactos` ADD `apellido1` varchar(255) NOT NULL default '' AFTER `pred`;
 ALTER TABLE `sgm_clients_contactos` ADD `apellido2` varchar(255) NOT NULL default '' AFTER `apellido1`;
+ALTER TABLE `sgm_clients_contactos` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_client`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients_contactos` ADD CONSTRAINT `fktrato` FOREIGN KEY(`id_trato`) REFERENCES `sgm_clients_tratos`(`id`);
+ALTER TABLE `sgm_clients_contactos` ADD CONSTRAINT `fkidioma` FOREIGN KEY(`id_idioma`) REFERENCES `sgm_idiomas`(`id`);
 
 CREATE TABLE `sgm_clients_dias_recibos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_dias_recibos` ADD `dia` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_clients_dias_recibos` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `dia`;
+ALTER TABLE `sgm_clients_dias_recibos` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_clients_dias_vencimiento` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_dias_vencimiento` ADD `dia` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_clients_dias_vencimiento` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `dia`;
+ALTER TABLE `sgm_clients_dias_vencimiento` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sim_clientes_docs_cae` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sim_clientes_docs_cae` ADD `nombre` varchar(100) default NULL AFTER `id`;
 ALTER TABLE `sim_clientes_docs_cae` ADD `caducidad` date NOT NULL default '0000-00-00' AFTER `nombre`;
 ALTER TABLE `sim_clientes_docs_cae` ADD `id_cliente` int(11) NOT NULL default '0' AFTER `caducidad`;
+ALTER TABLE `sim_clientes_docs_cae` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_clients_origen` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_origen` ADD `origen` varchar(30) NOT NULL default '' AFTER `id`;
@@ -294,31 +333,41 @@ ALTER TABLE `sgm_clients_rel_origen` ADD `id_origen` int(11) NOT NULL default '0
 ALTER TABLE `sgm_clients_rel_origen` ADD `tipo_origen` int(11) NOT NULL default '0' AFTER `id_origen`;
 ALTER TABLE `sgm_clients_rel_origen` ADD `otro_origen` varchar(30) NOT NULL default '' AFTER `tipo_origen`;
 /*tipo_origen: 1 origen; 2 cliente; 3 contacto; 4 empleado; 5 otros*/
+ALTER TABLE `sgm_clients_rel_origen` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients_rel_origen` ADD CONSTRAINT `fkorigen` FOREIGN KEY(`id_origen`) REFERENCES `sgm_clients_rel_origen`(`id`);
 
 CREATE TABLE `sgm_clients_rel_sectores` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_rel_sectores` ADD `id_sector` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_clients_rel_sectores` ADD `id_cliente` varchar(30) NOT NULL default '' AFTER `id_sector`;
+ALTER TABLE `sgm_clients_rel_sectores` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients_rel_sectores` ADD CONSTRAINT `fksector` FOREIGN KEY(`id_sector`) REFERENCES `sgm_clients_sectores`(`id`);
 
 CREATE TABLE `sgm_clients_rel_tipos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_rel_tipos` ADD `id_tipo` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_clients_rel_tipos` ADD `id_cliente` varchar(30) NOT NULL default '' AFTER `id_tipo`;
+ALTER TABLE `sgm_clients_rel_tipos` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
+ALTER TABLE `sgm_clients_rel_tipos` ADD CONSTRAINT `fktipo` FOREIGN KEY(`id_tipo`) REFERENCES `sgm_clients_tipos`(`id`);
 
 CREATE TABLE `sgm_clients_rel_ubicacion` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_rel_ubicacion` ADD `id_cliente` varchar(30) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_clients_rel_ubicacion` ADD `id_ubicacion` int(11) NOT NULL AFTER `id_cliente`;
 ALTER TABLE `sgm_clients_rel_ubicacion` ADD `tipo_ubicacion` int(11) NOT NULL AFTER `id_ubicacion`;
 /*tipo_ubicacion: 1 pais; 2 com. autonoma; 3 provincia; 4 región*/
+ALTER TABLE `sgm_clients_rel_ubicacion` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_cliente`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_clients_sectores` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_sectores` ADD `id_sector` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_clients_sectores` ADD `sector` varchar(30) NOT NULL default '' AFTER `id_sector`;
+ALTER TABLE `sgm_clients_sectores` ADD CONSTRAINT `fksector` FOREIGN KEY(`id_sector`) REFERENCES `sgm_clients_sectores`(`id`);
 
+/*
 CREATE TABLE `sgm_clients_servidors` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_servidors` ADD `id_client` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_clients_servidors` ADD `servidor` varchar(255) NOT NULL default '' AFTER `id_client`;
 ALTER TABLE `sgm_clients_servidors` ADD `descripcion` varchar(255) NOT NULL default '' AFTER `servidor`;
 ALTER TABLE `sgm_clients_servidors` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 ALTER TABLE `sgm_clients_servidors` ADD `indice` int(11) NOT NULL AFTER `visible`;
+ALTER TABLE `sgm_clients_servidors` ADD CONSTRAINT `fkcliente` FOREIGN KEY(`id_client`) REFERENCES `sgm_clients`(`id`);
 
 CREATE TABLE `sgm_clients_servidors_alertes` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_servidors_alertes` ADD `id_servidor` int(11) NOT NULL AFTER `id`;
@@ -332,6 +381,7 @@ ALTER TABLE `sgm_clients_servidors_param` ADD `cpu` int(11) NOT NULL AFTER `id`;
 ALTER TABLE `sgm_clients_servidors_param` ADD `mem` int(11) NOT NULL AFTER `cpu`;
 ALTER TABLE `sgm_clients_servidors_param` ADD `memswap` int(11) NOT NULL AFTER `mem`;
 ALTER TABLE `sgm_clients_servidors_param` ADD `hd` int(11) NOT NULL AFTER `memswap`;
+*/
 
 CREATE TABLE `sgm_clients_tipos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_tipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id`;
@@ -345,6 +395,7 @@ ALTER TABLE `sgm_clients_tipos` ADD `contrato` tinyint(1) NOT NULL default '0' A
 ALTER TABLE `sgm_clients_tipos` ADD `contrato_activo` tinyint(1) NOT NULL default '0' AFTER `id_tipo_factura`;
 ALTER TABLE `sgm_clients_tipos` ADD `incidencia` tinyint(1) NOT NULL default '0' AFTER `contrato_activo`;
 ALTER TABLE `sgm_clients_tipos` ADD `datos_fiscales` tinyint(1) NOT NULL default '0' AFTER `incidencia`;
+ALTER TABLE `sgm_clients_tipos` ADD CONSTRAINT `fkorigen` FOREIGN KEY(`id_origen`) REFERENCES `sgm_clients_tipos`(`id`);
 
 CREATE TABLE `sgm_clients_tratos` ( `id` int(11) NOT NULL auto_increment, PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_clients_tratos` ADD `trato` varchar(30) NOT NULL default '' AFTER `id`;
@@ -431,6 +482,8 @@ CREATE TABLE `sim_comercial_oferta_rel_contenido` ( `id` int(11) NOT NULL auto_i
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `id_comercial_contenido` int(11) NOT NULL default '0' AFTER `id_comercial_oferta`;
 ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD `orden` varchar(10) NOT NULL default '' AFTER `id_comercial_contenido`;
+ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD CONSTRAINT `fkcomercialoferta` FOREIGN KEY(`id_comercial_oferta`) REFERENCES `sim_comercial_oferta`(`id`);
+ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD CONSTRAINT `fkcomercialcontenido` FOREIGN KEY(`id_comercial_contenido`) REFERENCES `sim_comercial_contenido`(`id`);
 
 CREATE TABLE `sim_comercial_oferta_valoracion` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `id_comercial_oferta` int(11) NOT NULL default '0' AFTER `id`;
@@ -441,6 +494,7 @@ ALTER TABLE `sim_comercial_oferta_valoracion` ADD `aceptada` tinyint(1) NOT NULL
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `comentarios` longtext AFTER `aceptada`;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `desglosar` tinyint(1) NOT NULL default '0' AFTER `comentarios`;
 ALTER TABLE `sim_comercial_oferta_valoracion` ADD `orden` int(11) NOT NULL default '0' AFTER `desglosar`;
+ALTER TABLE `sim_comercial_oferta_rel_contenido` ADD CONSTRAINT `fkcomercialoferta` FOREIGN KEY(`id_comercial_oferta`) REFERENCES `sim_comercial_oferta`(`id`);
 
 CREATE TABLE `sim_comercial_oferta_valoracion_rel_articulos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sim_comercial_oferta_valoracion_rel_articulos` ADD `id_comercial_oferta_valoracion` int(11) NOT NULL default '0' AFTER `id`;
@@ -577,13 +631,14 @@ ALTER TABLE `sgm_contratos_servicio` ADD `obligatorio` tinyint(1) NOT NULL defau
 ALTER TABLE `sgm_contratos_servicio` ADD `incidencias` tinyint(1) NOT NULL default '1' AFTER `obligatorio`;
 ALTER TABLE `sgm_contratos_servicio` ADD `sla` int(11) NOT NULL default '0' AFTER `incidencias`;
 ALTER TABLE `sgm_contratos_servicio` ADD `duracion` int(11) NOT NULL default '0' AFTER `sla`;
-ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` decimal(11,3) NOT NULL default '0.000' AFTER `duracion`;
+ALTER TABLE `sgm_contratos_servicio` ADD `precio_hora` decimal(11,2) NOT NULL default '0.000' AFTER `duracion`;
 ALTER TABLE `sgm_contratos_servicio` ADD `codigo_catalogo` varchar(55) NOT NULL default '' AFTER `precio_hora`;
 ALTER TABLE `sgm_contratos_servicio` ADD `auto_email` tinyint(1) NOT NULL default '0' AFTER `codigo_catalogo`;
 ALTER TABLE `sgm_contratos_servicio` ADD `funcion` varchar(55) NOT NULL default '' AFTER `auto_email`;
 ALTER TABLE `sgm_contratos_servicio` ADD `id_servicio_origen` int(11) NOT NULL default '0' AFTER `funcion`;
 ALTER TABLE `sgm_contratos_servicio` ADD `prefijo_notificacion` varchar(55) NOT NULL default '' AFTER `id_servicio_origen`;
 ALTER TABLE `sgm_contratos_servicio` ADD `horas` tinyint(1) NOT NULL default '0' AFTER `prefijo_notificacion`;
+ALTER TABLE `sgm_contratos_servicio` ADD `activo` tinyint(1) NOT NULL default '1' AFTER `horas`;
 /*
 INSERT INTO `sgm_contratos_servicio` VALUES (-1,0,'Instal&middot;laci&oacute; de Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
 INSERT INTO `sgm_contratos_servicio` VALUES (-2,0,'Manteniment Plataforma',0,0,0,1,0,0,0,0,0,0,'',0);
@@ -624,6 +679,13 @@ ALTER TABLE `sgm_contratos_tipos` ADD `nombre` varchar(255) NOT NULL default '' 
 ALTER TABLE `sgm_contratos_tipos` ADD `descripcion` longtext AFTER `nombre`;
 ALTER TABLE `sgm_contratos_tipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `descripcion`;
 
+CREATE TABLE `sim_contratos_tipos_rel_servicio` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
+ALTER TABLE `sim_contratos_tipos_rel_servicio` ADD `id_contrato_tipo` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sim_contratos_tipos_rel_servicio` ADD `id_servicio` int(11) NOT NULL default '0' AFTER `id_contrato_tipo`;
+ALTER TABLE `sim_contratos_tipos_rel_servicio` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id_servicio`;
+ALTER TABLE `sim_contratos_tipos_rel_servicio` ADD CONSTRAINT `fkcontratotipo` FOREIGN KEY(`id_contrato_tipo`) REFERENCES `id_contrato_tipo`(`id`);
+ALTER TABLE `sim_contratos_tipos_rel_servicio` ADD CONSTRAINT `fkservicio` FOREIGN KEY(`id_servicio`) REFERENCES `sgm_contratos_servicio`(`id`);
+
 CREATE TABLE `sgm_contratos_usuarios` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_contratos_usuarios` ADD `id_contrato` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_contratos_usuarios` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_contrato`;
@@ -646,13 +708,13 @@ ALTER TABLE `sgm_cuerpo` ADD `facturado` tinyint(1) NOT NULL default '0' AFTER `
 ALTER TABLE `sgm_cuerpo` ADD `id_facturado` int(11) NOT NULL default '0' AFTER `facturado`;
 ALTER TABLE `sgm_cuerpo` ADD `codigo` varchar(20) NOT NULL default '' AFTER `id_facturado`;
 ALTER TABLE `sgm_cuerpo` ADD `nombre` varchar(70) NOT NULL default '' AFTER `codigo`;
-ALTER TABLE `sgm_cuerpo` ADD `pvd` decimal(11,3) NOT NULL default '0.000' AFTER `nombre`;
-ALTER TABLE `sgm_cuerpo` ADD `pvp` decimal(11,3) NOT NULL default '0.000' AFTER `pvd`;
-ALTER TABLE `sgm_cuerpo` ADD `unidades` decimal(11,3) NOT NULL default '0.000' AFTER `pvp`;
-ALTER TABLE `sgm_cuerpo` ADD `descuento` decimal(11,3) NOT NULL default '0.000' AFTER `unidades`;
-ALTER TABLE `sgm_cuerpo` ADD `descuento_absoluto` decimal(11,3) NOT NULL default '0.000' AFTER `descuento`;
-ALTER TABLE `sgm_cuerpo` ADD `subtotaldescuento` decimal(11,3) NOT NULL default '0.000' AFTER `descuento_absoluto`;
-ALTER TABLE `sgm_cuerpo` ADD `total` decimal(11,3) NOT NULL default '0.000' AFTER `subtotaldescuento`;
+ALTER TABLE `sgm_cuerpo` ADD `pvd` decimal(11,2) NOT NULL default '0.000' AFTER `nombre`;
+ALTER TABLE `sgm_cuerpo` ADD `pvp` decimal(11,2) NOT NULL default '0.000' AFTER `pvd`;
+ALTER TABLE `sgm_cuerpo` ADD `unidades` decimal(11,2) NOT NULL default '0.000' AFTER `pvp`;
+ALTER TABLE `sgm_cuerpo` ADD `descuento` decimal(11,2) NOT NULL default '0.000' AFTER `unidades`;
+ALTER TABLE `sgm_cuerpo` ADD `descuento_absoluto` decimal(11,2) NOT NULL default '0.000' AFTER `descuento`;
+ALTER TABLE `sgm_cuerpo` ADD `subtotaldescuento` decimal(11,2) NOT NULL default '0.000' AFTER `descuento_absoluto`;
+ALTER TABLE `sgm_cuerpo` ADD `total` decimal(11,2) NOT NULL default '0.000' AFTER `subtotaldescuento`;
 ALTER TABLE `sgm_cuerpo` ADD `notes` longtext AFTER `total`;
 ALTER TABLE `sgm_cuerpo` ADD `bloqueado` tinyint(1) NOT NULL default '0' AFTER `notes`;
 ALTER TABLE `sgm_cuerpo` ADD `id_article` int(11) NOT NULL default '0' AFTER `bloqueado`;
@@ -660,7 +722,7 @@ ALTER TABLE `sgm_cuerpo` ADD `stock` tinyint(1) NOT NULL default '0' AFTER `id_a
 ALTER TABLE `sgm_cuerpo` ADD `prioridad` int(11) NOT NULL default '0' AFTER `stock`;
 ALTER TABLE `sgm_cuerpo` ADD `controlcalidad` int(11) NOT NULL default '0' AFTER `prioridad`;
 ALTER TABLE `sgm_cuerpo` ADD `id_tarifa` int(11) NOT NULL default '0' AFTER `controlcalidad` ;
-ALTER TABLE `sgm_cuerpo` ADD `tarifa` decimal(11,3) NOT NULL default '0.000' AFTER `id_tarifa`;
+ALTER TABLE `sgm_cuerpo` ADD `tarifa` decimal(11,2) NOT NULL default '0.000' AFTER `id_tarifa`;
 ALTER TABLE `sgm_cuerpo` ADD `trz` int(11) NOT NULL default '0' AFTER `tarifa`;
 ALTER TABLE `sgm_cuerpo` ADD `id_almacen` int(11) NOT NULL default '0' AFTER `trz`;
 ALTER TABLE `sgm_cuerpo` ADD `vigente` tinyint(1) NOT NULL default '0' AFTER `id_almacen`;
@@ -683,7 +745,7 @@ ALTER TABLE `sgm_dades_origen_factura` ADD `logo1` varchar(50) NOT NULL default 
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo2` varchar(50) NOT NULL default '' AFTER `logo1`;
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo_ticket` varchar(50) NOT NULL default '' AFTER `logo2`;
 ALTER TABLE `sgm_dades_origen_factura` ADD `logo_papel` varchar(50) NOT NULL default '' AFTER `logo_ticket`;
-ALTER TABLE `sgm_dades_origen_factura` ADD `iva` decimal(11,3) NOT NULL default '0.000' AFTER `logo_papel`;
+ALTER TABLE `sgm_dades_origen_factura` ADD `iva` decimal(11,2) NOT NULL default '0.000' AFTER `logo_papel`;
 
 CREATE TABLE `sgm_dades_origen_factura_iban` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_dades_origen_factura_iban` ADD `id_dades_origen_factura` int(11) NOT NULL default '0' AFTER `id`;
@@ -696,7 +758,7 @@ ALTER TABLE `sgm_dades_origen_factura_iban` ADD `swift_bic` varchar(11) NOT NULL
 CREATE TABLE `sgm_divisas` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_divisas` ADD `divisa` varchar(255) NOT NULL default '' AFTER `id`;
 ALTER TABLE `sgm_divisas` ADD `abrev` varchar(3) NOT NULL default '' AFTER `divisa`;
-ALTER TABLE `sgm_divisas` ADD `canvi` decimal(11,3) NOT NULL default '0.000' AFTER `abrev`;
+ALTER TABLE `sgm_divisas` ADD `canvi` decimal(11,2) NOT NULL default '0.000' AFTER `abrev`;
 ALTER TABLE `sgm_divisas` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `canvi`;
 ALTER TABLE `sgm_divisas` ADD `predefinido` tinyint(1) NOT NULL default '0' AFTER `visible`;
 ALTER TABLE `sgm_divisas` ADD `simbolo` varchar(1) AFTER `predefinido`;
@@ -716,11 +778,11 @@ ALTER TABLE `sgm_divisas_mod_canvi` ADD `canvi` decimal(11,4) NOT NULL default '
 
 CREATE TABLE `sgm_factura_calendario` ( `id` int(11) NOT NULL AUTO_INCREMENT,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_factura_calendario` ADD `fecha` int(15) NOT NULL DEFAULT '0' AFTER `id`;
-ALTER TABLE `sgm_factura_calendario` ADD `gastos` decimal(11,3) NOT NULL DEFAULT '0.000' AFTER `fecha`;
-ALTER TABLE `sgm_factura_calendario` ADD `pre_gastos` decimal(11,3) NOT NULL DEFAULT '0.000' AFTER `gastos`;
-ALTER TABLE `sgm_factura_calendario` ADD `ingresos` decimal(11,3) NOT NULL DEFAULT '0.000' AFTER `pre_gastos`;
-ALTER TABLE `sgm_factura_calendario` ADD `externos` decimal(11,3) NOT NULL DEFAULT '0.000' AFTER `ingresos`;
-ALTER TABLE `sgm_factura_calendario` ADD `liquido` decimal(11,3) NOT NULL DEFAULT '0.000' AFTER `externos`;
+ALTER TABLE `sgm_factura_calendario` ADD `gastos` decimal(11,2) NOT NULL DEFAULT '0.000' AFTER `fecha`;
+ALTER TABLE `sgm_factura_calendario` ADD `pre_gastos` decimal(11,2) NOT NULL DEFAULT '0.000' AFTER `gastos`;
+ALTER TABLE `sgm_factura_calendario` ADD `ingresos` decimal(11,2) NOT NULL DEFAULT '0.000' AFTER `pre_gastos`;
+ALTER TABLE `sgm_factura_calendario` ADD `externos` decimal(11,2) NOT NULL DEFAULT '0.000' AFTER `ingresos`;
+ALTER TABLE `sgm_factura_calendario` ADD `liquido` decimal(11,2) NOT NULL DEFAULT '0.000' AFTER `externos`;
 
 CREATE TABLE `sgm_factura_canvi_data_entrega` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_factura_canvi_data_entrega` ADD `id_factura` int(11) NOT NULL default '0' AFTER `id`;
@@ -745,6 +807,11 @@ CREATE TABLE `sgm_factura_modificacio` ( `id` int(11) NOT NULL auto_increment,  
 ALTER TABLE `sgm_factura_modificacio` ADD `id_factura` int(11) NOT NULL default '0' AFTER `id`;
 ALTER TABLE `sgm_factura_modificacio` ADD `id_usuario` int(11) NOT NULL default '0' AFTER `id_factura`;
 ALTER TABLE `sgm_factura_modificacio` ADD `fecha` int(25) NOT NULL default '0' AFTER `id_usuario`;
+
+CREATE TABLE `sgm_factura_resumen_iva` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
+ALTER TABLE `sgm_factura_resumen_iva` ADD `id_tipo_repercutido` int(11) NOT NULL default '0' AFTER `id`;
+ALTER TABLE `sgm_factura_resumen_iva` ADD `id_tipo_soportado` int(11) NOT NULL default '0' AFTER `id_tipo_repercutido`;
+ALTER TABLE `sgm_factura_resumen_iva` ADD `id_tipo_liquidadodo` int(11) NOT NULL default '0' AFTER `id_tipo_soportado`;
 
 CREATE TABLE `sgm_factura_subtipos` ( `id` int(11) NOT NULL auto_increment,    PRIMARY KEY  (`id`)) ENGINE=MyISAM;
 ALTER TABLE `sgm_factura_subtipos` ADD `visible` tinyint(1) NOT NULL default '1' AFTER `id`;
@@ -1002,7 +1069,7 @@ ALTER TABLE `sgm_recibos` ADD `ocp` varchar(5) default NULL AFTER `opoblacion`;
 ALTER TABLE `sgm_recibos` ADD `oprovincia` varchar(15) default NULL AFTER `ocp`;
 ALTER TABLE `sgm_recibos` ADD `entidad_bancaria` varchar(50) default NULL AFTER `oprovincia`;
 ALTER TABLE `sgm_recibos` ADD `numero_cuenta` varchar(20) default NULL AFTER `entidad_bancaria`;
-ALTER TABLE `sgm_recibos` ADD `total` decimal(11,3) NOT NULL default '0.000' AFTER `numero_cuenta`;
+ALTER TABLE `sgm_recibos` ADD `total` decimal(11,2) NOT NULL default '0.000' AFTER `numero_cuenta`;
 ALTER TABLE `sgm_recibos` ADD `id_cliente` int(5) NOT NULL default '0' AFTER `total`;
 ALTER TABLE `sgm_recibos` ADD `id_user` int(5) NOT NULL default '0' AFTER `id_cliente`;
 ALTER TABLE `sgm_recibos` ADD `id_tipo_pago` int(11) NOT NULL default '0' AFTER `id_user`;

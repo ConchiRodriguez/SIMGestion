@@ -317,6 +317,7 @@ function factura_print_e($id)
 		$content .= "						<DiscountReason>Descuento Factura</DiscountReason>\n";
 	if ($rowcabezera["descuento"] > 0){
 		$content .= "						<DiscountRate>".number_format($rowcabezera["descuento"], 4, '.', '')."</DiscountRate>\n";
+		$content .= "							<DiscountAmount>".number_format(($rowcabezera["subtotal"]-$rowcabezera["subtotaldescuento"]), 6, '.', '')."</DiscountAmount>\n";
 	} else {
 		$content .= "						<DiscountAmount>".number_format($rowcabezera["descuento_absoluto"], 6, '.', '')."</DiscountAmount>\n";
 	}
@@ -374,6 +375,7 @@ function factura_print_e($id)
 		$content .= "							<DiscountReason>Descuento Linea</DiscountReason>\n";
 	if ($rowcuerpo["descuento"] > 0){
 		$content .= "							<DiscountRate>".number_format($rowcuerpo["descuento"], 4, '.', '')."</DiscountRate>\n";
+		$content .= "							<DiscountAmount>".number_format((($rowcuerpo["pvp"]*$rowcuerpo["unidades"])*$rowcuerpo["descuento"]/100), 6, '.', '')."</DiscountAmount>\n";
 	} else {
 		$content .= "							<DiscountAmount>".number_format($rowcuerpo["descuento_absoluto"], 6, '.', '')."</DiscountAmount>\n";
 	}

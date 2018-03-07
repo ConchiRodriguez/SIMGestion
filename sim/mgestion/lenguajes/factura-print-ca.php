@@ -100,6 +100,8 @@ $valoracion_economica = "Valoració Económica";
 #protecci&oacute;n de datos#
 $texto_pdatos = "Li recordem, que les seves dades es troben recollides en un fitxer tituralitat de SOLUCIONS INFORMATIQUES MARESME SL amb la finalitat de prestar els seus serveis. D'acord amb la Ley Orgànica 15/1999 de Protección de Datos de Caracter Personal pot exercir el dret d'accés, rectificació, cancelació i oposició enviant un escrit de sol·licitud i fotocopia del DNI a SOLUCIONS INFORMATIQUES MARESME SL, AVDA MARESME, 44 BAJOS, 2 de TORDERA provincia de BARCELONA.";
 
-$texto_firma = "Queda aprovada l'oferta de servei i la valoració econòmica per part de:"
+$texto_reg_mercantil = "Inscrita al Registre Mercatil Barcelona: Tom 42967, Foli 141, Secció 8, Full B421165, Incripció 1, NIF-VAT ESB65702227";
+
+$texto_firma = "Queda aprovada l'oferta de servei i la valoració econòmica per part de:";
 
 ?>

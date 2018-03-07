@@ -136,9 +136,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 										echo "<td class=\"menu_select_empresa\"><a href=\"index.php?mn=150\" class=\"menu_select\">".$Monitorizacion."</a></td>";
 									}
 									if (($mn >= 200) and ($mn < 300)) {
-										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=210\" class=\"menu_select\">".$Prueba_gratis."</a></td>";
+#										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=210\" class=\"menu_select\">".$Prueba_gratis."</a></td>";
 										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=220\" class=\"menu_select\">".$Plataforma_24h."</a></td>";
-										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=230\" class=\"menu_select\">".$Soluciones_para_pimes."</a></td>";
+#										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=230\" class=\"menu_select\">".$Soluciones_para_pimes."</a></td>";
 									}
 									if (($mn >= 500) and ($mn < 600)) {
 										echo "<td class=\"menu_select_contacto\"><a href=\"index.php?mn=510\" class=\"menu_select\">".$Donde_estamos."</a></td>";
@@ -174,8 +174,8 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 					echo "<tr>";
 					if ($_GET["mn"] == 0){
 						echo "<td class=\"cuerpo2\">";
-							if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/botones/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
-							if ($_GET["mn"] != 230) {echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+#							if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/botones/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+#							if ($_GET["mn"] != 230) {echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 								echo "<a href=\"index.php?mn=600\"><img src=\"images/botones/demos.jpg\" alt=\"logo\"></a><br><br>";
 							if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/botones/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 						echo "</td>";
@@ -197,6 +197,10 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 							if ($_GET["mn"] == 155) {include("menus/menu_nagios_bi_".$idioma.".html");}
 							if ($_GET["mn"] == 156) {include("menus/menu_nagios_test_".$idioma.".html");}
 							if ($_GET["mn"] == 200) {include("menus/menu_servicios_".$idioma.".html");}
+							if ($_GET["mn"] == 201) {include("menus/menu_servicio_mant_".$idioma.".html");}
+							if ($_GET["mn"] == 202) {include("menus/menu_servicio_admin_".$idioma.".html");}
+							if ($_GET["mn"] == 203) {include("menus/menu_servicio_proy_".$idioma.".html");}
+							if ($_GET["mn"] == 204) {include("menus/menu_servicio_form_".$idioma.".html");}
 							if ($_GET["mn"] == 210) {include("menus/menu_servicios_piloto.php");}
 							if ($_GET["mn"] == 220) {include("menus/menu_servicios_plataforma24.php");}
 							if ($_GET["mn"] == 230) {include("menus/menu_pimes_".$idioma.".html");}
@@ -254,8 +258,8 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 							echo "<a href=\"index.php?mn=120\"><img src=\"images/partners/NagiosAuthorizedReseller-72x72.PNG\" alt=\"logo\"></a><br><br>";
 							echo "<a class=\"twitter-timeline\" data-lang=\"es\" data-width=\"300\" data-height=\"250\" data-link-color=\"#33339F\" href=\"https://twitter.com/Solucions_im\">Tweets by Solucions_im</a> <script async src=\"//platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>";
 							if ($_GET["mn"] != 0){
-								if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/botones/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
-								if ($_GET["mn"] != 230) { echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+#								if ($_GET["mn"] != 210) {echo "<a href=\"index.php?mn=210\"><img src=\"images/botones/pilot_test_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
+#								if ($_GET["mn"] != 230) { echo "<a href=\"index.php?mn=230\"><img src=\"images/botones/sme_solutions_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 								if ($_GET["mn"] != 600) { echo "<a href=\"index.php?mn=600\"><img src=\"images/botones/demos.jpg\" alt=\"logo\"></a><br><br>";}
 								if ($_GET["mn"] != 220) {echo "<a href=\"index.php?mn=220\"><img src=\"images/botones/system_24hours_".$idioma.".jpg\" alt=\"logo\"></a><br><br>";}
 							}
@@ -281,9 +285,9 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 						echo "<td style=\"width:250px;vertical-align:top;\">";
 							echo "<table style=\"width:200px;\" class=\"footer\">";
 								echo "<tr><td><a href=\"index.php?mn=200\" class=\"footer\"><strong>".$Servicios."</strong></a></td></tr>";
-								echo "<tr><td><a href=\"index.php?mn=210\" class=\"footer\">".$Prueba_gratis."</a></td></tr>";
+#								echo "<tr><td><a href=\"index.php?mn=210\" class=\"footer\">".$Prueba_gratis."</a></td></tr>";
 								echo "<tr><td><a href=\"index.php?mn=220\" class=\"footer\">".$Plataforma_24h."</a></td></tr>";
-								echo "<tr><td><a href=\"index.php?mn=230\" class=\"footer\">".$Soluciones_para_pimes."</a></td></tr>";
+#								echo "<tr><td><a href=\"index.php?mn=230\" class=\"footer\">".$Soluciones_para_pimes."</a></td></tr>";
 								echo "<tr><td><a href=\"index.php?mn=300\" class=\"footer\"><strong>".$Productos."</strong></a></td></tr>";
 								echo "<tr><td><a href=\"index.php?mn=400\" class=\"footer\"><strong>".$Noticias."</strong></a></td></tr>";
 #								echo "<tr><td><a href=\"index.php?mn=230\" class=\"footer\">".$Formacion."</a></td></tr>";

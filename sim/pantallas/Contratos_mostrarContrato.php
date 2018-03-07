@@ -26,7 +26,7 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			$numeroc = $rowc["num_contrato"];
 			echo "<input type=\"Hidden\" name=\"id_contrato\" value=\"".$id_contrato."\">";
 		} else {
-			echo "<form action=\"index.php?op=".$option."&sop=101\" method=\"post\">";
+			echo "<form action=\"index.php?op=".$option."&sop=100&ssop=1\" method=\"post\">";
 			$numeroc = 0;
 			$sqln = "select num_contrato from sgm_contratos where visible=1 order by num_contrato desc";
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
@@ -34,19 +34,38 @@ function mostrarContrato ($id_contrato,$id_cliente){
 			$numeroc = ($rown["num_contrato"]+ 1);
 		}
 		echo "<tr><td style=\"text-align:right;\">".$Numero." ".$Contrato.": </td><td><input style=\"width:100px\" type=\"Text\" name=\"num_contrato\" value=\"".$numeroc."\"></td></tr>";
-		echo "<tr><td style=\"text-align:right;\">".$Contrato." ".$Tipo.": </td>";
-			echo "<td><select style=\"width:500px\" name=\"id_contrato_tipo\">";
-				$sql = "select * from sgm_contratos_tipos where visible=1 order by nombre";
-				$result = mysqli_query($dbhandle,convertSQL($sql));
-				while ($row = mysqli_fetch_array($result)) {
-					if ($row["id"] == $rowc["id_contrato_tipo"]){
-						echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." - ".$row["descripcion"]."</option>";
-					} else {
-						echo "<option value=\"".$row["id"]."\">".$row["nombre"]." - ".$row["descripcion"]."</option>";
+		if ($rowc["id_contrato_tipo"] > 0){
+			echo "<tr><td style=\"text-align:right;\">".$Contrato." ".$Tipo.": </td>";
+				echo "<td><select style=\"width:500px\" name=\"id_contrato_tipo\">";
+					$sql = "select * from sgm_contratos_tipos where visible=1 order by nombre";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
+						if ($row["id"] == $rowc["id_contrato_tipo"]){
+							echo "<option value=\"".$row["id"]."\" selected>".$row["nombre"]." - ".$row["descripcion"]."</option>";
+						} else {
+							echo "<option value=\"".$row["id"]."\">".$row["nombre"]." - ".$row["descripcion"]."</option>";
+						}
 					}
-				}
-			echo "</td>";
-		echo "</tr>";
+				echo "</td>";
+			echo "</tr>";
+		} else {
+			if ($id_contrato != ""){
+				$sql = "select * from sgm_contratos where visible=1 and id=".$rowc["id_plantilla"];
+				$result = mysqli_query($dbhandle,convertSQL($sql));
+				$row = mysqli_fetch_array($result);
+				echo "<tr><td style=\"text-align:right;\">".$Plantilla." ".$Contrato.": </td><td>".$row["descripcion"]."</td></tr>";
+			} else {
+				echo "<tr><td style=\"text-align:right;\">".$Plantilla." ".$Contrato.": </td>";
+					echo "<td><select style=\"width:500px\" name=\"id_plantilla\">";
+						$sql = "select * from sgm_contratos where visible=1 and id_plantilla=0 and id_contrato_tipo=0 and activo=1 order by descripcion";
+						$result = mysqli_query($dbhandle,convertSQL($sql));
+						while ($row = mysqli_fetch_array($result)) {
+							echo "<option value=\"".$row["id"]."\">".$row["descripcion"]."</option>";
+						}
+					echo "</td>";
+				echo "</tr>";
+			}
+		}
 		echo "<tr>";
 			echo "<td style=\"text-align:right;\">".$Tarifa.": </td>";
 			echo "<td><select style=\"width:500px\" name=\"id_tarifa\">";

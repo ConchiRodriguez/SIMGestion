@@ -424,6 +424,7 @@ $Linea = "Linia";
 $Lista = "Llista";
 $Listar = "Llistar : ";
 $Listado = "Llistat";
+$Liquidado = "Liquidat";
 $Localizacion = "Localizaci&oacute;";
 $Logistica = "Log&iacute;stica";
 $Logo = "Logo";
@@ -593,6 +594,7 @@ $Remitente = "Remitent";
 $Remoto = "Remot";
 $Remunerado = "Remunerat";
 $Renovar = "Renovar";
+$Repercutido = "Repercutit";
 $Repetir = "Repetir";
 $Reports = "Reports";
 $Residente = "Resident";
@@ -643,6 +645,7 @@ $Socio_tecnologico = "Soci Tecnol&ograve;gic";
 $Solo = "Solament";
 $Solo_predeterminado = "Solament predeterminat";
 $Solucionado = "Solucionat";
+$Soportado = "Soportat";
 $Soporte = "Suport";
 $Stock = "Stock";
 $Subir = "Pujar";
@@ -763,7 +766,7 @@ $catalogarArticulo = "L'article tornar&agrave; al cat&agrave;leg habitual d'arti
 #Auxiliares
 $ayuda_iso_idioma = "L'idioma ha de cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
-$errorEliminarGrupo = "No es pot eliminar un grup que tingui móduls associats.";
+$errorEliminarGrupo = "No es pot eliminar un grup que tingui m&oacute;duls associats.";
 #Clientes
 $OkActualizacionCliente = "El tipus dels clients s'ha actualitzat correctament";
 $ErrorActualizacionCliente = "El tipus dels clients no s'ha actualitzat correctament";
@@ -775,11 +778,12 @@ $Redireccion10seg = "En 10 segons ser&agrave; redirigit per motius de segureta."
 $ContrasenyaAppErrorEliminar = "No es pot eliminar aquesta aplicaci&oacute;, ja que existeixen contrasenyes associades.";
 $ContrasenyaSinContrato = "No es pot introduir una contrasenya sense indicar el contracte.";
 #Contratos
-$ContratoErrorEliminar = "No es pot eliminar aquest contracte perquè hi ha incid&egrave;ncias associades.";
+$ContratoErrorEliminar = "No es pot eliminar aquest contracte perqu&egrave; hi ha incid&egrave;ncias associades.";
+$ContratoPlantillaErrorEliminar = "No se pot eliminar aquesta plantilla de contracte, perqu&egrave; hi ha contractes associats.";
 $ContratoTipoErrorEliminar = "No es pot eliminar aquest tipus de contracte, ja que hi ha contractes associats.";
 $ErrorServicio = "Un servei amb el mateix nom ja existeix en aquest contracte";
 $Explicacion_cobertura = "El periode de cobertura d'un servei es la disponibilitat per la recepci&oacute; d'incid&egrave;ncies. Siguent el primer valor les hores al dia i el segon els dies a la setmana. Exemple : 8x5 equival a 8 hores al dia 5 dies a la setmana.";
-$Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al sig&uuml;ent dia laboral.";
+$Explicacion_respuesta = "El temps de resposta d'una incid&egrave;ncia comen&ccedil;a a contar una vegada recepcionada. Si es NBD, una vegada fora de l'horari laboral, la incid&egrave;ncia pasa al seg&uuml;ent dia laboral.";
 $info_contrato_notificaciones = "Gesti&oacute; de les notificacions dels serveis. S'enviar&agrave;n notificacions a l'usuari escollit quan la incid&egrave;ncia tingui el servei i l'usuari d'origen escollit, i quan es realitzi una de les accions escollides sobre ella.";
 $info_contrato_archivos = "L'arxiu a pujar &eacute;s el contracte escanejat un cop signat per les dues parts.";
 $info_contrato_tecnicos = "Gesti&oacute; de los t&eacute;cnicos asignados a este contrato";
@@ -821,7 +825,7 @@ $ayudaFacturaAprobar = "S'aprobar&agrave; el document i se podr&agrave; facturar
 $ayudaFacturaDesaprobar = "Es desaprobar&agrave; el document i no se podr&agrave; facturar.";
 $ayudaCuerpoConvertir = "Converteix la linia del document en un nou article. Es traspasar&agrave; tamb&egrave;n el c&agrave;lcul de costos, si hi ha.";
 $ayudaCuerpoEliminar = "S'eliminar&agrave; la linia en tot el progama. Totes les dades relacionades amb ella seran inaccessibles.";
-$pregunta_recalculo = "¿Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
+$pregunta_recalculo = "&iquest;Segur que desitja fer un rec&agrave;lcul total? Aquesta acci&oacute; pot durar uns minuts, ja que es far&agrave; un rec&agrave;lcul total des de l'1 de Gener de 2012.";
 $InfoCambioFormaPagoTPV = "Forma de pagament canviada correctament.";
 $InfoCambioFormaPagoTPV2 = "Ha realizat un altre canvio en la forma de pagament.";
 #General
@@ -830,7 +834,7 @@ $error_incidencia_busqueda = "Per cercar per dates, es necessari mes i any.";
 $errorSubirArchivoDuplicado = "No es pot afegir l'archiu per que ja existeix un amb el mateix nom.";
 $errorSubirArchivoTamany = "No es pot transferir l'archiu.<br>No pot excedir el tamany indicat";
 $errorSubirArchivo = "No es pot transferir l'archiu.";
-$pregunta_eliminar = "¿Desitja eliminar l'element seleccionat?";
+$pregunta_eliminar = "&iquest;Desitja eliminar l'element seleccionat?";
 $mesaje_modificar = "S'ha modificat correctament";
 #Incidencias
 $ErrorRelacion = "El valor introduit no es num&egrave;ric o no pertany a un ID d'una incid&egrave;ncia existent";
@@ -865,12 +869,12 @@ $MailYaReg = "<br>Direcci&oacute; e-mail ja registrada.";
 $MailIncorrecto = "<br>Valor en el camp e-mail incorrecte.";
 $PassIncorrecto = "<br>Valor en els camps passwords incorrecte.";
 $CompletaCorrect = "Completa correctament tots els camps obligatoris.";
-$InvalidarUsuario = "<br><br>¿Segur que desitja invalidar aquest usuari?";
+$InvalidarUsuario = "<br><br>&iquest;Segur que desitja invalidar aquest usuari?";
 $ErrorPass = "<br><br>Error a l'introduir les contrasenyes<br><br>";
 $NotasDes = "No es pot introduir una incidencia sense text";
 $cambiarDatos = "Si desitja canviar les dades de l'empresa, posis en contacte amb ";
 #Comercial
-$pregunta_versionar = "¿Desitja versionar l'element seleccionat?";
+$pregunta_versionar = "&iquest;Desitja versionar l'element seleccionat?";
 $infoServidores = "Nom descriptiu de cadascun d'els servidors necessari al client";
 $infoDesglosar = "Es mostren o no tot els articles de l'oferta en la impresi&oacute; en PDF. Si es no, nom&eacute;s es mostra el primer article de l'oferta amb el preu total de tots els articles.";
 #Texto
@@ -904,7 +908,7 @@ $IncidenciasAyudaColores = "
 
 $IncidenciasAyudaNotificaciones = "
 	<p>Per poder realitzar les notificacions es necessari tenir el camp “usuari origen” informat en la incid&egrave;ncia. Les notificacions nom&eacute;s es realitzaran a usuaris que no siguin de Solucions-IM.</p>
-	<p>Cada vegada que realitzem una acci&oacute; referent a las incid&egrave;ncies se generar&agrave; una notificaci&oacute; cap al client de la incid&egrave;ncia en los següents casos:</p>
+	<p>Cada vegada que realitzem una acci&oacute; referent a las incid&egrave;ncies se generar&agrave; una notificaci&oacute; cap al client de la incid&egrave;ncia en los seg&uuml;ents casos:</p>
 	<ul>
 		<li>&bull; A l’insertar una incid&egrave;ncia nova.
 			<p>Quan un client envia un correu a l’adreça soporte@solucions-im.com, se genera una incid&egrave;ncia nova y s’envia un correu de resposta al client informant-li.</p>
