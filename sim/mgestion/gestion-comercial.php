@@ -1385,8 +1385,6 @@ if (($option == 1009) AND ($autorizado == true)) {
 				echo "<th>".$Version."</th>";
 				echo "<th>".$Titulo."</th>";
 				echo "<th>".$Idioma."</th>";
-				echo "<th>".$Editable."</th>";
-				echo "<th>".$Servicio."</th>";
 				echo "<th></th>";
 				echo "<th></th>";
 				echo "<th></th>";
@@ -1400,18 +1398,6 @@ if (($option == 1009) AND ($autorizado == true)) {
 					$result = mysqli_query($dbhandle,convertSQL($sql));
 					while ($row = mysqli_fetch_array($result)){
 						echo "<option value=\"".$row["id"]."\">".$row["idioma"]."</option>";
-					}
-				echo "</td>";
-				echo "<td><select style=\"width:60px\" name=\"editable\">";
-					echo "<option value=\"0\">".$No."</option>";
-					echo "<option value=\"1\">".$Si."</option>";
-				echo "</td>";
-				echo "<td><select style=\"width:300px\" name=\"id_servicio\">";
-					echo "<option value=\"0\">-</option>";
-					$sql = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=0 order by servicio";
-					$result = mysqli_query($dbhandle,convertSQL($sql));
-					while ($row = mysqli_fetch_array($result)){
-						echo "<option value=\"".$row["id"]."\">".$row["servicio"]."</option>";
 					}
 				echo "</td>";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
@@ -1435,27 +1421,6 @@ if (($option == 1009) AND ($autorizado == true)) {
 								echo "<option value=\"".$row["id"]."\" selected>".$row["idioma"]."</option>";
 							} else {
 								echo "<option value=\"".$row["id"]."\">".$row["idioma"]."</option>";
-							}
-						}
-					echo "</td>";
-					echo "<td><select style=\"width:60px\" name=\"editable\">";
-						if ($rowci["editable"] == 0){
-							echo "<option value=\"0\" selected>".$No."</option>";
-							echo "<option value=\"1\">".$Si."</option>";
-						} elseif ($rowci["editable"] == 1) {
-							echo "<option value=\"0\">".$No."</option>";
-							echo "<option value=\"1\" selected>".$Si."</option>";
-						}
-					echo "</td>";
-					echo "<td><select style=\"width:300px\" name=\"id_servicio\">";
-						echo "<option value=\"0\" selected>-</option>";
-						$sql = "select id,servicio from sgm_contratos_servicio where visible=1 and id_contrato=0 order by servicio";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)){
-							if ($row["id"] == $rowci["id_servicio"]){
-								echo "<option value=\"".$row["id"]."\" selected>".$row["servicio"]."</option>";
-							} else {
-								echo "<option value=\"".$row["id"]."\">".$row["servicio"]."</option>";
 							}
 						}
 					echo "</td>";
@@ -1488,9 +1453,9 @@ if (($option == 1009) AND ($autorizado == true)) {
 
 	if ($soption == 515) {
 		if ($ssoption == 1) {
-			$camposUpdate=array('contenido','contenido_extenso');
+			$camposUpdate=array('contenido');
 #			$datosUpdate=array(comillas($_POST["contenido"]),comillas($_POST["contenido_extenso"]));
-			$datosUpdate=array($_POST['contenido'],$_POST['contenido_extenso']);
+			$datosUpdate=array($_POST['contenido']);
 			updateFunction("sim_comercial_contenido",$_GET["id"],$camposUpdate,$datosUpdate);
 		}
 
@@ -1504,9 +1469,7 @@ if (($option == 1009) AND ($autorizado == true)) {
 			echo "<tr>";
 				echo "<td style=\"text-align:right;vertical-align:top;\">".$Titulo." : </td><td>".$row["titulo"]."</td>";
 			echo "</tr><tr>";
-				echo "<td style=\"text-align:right;vertical-align:top;\">".$Contenido." : </td><td><textarea name=\"contenido\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido"]."</textarea></td>";
-			echo "</tr><tr>";
-				echo "<td style=\"text-align:right;vertical-align:top;\">".$Contenido_Estendido." : </td><td><textarea name=\"contenido_extenso\" class=\"contenidos\" style=\"width:900px\" rows=\"10\">".$row["contenido_extenso"]."</textarea></td>";
+				echo "<td style=\"text-align:right;vertical-align:top;\">".$Contenido." : </td><td><textarea name=\"contenido\" class=\"contenidos\" style=\"width:900px\" rows=\"50\">".$row["contenido"]."</textarea></td>";
 			echo "</tr><tr>";
 				echo "<td></td><td><input type=\"Submit\" value=\"".$Editar."\" style=\"width:100px\"></td>";
 			echo "</tr>";

@@ -257,6 +257,7 @@ $Editar = "Editar";
 $Ejecutar = "Executar";
 $Electronico = "Electr&ograve;nic";
 $Elementos = "Elements";
+$EliminacionMasiva = "Eliminaci&oacute; Massiva";
 $Eliminada = "Eliminada";
 $Eliminar = "Eliminar";
 $Email = "E-mail";
@@ -846,6 +847,9 @@ $ErrorBusqueda = "Per cercar per dates, es necessari mes i any.";
 $ayudaIncidenciaCliente = "Acc&egrave;s al formulari d'inserci&oacute; de contactes";
 $ayudaIncidenciaContrasena = "Acc&egrave;s a les contrase&ntilde;es del client";
 $ayudaIncidenciaContrato = "Acc&egrave;s als contractes del client";
+$ayudaRelacionar = "&iquest;Segur que desitja relacionar aquestes incidencies?";
+$ayudaRelacionar2 = "La incid&egrave;ncia ";
+$ayudaRelacionar3 = " es convertir&aacute en una nota de la incid&egrave;ncia ";
 #Login
 $ayudaLogin = "Has oblidat l'usuari i/o la contrasenya?";
 $asuntoMensajeRecuperacion = "Missatge de recuperaci&oacute; de contrasenya.";

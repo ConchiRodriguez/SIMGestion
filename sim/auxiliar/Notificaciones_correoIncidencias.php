@@ -71,7 +71,7 @@ function correoIncidencias(){
 							$filesize = $part->bytes;
 							if($filename) {
 								$file = getPart($imap,$detalles->msgno, $partNumber, $part->encoding);
-								file_put_contents("../sim/archivos/incidencias/".$filename,$file);
+								file_put_contents("../sim/archivos/incidencias/".date("Ymd").$filename,$file);
 							}
 							break;
 					}
@@ -110,6 +110,14 @@ function correoIncidencias(){
 						$rowuch = mysqli_fetch_array($resultuch);
 						$id_cliente = $rowuch["id_client"];
 						$id_usuario = 0;
+					} else {
+						$sqlcm = "select id from sgm_clients where mail like '%@".$correo_remite->host."'";
+						$resultcm = mysqli_query($dbhandle,$sqlcm);
+						$rowcm = mysqli_fetch_array($resultcm);
+						if ($rowcm){
+							$id_cliente = $rowcm["id"];
+							$id_usuario = 0;
+						}
 					}
 				}
 			}
@@ -149,6 +157,7 @@ function correoIncidencias(){
 			if ($asunto1 == "") { $asunto = "Sense assumpte";} else {$asunto = comillas($asunto1);}
 			$data = time();
 
+			$message = trim($message,"' '\t\n\r\0\x0B");
 			$message = str_replace("</p>","\r\n",$message);
 #			$be_erres = array ('<br>','<\br>','<br />');
 #			$message = str_replace($be_erres,'\r\n',$message);
@@ -173,8 +182,8 @@ function correoIncidencias(){
 						$datosInsert = array($id_inc,1,$id_usuario,$id_usuario,$id_cliente,$data,$data_missatge,-1,3,$mensaje,$asunto,0,$id_codigo_externo);
 						insertFunction ("sgm_incidencias",$camposInsert,$datosInsert);
 
-						$camposUpdate = array("pausada");
-						$datosUpdate = array(0);
+						$camposUpdate = array("id_estado","pausada");
+						$datosUpdate = array(-1,0);
 						updateFunction ("sgm_incidencias",$id_inc,$camposUpdate,$datosUpdate);
 
 						$sqlinc = "select id_servicio,id from sgm_incidencias where visible=1 and id=".$id_inc;
@@ -247,7 +256,7 @@ function correoIncidencias(){
 					$tipo = $row["id"];
 
 					$camposInsert = "id_tipo,name,type,size,id_elemento,tipo_id_elemento";
-					$datosInsert = array($tipo,$filename,$filetipus,$filesize,$incidencia_id,4);
+					$datosInsert = array($tipo,date("Ymd").$filename,$filetipus,$filesize,$incidencia_id,4);
 					insertFunction ("sgm_files",$camposInsert,$datosInsert);
 				}
 			}

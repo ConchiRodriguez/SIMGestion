@@ -3,7 +3,7 @@ error_reporting(~E_ALL);
 
 
 function informesContratos(){
-	global $db,$dbhandle,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma,$Ver_Detalles,$Tipo,$Todos,$Activos;
+	global $db,$dbhandle,$Informes,$Cliente,$Mes,$Ano,$Horas,$Imprimir,$urlmgestion,$Contrato,$Ver_Horas,$Hasta,$Si,$No,$Idioma,$Ver_Detalles,$Tipo,$Todos,$Activos,$Servicios;
 	echo "<strong>".$Informes."</strong>";
 	echo "<br><br>";
 	echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
@@ -19,6 +19,7 @@ function informesContratos(){
 			echo "<td>".$Idioma."</td>";
 			echo "<td>".$Ver_Horas."</td>";
 			echo "<td>".$Ver_Detalles."</td>";
+			echo "<td>".$Servicios." ".$Horas."</td>";
 			echo "<td></td>";
 		echo "</tr><tr>";
 			echo "<form method=\"post\" name=\"form2\" action=\"".$urlmgestion."/mgestion/gestion-contratos-informe-print-pdf.php\" target=\"popup\" onsubmit=\"window.open('', 'popup', '')\">";
@@ -177,6 +178,15 @@ function informesContratos(){
 			echo "</select></td>";
 			echo "<td><select name=\"detalles\" style=\"width:60px\">";
 				if ($_POST["detalles"] == 0){
+					echo "<option value=\"0\" selected>".$No."</option>";
+					echo "<option value=\"1\">".$Si."</option>";
+				} else {
+					echo "<option value=\"0\">".$No."</option>";
+					echo "<option value=\"1\" selected>".$Si."</option>";
+				}
+			echo "</select></td>";
+			echo "<td><select name=\"servicios_horas\" style=\"width:60px\">";
+				if ($_POST["servicios_horas"] == 0){
 					echo "<option value=\"0\" selected>".$No."</option>";
 					echo "<option value=\"1\">".$Si."</option>";
 				} else {

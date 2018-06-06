@@ -198,7 +198,9 @@ class PDF extends FPDF
 			$outSLA = 0;
 			$time = 0;
 
-			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
+			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." ";
+			if ($_POST["servicios_horas"] > 0){$sqlcs .= " and horas=1";}
+			$sqlcs .= " and visible=1 order by servicio";
 			$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 			while ($rowcs = mysqli_fetch_array($resultcs)) {
 				$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";
@@ -323,7 +325,9 @@ class PDF extends FPDF
 			$this->Cell(25,4,$estado,'B',0);
 			$this->Cell(15,4,$duracion,'B',1);
 
-			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
+			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." ";
+			if ($_POST["servicios_horas"] > 0){$sqlcs .= " and horas=1";}
+			$sqlcs .= " and visible=1 order by servicio";
 			$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 			while ($rowcs = mysqli_fetch_array($resultcs)) {
 				$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado=-2 and visible=1 and fecha_inicio between ".$mes_ini." and ".$mes_act." order by fecha_inicio";
@@ -379,7 +383,9 @@ class PDF extends FPDF
 		$this->Cell(25,4,$estado,'B',0);
 		$this->Cell(15,4,"SLA",'B',1);
 
-		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
+		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." ";
+		if ($_POST["servicios_horas"] > 0){$sqlcs .= " and horas=1";}
+		$sqlcs .= " and visible=1 order by servicio";
 		$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 		while ($rowcs = mysqli_fetch_array($resultcs)) {
 			$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado<>-2 and visible=1";
@@ -420,7 +426,9 @@ class PDF extends FPDF
 		$outSLA = 0;
 		$time = 0;
 
-		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
+		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." ";
+		if ($_POST["servicios_horas"] > 0){$sqlcs .= " and horas=1";}
+		$sqlcs .= " and visible=1 order by servicio";
 		$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 		while ($rowcs = mysqli_fetch_array($resultcs)) {
 			$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";

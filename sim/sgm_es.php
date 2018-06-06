@@ -256,6 +256,7 @@ $Editar = "Editar";
 $Ejecutar = "Ejecutar";
 $Electronico = "Electr&oacute;nico";
 $Elementos = "Elementos";
+$EliminacionMasiva = "Eliminaci&oacute;n Masiva";
 $Eliminada = "Eliminada";
 $Eliminar = "Eliminar";
 $Email = "E-mail";
@@ -765,7 +766,7 @@ $catalogarArticulo = "El articulo volver&aacute; al cat&aacute;logo habitual de 
 #Auxiliares
 $ayuda_iso_idioma = "El idioma tiene que cumplir la norma ISO 639-1:2002 Alpha-2.<br>Consultar ";
 $ayuda_iso_pais = "Las siglas tienen que cumplir la norma ISO 3166-1:2006 Alpha-3.<br>Consultar ";
-$errorEliminarGrupo = "No se puede eliminar un grupo que tenga módulos asociados.";
+$errorEliminarGrupo = "No se puede eliminar un grupo que tenga m&oacute;dulos asociados.";
 #Clientes
 $OkActualizacionCliente = "El tipo de los clientes se ha actualizado con &eacute;xito";
 $ErrorActualizacionCliente = "El tipo de los clientes no se ha actualizado correctamente";
@@ -845,6 +846,9 @@ $ErrorBusqueda = "Para buscar por fechas, es necesario mes y a&ntilde;o.";
 $ayudaIncidenciaCliente = "Acceso al formulario de inserci&oacute;n de contacto";
 $ayudaIncidenciaContrasena = "Acceso a las contrase&ntilde;as del cliente";
 $ayudaIncidenciaContrato = "Acceso a los contratos del cliente";
+$ayudaRelacionar = "&iquest;Seguro que desea relacionar esta incidencias?";
+$ayudaRelacionar2 = "La incidencia ";
+$ayudaRelacionar3 = " se convertir&aacute en una nota de la incidencia ";
 #Login
 $ayudaLogin = "&iquest;Olvidaste el usuario y/o la contrase&ntilde;a?";
 $asuntoMensajeRecuperacion = "Mensaje de recuperaci&oacute;n de contrase&ntilde;a.";

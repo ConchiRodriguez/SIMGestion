@@ -98,7 +98,8 @@ $version = "Versión";
 $valoracion_economica = "Valoración Económica";
 
 #protecci&oacute;n de datos#
-$texto_pdatos = "Le recordamos, que sus datos se encuentran recogidos en un fichero tituralidad de SOLUCIONS INFORMATIQUES MARESME SL con la finalidad de prestar sus servicios. De acuerdo con la Ley Orgánica 15/1999 de Protección de Datos de Caracter Personal puede ejercer el derecho al acceso, rectificación, cancelación y oposición enviando un escrito de solicitud y fotocopia del DNI a SOLUCIONS INFORMATIQUES MARESME SL, AVDA MARESME, 44 BAJOS, 2 de TORDERA provincia de BARCELONA.";
+$texto_pdatos = "INFORMACIÓN SOBRE PROTECCIÓN DE DATOS DE SOLUCIONS INFORMATIQUES MARESME SL
+Los datos personales tratados para gestionar la relación contractual y, en su caso, remitirle información comercial por medios electrónicos, se conservarán hasta el fin de la relación, baja comercial o los plazos de retención legales. Puede ejercer sus derechos en la dirección indicada del responsable o en administracion@solucions-im.com.";
 
 $texto_reg_mercantil = "Inscrita en el Registro Mercatil Barcelona: Tomo 42967, Folio 141, Sección 8, Hoja B 421165, Incripción 1, NIF-VAT ESB65702227";
 

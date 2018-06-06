@@ -1,27 +1,16 @@
 <?php 
 	error_reporting(~E_ALL);
 
-	include ("../config4.php");
-	foreach (glob("../../sim/auxiliar/*.php") as $filename)
+	include ("../config.php");
+	foreach (glob("../auxiliar/*.php") as $filename)
 	{
 		include ($filename);
 	}
 	$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
-	$sqlcabezera = "select * from sgm_cabezera where id=".$_GET["id"];
-	$resultcabezera = mysqli_query($dbhandle,convertSQL($sqlcabezera));
-	$rowcabezera = mysqli_fetch_array($resultcabezera);
-
-	$sqlc = "select * from sgm_clients where id=".$rowcabezera["id_cliente"];
-	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-	$rowc = mysqli_fetch_array($resultc);
-
-	$sqli = "select * from sgm_idiomas where id=".$rowc["id_idioma"];
-	$resulti = mysqli_query($dbhandle,convertSQL($sqli));
-	$rowi = mysqli_fetch_array($resulti);
-	$idioma = strtolower($rowi["idioma"]);
-	include ("../mgestion/lenguajes/factura-print-".$idioma.".php");
+	$idioma = strtolower($_POST["idioma"]);
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
@@ -84,7 +73,7 @@ class PDF extends FPDF
 	}
 
 	function factura_print($id,$tipo){
-		global $db,$dbhandle,$retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas;
+		global $db,$dbhandle,$retenciones,$cambio,$subtotal,$idioma,$pedido,$numero,$fecha,$fecha_vencimiento,$fecha_entrega,$nombre,$nombre_empresa,$nif,$direccion,$poblacion,$cp,$provincia,$codigo,$unitats,$precio,$total,$importe,$descuento,$texto_pdatos,$notas,$texto_reg_mercantil,$desc,$IVA;
 		//Creación del objeto de la clase heredada
 	
 		$sqlele = "select * from sgm_dades_origen_factura";
@@ -110,7 +99,7 @@ class PDF extends FPDF
 
 		if ($tipo == 1) {
 			#no sobre#
-			$this->Image('../../archivos_comunes/images/logo1.jpg',10,5,80,18);
+			$this->Image('pics/logo1.jpg',10,5,80,18);
 	
 			$this->SetXY(10,25);
 			$this->SetFont('Calibri','',10);
@@ -131,7 +120,7 @@ class PDF extends FPDF
 			$this->Cell(90,5,$fecha." : ".cambiarFormatoFechaDMY($rowcabezera["fecha"]),1,0);
 			$this->Cell(90,5,$fecha_vencimiento." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_vencimiento"]),1,1);
 			$this->Cell(90,5,$fecha_entrega." : ".cambiarFormatoFechaDMY($rowcabezera["fecha_entrega"]),1,0);
-			$this->Cell(90,5,$nombre." : ".str_replace("&#39;", "'", $rowcabezera["nombre"]),1,1);
+			$this->Cell(90,5,$nombre_empresa." : ".str_replace("&#39;", "'", $rowcabezera["nombre"]),1,1);
 			$this->Cell(90,5,$nif." / CIF: ".$rowcabezera["nif"],1,0);
 			$this->Cell(90,5,$direccion." : ".str_replace("&#39;", "'", $rowcabezera["direccion"]),1,1);
 			$this->Cell(90,5,$poblacion.": ".str_replace("&#39;", "'", $rowcabezera["poblacion"]),1,0);
@@ -143,7 +132,7 @@ class PDF extends FPDF
 		
 		if ($tipo == 0) {
 			#sobre#
-			$this->Image('../../archivos_comunes/images/logo1.jpg',10,10,80,18);
+			$this->Image('pics/logo1.jpg',10,10,80,18);
 		
 			$this->SetXY(10,35);
 			$this->SetFont('Calibri','',10);
@@ -172,9 +161,6 @@ class PDF extends FPDF
 			$limit_lines = 34;
 		}
 		
-	
-
-
 		$sqlx = "select * from sgm_factura_tipos where id=".$rowcabezera["tipo"];
 		$resultx = mysqli_query($dbhandle,convertSQL($sqlx));
 		$rowx = mysqli_fetch_array($resultx);
@@ -193,13 +179,13 @@ class PDF extends FPDF
 		$this->SetFont('Calibri','B',20);
 		$this->Cell(180,20,$fac_tipo,0,1,'C');
 		$this->SetFont('Calibri','',11);
-		$this->Cell(20,5,"".$fecha."",'LTB',0);
-		$this->Cell(17,5,"".$codigo."",'TB',0);
-		$this->Cell(75,5,"".$nombre."",'TB',0);
-		$this->Cell(17,5,"".$unitats."",'TB',0);
-		$this->Cell(17,5,"".$precio."",'TB',0);
-		$this->Cell(15,5,"Desc.%",'TBR',0);
-		$this->Cell(19,5,"".$total."",'TBR',1);
+#		$this->Cell(20,5,"".$fecha."",'LTB',0);
+		$this->Cell(20,5,"".$codigo."",'LTB',0);
+		$this->Cell(80,5,"".$nombre."",'TB',0);
+		$this->Cell(20,5,"".$unitats."",'TB',0,'R');
+		$this->Cell(20,5,"".$precio."",'TB',0,'R');
+		$this->Cell(20,5,$desc."%",'TBR',0,'R');
+		$this->Cell(20,5,"".$total."",'TBR',1,'R');
 	
 		$this->SetFont('Calibri','',9);
 		$unidades2 = 0;
@@ -207,25 +193,25 @@ class PDF extends FPDF
 		$sql = "select * from sgm_cuerpo where idfactura=".$id." order by linea";
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		while ($row = mysqli_fetch_array($result)) {
-			$data = date("d / m / y", strtotime($row["fecha_prevision"])); 
+#			$data = date("d / m / y", strtotime($row["fecha_prevision"])); 
 			$X = $this->GetX();
 			$Y = $this->GetY();
 			$text = str_replace("&#39;", "'", $row["nombre"]);
 			$num_lines = $this->NbLines(80,$text);
 			$height = (5*$num_lines);
-			$this->Cell(20,$height,$data,'LB',0);
+#			$this->Cell(20,$height,$data,'LB',0);
+#			$this->SetXY($X+20,$Y);
+			$this->Cell(20,$height,$row["codigo"],'LB',0);
 			$this->SetXY($X+20,$Y);
-			$this->Cell(17,$height,$row["codigo"],'B',0);
-			$this->SetXY($X+37,$Y);
-			$this->MultiCell(75,5,$text,'B');
-			$this->SetXY($X+112,$Y);
-			$this->Cell(17,$height,number_format($row["unidades"], 2, ',', '.'),'B',0);
-			$this->SetXY($X+129,$Y);
-			$this->Cell(17,$height,number_format($row["pvp"], 2, ',', '.').$rowdi["simbolo"],'B',0);
-			$this->SetXY($X+146,$Y);
-			$this->Cell(15,$height,number_format($row["descuento"], 2, ',', '.')."%",'RB',0);
-			$this->SetXY($X+161,$Y);
-			$this->Cell(19,$height,number_format($row["total"], 2, ',', '.').$rowdi["simbolo"],'RB',1);
+			$this->MultiCell(80,5,$text,'B');
+			$this->SetXY($X+100,$Y);
+			$this->Cell(20,$height,number_format($row["unidades"], 2, ',', '.'),'B',0,'R');
+			$this->SetXY($X+120,$Y);
+			$this->Cell(20,$height,number_format($row["pvp"], 2, ',', '.').$rowdi["simbolo"],'B',0,'R');
+			$this->SetXY($X+140,$Y);
+			$this->Cell(20,$height,number_format($row["descuento"], 2, ',', '.')."%",'RB',0,'R');
+			$this->SetXY($X+160,$Y);
+			$this->Cell(20,$height,number_format($row["total"], 2, ',', '.').$rowdi["simbolo"],'RB',1,'R');
 #			$this->SetXY($X,$Y+$height);
 #			$this->Ln();
 			$unidades2 = $unidades2 + $row["unidades"];
@@ -239,6 +225,7 @@ class PDF extends FPDF
 				$this->Cell(20,5,"".$unitats."",'TB',0);
 				$this->Cell(20,5,"".$precio."",'TB',0);
 				$this->Cell(20,5,"".$total."",'TBR',1);
+				$this->Cell(20,5,$desc."%",'TBR',0,'R');
 				$this->SetFont('Calibri','',10);
 				$lineas = -16;
 			}
@@ -253,23 +240,27 @@ class PDF extends FPDF
 		}
 #		$this->Cell(180,5,'','LBR',1);
 
-		$this->Cell(15,5,"".$unitats."",'LTR',0);
-		$this->Cell(25,5,"".$importe."",'LTR',0);
-		$this->Cell(35,5,"".$descuento."",'LTR',0);
-		$this->Cell(25,5,"".$subtotal."",'LTR',0);
-		$this->Cell(25,5,"IVA (".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+#		$this->Cell(15,5,$unitats."",'LTR',0);
+		$this->Cell(30,5,$importe,'LTR',0);
+		if ($rowcabezera["descuento"] > 0) {
+			$this->Cell(30,5,$descuento.' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LTR',0);
+		} else {
+			$this->Cell(30,5,$descuento,'LTR',0);
+		}
+		$this->Cell(30,5,$subtotal,'LTR',0);
+		$this->Cell(30,5, $IVA." (".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
 		$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
-		$this->Cell(25,5,"".$total."",'LTR',1);
+		$this->Cell(30,5,$total,'LTR',1);
 	
-		$this->Cell(15,5,number_format($unidades2, 2, ',', '.'),'LBR',0);
-		$this->Cell(25,5,number_format($rowcabezera["subtotal"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
-		$this->Cell(35,5,number_format($rowcabezera["subtotal"]-$rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"].' ('.number_format($rowcabezera["descuento"], 2, ',', '.').'%)','LBR',0);
-		$this->Cell(25,5,number_format($rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+#		$this->Cell(15,5,number_format($unidades2, 2, ',', '.'),'LBR',0);
+		$this->Cell(30,5,number_format($rowcabezera["subtotal"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(30,5,number_format($rowcabezera["subtotal"]-$rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(30,5,number_format($rowcabezera["subtotaldescuento"], 2, ',', '.').$rowdi["simbolo"],'LBR',0);
 		$iva = (($rowcabezera["subtotaldescuento"] / 100) * $rowcabezera["iva"]);
-		$this->Cell(25,5,number_format($iva, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
+		$this->Cell(30,5,number_format($iva, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
 		$retencion = (($rowcabezera["subtotaldescuento"] / 100) * $rowcabezera["retenciones"]);
 		$this->Cell(30,5,number_format($retencion, 2, ',', '.').$rowdi["simbolo"],'LBR',0);
-		$this->Cell(25,5,number_format($rowcabezera["total"], 2, ',', '.').$rowdi["simbolo"],'LBR',1);
+		$this->Cell(30,5,number_format($rowcabezera["total"], 2, ',', '.').$rowdi["simbolo"],'LBR',1);
 	
 		$sqld = "select * from sgm_divisas where predefinido=1";
 		$resultd = mysqli_query($dbhandle,convertSQL($sqld));
@@ -280,7 +271,7 @@ class PDF extends FPDF
 			$this->Cell(25,5,"".$importe."",'LTR',0);
 			$this->Cell(35,5,"".$descuento."",'LTR',0);
 			$this->Cell(25,5,"".$subtotal."",'LTR',0);
-			$this->Cell(25,5,"IVA(".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
+			$this->Cell(25,5,$IVA."(".number_format($rowcabezera["iva"],0)."%)",'LTR',0);
 			$this->Cell(30,5,$retenciones." (".number_format($rowcabezera["retenciones"],0)."%)",'LTR',0);
 			$this->Cell(25,5,"".$total."",'LTR',1);
 		
@@ -306,16 +297,16 @@ class PDF extends FPDF
 		$this->Cell(180,3,' ',0,1);
 		$this->SetFont('Calibri','',6);
 		$this->MultiCell(180,3,$texto_pdatos,0,'J');
-
+		$this->MultiCell(180,5,'',0,'C');
+		$this->MultiCell(180,3,$texto_reg_mercantil,0,'C');
 	}
 }
 
 	$pdf=new PDF();
-#	$pdf->AddFont('codi_barres','','../../archivos_comunes/font/codi_barres.php');
-	$pdf->AddFont('Calibri','','font/Calibri.php');
-	$pdf->AddFont('Calibri-Bold','B','font/Calibrib.php');
-	$pdf->AddFont('Calibri','B','font/Calibrib.php');
-	$pdf->AddFont('fre3of9x','','font/fre3of9x.php');
+	$pdf->AddFont('Calibri','','../font/Calibri.php');
+	$pdf->AddFont('Calibri-Bold','B','../font/Calibrib.php');
+	$pdf->AddFont('Calibri','B','../font/Calibrib.php');
+	$pdf->AddFont('fre3of9x','','../font/fre3of9x.php');
 	$pdf->AliasNbPages();
 
 	if ($_POST["data_desde"] == ""){
@@ -330,8 +321,8 @@ class PDF extends FPDF
 		}
 	}
 
-	$pdf->Output("factura.pdf");
-	header("Location: factura.pdf");
+	$pdf->Output("../pdf/factura.pdf");
+	header("Location: ../pdf/factura.pdf");
 
 	// Cerrar la conexión
 	mysql_close($dbhandle);

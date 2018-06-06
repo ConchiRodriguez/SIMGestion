@@ -6,6 +6,10 @@ $simclau = "Solucions00";
 		echo $UseNoAutorizado;
 	} else {
 
+	$sqldiv = "select * from sgm_divisas where predefinido=1";
+	$resultdiv = mysqli_query($dbhandle,convertSQL($sqldiv));
+	$rowdiv = mysqli_fetch_array($resultdiv);
+
 	$sqluserclient = "select count(*) as total from sgm_users_clients WHERE id_user=".$userid;
 	$resultuserclient = mysqli_query($dbhandle,convertSQL($sqluserclient));
 	$rowuserclient = mysqli_fetch_array($resultuserclient);
@@ -135,10 +139,9 @@ $simclau = "Solucions00";
 		echo "</center>";
 	}
 
-	if ((($soption == 10) and ($gcontratos != 1)) or (($soption == 80) and ($gcontratos != 1))) {echo $UseNoAutorizado;}
-	if ((($soption == 10) and ($gcontratos == 1)) or (($soption == 80) and ($gcontratos == 1))) {
-		if ($soption == 10) { echo "<strong>".$Contratos." : </strong>"; }
-		if ($soption == 80) { echo "<strong>".$Proyectos." : </strong>"; }
+	if (($soption == 10) and ($gcontratos != 1)) {echo $UseNoAutorizado;}
+	if (($soption == 10) and ($gcontratos == 1)) {
+		echo "<strong>".$Contratos." : </strong>";
 		echo "<br><br>";
 		if ($_GET["hist"] == 0) {echo boton_area_cliente(array("op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=1"),array($Historico));}
 		if ($_GET["hist"] == 1) {echo boton_area_cliente(array("op=200&sop=".$_GET["sop"]."&id=".$_GET["id"]."&hist=0"),array($Volver));}
@@ -149,10 +152,9 @@ $simclau = "Solucions00";
 				echo "<td style=\"text-align:left;\">".$Cliente." ".$Final."</td>";
 				echo "<td style=\"text-align:left;\">".$Descripcion."</td>";
 				echo "<td></td>";
-				echo "<td></td>";
+#				echo "<td></td>";
 			echo "</tr>";
-			if ($soption == 10) { $sqlcc = "select activo,id_cliente_final,descripcion,id from sgm_contratos where visible=1 and id_cliente in (".$id_cliente.") and id_contrato_tipo in (select id from sgm_contratos_tipos where nombre not like '%contrato%')"; }
-			if ($soption == 80) { $sqlcc = "select activo,id_cliente_final,descripcion,id from sgm_contratos where visible=1 and id_cliente in (".$id_cliente.") and id_contrato_tipo in (select id from sgm_contratos_tipos where nombre like '%proyecto%')"; }
+			$sqlcc = "select activo,id_cliente_final,descripcion,id from sgm_contratos where visible=1 and id_cliente in (".$id_cliente.")";
 			if ($_GET["hist"] == 0) { $sqlcc .= " and activo=1";}
 			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 			while ($rowcc = mysqli_fetch_array($resultcc)){
@@ -163,17 +165,15 @@ $simclau = "Solucions00";
 					$row = mysqli_fetch_array($result);
 					echo "<td style=\"color:".$colorl.";\">".$row["nombre"]." ".$row["cognom1"]." ".$row["cognom2"]."</a></td>";
 					echo "<td style=\"color:".$colorl.";\">".$rowcc["descripcion"]."</td>";
-					if ($soption == 10) { $op1 = 11; $op2 = 12;}
-					if ($soption == 80) { $op1 = 81; $op2 = 82;}
-					echo "<form action=\"index.php?op=200&sop=".$op1."&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+					echo "<form action=\"index.php?op=200&sop=11&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
 					echo "<td class=\"submit\">";
 						echo "<input type=\"submit\" value=\"".$Ver."\">";
 					echo "</td>";
 					echo "</form>";
-					echo "<form action=\"index.php?op=200&sop=".$op2."&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
-					echo "<td class=\"submit\">";
-						echo "<input type=\"submit\" value=\"".$Informes."\">";
-					echo "</td>";
+#					echo "<form action=\"index.php?op=200&sop=12&id=".$_GET["id"]."&id_con=".$rowcc["id"]."\" method=\"post\">";
+#					echo "<td class=\"submit\">";
+#						echo "<input type=\"submit\" value=\"".$Informes."\">";
+#					echo "</td>";
 					echo "</form>";
 				echo "</tr>";
 			}
@@ -182,10 +182,9 @@ $simclau = "Solucions00";
 		echo "<br>";
 	}
 
-	if ((($soption == 11) and ($gcontratos != 1)) or (($soption == 81) and ($gcontratos != 1))) {echo $UseNoAutorizado;}
-	if ((($soption == 11) and ($gcontratos == 1)) or (($soption == 81) and ($gcontratos == 1))) {
-		if ($soption == 11) { echo "<strong>".$Contrato." : </strong>"; }
-		if ($soption == 81) { echo "<strong>".$Proyecto." : </strong>"; }
+	if (($soption == 11) and ($gcontratos != 1)) {echo $UseNoAutorizado;}
+	if (($soption == 11) and ($gcontratos == 1)) {
+		echo "<strong>".$Contrato." : </strong>";
 		echo "<br><br>";
 		echo boton_area_cliente(array("op=200&sop=10&id=".$_GET["id"]),array($Volver));
 		echo "<br><br>";
@@ -279,10 +278,9 @@ $simclau = "Solucions00";
 		}
 	}
 
-	if ((($soption == 12) and ($gcontratos != 1)) or (($soption == 82) and ($gcontratos != 1))) {echo $UseNoAutorizado;}
-	if ((($soption == 12) and ($gcontratos == 1)) or (($soption == 82) and ($gcontratos == 1))) {
-		if ($soption == 12) { echo "<strong>".$Contrato." : </strong>"; }
-		if ($soption == 82) { echo "<strong>".$Proyecto." : </strong>"; }
+	if (($soption == 12) and ($gcontratos != 1)) {echo $UseNoAutorizado;}
+	if (($soption == 12) and ($gcontratos == 1)) {
+		echo "<strong>".$Contrato." : </strong>";
 		echo "<br><br>";
 		echo boton_area_cliente(array("op=200&sop=10&id=".$_GET["id"]),array($Volver));
 		echo "<br><br>";
@@ -295,10 +293,9 @@ $simclau = "Solucions00";
 		informesContratos($rowa["id"]);
 	}
 
-	if ((($soption == 13) and ($gcontratos != 1)) or (($soption == 83) and ($gcontratos != 1))) {echo $UseNoAutorizado;}
-	if ((($soption == 13) and ($gcontratos == 1)) or (($soption == 83) and ($gcontratos == 1))) {
-		if ($soption == 13) { echo "<strong>".$Contrato." : </strong>"; }
-		if ($soption == 83) { echo "<strong>".$Proyecto." : </strong>"; }
+	if (($soption == 13) and ($gcontratos != 1)) {echo $UseNoAutorizado;}
+	if (($soption == 13) and ($gcontratos == 1)) {
+		echo "<strong>".$Contrato." : </strong>";
 		echo "<br><br>";
 		echo boton_area_cliente(array("op=200&sop=11&id=".$_GET["id"]."&id_con=".$_GET["id_con"]),array($Volver));
 		echo "<br><br>";
@@ -306,7 +303,7 @@ $simclau = "Solucions00";
 			echo "<tr style=\"background-color:silver\">";
 				echo "<td style=\"text-align:center;width:600px\">".$Asunto."</td>";
 				echo "<td style=\"text-align:right;width:100px\">".$Duracion."</td>";
-				echo "<td style=\"text-align:right;width:100px\">".$Total." €</td>";
+				echo "<td style=\"text-align:right;width:100px\">".$Total." ".$rowdiv["abrev"]."</td>";
 			echo "</tr>";
 			$inicio_mes = date("U", mktime(0,0,0,$_GET["mes"], 1, $_GET["any"]));
 			$final_mes = date("U", mktime(23,59,59,$_GET["mes"]+1, 1-1,$_GET["any"]));
@@ -328,7 +325,7 @@ $simclau = "Solucions00";
 					$minutos = $rowind2["total"] % 60;
 					echo "<td style=\"text-align:right;width:100px\">".$horas[0]." h. ".$minutos." m.</td>";
 					$precio_servicio = $rows["precio_hora"]*$hora;
-					echo "<td style=\"text-align:right;width:100px\">".number_format ($precio_servicio,2,',','')." €</td>";
+					echo "<td style=\"text-align:right;width:100px\">".number_format ($precio_servicio,2,',','')." ".$rowdiv["abrev"]."</td>";
 				echo "</tr>";
 			}
 		echo "</table></center>";
@@ -751,7 +748,7 @@ $simclau = "Solucions00";
 							}
 							else { echo "<td style=\"background-color:red;color:White;text-align:left;\">I: ".$row["fecha"]."<br><strong>P: ".$fecha_proxima."</strong></td>"; }
 						}
-					echo "<td style=\"text-align : left;\"><strong>".$row["total"]." €</strong> </td>";
+					echo "<td style=\"text-align : left;\"><strong>".$row["total"]." ".$rowdiv["abrev"]."</strong> </td>";
 					echo "<td style=\"text-align : left;\">";
 					if ($rowtipos["id"] == 1) {
 						if ($row["cobrada"] == 1) {
@@ -772,7 +769,8 @@ $simclau = "Solucions00";
 						}
 					}
 					echo "</td>";
-					echo "<td>&nbsp;&nbsp;<a href=\"mgestion/gestion-facturas-print-pdf.php?id=".$row["id"]."&tipo=1\" target=\"_blank\" class=\"gris\"><img src=\"images/icons-mini/page_white_magnify.png\" style=\"border:0px;\"><a></td>";
+					if ($idioma == "cat") { $idioma = "ca";}
+					echo "<td>&nbsp;&nbsp;<a href=\"/clientes/mgestion/gestion-facturacion-print-pdf.php?id=".$row["id"]."&tipo=0&id_lang=".$idioma."\" target=\"_blank\" class=\"gris\"><img src=\"images/icons-mini/page_white_magnify.png\" style=\"border:0px;\"><a></td>";
 				echo "</tr>";
 			}
 		echo "</table>";

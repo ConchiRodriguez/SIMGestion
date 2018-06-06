@@ -27,6 +27,7 @@ foreach (glob("../sim/pantallas/*.php") as $filename2)
 #$db = mysql_select_db($dbname, $dbhandle) or die("Couldn't open database $myDB");
 $dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 $db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
+mysqli_set_charset($dbhandle,"utf8");
 
 if ($_GET['op'] != "") { $option = $_GET['op']; } else { $option = 0; }
 if ($_GET['sop'] != "") { $soption = $_GET['sop']; } else { $soption = 0; }
@@ -191,9 +192,9 @@ lopd($userid,$username,$option,$soption);
 				echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:bottom;\">";
 					echo "<a href=\"index.php?op=200&sop=10&id=".$rowuser["id"]."\" style=\"text-decoration: none;\"><img src=\"images/icons/view-close.png\" style=\"border:0px;\"><br>".$Contratos."</a>";
 				echo "</td>";
-				echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:bottom;\">";
-					echo "<a href=\"index.php?op=200&sop=80&id=".$rowuser["id"]."\" style=\"text-decoration: none;\"><img src=\"images/icons/view-file-columns.png\" style=\"border:0px;\"><br>".$Proyectos."</a>";
-				echo "</td>";
+#				echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:bottom;\">";
+#					echo "<a href=\"index.php?op=200&sop=80&id=".$rowuser["id"]."\" style=\"text-decoration: none;\"><img src=\"images/icons/view-file-columns.png\" style=\"border:0px;\"><br>".$Proyectos."</a>";
+#				echo "</td>";
 				echo "<td style=\"width:120px;height:20px;text-align:center;vertical-align:bottom;\">";
 					echo "<a href=\"index.php?op=200&sop=40&id=".$rowuser["id"]."\" style=\"text-decoration: none;\"><img src=\"images/icons/view-pim-tasks.png\" style=\"border:0px;\"><br>".$Incidencias."</a>";
 				echo "</td>";

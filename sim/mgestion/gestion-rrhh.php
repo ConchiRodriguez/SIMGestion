@@ -266,8 +266,8 @@ if (($option == 1020) AND ($autorizado == true)) {
 					if ($row["cp"] != "") {echo " (".$row["cp"].")";}
 					echo "<strong> ".$row["poblacion"]."</strong>";
 					if ($row["provincia"] != "") {echo " (".$row["provincia"].")";}
-					if ($row["telefono"] != "") { echo "<br>Teléfono : <strong>".$row["telefono"]."</strong>"; }
-					if ($row["mail"] != "") { echo "<br>eMail : <a href=\"mailto:".$row["email"]."\"><strong>".$row["mail"]."</strong></a>"; }
+					if ($row["telefono"] != "") { echo "<br>".$Telefono." : <strong>".$row["telefono"]."</strong>"; }
+					if ($row["mail"] != "") { echo "<br>".$Email." : <a href=\"mailto:".$row["email"]."\"><strong>".$row["mail"]."</strong></a>"; }
 					echo "<br>";
 				echo "</td>";
 				echo "<td style=\"vertical-align:top\">";

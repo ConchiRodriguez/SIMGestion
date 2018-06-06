@@ -181,8 +181,8 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th style=\"width:100px;\">".$Alias."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
 							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
-							echo "<th style=\"width:100px;\">".$Numero." ".$Horas."</th>";
-							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
+							echo "<th style=\"width:100px;text-align:right;\">".$Horas." ".$Contrato."</th>";
+							echo "<th style=\"width:150px;text-align:right;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
 						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and pack_horas=1 order by fecha_ini desc";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
@@ -250,7 +250,8 @@ if (($option == 200) AND ($user == true)) {
 							echo "<th style=\"width:500px;\">".$Cliente."</th>";
 							echo "<th style=\"width:200px;\">".$Contrato."</th>";
 							echo "<th style=\"width:50px;\">".$Fecha_Fin."</th>";
-							echo "<th style=\"width:150px;\">".$Horas." ".$Consumidas."</th>";
+							echo "<th style=\"width:150px;;text-align:right;\">".$Horas." ".$Contrato."</th>";
+							echo "<th style=\"width:150px;;text-align:right;\">".$Horas." ".$Consumidas."</th>";
 						echo "</tr>";
 						$sqlch = "select * from sgm_contratos where visible=1 and activo=1 and (id_plantilla<>0 xor id_contrato_tipo<>0) and pack_horas=0 order by fecha_fin";
 						$resultch = mysqli_query($dbhandle,convertSQL($sqlch));
@@ -260,7 +261,7 @@ if (($option == 200) AND ($user == true)) {
 							$rowa = mysqli_fetch_array($resulta);
 
 							$total_horas = 0;
-							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$rowch["id"];
+							$sqlcs = "select * from sgm_contratos_servicio where visible=1 and horas=1 and id_contrato=".$rowch["id"];
 							$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 							while ($rowcs = mysqli_fetch_array($resultcs)) {
 								$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and visible=1";
@@ -273,11 +274,14 @@ if (($option == 200) AND ($user == true)) {
 							$minutos = $total_horas % 60;
 							if (date('U',strtotime($rowch["fecha_fin"])) <= date('U')) { $color = "red"; $color_letra = "white";}
 							else { $color = "white"; $color_letra = "";}
+							if (($rowch["num_horas"] <= $horas[0]) and ($rowch["num_horas"] > 0)) { $color = "orange"; $color_letra = "white";}
+							else { $color = "white"; $color_letra = "";}
 							if ($minutos < 10) { $minutos_total = "0".$minutos;} else {$minutos_total = $minutos;}
 							echo "<tr style=\"background-color:".$color."\">";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\" style=\"color:".$color_letra."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-								echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
+								echo "<td nowrap><a href=\"index.php?op=1011&sop=100&id=".$rowch["id"]."\" style=\"color:".$color_letra."\">".$rowch["descripcion"]."</a></td>";
 								echo "<td style=\"color:".$color_letra."\">".cambiarFormatoFechaDMY($rowch["fecha_fin"])."</td>";
+								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$rowch["num_horas"]." ".$Horas."</td>";
 								echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos_total." ".$Minutos."</td>";
 							echo "</tr>";
 						}
@@ -404,14 +408,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],2,',','.')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,2,',','.')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -460,13 +464,13 @@ if (($option == 200) AND ($user == true)) {
 								echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 								echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 								echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-								echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
+								echo "<td style=\"text-align:right;\">".number_format($rowc["total"],2,',','.')." ".$rowdiv["abrev"]."</td>";
 							echo "</tr>";
 							$total_factura += $rowc["total"];
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,2,',','.')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -518,14 +522,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td><a href=\"index.php?op=1003&sop=100&id=".$rowc["id"]."\">".$rowc["numero"]."</a></td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],2,',','.')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"3\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,2,',','.')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";
@@ -576,14 +580,14 @@ if (($option == 200) AND ($user == true)) {
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha"])."</td>";
 									echo "<td>".cambiarFormatoFechaDMY($rowc["fecha_vencimiento"])."</td>";
 									echo "<td><a href=\"index.php?op=1008&sop=100&id=".$rowa["id"]."\">".$rowa["nombre"]." ".$rowa["cognom1"]." ".$rowa["cognom2"]."</a></td>";
-									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],3,'.',',')." ".$rowdiv["abrev"]."</td>";
+									echo "<td style=\"text-align:right;\">".number_format($rowc["total"],2,',','.')." ".$rowdiv["abrev"]."</td>";
 								echo "</tr>";
 								$total_factura += $rowc["total"];
 							}
 						}
 						echo "<tr>";
 							echo "<th colspan=\"4\" style=\"border-top:1px solid black;\"></th>";
-							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,3,'.',',')." ".$rowdiv["abrev"]."</th>";
+							echo "<th style=\"width:100px;border-top:1px solid black;text-align:right;\">".number_format($total_factura,2,',','.')." ".$rowdiv["abrev"]."</th>";
 						echo "</tr>";
 #					}
 					echo "</table>";

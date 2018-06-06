@@ -1,20 +1,19 @@
 <?php 
 	error_reporting(~E_ALL);
 
-	include ("../config4.php");
-	foreach (glob("../../sim/auxiliar/*.php") as $filename)
+	include ("../config.php");
+	foreach (glob("../auxiliar/*.php") as $filename)
 	{
 		include ($filename);
 	}
 	$dbhandle = new mysqli($dbhost,$dbuname,$dbpass,$dbname);
 	$db = mysqli_select_db($dbhandle, $dbname) or die("Couldn't open database");
 
-	$idioma = $_POST["idioma"];
-	include ("../mgestion/lenguajes/factura-print-".$idioma.".php");
+	$idioma = strtolower($_POST["idioma"]);
+	include ("lenguajes/factura-print-".$idioma.".php");
 
 	define("FPDF_FONTPATH","../font/");
 	require('fpdf.php');
-
 
 class PDF extends FPDF
 {
@@ -25,7 +24,7 @@ class PDF extends FPDF
 		$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
 		$rowele = mysqli_fetch_array($resultele);
 
-		$this->Image('../images/logo1.jpg',10,5,80,18);
+		$this->Image('pics/logo1.jpg',10,5,80,18);
 		$this->SetFont('Calibri','',8);
 		$this->SetXY(100,5);
 		$this->Cell(90,3,"".$rowele["nombre"],0,1);
@@ -199,7 +198,7 @@ class PDF extends FPDF
 			$outSLA = 0;
 			$time = 0;
 
-			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 and horas=1 order by servicio";
+			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
 			$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 			while ($rowcs = mysqli_fetch_array($resultcs)) {
 				$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";
@@ -324,7 +323,7 @@ class PDF extends FPDF
 			$this->Cell(25,4,$estado,'B',0);
 			$this->Cell(15,4,$duracion,'B',1);
 
-			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 and horas=1 order by servicio";
+			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
 			$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 			while ($rowcs = mysqli_fetch_array($resultcs)) {
 				$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado=-2 and visible=1 and fecha_inicio between ".$mes_ini." and ".$mes_act." order by fecha_inicio";
@@ -380,7 +379,7 @@ class PDF extends FPDF
 		$this->Cell(25,4,$estado,'B',0);
 		$this->Cell(15,4,"SLA",'B',1);
 
-		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 and horas=1 order by servicio";
+		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
 		$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 		while ($rowcs = mysqli_fetch_array($resultcs)) {
 			$sqli0 = "select * from sgm_incidencias where id_servicio=".$rowcs["id"]." and id_estado<>-2 and visible=1";
@@ -421,7 +420,7 @@ class PDF extends FPDF
 		$outSLA = 0;
 		$time = 0;
 
-		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 and horas=1 order by servicio";
+		$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." and visible=1 order by servicio";
 		$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
 		while ($rowcs = mysqli_fetch_array($resultcs)) {
 			$sqli1 = "select count(*) as abiertas from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1";
@@ -532,7 +531,6 @@ class PDF extends FPDF
 	$sql = "select * from sgm_clients where visible=1";
 	if ($_POST["id_cliente"] > 0){ $sql .= " and id=".$_POST["id_cliente"]."";} else {$sql .= " and id in (select id_cliente from sgm_contratos where visible=1)";}
 	$sql .= " order by nombre";
-#	echo $sql;
 	$result = mysqli_query($dbhandle,convertSQL($sql));
 	while ($row = mysqli_fetch_array($result)){
 		if ($_POST["id_contrato"] == 0) {$sqlcon = "select * from sgm_contratos where visible=1 and id_cliente=".$row["id"];}
@@ -544,9 +542,8 @@ class PDF extends FPDF
 			$pdf->informe_print($row["id"],$rowcon["id"]);
 		}
 	}
-
 	$pdf->Output("informe.pdf");
-	header("Location: ".$urlmgestion."/mgestion/informe.pdf");
+	header("Location: informe.pdf");
 
 	// Cerrar la conexión
 	mysql_close($dbhandle);

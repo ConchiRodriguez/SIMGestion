@@ -863,7 +863,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 
 	#Informes
 	if ($soption == 300) {
-		informesContratos(0);
+		informesContratos();
 	}
 
 	if ($soption == 500) {
@@ -1191,7 +1191,7 @@ if (($option == 1011) AND ($autorizado == true)) {
 			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=0 and activo=1 order by servicio";
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)) {
-				$sqls = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id_con"]." and id_servicio=".$row["id"];
+				echo $sqls = "select id from sgm_contratos_servicio where visible=1 and id_contrato=".$_GET["id_con"]." and id_servicio=".$row["id"];
 				$results = mysqli_query($dbhandle,convertSQL($sqls));
 				$rows = mysqli_fetch_array($results);
 				echo "<form action=\"index.php?op=1011&sop=535&ssop=1&id_con=".$_GET["id_con"]."\" method=\"post\">";

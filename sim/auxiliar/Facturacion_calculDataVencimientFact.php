@@ -30,10 +30,9 @@ function calculDataVencimientFact($id_client,$fecha_factura)
 	}
 
 	if ($rowc["dias"] == 1) {
-		$fecha_factura = date("U", strtotime($fecha_factura));
+		$fecha_factura2 = date("U", strtotime($fecha_factura));
 		if ($rowc["dias_vencimiento"] != 0) {
-			$d = $rowc["dias_vencimiento"];
-			$fecha_ven = $fecha_factura + ($rowc["dias_vencimiento"]*24*60*60);
+			$fecha_ven = $fecha_factura2 + ($rowc["dias_vencimiento"]*24*60*60);
 			$any = date("Y",$fecha_ven);
 			$mes = date("m",$fecha_ven);
 			$dia = date("d",$fecha_ven);
@@ -46,6 +45,10 @@ function calculDataVencimientFact($id_client,$fecha_factura)
 	}
 	
 	$fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$mes+$meses ,$dia, $any));
+	
+	if (date("U", strtotime($fecha_factura)) > date("U", strtotime($fecha_vencimiento))){
+		$fecha_vencimiento = date("Y-m-d", mktime(0,0,0,$m ,$d+30, $a));
+	}
 
 	return $fecha_vencimiento;
 }
