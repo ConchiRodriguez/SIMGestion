@@ -41,6 +41,7 @@ $Anadir_version = "A&ntilde;adir a Control Versi&oacute;n";
 $AnadiryEliminarIncompatibles = "A&ntilde;adir y Eliminar Incompatibles";
 $Ancho = "Ancho";
 $Ano = "A&ntilde;o";
+$Anos = "A&ntilde;os";
 $Anotacion = "Anotaci&oacute;n";
 $Antecedentes = "Antecedentes";
 $Anterior = "Anterior";

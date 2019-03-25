@@ -9,7 +9,12 @@ function calendari_economic($rec){
 	$mes_ultimo = date("U", mktime(0,0,0,$mes+12, 1-1, date("Y")));
 	$dia_actual=$mes_anterior;
 	$dia_actual1 = date("U", mktime(0,0,0,$mes-1, 1-1, date("Y")));
-	if ($rec == 1) {$dia_actual=date("U", mktime(0,0,0,1,1,2012)); $dia_actual1=date("U", mktime(0,0,0,1,1-1,2012));}
+	if ($rec == 1) {$dia_actual=date("U", mktime(0,0,0,$mes-3,date("d"),date("Y"))); $dia_actual1=date("U", mktime(0,0,0,$mes-3,date("d")-1,date("Y")));}
+	if ($rec == 2) {$dia_actual=date("U", mktime(0,0,0,$mes-6,date("d"),date("Y"))); $dia_actual1=date("U", mktime(0,0,0,$mes-6,date("d")-1,date("Y")));}
+	if ($rec == 3) {$dia_actual=date("U", mktime(0,0,0,$mes,date("d"),date("Y")-1)); $dia_actual1=date("U", mktime(0,0,0,$mes,date("d")-1,date("Y")-1));}
+	if ($rec == 4) {$dia_actual=date("U", mktime(0,0,0,$mes,date("d"),date("Y")-2)); $dia_actual1=date("U", mktime(0,0,0,$mes,date("d")-1,date("Y")-2));}
+	if ($rec == 5) {$dia_actual=date("U", mktime(0,0,0,1,1,2012)); $dia_actual1=date("U", mktime(0,0,0,1,1-1,2012));}
+	
 
 	$sql = "select * from sgm_factura_calendario where fecha='".$dia_actual1."'";
 	$result = mysqli_query($dbhandle,$sql);

@@ -3,13 +3,13 @@ error_reporting(~E_ALL);
 
 
 function afegirModificarContrasenya ($url){
-	global $db,$dbhandle,$Volver,$Editar,$Contrasena,$Contrato,$Aplicacion,$Acceso,$Usuario,$Descripcion,$Modificar,$Anadir,$Anterior,$Nueva,$Repetir;
+	global $db,$dbhandle,$Volver,$Editar,$Contrasena,$Cliente,$Aplicacion,$Acceso,$Usuario,$Descripcion,$Modificar,$Anadir,$Anterior,$Nueva,$Repetir;
 	if ($_GET["id_con"] > 0){
 		$sqlcc = "select * from sgm_contrasenyes WHERE id=".$_GET["id_con"];
 		$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
 		$rowcc = mysqli_fetch_array($resultcc);
 		echo "<h4>".$Editar." ".$Contrasena." :</h4>";
-		echo boton(array($url."&id_contrato=".$rowcc["id_contrato"]."&id_aplicacion=".$rowcc["id_aplicacion"]),array("&laquo; ".$Volver));
+		echo boton(array($url."&id_client=".$rowcc["id_client"]."&id_aplicacion=".$rowcc["id_aplicacion"]),array("&laquo; ".$Volver));
 		echo "<form action=\"index.php?".$url."&ssop=2&id_con=".$_GET["id_con"]."\" method=\"post\">";
 	} else {
 		echo "<h4>".$Anadir." ".$Contrasena." :</h4>";
@@ -18,25 +18,28 @@ function afegirModificarContrasenya ($url){
 
 	echo "<table class=\"lista\">";
 		echo "<tr>";
-			echo "<th>".$Contrato."</th>";
-			echo "<td><select style=\"width:700px\" name=\"id_contrato\">";
-				echo "<option value=\"0\">-</option>";
-				$sqlc = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1";
-				if ($_GET["id"] > 0){ $sqlc .= " and id=".$_GET["id"];}
-				$sqlc .= " order by nombre";
-				$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-				while ($rowc = mysqli_fetch_array($resultc)) {
-					$sql = "select id,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
-					$result = mysqli_query($dbhandle,convertSQL($sql));
-					while ($row = mysqli_fetch_array($result)){
-						if ($rowcc["id_contrato"] == $row["id"]){
-							echo "<option value=\"".$row["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
+			echo "<th>".$Cliente."</th>";
+				echo "<td><select style=\"width:500px\" name=\"id_cliente\">";
+					echo "<option value=\"0\">-</option>";
+					$sqlcl1 = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+					$resultcl1 = mysqli_query($dbhandle,convertSQL($sqlcl1));
+					while ($rowcl1 = mysqli_fetch_array($resultcl1)){
+						if($rowcl1["id"] == $rowcc["id_client"]){
+							echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 						} else {
-							echo "<option value=\"".$row["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
+							echo "<option value=\"".$rowcl1["id"]."\">- ".$rowcl1["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 						}
 					}
-				}
-			echo "</select></td>";
+					$sqlcl = "select id,nombre,cognom1,cognom2 from sgm_clients where visible=1 and id not in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+					$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+					while ($rowcl = mysqli_fetch_array($resultcl)){
+						if($rowcl["id"] == $rowcc["id_client"]){
+							echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						} else {
+							echo "<option value=\"".$rowcl["id"]."\"> ".$rowcl["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						}
+					}
+				echo "</select></td>";
 		echo "</tr>";
 		echo "<tr>";
 			echo "<th>".$Aplicacion."</th>";

@@ -1973,7 +1973,7 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo boton(array("op=1008&sop=140&id=".$_GET["id"]),array("&laquo; ".$Volver));
 		mostrarContrato ($_GET["id_con"],$_GET["id"],0);
 		echo "<br><br>";
-		mostrarServicio ($_GET["id_con"],$_GET["id"],142);
+		mostrarServicio ($_GET["id_con"],$_GET["id"],142,0,1);
 
 	}
 
@@ -2537,8 +2537,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=540","op=1008&sop=560","op=1008&sop=570");
-			$texto = array($Origenes,$Sectores,$Tratos,$Tipos,$Busquedas);
+			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=540","op=1008&sop=560","op=1008&sop=570","op=1008&sop=580");
+			$texto = array($Origenes,$Sectores,$Tratos,$Tipos,$Busquedas,$Imprimir);
 			echo boton($ruta_botons,$texto);
 		}
 		if ($admin == false) {
@@ -3035,6 +3035,23 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "</center>";
 	}
 
+	if ($soption == 580) {
+		echo "<h4>".$Imprimir."</h4>";
+		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+		echo "<caption>CSV</caption>";
+			echo "<tr>";
+				echo "<form method=\"post\" name=\"form3\" action=\"".$urlmgestion."/mgestion/gestion-clientes-clientes-print-csv.php\" target=\"popup\" onsubmit=\"window.open('', 'popup', '')\">";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Clientes."\"></td>";
+				echo "</form>";
+				echo "<form method=\"post\" name=\"form3\" action=\"".$urlmgestion."/mgestion/gestion-clientes-personales-print-csv.php\" target=\"popup\" onsubmit=\"window.open('', 'popup', '')\">";
+				echo "<td class=\"submit\"><input type=\"submit\" value=\"".$Personas."\"></td>";
+				echo "</form>";
+			echo "</tr>";
+		echo "</table>";
+	}
+	
+	
 	echo "</td></tr></table><br>";
 }
 

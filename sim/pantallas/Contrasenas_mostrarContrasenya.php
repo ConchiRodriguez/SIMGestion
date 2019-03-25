@@ -9,10 +9,10 @@ function mostrarContrasenya(){
 	if ($idioma == "cat"){ include ("sgm_cat.php");}
 
 		?><script>setTimeout ("redireccionar()", 10000);</script><?php
-		$sqlc = "select id_contrato,id_aplicacion,pass from sgm_contrasenyes where id=".$_GET["id_con"];
+		$sqlc = "select id_client,id_aplicacion,pass from sgm_contrasenyes where id=".$_GET["id_con"];
 		$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 		$rowc = mysqli_fetch_array($resultc);
-		$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
+		$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id=".$rowc["id_client"];
 		$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
 		$rowcl = mysqli_fetch_array($resultcl);
 		$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];

@@ -1,8 +1,6 @@
 <?php
-
 $autorizado = autorizado($userid,$option);
 $admin = admin($userid,$option);
-
 if ($autorizado == false) {	echo "<h1 style=\"text-align:center\">".$UsuarioNoAutorizado."</h1>";  }
 if (($option == 1003) AND ($autorizado == true)) {
 	$sqldiv = "select * from sgm_divisas where predefinido=1";
@@ -244,7 +242,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 						$sqlc = "select id from sgm_cuerpo order by id desc";
 						$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 						$rowc = mysqli_fetch_array($resultc);
-						$sqlf = "select * from sgm_files where id_elemento=".$row["id"];
+						$sqlf = "select * from sgm_files where tipo_id_elemento=0 and id_elemento=".$row["id"];
 						$resultf = mysqli_query($dbhandle,convertSQL($sqlf));
 						while ($rowf = mysqli_fetch_array($resultf)){
 							$camposInsert = "id_tipo,name,type,size,tipo_id_elemento,id_elemento";
@@ -264,7 +262,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				while ($rowc = mysqli_fetch_array($resultc)){
 					$sql = "update sgm_files set ";
 					$sql = $sql."visible = 0";
-					$sql = $sql." WHERE id_elemento=".$rowc["id"]."";
+					$sql = $sql." WHERE tipo_id_elemento=0 and id_elemento=".$rowc["id"]."";
 					mysqli_query($dbhandle,convertSQL($sql));
 				}
 			}
@@ -311,7 +309,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 				echo "<tr style=\"background-color:silver;\">";
 					echo "<th></th>";
 					
-					if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
+					if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
 						echo "<th style=\"min-width:20px;width:30px;\">Docs</th>";
 					} else { echo "<td></td>"; }
 					echo "<th style=\"min-width:60px;width:80px;\">".$Numero."</th>";
@@ -1009,7 +1007,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			deleteFunction ("sgm_cuerpo",$_GET["id_cuerpo"]);
 			$sql = "update sgm_files set ";
 			$sql = $sql."visible = 0";
-			$sql = $sql." WHERE id_elemento=".$_GET["id_cuerpo"]."";
+			$sql = $sql." WHERE tipo_id_elemento=0 and id_elemento=".$_GET["id_cuerpo"]."";
 			mysqli_query($dbhandle,convertSQL($sql));
 			refactura($_GET["idfactura"]);
 			$num = 1;
@@ -1563,9 +1561,9 @@ if (($option == 1003) AND ($autorizado == true)) {
 									$sqla = "select preu_cost from sgm_articles_costos where visible=1 and id_cuerpo=".$row["id"]." and aprovat=1";
 									$resulta = mysqli_query($dbhandle,convertSQL($sqla));
 									$rowa = mysqli_fetch_array($resulta);
-									echo "<td style=\"vertical-align:bottom;\"><input type=\"Text\" name=\"pvd".$row["id"]."\" style=\"text-align:right\" value=\"".number_format ($rowa["preu_cost"],2)."\"></td>";
+									echo "<td style=\"vertical-align:bottom;\"><input type=\"Text\" name=\"pvd".$row["id"]."\" style=\"text-align:right\" value=\"".number_format ($rowa["preu_cost"],2,".","")."\"></td>";
 								} else {
-									echo "<td><input type=\"Text\" name=\"pvd".$row["id"]."\" style=\"text-align:right\" value=\"".number_format ($row["pvd"],2)."\"></td>";
+									echo "<td><input type=\"Text\" name=\"pvd".$row["id"]."\" style=\"text-align:right\" value=\"".number_format ($row["pvd"],2,".","")."\"></td>";
 								}
 								echo "<td style=\"vertical-align:bottom;\"><input type=\"Text\" name=\"pvp".$row["id"]."\" style=\"text-align:right;\" value=\"".number_format ($row["pvp"],2,".","")."\"></td>";
 								echo "<td style=\"vertical-align:bottom;\"><input type=\"Text\" name=\"descuento".$row["id"]."\" style=\"text-align:right;\" value=\"".number_format ($row["descuento"],2)."\"></td>";
@@ -1827,11 +1825,8 @@ if (($option == 1003) AND ($autorizado == true)) {
 	}
 	
 	if ($soption == 410) {
-		if ($ssoption == 1) {
-			echo calendari_economic(1);
-		} else {
-			echo calendari_economic(0);
-		}
+		echo calendari_economic($_POST["fecha_recalc"]);
+
 		echo "<h4>".$Calendario_Economico." (".$Gastos."/".$Ingresos."/".$Externo."/".$Total.") : </h4>";
 		echo "<form action=\"index.php?op=1003&sop=411\" method=\"post\">";
 			echo "<input type=\"submit\" value=\"".$Recalcular."\"  style=\"width:100px;\">";
@@ -1915,7 +1910,11 @@ if (($option == 1003) AND ($autorizado == true)) {
 				$iva = ($rowingre1["total_ingre"]-$rowingre1["subtotal_ingre"]) - ($rowgasto["total_gasto"]-$rowgasto["subtotal_gasto"]);
 			}
 			
-			$sqliva = "select id from sgm_cabezera where visible=1 and tipo=12 and fecha>='".$dia_anterior."' and fecha<='".$dia_actual2."' and id_pagador=1";
+			$iva_any = date("Y",$dia_actual);
+			$iva_mes = date("m",$dia_actual);
+			$iva_dia = date("d",$dia_actual);
+			$dia_posterior = date("Y-m-d",mktime(0,0,0,$iva_mes,$iva_dia+6,$iva_any));
+			$sqliva = "select id from sgm_cabezera where visible=1 and tipo=12 and fecha>='".$dia_anterior."' and fecha<='".$dia_posterior."' and id_pagador=1";
 			$resultiva = mysqli_query($dbhandle,$sqliva);
 			$rowiva = mysqli_fetch_array($resultiva);
 			if ($rowiva){
@@ -1937,7 +1936,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 					if ($dia_actual2 < $hoy){ $tipus = 5;} elseif ($dia_actual2 == $hoy){$tipus = 9;} else { $tipus = 3;}
 					echo "<tr><td style=\"text-align:right;background-color:".$color.";\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=1&fecha=".$dia_actual."\" style=\"color:".$color_letra.";\">".number_format($row["gastos"]+$iva, 2)."</a></td></tr>";
 					echo "<tr><td style=\"text-align:right;background-color:".$color3."\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=".$tipus."&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["ingresos"], 2)."</a></td></tr>";
-					echo "<tr><td style=\"text-align:right;background-color:#0084C9\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=4&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["externos"], 2)."</a></td></tr>";
+#					echo "<tr><td style=\"text-align:right;background-color:#0084C9\"><a href=\"index.php?op=1003&sop=490&hist=1&tipo=4&fecha=".$dia_actual."\" style=\"color:black;\">".number_format($row["externos"], 2)."</a></td></tr>";
 					echo "<tr><td style=\"text-align:right;background-color:".$color2.";\">".number_format($row["liquido"]-$iva2, 2)."</td></tr>";
 				echo "</table>";
 			echo "</td>";
@@ -1951,10 +1950,26 @@ if (($option == 1003) AND ($autorizado == true)) {
 	}
 
 	if ($soption == 411) {
-		echo "<center>";
-		echo "<br><br>".$pregunta_recalculo;
-		echo boton(array("op=1003&sop=410&ssop=1","op=1003&sop=410"),array($Si,$No));
-		echo "</center>";
+		echo "<h4>".$Recalcular."</h4>";
+		echo boton(array("op=1003&sop=410"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"2\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Fecha." ".$Recalcular."</th>";
+				echo "<th></th>";
+			echo "</tr>";
+			echo "<tr>";
+			echo "<form action=\"index.php?op=1003&sop=410\" method=\"post\">";
+				echo "<td><select  style=\"width:200px;\" name=\"fecha_recalc\">";
+					echo "<option value=\"1\">".$Ultimos." 3 ".$Meses."</option>";
+					echo "<option value=\"2\">".$Ultimos." 6 ".$Meses."</option>";
+					echo "<option value=\"3\">".$Ultimo." ".$Ano."</option>";
+					echo "<option value=\"4\">".$Ultimos." 2 ".$Anos."</option>";
+					echo "<option value=\"5\">".$Inicio."</option>";
+				echo "</select></td>";
+				echo "<td><input type=\"submit\" value=\"".$Recalcular."\"  style=\"width:100px;\"></td>";
+			echo "</form>";
+			echo "</tr>";
+		echo "</table>";
 	}
 	
 	if ($soption == 420) {
@@ -2424,7 +2439,7 @@ if (($option == 1003) AND ($autorizado == true)) {
 			if ($_GET["tipo"] == 4) {$sqlca .= " AND tipo IN (select id from sgm_factura_tipos where contabilidad=-1) and id_pagador<>1";}
 			if ($_GET["tipo"] == 5) {$sqlca .= " and tipo IN (select id from sgm_factura_tipos where contabilidad=1) and id in (select id_factura from sgm_recibos where fecha='".date("Y-m-d", $_GET["fecha"])."' and visible=1)";}
 			if ($_GET["iduser"] != "") {$sqlca .= " and id_pagador=".$_GET["iduser"];}
-			if (($_GET["tipo"] != 4) and ($_GET["tipo"] != 5) and ($_GET["iduser"] <= 0)){$sqlca = $sqlca." AND fecha_vencimiento='".date("Y-m-d", $_GET["fecha"])."'";}
+			if (($_GET["tipo"] != 4) and ($_GET["tipo"] != 5) and ($_GET["iduser"] <= 0)){$sqlca = $sqlca." AND fecha_vencimiento='".date("Y-m-d", $_GET["fecha"])."' and cobrada=0";}
 			if ($_GET["tipo"] == 6) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha between '".$_GET["y"]."-".$_GET["m"]."-01' and '".$_GET["y"]."-".$_GET["m"]."-31'";}
 			if ($_GET["tipo"] == 7) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha between '".$_GET["y"]."-".($_GET["m"]-2)."-01' and '".$_GET["y"]."-".$_GET["m"]."-31'";}
 			if ($_GET["tipo"] == 8) {$sqlca = "select * from sgm_cabezera where visible=1 and tipo=".$_GET["id_tipo"]." and fecha='".$_GET["y"]."-".$_GET["m"]."-".$_GET["d"]."'";}

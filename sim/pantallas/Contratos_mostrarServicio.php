@@ -69,7 +69,6 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete,$activo,$contrato
 				echo "<th>".$Origen."<img src=\"mgestion/pics/icons-mini/information.png\" alt=\"Info\" border=\"0\" title=\"".$info_contrato_servicios12."\"></th>";
 				echo "<th></th>";
 			echo "</tr><tr>";
-			if ($contrato == 0) {
 				echo "<td></td>";
 				echo "<form action=\"index.php?op=".$_GET["op"]."&sop=".$_GET["sop"]."&ssop=2&id=".$contrato_adress."\" method=\"post\">";
 				echo "<td><input style=\"width:250px\" type=\"Text\" name=\"servicio\"></td>";
@@ -131,7 +130,6 @@ function mostrarServicio ($id_contrato,$id_cliente,$sop_delete,$activo,$contrato
 			echo "</form>";
 			echo "</tr>";
 			echo "<tr><td>&nbsp;</td></tr>";
-			}
 			$sql = "select * from sgm_contratos_servicio where visible=1 and id_contrato=".$id_contrato."";
 			if (($activo == 1) and ($contrato == 0)) { $sql .= " and activo=1";} elseif (($activo == 0) and ($contrato == 0)) { $sql .= " and activo=0";}
 			$sql .= " order by servicio";

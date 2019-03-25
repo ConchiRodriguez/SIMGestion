@@ -218,12 +218,14 @@ if (($option == 1011) AND ($autorizado == true)) {
 					echo "<th>".$Descripcion."</th>";
 					echo "<th>".$Fecha." ".$Inicio."</th>";
 					echo "<th>".$Fecha." ".$Fin."</th>";
+					echo "<th>".$Horas." ".$Contrato."</th>";
+					echo "<th>".$Horas." ".$Consumidas."</th>";
 					echo "<th></th>";
 					echo "<th></th>";
 					echo "<th></th>";
 				echo "</tr>";
 #				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_plantilla<>0 ";
-				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado,fecha_ini,fecha_fin,num_contrato from sgm_contratos where visible=1";
+				$sqlcc = "select id,id_cliente,id_cliente_final,descripcion,activo,renovado,fecha_ini,fecha_fin,num_contrato,num_horas from sgm_contratos where visible=1";
 				if ($_POST["id_contrato_tipo2"] > 0) {
 					$sqlcc = $sqlcc." and id_contrato_tipo=".$_POST["id_contrato_tipo2"]."";
 				} else {
@@ -258,6 +260,20 @@ if (($option == 1011) AND ($autorizado == true)) {
 						echo "<td><a href=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\" style=\"color:".$color_letra."\">".$rowcc["descripcion"]."</a></td>";
 						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_ini"]."</td>";
 						echo "<td style=\"color:".$color_letra."\">".$rowcc["fecha_fin"]."</td>";
+						echo "<td style=\"color:".$color_letra.";text-align:right;\">".$rowcc["num_horas"]." ".$Horas."</td>";
+						$total_horas = 0;
+						$sqlcs = "select * from sgm_contratos_servicio where visible=1 and horas=1 and id_contrato=".$rowcc["id"];
+						$resultcs = mysqli_query($dbhandle,convertSQL($sqlcs));
+						while ($rowcs = mysqli_fetch_array($resultcs)) {
+							$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"].") and visible=1";
+							$resultd = mysqli_query($dbhandle,convertSQL($sqld));
+							$rowd = mysqli_fetch_array($resultd);
+							$total_horas += $rowd["total"];
+						}
+						$hora = $total_horas/60;
+						$horas = explode(".",$hora);
+						$minutos = $total_horas % 60;
+						echo "<td style=\"color:".$color_letra.";text-align:right;\">".$horas[0]." ".$Horas." ".$minutos_total." ".$Minutos."</td>";
 
 						echo "<form action=\"index.php?op=1011&sop=100&id=".$rowcc["id"]."\" method=\"post\">";
 						echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Editar."\"></td>";

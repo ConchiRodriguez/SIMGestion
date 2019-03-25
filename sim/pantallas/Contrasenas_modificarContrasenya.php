@@ -23,10 +23,10 @@ function modificarContrasenya($url_volver){
 			insertFunction ("sgm_contrasenyes_lopd",$camposInsert,$datosInsert);
 		}
 	}
-	$sqlc = "select id_contrato,id_aplicacion from sgm_contrasenyes where id=".$_GET["id_con"];
+	$sqlc = "select id_contrato,id_aplicacion,id_client from sgm_contrasenyes where id=".$_GET["id_con"];
 	$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
 	$rowc = mysqli_fetch_array($resultc);
-	$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id in (select id_cliente from sgm_contratos where id=".$rowc["id_contrato"].")";
+	$sqlcl = "select nombre,cognom1,cognom2 from sgm_clients where id=".$rowc["id_client"];
 	$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
 	$rowcl = mysqli_fetch_array($resultcl);
 	$sqlca = "select aplicacion from sgm_contrasenyes_apliciones where id=".$rowc["id_aplicacion"];

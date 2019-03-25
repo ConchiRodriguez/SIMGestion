@@ -42,7 +42,7 @@ echo "<center><table cellspacing=\"10\" cellpadding=\"0\" style=\"width:85%;marg
 #				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/sim\" target=\"_blank\">SIMGestion</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"https://www.solucions-im.com/clientes\" target=\"_blank\">Area Clientes</a></td></tr>";
-				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.20/faqs/\" target=\"_blank\">PHPmyFAQ</a></td></tr>";
+#				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://172.30.16.20/faqs/\" target=\"_blank\">PHPmyFAQ</a></td></tr>";
 				echo "<tr><td>&nbsp;</td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://op5.solucions-im.com\" target=\"_blank\">Blog op5</a></td></tr>";
 				echo "<tr><td style=\"vertical-align:top;text-align:left;\"><a href=\"http://nagios.solucions-im.com\" target=\"_blank\">Blog Nagios</a></td></tr>";

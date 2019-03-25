@@ -23,33 +23,36 @@ if (($option == 1024) AND ($autorizado == true)) {
 	echo "<table  class=\"principal\"><tr>";
 		echo "<td style=\"width:100%;vertical-align : top;text-align:left;\">";
 
-	if ($_POST["id_contrato"] > 0) { $id_contrato = $_POST["id_contrato"];} elseif ($_GET["id_contrato"] > 0) { $id_contrato = $_GET["id_contrato"];}
+	if ($_POST["id_cliente"] > 0) { $id_cliente = $_POST["id_cliente"];} elseif ($_GET["id_cliente"] > 0) { $id_cliente = $_GET["id_cliente"];}
 	if ($_POST["id_aplicacion"] > 0) { $id_aplicacion = $_POST["id_aplicacion"];} elseif ($_GET["id_aplicacion"] > 0) { $id_aplicacion = $_GET["id_aplicacion"];}
 
 	if ($soption == 0) {
 		echo "<h4>".$Contrasenas." : </h4>";
 		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
 			echo "<tr style=\"background-color:silver;\">";
-				echo "<th>".$Contrato."</th>";
+				echo "<th>".$Cliente."</th>";
 				echo "<th>".$Aplicacion."</th>";
 			echo "</tr>";
 		echo "<form action=\"index.php?op=1024&sop=0\" method=\"post\">";
 			echo "<tr>";
-				echo "<td><select style=\"width:700px\" name=\"id_contrato\">";
+				echo "<td><select style=\"width:700px\" name=\"id_cliente\">";
 					echo "<option value=\"0\">-</option>";
-					$sqlc = "select * from sgm_clients where visible=1 order by nombre";
-					$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
-					while ($rowc = mysqli_fetch_array($resultc)) {
-						$sql = "select * from sgm_contratos where visible=1 and activo=1 and id_cliente_final=".$rowc["id"]."";
-						$result = mysqli_query($dbhandle,convertSQL($sql));
-						while ($row = mysqli_fetch_array($result)){
-							if ($row){
-								if($row["id"] == $id_contrato){
-									echo "<option value=\"".$row["id"]."\" selected>".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
-								} else {
-									echo "<option value=\"".$row["id"]."\">".$rowc["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]." - ".$row["descripcion"]."</option>";
-								}
-							}
+					$sqlcl1 = "select id,nombre from sgm_clients where visible=1 and id in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+					$resultcl1 = mysqli_query($dbhandle,convertSQL($sqlcl1));
+					while ($rowcl1 = mysqli_fetch_array($resultcl1)){
+						if($rowcl1["id"] == $id_cliente){
+							echo "<option value=\"".$rowcl1["id"]."\" selected>- ".$rowcl1["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						} else {
+							echo "<option value=\"".$rowcl1["id"]."\">- ".$rowcl1["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						}
+					}
+					$sqlcl = "select id,nombre from sgm_clients where visible=1 and id not in (select id_cliente from sgm_contratos where visible=1 and activo=1) order by nombre";
+					$resultcl = mysqli_query($dbhandle,convertSQL($sqlcl));
+					while ($rowcl = mysqli_fetch_array($resultcl)){
+						if($rowcl["id"] == $id_cliente){
+							echo "<option value=\"".$rowcl["id"]."\" selected> ".$rowcl["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
+						} else {
+							echo "<option value=\"".$rowcl["id"]."\"> ".$rowcl["nombre"]." ".$rowc["cognom1"]." ".$rowc["cognom2"]."</option>";
 						}
 					}
 				echo "</select></td>";
@@ -69,7 +72,7 @@ if (($option == 1024) AND ($autorizado == true)) {
 			echo "</tr>";
 		echo "</form>";
 		echo "</table>";
-		echo mostrarContrasenyes("op=1024&sop=100","op=1024&sop=1","op=1024&sop=2","op=1024&sop=3");
+		echo mostrarContrasenyes("op=1024&sop=100","op=1024&sop=1","op=1024&sop=3");
 	}
 
 	if ($soption == 1) {
@@ -78,12 +81,8 @@ if (($option == 1024) AND ($autorizado == true)) {
 		$rowc = mysqli_fetch_array($resultc);
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1024&sop=0&ssop=3&id_con=".$_GET["id_con"]."&id_contrato=".$rowc["id_contrato"],"op=1024&sop=0&id_contrato=".$rowc["id_contrato"]),array($Si,$No));
+		echo boton(array("op=1024&sop=0&ssop=3&id_con=".$_GET["id_con"]."&id_cliente=".$rowc["id_cliente"],"op=1024&sop=0&id_cliente=".$rowc["id_cliente"]),array($Si,$No));
 		echo "</center>";
-	}
-
-	if ($soption == 2) {
-		echo  modificarContrasenya("op=1024&sop=0");
 	}
 
 	if ($soption == 3) {
@@ -172,6 +171,21 @@ if (($option == 1024) AND ($autorizado == true)) {
 #			$cadena = encrypt($row["pass"], $simclau);
 #			$sql = "update sgm_contrasenyes set ";
 #			$sql = $sql."pass='".$cadena."'";
+#			$sql = $sql." WHERE id=".$row["id"]."";
+#			mysqli_query($dbhandle,convertSQL($sql));
+#			echo $sql."<br>";
+#		}
+#	}
+
+#	if ($soption == 12345) {
+#		$sql = "select * from sgm_contrasenyes";
+#		$result = mysqli_query($dbhandle,convertSQL($sql));
+#		while ($row = mysqli_fetch_array($result)) {
+#			$sqlc = "select * from sgm_contratos where id=".$row["id_contrato"];
+#			$resultc = mysqli_query($dbhandle,convertSQL($sqlc));
+#			$rowc = mysqli_fetch_array($resultc);
+#			$sql = "update sgm_contrasenyes set ";
+#			$sql = $sql."id_client=".$rowc["id_cliente"];
 #			$sql = $sql." WHERE id=".$row["id"]."";
 #			mysqli_query($dbhandle,convertSQL($sql));
 #			echo $sql."<br>";

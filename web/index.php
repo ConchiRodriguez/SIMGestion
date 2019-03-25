@@ -315,8 +315,7 @@ if ($_GET["mn"] == "") { $mn = 0; } else { $mn = $_GET["mn"]; }
 										echo "<td><a href=\"https://www.solucions-im.com/blogs/tecnic/\" target=\"_blank\"><img src=\"images/xarxes_socials/32x32-wordpress.png\" alt=\"facebook\"></a></td>";
 									echo "</tr></table></td>";
 								echo "</tr>";
-								echo "<tr><td><a href=\"index.php?mn=98\" class=\"footer\">".$Aviso_Legal."</a></td></tr>";
-								echo "<tr><td><a href=\"index.php?mn=99\" class=\"footer\">".$Politica_de_privacidad."</a></td></tr>";
+								echo "<tr><td><a href=\"index.php?mn=98\" class=\"footer\">".$Aviso_Legal." - ".$Politica_de_privacidad."</a></td></tr>";
 							echo "</table>";
 						echo "</td>";
 					echo "</tr>";

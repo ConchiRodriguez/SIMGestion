@@ -414,14 +414,14 @@ if (($option == 1018) AND ($autorizado == true)) {
 						echo "<th></th>";
 						echo "<th>ID</th>";
 						echo "<th>".$SLA."</th>";
-						if (($soption == 0) or ($soption == 1)) { echo "<th><a href=\"index.php?op=1018&fil=1\">".$Fecha." ".$Prevision."</a></th>"; }
+						if (($soption == 0) or ($soption == 1)) { echo "<th><a href=\"index.php?op=1018&fil=1\">".$Fecha." ".$Prevision."<img src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" alt=\"".$Filtro."\" title=\"".$Filtro."\" style=\"border:0px;\"></a></th>"; }
 		#				if ($soption == 1) { echo "<td>".$Fecha." ".$Fin."</td>"; }
 						if ($soption == 200) { echo "<th>".$Fecha."</th>"; }
 						echo "<th>".$Asunto."</th>";
 						echo "<th colspan=\"2\">".$Nivel." ".$Tecnico."</a></th>";
-						echo "<th><a href=\"index.php?op=1018&fil=2\">".$Cliente."</a></th>";
+						echo "<th><a href=\"index.php?op=1018&fil=2\">".$Cliente."<img src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" alt=\"".$Filtro."\" title=\"".$Filtro."\" style=\"border:0px;\"></a></th>";
 		#				echo "<th>".$Servicio."</th>";
-						echo "<th><a href=\"index.php?op=1018&fil=3\">".$Usuario." ".$Destino."</a></th>";
+						echo "<th><a href=\"index.php?op=1018&fil=3\">".$Usuario." ".$Destino."<img src=\"mgestion/pics/icons-mini/bullet_arrow_down.png\" alt=\"".$Filtro."\" title=\"".$Filtro."\" style=\"border:0px;\"></a></th>";
 					if (($_POST["dia"] != 0) or ($_GET["d"] != 0) or ($_POST["fecha"] != 0) or ($_GET["m"] != 0) or ($_GET["a"] != 0) or ($_GET["u"] != 0)){
 						echo "<th>".$Tiempo."/".$Tiempo." ".$Total."</th>";
 					} else {
@@ -483,20 +483,20 @@ if (($option == 1018) AND ($autorizado == true)) {
 				elseif ($i == 2) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente<>(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
 				elseif ($i == 3) { $sqli = $sqli." and id_servicio <> 0 and fecha_prevision=0 and pausada=0 and id_cliente=(select id from sgm_clients where nif='B65702227' and visible=1)"; } 
 				elseif ($i == 4) { $sqli = $sqli." and pausada=1"; }
-				if ($i == 1) {
-					$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
-				} elseif ($i == 4) {
-					$sqli = $sqli." order by id_cliente,id_servicio,id_usuario_destino";
+				if (($soption == 200) and ($_GET["filtra"] == 1)) {
+					$sqli = $sqli." order by fecha_inicio desc,id_estado desc";
 				} else {
-					if (($soption == 200) and ($_GET["filtra"] == 1)) {
-						$sqli = $sqli." order by fecha_inicio desc,id_estado desc";
+					if ($_GET["fil"] == 1) {
+						$sqli = $sqli." order by fecha_prevision,id_cliente,id_usuario_destino";
+					} elseif ($_GET["fil"] == 2) {
+						$sqli = $sqli." order by id_cliente,fecha_prevision,id_usuario_destino";
+					} elseif ($_GET["fil"] == 3) {
+						$sqli = $sqli." order by id_usuario_destino,id_cliente,fecha_prevision";
 					} else {
-						if ($_GET["fil"] <= 1) {
-							$sqli = $sqli." order by fecha_prevision,pausada,id_cliente,id_servicio,id_usuario_destino";
-						} elseif ($_GET["fil"] == 2) {
-							$sqli = $sqli." order by id_cliente desc,id_servicio,pausada,fecha_prevision,id_usuario_destino";
-						} elseif ($_GET["fil"] == 3) {
-							$sqli = $sqli." order by id_usuario_destino,pausada,fecha_prevision,id_cliente,id_servicio";
+						if ($i == 1) {
+							$sqli = $sqli." order by temps_pendent,id_cliente,id_servicio,id_usuario_destino";
+						} elseif ($i == 4) {
+							$sqli = $sqli." order by id_cliente,id_servicio,id_usuario_destino";
 						}
 					}
 				}
@@ -670,15 +670,21 @@ if (($option == 1018) AND ($autorizado == true)) {
 
 	if ($soption == 3) {
 		if ($_GET["id"] != $_POST["id_inc_rel"]){
-			$sqlinc = "select id from sgm_incidencias where visible=1 and id_incidencia=0";
+			$sqlinc = "select id,asunto from sgm_incidencias where visible=1 and id_incidencia=0";
 			$resultinc = mysqli_query($dbhandle,convertSQL($sqlinc));
 			while ($rowinc = mysqli_fetch_array($resultinc)){
 				$ids[] = $rowinc["id"];
 			}
 			if ((is_numeric($_POST["id_inc_rel"])) and (in_array($_POST["id_inc_rel"],$ids))){
+				$sqlinc1 = "select id,asunto from sgm_incidencias where id=".$_GET["id"];
+				$resultinc1 = mysqli_query($dbhandle,convertSQL($sqlinc1));
+				$rowinc1 = mysqli_fetch_array($resultinc1);
+				$sqlinc2 = "select id,asunto from sgm_incidencias where id=".$_POST["id_inc_rel"];
+				$resultinc2 = mysqli_query($dbhandle,convertSQL($sqlinc2));
+				$rowinc2 = mysqli_fetch_array($resultinc2);
 				echo "<center>";
 				echo "<br><br>".$ayudaRelacionar."<br><br>".$_GET["id"]." y ".$_POST["id_inc_rel"];
-				echo "<br>".$ayudaRelacionar2.$_GET["id"].$ayudaRelacionar3.$_POST["id_inc_rel"]."<br><br>";
+				echo "<br>".$ayudaRelacionar2."<br>".$_GET["id"]."-'".$rowinc1["asunto"]."'<br>".$ayudaRelacionar3."<br>".$_POST["id_inc_rel"]."-'".$rowinc2["asunto"]."'<br><br>";
 				echo boton(array("op=1018&sop=0&ssop=1&id=".$_GET["id"]."&id_inc_rel=".$_POST["id_inc_rel"].$adres,"op=1018&sop=0".$adres),array($Si,$No));
 				echo "</center>";
 			} else {
@@ -2049,7 +2055,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 		if (($ssoption == 3) and ($admin == true)) {
 			$sql = "update sgm_incidencias set visible=0 WHERE id_incidencia=0 and visible=1 and id_cliente=191";
 			mysqli_query($dbhandle,convertSQL($sql));
-			echo $sql."<br>";
+#			echo $sql."<br>";
 		}
 		echo boton(array("op=1018&sop=521"),array($SinCliente));
 	}

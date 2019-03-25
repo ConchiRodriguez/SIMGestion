@@ -102,9 +102,12 @@ if ($send_ok==0){
 	echo "</tr>";
 
 	echo "<tr><td>&nbsp;</td></tr>";
+	echo "<tr>";
+		echo "<td></td><td class=\"presupost2\">".$Ajuda_info4."</td>";
+	echo "</tr>";
 	echo "<tr><td class=\"presupost\"><input type=\"Checkbox\" name=\"privacidad\" value=\"true\"";
 	if ($_POST["privacidad"] == true) { echo " checked"; }
-	echo "></td><td class=\"presupost2\"><a href=\"index.php?mn=99\" target=\"_blank\">".$Politica_de_privacidad."</a></td></tr>";
+	echo "></td><td class=\"presupost2\">".$Ajuda_info5." <a href=\"index.php?mn=99\" target=\"_blank\">".$Politica_de_privacidad."</a><font color=\"red\"> *</font></td></tr>";
 	echo "<tr><td></td><td><input class=\"presupost\" type=\"Submit\" value=\"".$Enviar."\"></td></tr>";
 	echo "</form>";
 }

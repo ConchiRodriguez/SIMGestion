@@ -159,8 +159,8 @@ function mostrarFacturas($row){
 			echo "<form method=\"post\" action=\"index.php?op=1003&sop=10&id=".$rowtipos["id"]."&id_fact=".$row["id"]."\">";
 				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Opciones."\"></td>";
 			echo "</form>";
-			if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_fecha_vencimiento"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
-				$sqlca = "select count(*) as total from sgm_files where id_elemento in (select id from sgm_cuerpo where idfactura=".$row["id"].")";
+			if (($rowtipos["v_recibos"] == 0) and ($rowtipos["v_fecha_prevision"] == 0) and ($rowtipos["v_rfq"] == 0) and ($rowtipos["presu"] == 0) and ($rowtipos["dias"] == 0) and ($rowtipos["v_numero_cliente"] == 0) and ($rowtipos["tipo_ot"] == 0)) {
+				$sqlca = "select count(*) as total from sgm_files where tipo_id_elemento=0 and id_elemento in (select id from sgm_cuerpo where idfactura=".$row["id"].")";
 				$resultca = mysqli_query($dbhandle,convertSQL($sqlca));
 				$rowca = mysqli_fetch_array($resultca);
 				if ($rowca["total"] == 0) {$color_docs = "yellow";} else {$color_docs = "white";}
@@ -247,7 +247,7 @@ function mostrarFacturas($row){
 					if (strlen($row["nombre"]) > 70) {
 						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".substr($row["nombre"],0,70)." ...</a></td>";
 					} else {
-						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".quitarAcentos($row["nombre"])."</a></td>";
+						echo "<td><a href=\"index.php?op=1008&sop=100&id=".$row["id_cliente"]."\" style=\"color:black\">".$row["nombre"]."</a></td>";
 					}
 					if ($rowtipos["v_subtipos"] == 1) {
 						echo "<td>";

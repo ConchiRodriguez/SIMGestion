@@ -35,9 +35,20 @@ if (($option == 1026) AND ($autorizado == true)) {
 			$sqln = "select * from sim_licencias where visible=1 and id=".$_GET["id"];
 			$resultn = mysqli_query($dbhandle,convertSQL($sqln));
 			$rown = mysqli_fetch_array($resultn);
-			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos";
-			$datosInsert = array($rown["id_cliente"],$rown["id_cliente_final"],$rown["fecha_ini"],$rown["fecha_fin"],$rown["num_elementos"]);
+			$camposInsert = "id_cliente,id_cliente_final,fecha_ini,fecha_fin,num_elementos,id_producto,num_poller,num_peer";
+			$datosInsert = array($rown["id_cliente"],$rown["id_cliente_final"],$rown["fecha_ini"],$rown["fecha_fin"],$rown["num_elementos"],$rown["id_producto"],$rown["num_poller"],$rown["num_peer"]);
 			insertFunction ("sim_licencias",$camposInsert,$datosInsert);
+
+			$sqln2 = "select id from sim_licencias where id<>".$_GET["id"]." and visible=1 and id_cliente=".$rown["id_cliente"]." and id_cliente_final=".$rown["id_cliente_final"]." and fecha_ini='".$rown["fecha_ini"]."' and fecha_fin='".$rown["fecha_fin"]."' and num_elementos=".$rown["num_elementos"]." order by id desc";
+			$resultn2 = mysqli_query($dbhandle,convertSQL($sqln2));
+			$rown2 = mysqli_fetch_array($resultn2);
+			$sqlnl = "select * from sim_licencias_articulos where visible=1 and id_licencia=".$_GET["id"];
+			$resultnl = mysqli_query($dbhandle,convertSQL($sqlnl));
+			while ($rownl = mysqli_fetch_array($resultnl)){
+				$camposInsert = "id_licencia,id_articulo";
+				$datosInsert = array($rown2["id"],$rownl["id_articulo"]);
+				insertFunction ("sim_licencias_articulos",$camposInsert,$datosInsert);
+			}
 		}
 		if ($ssoption == 3) {
 			$camposUpdate = array("visible");
