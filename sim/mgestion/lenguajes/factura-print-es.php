@@ -18,6 +18,7 @@ $cnombre = "Contacto";
 $cmail= "E-mail Contacto";
 $cobertura = "Cobertura";
 $condiciones_pago = "Condiciones de pago";
+$cuenta_corriente= "Cuenta Corriente";
 $codigo = "Código";
 $cp = "CP";
 $cuenta_corriente= "Numero de Cuenta";
@@ -44,6 +45,8 @@ $forma_de_pago = "Forma de pago";
 $fuera_sla = "Fuera de SLA";
 
 $gerente = "Gerente";
+
+$horas = "Horas";
 
 $importe = "Importe";
 $incidencias = "Incidencias";

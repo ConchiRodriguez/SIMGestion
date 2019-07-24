@@ -45,6 +45,8 @@ $fuera_sla = "Fora de SLA";
 
 $gerente = "Gerent";
 
+$horas = "Hores";
+
 $importe = "Import";
 $incidencias= "Incidències";
 $incidencias_pendientes = "Incidències Pendents";

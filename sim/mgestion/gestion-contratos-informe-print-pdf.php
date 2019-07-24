@@ -19,7 +19,7 @@ class PDF extends FPDF
 {
 	function Header()
 	{
-		global $dbhandle;
+		global $dbhandle,$telefono;
 		$sqlele = "select * from sgm_dades_origen_factura";
 		$resultele = mysqli_query($dbhandle,convertSQL($sqlele));
 		$rowele = mysqli_fetch_array($resultele);
@@ -35,7 +35,7 @@ class PDF extends FPDF
 		$this->SetXY(100,14);
 		$this->Cell(90,3,$rowele["poblacion"]." (".$rowele["cp"].") ".$rowele["provincia"],0,1);
 		$this->SetXY(100,17);
-		$this->Cell(90,3, "Teléfono: ".$rowele["telefono"],0,1);
+		$this->Cell(90,3, $telefono.": ".$rowele["telefono"],0,1);
 		$this->SetXY(100,20);
 		$this->Cell(90,3, "E-mail: ".$rowele["mail"],0,1);
 		$this->SetXY(100,23);
@@ -115,7 +115,7 @@ class PDF extends FPDF
 	}
 
 	function informe_print($id_cliente, $id_contrato){
-		global $db,$dbhandle,$duracion,$incidencias,$cobertura,$meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerrada,$cerradas,$pendientes,$pausadas,$fuera_sla,$porcentaje_sla,$tiempo,$total_contrato,$asunto,$estado,$fecha;
+		global $db,$dbhandle,$duracion,$incidencias,$cobertura,$meses,$abierta,$pausada,$incidencias_pendientes,$total,$numero,$fecha_ini,$fecha_fin,$nombre,$nif,$direccion,$poblacion,$cp,$provincia,$descripcion,$responsable_cliente,$responsable_tecnico,$texto_pdatos,$abiertas,$cerrada,$cerradas,$pendientes,$pausadas,$fuera_sla,$porcentaje_sla,$tiempo,$total_contrato,$asunto,$estado,$fecha,$horas;
 		//Creación del objeto de la clase heredada
 
 		$sqlcli = "select * from sgm_clients where id=".$id_cliente;
@@ -157,6 +157,9 @@ class PDF extends FPDF
 
 		$this->Cell(90,3,$provincia.": ".comillasInver($rowcli["provincia"]),0,0);
 		$this->Cell(90,3,$responsable_tecnico." : ".comillasInver($rowy["usuario"]),0,1);
+
+		$this->Cell(90,3,"",0,0);
+		$this->Cell(90,3,$total." ".$horas." : ".$rowcon["num_horas"],0,1);
 
 		$this->Cell(90,6,"",0,1);
 
@@ -242,8 +245,8 @@ class PDF extends FPDF
 					$rowi6 = mysqli_fetch_array($resulti6);
 					$time =$time + $rowi6["temps"];
 					$hora = $rowi6["temps"]/60;
-					$horas = explode(".",$hora);
-					$minuto = ($hora - $horas[0])*60;
+					$horasinc = explode(".",$hora);
+					$minuto = ($hora - $horasinc[0])*60;
 					$minutos = explode(".",$minuto);
 				}
 
@@ -283,7 +286,7 @@ class PDF extends FPDF
 				$this->Cell(17,$height,$fora_sla,'LTBR',0);
 				if ($_POST["horas"] == 1){
 					$this->Cell(20,$height,$porcentageSLA,'LTBR',0);
-					$this->Cell(15,$height,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
+					$this->Cell(15,$height,$horasinc[0]." h. ".$minutos[0]." m.",'LTBR',1);
 				} else {
 					$this->Cell(25,$height,$porcentageSLA,'LTBR',1);
 				}
@@ -302,10 +305,10 @@ class PDF extends FPDF
 			if ($_POST["horas"] == 1){
 				$this->Cell(20,5,$porcentageSLA_total,'LTBR',0);
 				$hora = $time/60;
-				$horas = explode(".",$hora);
-				$minuto = ($hora - $horas[0])*60;
+				$horasinc = explode(".",$hora);
+				$minuto = ($hora - $horasinc[0])*60;
 				$minutos = explode(".",$minuto);
-				$this->Cell(15,5,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
+				$this->Cell(15,5,$horasinc[0]." h. ".$minutos[0]." m.",'LTBR',1);
 			} else {
 				$this->Cell(25,5,$porcentageSLA_total,'LTBR',1);
 			}
@@ -316,14 +319,19 @@ class PDF extends FPDF
 		}
 
 		if ($_POST["detalles"] == 1){
+			$duraciontotal = 0;
 			$this->SetFont('Calibri','B',8);
 			$this->Cell(180,5,"".$incidencias."",0,1);
 			$this->SetFont('Calibri','',6);
 			$this->Cell(15,4,$fecha,'B',0);
 			$this->Cell(15,4,"Id.",'B',0);
 			$this->Cell(110,4,$asunto,'B',0);
-			$this->Cell(25,4,$estado,'B',0);
-			$this->Cell(15,4,$duracion,'B',1);
+			if ($_POST["horas"] == 1){
+				$this->Cell(25,4,$estado,'B',0);
+				$this->Cell(15,4,$duracion,'B',1);
+			} else {
+				$this->Cell(40,4,$estado,'B',1);
+			}
 
 			$sqlcs = "select * from sgm_contratos_servicio where id_contrato=".$rowcon["id"]." ";
 			if ($_POST["servicios_horas"] > 0){$sqlcs .= " and horas=1";}
@@ -336,43 +344,59 @@ class PDF extends FPDF
 					$sqld = "select sum(duracion) as total from sgm_incidencias where id_incidencia=".$rowi0["id"]." and visible=1";
 					$resultd = mysqli_query($dbhandle,convertSQL($sqld));
 					$rowd = mysqli_fetch_array($resultd);
+					$duraciontotal = $duraciontotal+$rowd["total"];
 					$hora = $rowd["total"]/60;
-					$horas = explode(".",$hora);
+					$horasinc = explode(".",$hora);
 					$minutos = $rowd["total"] % 60;
-					$duration = $horas[0]."h. ".$minutos."m.";
+					$duration = $horasinc[0]."h. ".$minutos."m.";
 					$estatinc = $cerrada;
-					$asunto = str_replace("&#39;", "'",$rowi0["asunto"]);
+					$asuntoinc = str_replace("&#39;", "'",$rowi0["asunto"]);
 					$this->Cell(15,4,date("d-m-Y",$rowi0["fecha_inicio"]),'',0);
 					$this->Cell(15,4,$rowi0["id"],'',0);
-					$this->Cell(110,4,$asunto,'',0);
-					$this->Cell(25,4,$estatinc,'',0);
-					$this->Cell(15,4,$duration,'',1);
-
-					$sqlid = "select * from sgm_incidencias where id_incidencia=".$rowi0["id"]." and visible=1";
-					$resultid = mysqli_query($dbhandle,convertSQL($sqlid));
-					while ($rowid = mysqli_fetch_array($resultid)){
-						$notas_desarrollo = str_replace("&#39;", "'",$rowid["notas_desarrollo"]);
-#						$notas_desarrollo = str_replace("\n","<br>",$notas_desarrollo);
-#						$notas_desarrollo = str_replace("\n","\r",$notas_desarrollo);
-						$hora2 = $rowid["duracion"]/60;
-						$horas2 = explode(".",$hora2);
-						$minutos2 = $rowid["duracion"] % 60;
-						$duration2 = $horas2[0]."h. ".$minutos2."m.";
-						$lines = $this->NbLines(110,$notas_desarrollo);
-						$lines2 = 4*$lines;
-						$this->CheckPageBreak($lines2);
-						$this->Cell(15,4,'',0,0);
-						$this->Cell(15,4,'',0,0);
-						$x=$this->GetX();
-						$y=$this->GetY();
-						$this->MultiCell(110,4,$notas_desarrollo,0);
-						$this->SetXY($x+110,$y);
-						$this->Cell(25,4,'',0,0);
-						$this->Cell(15,4,$duration2,0,1);
-						$this->Ln(4*$lines);
+					$this->Cell(110,4,$asuntoinc,'',0);
+					if ($_POST["horas"] == 1){
+						$this->Cell(25,4,$estatinc,'',0);
+						$this->Cell(15,4,$duration,'',1);
+					} else {
+						$this->Cell(40,4,$estatinc,'',1);
+					}
+					if ($_POST["horas"] == 1){
+						$sqlid = "select * from sgm_incidencias where id_incidencia=".$rowi0["id"]." and visible=1";
+						$resultid = mysqli_query($dbhandle,convertSQL($sqlid));
+						while ($rowid = mysqli_fetch_array($resultid)){
+							$notas_desarrollo = str_replace("&#39;", "'",$rowid["notas_desarrollo"]);
+	#						$notas_desarrollo = str_replace("\n","<br>",$notas_desarrollo);
+	#						$notas_desarrollo = str_replace("\n","\r",$notas_desarrollo);
+							$hora2 = $rowid["duracion"]/60;
+							$horas2 = explode(".",$hora2);
+							$minutos2 = $rowid["duracion"] % 60;
+							$duration2 = $horas2[0]."h. ".$minutos2."m.";
+							$lines = $this->NbLines(110,$notas_desarrollo);
+							$lines2 = 4*$lines;
+							$this->CheckPageBreak($lines2);
+							$this->Cell(15,4,'',0,0);
+							$this->Cell(15,4,'',0,0);
+							$x=$this->GetX();
+							$y=$this->GetY();
+							$this->MultiCell(110,4,$notas_desarrollo,0);
+							$this->SetXY($x+110,$y);
+							$this->Cell(25,4,'',0,0);
+							$this->Cell(15,4,$duration2,0,1);
+							$this->Ln(4*$lines);
+						}
 					}
 				}
 			}
+			$this->SetFont('Calibri','',6);
+			$this->Cell(15,4,'','T',0);
+			$this->Cell(15,4,'','T',0);
+			$this->Cell(110,4,$total." ".$horas,'T',0);
+			$this->Cell(25,4,'','T',0);
+			$hora = $duraciontotal/60;
+			$horasinc = explode(".",$hora);
+			$minutos = $rowd["total"] % 60;
+			$durationtot = $horasinc[0]."h. ".$minutos."m.";
+			$this->Cell(15,4,$durationtot,'T',1);
 		}
 
 		$this->SetFont('Calibri','B',8);
@@ -393,9 +417,9 @@ class PDF extends FPDF
 			while ($rowi0 = mysqli_fetch_array($resulti0)){
 				if ($rowi0["id_estado"] == -1){$estatinc = $abierta;}
 				if ($rowi0["pausada"] == 1){$estatinc = $pausada;}
-				$asunto = str_replace("&#39;", "'",$rowi0["asunto"]);
+				$asuntoinc = str_replace("&#39;", "'",$rowi0["asunto"]);
 				$this->Cell(15,4,$rowi0["id"],'',0);
-				$this->Cell(125,4,$asunto,'',0);
+				$this->Cell(125,4,$asuntoinc,'',0);
 				$this->Cell(25,4,$estatinc,'',0);
 				$this->Cell(15,4,$rowi0["sla"],'',1);
 			}
@@ -457,16 +481,16 @@ class PDF extends FPDF
 				$outSLA =$outSLA + $rowi5["fora_sla"];
 			}
 
-			if ($_POST["horas"] == 1){
+#			if ($_POST["horas"] == 1){
 				$sqli6 = "select sum(duracion) as temps from sgm_incidencias where visible=1 and id_incidencia in (select id from sgm_incidencias where id_servicio=".$rowcs["id"]." and visible=1)";
 				$resulti6 = mysqli_query($dbhandle,convertSQL($sqli6));
 				$rowi6 = mysqli_fetch_array($resulti6);
 				$time =$time + $rowi6["temps"];
 				$hora = $rowi6["temps"]/60;
-				$horas = explode(".",$hora);
-				$minuto = ($hora - $horas[0])*60;
+				$horasinc = explode(".",$hora);
+				$minuto = ($hora - $horasinc[0])*60;
 				$minutos = explode(".",$minuto);
-			}
+#			}
 
 			if ($rowcs["sla"] == 0){
 				$porcentageSLA = "--";
@@ -504,7 +528,7 @@ class PDF extends FPDF
 			$this->Cell(17,$height,$fora_sla,'LTBR',0);
 			if ($_POST["horas"] == 1){
 				$this->Cell(20,$height,$porcentageSLA,'LTBR',0);
-				$this->Cell(15,$height,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
+				$this->Cell(15,$height,$horasinc[0]." h. ".$minutos[0]." m.",'LTBR',1);
 			} else {
 				$this->Cell(25,$height,$porcentageSLA,'LTBR',1);
 			}
@@ -519,16 +543,30 @@ class PDF extends FPDF
 		$this->Cell(17,5,$stoped,'LTBR',0);
 		$this->Cell(17,5,$outSLA,'LTBR',0);
 		$porcentageSLA_total = number_format(((100*($open-$outSLA))/$open),2, ',', '.');
+		$hora = $time/60;
+		$horasinc = explode(".",$hora);
+		$minuto = ($hora - $horasinc[0])*60;
+		$minutos = explode(".",$minuto);
 		if ($_POST["horas"] == 1){
 			$this->Cell(20,5,$porcentageSLA_total,'LTBR',0);
-			$hora = $time/60;
-			$horas = explode(".",$hora);
-			$minuto = ($hora - $horas[0])*60;
-			$minutos = explode(".",$minuto);
-			$this->Cell(15,5,$horas[0]." h. ".$minutos[0]." m.",'LTBR',1);
+			$this->Cell(15,5,$horasinc[0]." h. ".$minutos[0]." m.",'LTBR',1);
 		} else {
-			$this->Cell(25,5,$porcentageSLA_total,'LTBR',0);
+			$this->Cell(25,5,$porcentageSLA_total,'LTBR',1);
 		}
+
+			$this->SetFont('Calibri','',7);
+			$this->Cell($ample,5,$total." ".$horas,'LTBR',0);
+			$this->SetFont('Calibri','',6);
+			$this->Cell(20,5,"",'TB',0);
+			$this->Cell(17,5,"",'TB',0);
+			$this->Cell(17,5,"",'TB',0);
+			$this->Cell(17,5,"",'TB',0);
+			$this->Cell(17,5,"",'TB',0);
+			$this->Cell(17,5,"",'TB',0);
+			$porcentagetotal = (($time/60)*100)/$rowcon["num_horas"];
+			$porcentagetotal = number_format($porcentagetotal,2, ',', '.');
+			$this->Cell(25,5,$horasinc[0]." h. ".$minutos[0]." m. (".$porcentagetotal." %)",'TBR',1);
+
 	}
 }
 

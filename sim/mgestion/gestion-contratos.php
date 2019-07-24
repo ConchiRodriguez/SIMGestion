@@ -356,7 +356,9 @@ if (($option == 1011) AND ($autorizado == true)) {
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=130&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Archivos."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=140&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Notificaciones."</a></td>";
 							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=170&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Desplazamientos."</a></td>";
-							echo "<td></td>";
+						echo "</tr>";
+						echo "<tr>";
+							echo "<td class=\"ficha\"><a href=\"index.php?op=1011&sop=180&id=".$rowcontrato["id"]."\" style=\"color:white;\">".$Informes."</a></td>";
 						echo "</tr>";
 					echo "</table>";
 				echo "</td>";
@@ -870,6 +872,73 @@ if (($option == 1011) AND ($autorizado == true)) {
 				echo "<th>".$contador_deplazamiento."</th>";
 			echo "</tr>";
 		echo "</table>";
+	}
+
+	if ($soption == 180) {
+		if ($ssoption == 1){
+			$camposInsert = "id_contrato,id_cliente_contacto";
+			$datosInsert = array($_GET["id"],comillas($_POST["id_cliente_contacto"]));
+			insertFunction ("sgm_contratos_informes_contactos",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 3) {
+			deleteFunction ("sgm_contratos_informes_contactos",$_GET["id_cont"]);
+		}
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th></th>";
+				echo "<th>".$Contacto." ".$Informes."</th>";
+				echo "<th></th>";
+			echo "</tr><tr>";
+				echo "<form action=\"index.php?op=1011&sop=180&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
+				echo "<td></td>";
+				$contactos = array();
+				$sqlcc = "select id_cliente_contacto from sgm_contratos_informes_contactos where id_contrato=".$_GET["id"]."";
+				$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+				while ($rowcc = mysqli_fetch_array($resultcc)){
+					array_push($contactos, $rowcc["id_cliente_contacto"]);
+				}
+				echo "<td><select name=\"id_cliente_contacto\" style=\"width:300px\">";
+					
+					$sql = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 and id_client in (select id_cliente from sgm_contratos where id=".$_GET["id"].")";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					while ($row = mysqli_fetch_array($result)) {
+						if (!in_array($row["id"],$contactos)){
+							echo "<option value=\"".$row["id"]."\">".$row["nombre"]."  ".$row["apellido1"]." ".$row["apellido2"]."</option>";
+						}
+					}
+					$sql1 = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 and id_client in (select id_cliente_final from sgm_contratos where id=".$_GET["id"].")";
+					$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+					while ($row1 = mysqli_fetch_array($result1)) {
+						if (!in_array($row1["id"],$contactos)){
+							echo "<option value=\"".$row1["id"]."\">".$row1["nombre"]."  ".$row1["apellido1"]." ".$row1["apellido2"]."</option>";
+						}
+					}
+				echo "</select></td>";
+				echo "<td class=\"Submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+				echo "</form>";
+			echo "</tr><tr>";
+			$sqlcc = "select id,id_cliente_contacto from sgm_contratos_informes_contactos where id_contrato=".$_GET["id"]."";
+			$resultcc = mysqli_query($dbhandle,convertSQL($sqlcc));
+			while ($rowcc = mysqli_fetch_array($resultcc)){
+				echo "<tr>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1011&sop=181&id=".$_GET["id"]."&id_cont=".$rowcc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a></td>";
+					$sql = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 and id=".$rowcc["id_cliente_contacto"]."";
+					$result = mysqli_query($dbhandle,convertSQL($sql));
+					$row = mysqli_fetch_array($result);
+					echo "<td>".$row["nombre"]."  ".$row["apellido1"]." ".$row["apellido2"]."</td>";
+				echo "</tr>";
+			}
+			echo "</tr>";
+		echo "</table>";
+		
+		informesContratos($_GET["id"]);
+	}
+
+	if (($soption == 181) AND ($admin == true)) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1011&sop=180&ssop=3&id=".$_GET["id"]."&id_cont=".$_GET["id_cont"],"op=1011&sop=180&id=".$_GET["id"]),array($Si,$No));
+		echo "</center>";
 	}
 
 	if ($soption == 210) {

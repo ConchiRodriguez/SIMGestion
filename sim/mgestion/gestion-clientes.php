@@ -1451,187 +1451,242 @@ if (($option == 1008) AND ($autorizado == true)) {
 		if ($ssoption == 2) {
 			deleteFunction ("sgm_clients_dias_vencimiento",$_GET["id_dia"]);
 		}
+		if ($ssoption == 3) {
+			$camposInsert = "id_descuento,porcentage_desc,id_cliente,";
+			$datosInsert = array($_POST["id_descuento"],$_POST["porcentage_desc"],$_GET["id"]);
+			insertFunction ("sim_clientes_rel_descuentos",$camposInsert,$datosInsert);
+		}
+		if ($ssoption == 4) {
+			$camposUpdate = array("porcentage_desc");
+			$datosUpdate = array($_POST["porcentage_desc"]);
+			updateFunction ("sim_clientes_rel_descuentos",$_GET["id_desc"],$camposUpdate,$datosUpdate);
+		}
+		if ($ssoption == 5) {
+			deleteFunction ("sim_clientes_rel_descuentos",$_GET["id_desc"]);
+		}
 
+		echo "<table cellpadding=\"10\" cellspacing=\"0\" class=\"lista\"><tr><td>";
 		$sql = "select id,dia_facturacion,dia_recibo,dias_vencimiento,dias,cuentabancaria,id_medio_facturacion,destino_facturacion,id_formato_facturacion,id_contacto_facturacion,notas_facturacion,dir3_oficina_contable,dir3_organo_gestor,dir3_unidad_tramitadora,tipo_persona,tipo_residencia from sgm_clients where id=".$_GET["id"];
 		$result = mysqli_query($dbhandle,convertSQL($sql));
 		$row = mysqli_fetch_array($result);
 		echo "<form action=\"index.php?op=1008&sop=110&ssop=1&id=".$_GET["id"]."\" method=\"post\">";
-		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
-			echo "<tr><th></th><th>".$Datos_Facturacion." :</th></tr>";
-			echo "<tr>";
-				echo "<th class=\"formclient\">IBAN</td>";
-				echo "<td class=\"formclient2\"><input type=\"Text\" name=\"cuentabancaria\" style=\"width:100%\" value=\"".$row["cuentabancaria"]."\"></td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Dia." ".$Facturacion."</td>";
-				echo "<td class=\"formclient2\">";
-					$i = 1;
-					echo "<select name=\"dia_facturacion\" style=\"width:50px\">";
-						echo "<option value=\"0\">-</option>";
-						for ($x = 1; $x < 32; $x++) {
-							if ($row["dia_facturacion"] == $x) {
-								echo "<option value=\"".$x."\" selected>".$x."</option>";
-							} else {
-								echo "<option value=\"".$x."\">".$x."</option>";
+				echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<tr><th></th><th>".$Datos_Facturacion." :</th></tr>";
+					echo "<tr>";
+						echo "<th class=\"formclient\">IBAN</th>";
+						echo "<td class=\"formclient2\"><input type=\"Text\" name=\"cuentabancaria\" style=\"width:100%\" value=\"".$row["cuentabancaria"]."\"></td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Dia." ".$Facturacion."</th>";
+						echo "<td class=\"formclient2\">";
+							$i = 1;
+							echo "<select name=\"dia_facturacion\" style=\"width:50px\">";
+								echo "<option value=\"0\">-</option>";
+								for ($x = 1; $x < 32; $x++) {
+									if ($row["dia_facturacion"] == $x) {
+										echo "<option value=\"".$x."\" selected>".$x."</option>";
+									} else {
+										echo "<option value=\"".$x."\">".$x."</option>";
+									}
+								}
+							echo "</select>";
+						echo "</td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Dia." ".$Recibo."</th>";
+						echo "<td class=\"formclient2\">";
+							$i = 1;
+							echo "<select name=\"dia_recibo\" style=\"width:50px\">";
+								echo "<option value=\"0\">-</option>";
+								for ($x = 1; $x < 32; $x++) {
+									if ($row["dia_recibo"] == $x) {
+										echo "<option value=\"".$x."\" selected>".$x."</option>";
+									} else {
+										echo "<option value=\"".$x."\">".$x."</option>";
+									}
+								}
+							echo "</select>";
+						echo "</td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Vencimiento."</th>";
+						echo "<td class=\"formclient2\"><input type=\"numbre\" name=\"dias_vencimiento\" style=\"width:50px\" value=\"".$row["dias_vencimiento"]."\">";
+							echo "<select name=\"dias\" style=\"width:100px\">";
+								if ($row["dias"] == 1) {
+									echo "<option value=\"1\" selected>".$Dias."</option>";
+									echo "<option value=\"0\">".$Meses."</option>";
+								}
+								if ($row["dias"] == 0) {
+									echo "<option value=\"1\">".$Dias."</option>";
+									echo "<option value=\"0\" selected>".$Meses."</option>";
+								}
+							echo "</select>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Vencimiento." : ".$Dia." del ".$Mes."</th>";
+						echo "<td class=\"formclient2\"><select name=\"dia\" style=\"width:50px\">";
+							echo "<option value=\"0\">-</option>";
+							for ($x = 1; $x < 32; $x++) {
+								if ($rowdv["dia"] == $x) {
+									echo "<option value=\"".$x."\" selected>".$x."</option>";
+								} else {
+									echo "<option value=\"".$x."\">".$x."</option>";
+								}
 							}
-						}
-					echo "</select>";
-				echo "</td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Dia." ".$Recibo."</td>";
-				echo "<td class=\"formclient2\">";
-					$i = 1;
-					echo "<select name=\"dia_recibo\" style=\"width:50px\">";
-						echo "<option value=\"0\">-</option>";
-						for ($x = 1; $x < 32; $x++) {
-							if ($row["dia_recibo"] == $x) {
-								echo "<option value=\"".$x."\" selected>".$x."</option>";
-							} else {
-								echo "<option value=\"".$x."\">".$x."</option>";
-							}
-						}
-					echo "</select>";
-				echo "</td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Vencimiento."</td>";
-				echo "<td class=\"formclient2\"><input type=\"numbre\" name=\"dias_vencimiento\" style=\"width:50px\" value=\"".$row["dias_vencimiento"]."\">";
-					echo "<select name=\"dias\" style=\"width:100px\">";
-						if ($row["dias"] == 1) {
-							echo "<option value=\"1\" selected>".$Dias."</option>";
-							echo "<option value=\"0\">".$Meses."</option>";
-						}
-						if ($row["dias"] == 0) {
-							echo "<option value=\"1\">".$Dias."</option>";
-							echo "<option value=\"0\" selected>".$Meses."</option>";
-						}
-					echo "</select>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Vencimiento." : ".$Dia." del ".$Mes."</td>";
-				echo "<td class=\"formclient2\"><select name=\"dia\" style=\"width:50px\">";
-					echo "<option value=\"0\">-</option>";
-					for ($x = 1; $x < 32; $x++) {
-						if ($rowdv["dia"] == $x) {
-							echo "<option value=\"".$x."\" selected>".$x."</option>";
-						} else {
-							echo "<option value=\"".$x."\">".$x."</option>";
-						}
+						echo "</select></td>";
+					echo "</tr>";
+					$sqldv = "select dia,id from sgm_clients_dias_vencimiento where id_cliente=".$_GET["id"];
+					$resultdv = mysqli_query($dbhandle,convertSQL($sqldv));
+					while ($rowdv = mysqli_fetch_array($resultdv)){
+						echo "<tr>";
+							echo "<th class=\"formclient\"></th>";
+							echo "<td class=\"formclient2\"><a href=\"index.php?op=1008&sop=110&ssop=2&id=".$_GET["id"]."&id_dia=".$rowdv["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a>".$rowdv["dia"]."</td>";
+						echo "</tr>";
 					}
-				echo "</select></td>";
-			echo "</tr>";
-			$sqldv = "select dia,id from sgm_clients_dias_vencimiento where id_cliente=".$_GET["id"];
-			$resultdv = mysqli_query($dbhandle,convertSQL($sqldv));
-			while ($rowdv = mysqli_fetch_array($resultdv)){
-				echo "<tr>";
-					echo "<th class=\"formclient\"></td>";
-					echo "<td class=\"formclient2\"><a href=\"index.php?op=1008&sop=110&ssop=2&id=".$_GET["id"]."&id_dia=".$rowdv["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a>".$rowdv["dia"]."</td>";
-				echo "</tr>";
-			}
-			echo "<tr><td>&nbsp;</td></tr>";
-			echo "<tr><td></td><th>Facturae (DIR3):</th></tr>";
-			echo "<tr><th class=\"formclient\">".$Oficina_contable.": </th><td><input type=\"Text\" name=\"dir3_oficina_contable\" value=\"".$row["dir3_oficina_contable"]."\"  class=\"formclient\"></td></tr>";
-			echo "<tr><th class=\"formclient\">".$Organo_gestor.": </th><td><input type=\"Text\" name=\"dir3_organo_gestor\" value=\"".$row["dir3_organo_gestor"]."\"  class=\"formclient\"></td></tr>";
-			echo "<tr><th class=\"formclient\">".$Unidad_tramitadora.": </th><td><input type=\"Text\" name=\"dir3_unidad_tramitadora\" value=\"".$row["dir3_unidad_tramitadora"]."\"  class=\"formclient\"></td></tr>";
-			echo "<tr><td></td><td style=\"vertical-align:top;text-align:left;\">";
-				echo "<table style=\"width:100%;\">";
+					echo "<tr><td>&nbsp;</td></tr>";
+					echo "<tr><td></td><th>Facturae (DIR3):</th></tr>";
+					echo "<tr><th class=\"formclient\">".$Oficina_contable.": </th><td><input type=\"Text\" name=\"dir3_oficina_contable\" value=\"".$row["dir3_oficina_contable"]."\"  class=\"formclient\"></td></tr>";
+					echo "<tr><th class=\"formclient\">".$Organo_gestor.": </th><td><input type=\"Text\" name=\"dir3_organo_gestor\" value=\"".$row["dir3_organo_gestor"]."\"  class=\"formclient\"></td></tr>";
+					echo "<tr><th class=\"formclient\">".$Unidad_tramitadora.": </th><td><input type=\"Text\" name=\"dir3_unidad_tramitadora\" value=\"".$row["dir3_unidad_tramitadora"]."\"  class=\"formclient\"></td></tr>";
+					echo "<tr><td></td><td style=\"vertical-align:top;text-align:left;\">";
+						echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+							echo "<tr>";
+								echo "<td style=\"width:33%\">";
+									echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"0\" style=\"border:0px solid black;\"";
+									if ($row["tipo_persona"] == 0) { echo " checked";}
+									echo "></td><td>".$Juridica."";
+								echo "</td><td style=\"width:33%\">";
+									echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"1\" style=\"border:0px solid black;\"";
+									if ($row["tipo_persona"] == 1) { echo " checked";}
+									echo "></td><td>".$Fisica."";
+								echo "</td>";
+							echo "</tr>";
+							echo "<tr>";
+								echo "<td style=\"width:33%\">";
+									echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"0\" style=\"border:0px solid black;\"";
+									if ($row["tipo_residencia"] == 0) { echo " checked";}
+									echo "></td><td>".$Residente."";
+								echo "</td><td style=\"width:33%\">";
+									echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"1\" style=\"border:0px solid black;\"";
+									if ($row["tipo_residencia"] == 1) { echo " checked";}
+									echo "></td><td>".$Residente."";
+								echo "</td><td style=\"width:33%\">";
+									echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"2\" style=\"border:0px solid black;\"";
+									if ($row["tipo_residencia"] == 2) { echo " checked";}
+									echo "></td><td>".$Extranjero."";
+								echo "</td>";
+							echo "</tr>";
+						echo "</table>";
+					echo "</td></tr>";
+					echo "<tr><td>&nbsp;</td></tr>";
+					echo "<tr><th></th><th>".$Envio." :</th></tr>";
 					echo "<tr>";
-						echo "<td style=\"width:33%\">";
-							echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"0\" style=\"border:0px solid black;\"";
-							if ($row["tipo_persona"] == 0) { echo " checked";}
-							echo "></td><td>".$Juridica."";
-						echo "</td><td style=\"width:33%\">";
-							echo "<input type=\"Radio\" name=\"tipo_persona\" value=\"1\" style=\"border:0px solid black;\"";
-							if ($row["tipo_persona"] == 1) { echo " checked";}
-							echo "></td><td>".$Fisica."";
+						echo "<th class=\"formclient\">".$Medio."</th>";
+						echo "<td class=\"formclient2\">";
+							echo "<select name=\"id_medio_facturacion\" style=\"width:100%\">";
+								echo "<option value=\"0\">-</option>";
+								$sql1 = "select id,medio_comunicacion from sim_medio_comunicacion where visible=1 order by medio_comunicacion";
+								$result1 = mysqli_query($dbhandle,convertSQL($sql1));
+								while ($row1 = mysqli_fetch_array($result1)) {
+									if ($row1["id"] == $row["id_medio_facturacion"]) {
+										echo "<option value=\"".$row1["id"]."\" selected>".$row1["medio_comunicacion"]."</option>";
+									} else {
+										echo "<option value=\"".$row1["id"]."\">".$row1["medio_comunicacion"]."</option>";
+									}
+								}
+							echo "</select>";
 						echo "</td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Destino." (".$Direccion.", URL, etc.)</th>";
+						echo "<td class=\"formclient2\"><input type=\"Text\" name=\"destino_facturacion\" style=\"width:100%\" value=\"".$row["destino_facturacion"]."\"></td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Formato." ".$Documentos."</th>";
+						echo "<td class=\"formclient2\">";
+							echo "<select name=\"id_formato_facturacion\" style=\"width:100%\">";
+								echo "<option value=\"0\">-</option>";
+								$sql2 = "select id,formato_documento from sim_formato_documento where visible=1 order by formato_documento";
+								$result2 = mysqli_query($dbhandle,convertSQL($sql2));
+								while ($row2 = mysqli_fetch_array($result2)) {
+									if ($row2["id"] == $row["id_formato_facturacion"]) {
+										echo "<option value=\"".$row2["id"]."\" selected>".$row2["formato_documento"]."</option>";
+									} else {
+										echo "<option value=\"".$row2["id"]."\">".$row2["formato_documento"]."</option>";
+									}
+								}
+							echo "</select>";
+						echo "</td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Contacto."</th>";
+						echo "<td class=\"formclient2\">";
+							echo "<select name=\"id_contacto_facturacion\" style=\"width:90%\">";
+								echo "<option value=\"0\">-</option>";
+								$sql3 = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." order by nombre,apellido1,apellido2";
+								$result3 = mysqli_query($dbhandle,convertSQL($sql3));
+								while ($row3 = mysqli_fetch_array($result3)) {
+									if ($row3["id"] == $row["id_contacto_facturacion"]) {
+										echo "<option value=\"".$row3["id"]."\" selected>".$row3["nombre"]." ".$row3["apellido1"]." ".$row3["apellido2"]."</option>";
+									} else {
+										echo "<option value=\"".$row3["id"]."\">".$row3["nombre"]." ".$row3["apellido1"]." ".$row3["apellido2"]."</option>";
+									}
+								}
+							echo "</select>";
+							$sql4 = "select mail from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." and id=".$row["id_contacto_facturacion"];
+							$result4 = mysqli_query($dbhandle,convertSQL($sql4));
+							$row4 = mysqli_fetch_array($result4);
+							echo "&nbsp;<a href=\"mailto:".$row4["mail"]."\"><img src=\"mgestion/pics/icons-mini/email_link.png\" style=\"border:0px;vertical-align:middle;\"></a>";
+						echo "</td>";
+					echo "</tr><tr>";
+						echo "<th class=\"formclient\">".$Notas."</th>";
+						echo "<td class=\"formclient2\"><textarea name=\"notas_facturacion\" class=\"formclient\" rows=\"2\">".$row["notas_facturacion"]."</textarea></td>";
 					echo "</tr>";
 					echo "<tr>";
-						echo "<td style=\"width:33%\">";
-							echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"0\" style=\"border:0px solid black;\"";
-							if ($row["tipo_residencia"] == 0) { echo " checked";}
-							echo "></td><td>".$Residente."";
-						echo "</td><td style=\"width:33%\">";
-							echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"1\" style=\"border:0px solid black;\"";
-							if ($row["tipo_residencia"] == 1) { echo " checked";}
-							echo "></td><td>".$Residente."";
-						echo "</td><td style=\"width:33%\">";
-							echo "<input type=\"Radio\" name=\"tipo_residencia\" value=\"2\" style=\"border:0px solid black;\"";
-							if ($row["tipo_residencia"] == 2) { echo " checked";}
-							echo "></td><td>".$Extranjero."";
-						echo "</td>";
+						echo "<td></td><td class=\"submit\" colspan=\"3\"><input type=\"submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
 					echo "</tr>";
+					echo "</form>";
 				echo "</table>";
-			echo "</td></tr>";
-			echo "<tr><td>&nbsp;</td></tr>";
-			echo "<tr><th></th><th>".$Envio." :</th></tr>";
-			echo "<tr>";
-				echo "<th class=\"formclient\">".$Medio."</td>";
-				echo "<td class=\"formclient2\">";
-					echo "<select name=\"id_medio_facturacion\" style=\"width:100%\">";
-						echo "<option value=\"0\">-</option>";
-						$sql1 = "select id,medio_comunicacion from sim_medio_comunicacion where visible=1 order by medio_comunicacion";
-						$result1 = mysqli_query($dbhandle,convertSQL($sql1));
-						while ($row1 = mysqli_fetch_array($result1)) {
-							if ($row1["id"] == $row["id_medio_facturacion"]) {
-								echo "<option value=\"".$row1["id"]."\" selected>".$row1["medio_comunicacion"]."</option>";
-							} else {
-								echo "<option value=\"".$row1["id"]."\">".$row1["medio_comunicacion"]."</option>";
-							}
-						}
-					echo "</select>";
-				echo "</td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Destino." (".$Direccion.", URL, etc.)</td>";
-				echo "<td class=\"formclient2\"><input type=\"Text\" name=\"destino_facturacion\" style=\"width:100%\" value=\"".$row["destino_facturacion"]."\"></td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Formato." ".$Documentos."</td>";
-				echo "<td class=\"formclient2\">";
-					echo "<select name=\"id_formato_facturacion\" style=\"width:100%\">";
-						echo "<option value=\"0\">-</option>";
-						$sql2 = "select id,formato_documento from sim_formato_documento where visible=1 order by formato_documento";
+			echo "</td><td style=\";vertical-align:top;\">";
+				echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+					echo "<tr><th></th><th>".$Descuentos." :</th></tr>";
+					echo "<tr>";
+					echo "<form action=\"index.php?op=1008&sop=110&ssop=3&id=".$_GET["id"]."\" method=\"post\">";
+						echo "<td></td>";
+						echo "<td class=\"formclient2\">";
+							echo "<select name=\"id_descuento\" style=\"width:100%\">";
+								$sql2 = "select id,descuento from sim_clientes_descuentos order by descuento";
+								$result2 = mysqli_query($dbhandle,convertSQL($sql2));
+								while ($row2 = mysqli_fetch_array($result2)) {
+									if ($row2["id"] == $row["descuento"]) {
+										echo "<option value=\"".$row2["id"]."\" selected>".$row2["descuento"]."</option>";
+									} else {
+										echo "<option value=\"".$row2["id"]."\">".$row2["descuento"]."</option>";
+									}
+								}
+							echo "</select>";
+						echo "</td>";
+						echo "<td class=\"formclient2\"><input type=\"text\" name=\"porcentage_desc\" value=\"0.00\" style=\"text-align:right;width:80%\" required> %</td>";
+						echo "<td class=\"submit\" colspan=\"3\"><input type=\"submit\" value=\"".$Anadir."\" style=\"width:100px\"></td>";
+					echo "</form>";
+					echo "</tr>";
+					echo "<tr><td>&nbsp;</td></tr>";
+					$sqldoc = "select * from sim_clientes_rel_descuentos where id_cliente=".$_GET["id"];
+					$resultdoc = mysqli_query($dbhandle,convertSQL($sqldoc));
+					while ($rowdoc = mysqli_fetch_array($resultdoc)){
+						$sql2 = "select id,descuento from sim_clientes_descuentos where id=".$rowdoc["id_descuento"];
 						$result2 = mysqli_query($dbhandle,convertSQL($sql2));
-						while ($row2 = mysqli_fetch_array($result2)) {
-							if ($row2["id"] == $row["id_formato_facturacion"]) {
-								echo "<option value=\"".$row2["id"]."\" selected>".$row2["formato_documento"]."</option>";
-							} else {
-								echo "<option value=\"".$row2["id"]."\">".$row2["formato_documento"]."</option>";
-							}
-						}
-					echo "</select>";
-				echo "</td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Contacto."</td>";
-				echo "<td class=\"formclient2\">";
-					echo "<select name=\"id_contacto_facturacion\" style=\"width:94%\">";
-						echo "<option value=\"0\">-</option>";
-						$sql3 = "select id,nombre,apellido1,apellido2 from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." order by nombre,apellido1,apellido2";
-						$result3 = mysqli_query($dbhandle,convertSQL($sql3));
-						while ($row3 = mysqli_fetch_array($result3)) {
-							if ($row3["id"] == $row["id_contacto_facturacion"]) {
-								echo "<option value=\"".$row3["id"]."\" selected>".$row3["nombre"]." ".$row3["apellido1"]." ".$row3["apellido2"]."</option>";
-							} else {
-								echo "<option value=\"".$row3["id"]."\">".$row3["nombre"]." ".$row3["apellido1"]." ".$row3["apellido2"]."</option>";
-							}
-						}
-					echo "</select>";
-					$sql4 = "select mail from sgm_clients_contactos where visible=1 and id_client=".$_GET["id"]." and id=".$row["id_contacto_facturacion"];
-					$result4 = mysqli_query($dbhandle,convertSQL($sql4));
-					$row4 = mysqli_fetch_array($result4);
-					echo "&nbsp;<a href=\"mailto:".$row4["mail"]."\"><img src=\"mgestion/pics/icons-mini/email_link.png\" style=\"border:0px;vertical-align:middle;\"></a>";
-				echo "</td>";
-			echo "</tr><tr>";
-				echo "<th class=\"formclient\">".$Notas."</td>";
-				echo "<td class=\"formclient2\"><textarea name=\"notas_facturacion\" class=\"formclient\" rows=\"2\">".$row["notas_facturacion"]."</textarea></td>";
-			echo "</tr>";
-			echo "<tr>";
-				echo "<td></td><td class=\"submit\" colspan=\"3\"><input type=\"submit\" value=\"".$Guardar."\" style=\"width:100px\"></td>";
-			echo "</tr>";
-			echo "</form>";
-		echo "</table>";
+						$row2 = mysqli_fetch_array($result2);
+						echo "<tr>";
+						echo "<form action=\"index.php?op=1008&sop=110&ssop=4&id=".$_GET["id"]."&id_desc=".$rowdoc["id"]."\" method=\"post\">";
+							echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=111&id=".$_GET["id"]."&id_desc=".$rowdoc["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" style=\"border:0px\"></a></td>";
+							echo "<td>".$row2["descuento"]."</td>";
+							echo "<td class=\"formclient2\"><input type=\"text\" name=\"porcentage_desc\" value=\"".$rowdoc["porcentage_desc"]."\" style=\"text-align:right;width:80%\" required> %</td>";
+							echo "<td class=\"submit\" colspan=\"3\"><input type=\"submit\" value=\"".$Modificar."\" style=\"width:100px\"></td>";
+						echo "</form>";
+						echo "</tr>";
+					}
+				echo "</table>";
+			echo "</td></tr></table>";
 	}
 
 	if ($soption == 111) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
-		echo boton(array("op=1008&sop=110&ssop=6&id=".$_GET["id"]."&id_tarifa=".$_GET["id_tarifa"],"op=1008&sop=110&ssop=6&id=".$_GET["id"]),array($Si,$No));
+		echo boton(array("op=1008&sop=110&ssop=5&id=".$_GET["id"]."&id_desc=".$_GET["id_desc"],"op=1008&sop=110&id=".$_GET["id"]),array($Si,$No));
 		echo "</center>";
 	}
 
@@ -2243,7 +2298,6 @@ if (($option == 1008) AND ($autorizado == true)) {
 				$sql = $sql." and id in (select id_incidencia from sgm_incidencias_notas_desarrollo where data_registro2 between ".$data1." and ".$data2.")";
 			}
 			if (($_POST["id_usuario"] != 0) or ($_GET["u"] != 0)) { $sql = $sql." and id_usuario=".$_POST["id_usuario"].$_GET["u"]; }
-			echo $sql;
 			$result = mysqli_query($dbhandle,convertSQL($sql));
 			while ($row = mysqli_fetch_array($result)){
 				if ($_POST["facturada".$row["id"]] == 1){
@@ -2537,8 +2591,8 @@ if (($option == 1008) AND ($autorizado == true)) {
 
 	if ($soption == 500) {
 		if ($admin == true) {
-			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=540","op=1008&sop=560","op=1008&sop=570","op=1008&sop=580");
-			$texto = array($Origenes,$Sectores,$Tratos,$Tipos,$Busquedas,$Imprimir);
+			$ruta_botons = array("op=1008&sop=510","op=1008&sop=520","op=1008&sop=530","op=1008&sop=540","op=1008&sop=560","op=1008&sop=570","op=1008&sop=580");
+			$texto = array($Origenes,$Sectores,$Descuentos,$Tratos,$Tipos,$Busquedas,$Imprimir);
 			echo boton($ruta_botons,$texto);
 		}
 		if ($admin == false) {
@@ -2679,6 +2733,102 @@ if (($option == 1008) AND ($autorizado == true)) {
 		echo "<center>";
 		echo "<br><br>".$pregunta_eliminar;
 		echo boton(array("op=1008&sop=520&ssop=3&id=".$_GET["id"],"op=1008&sop=520"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if (($soption == 530) AND ($admin == true)) {
+		if (($ssoption == 1) AND ($admin == true)) {
+			$camposInsert = "descuento";
+			$datosInsert = array(comillas($_POST["descuento"]));
+			insertFunction ("sim_clientes_descuentos",$camposInsert,$datosInsert);
+		}
+		if (($ssoption == 2) AND ($admin == true)) {
+			$camposUpdate = array("descuento");
+			$datosUpdate = array(comillas($_POST["descuento"]));
+			updateFunction ("sim_clientes_descuentos",$_GET["id"],$camposUpdate,$datosUpdate);
+		}
+		if (($ssoption == 3) AND ($admin == true)) {
+			$sql = "delete from sim_clientes_rel_descuentos WHERE id_descuento=".$_GET["id"]."";
+			mysqli_query($dbhandle,convertSQL($sql));
+			deleteFunction ("sim_clientes_descuentos",$_GET["id"]);
+		}
+		if (($ssoption == 4) AND ($admin == true)) {
+			$camposInsert = "id_descuento,id_articulo";
+			$datosInsert = array($_GET["id"],$_POST["id_articulo"]);
+			insertFunction ("sim_clientes_descuentos_articulos",$camposInsert,$datosInsert);
+		}
+		if (($ssoption == 5) AND ($admin == true)) {
+			deleteFunction ("sim_clientes_descuentos_articulos",$_GET["id_des_art"]);
+		}
+
+		echo "<h4>".$Descuentos.":</h4>";
+		echo boton(array("op=1008&sop=500"),array("&laquo; ".$Volver));
+		echo "<table cellpadding=\"1\" cellspacing=\"0\" class=\"lista\">";
+			echo "<form action=\"index.php?op=1008&sop=530&ssop=1\" method=\"post\">";
+			echo "<tr style=\"background-color:silver\">";
+				echo "<th>".$Eliminar."</th>";
+				echo "<th>".$Descuento."</th>";
+				echo "<th></th>";
+				echo "<th>".$Articulo."</th>";
+				echo "<th></th>";
+			echo "</tr><tr>";
+				echo "<td></td>";
+				echo "<td><input type=\"text\" style=\"width:200px\" name=\"descuento\" required></td>";
+				echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+			echo "</tr>";
+			echo "<tr><td>&nbsp;</td></tr>";
+			echo "</form>";
+			$sql = "select * from sim_clientes_descuentos order by descuento";
+			$result = mysqli_query($dbhandle,convertSQL($sql));
+			while ($row = mysqli_fetch_array($result)) {
+				echo "<tr>";
+					echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=531&id=".$row["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+					echo "<form action=\"index.php?op=1008&sop=530&ssop=2&id=".$row["id"]."\" method=\"post\">";
+					echo "<td><input type=\"text\" value=\"".$row["descuento"]."\" style=\"width:200px\" name=\"descuento\" required></td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Modificar."\"></td>";
+					echo "</form>";
+					echo "<form action=\"index.php?op=1008&sop=530&ssop=4&id=".$row["id"]."\" method=\"post\">";
+					echo "<td>";
+						echo "<select name=\"id_articulo\" style=\"width:400px\">";
+							echo "<option value=\"0\">-</option>";
+							$sqlt = "select id,nombre from sgm_articles where visible=1 and descatalogat=0 order by nombre";
+							$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+							while ($rowt = mysqli_fetch_array($resultt)) {
+								echo "<option value=\"".$rowt["id"]."\">".$rowt["nombre"]."</option>";
+							}
+						echo "</select>";
+					echo "</td>";
+					echo "<td class=\"submit\"><input type=\"Submit\" value=\"".$Anadir."\"></td>";
+					echo "</form>";
+				echo "</tr>";
+				$sql22 = "select * from sim_clientes_descuentos_articulos where id_descuento=".$row["id"];
+				$result22 = mysqli_query($dbhandle,convertSQL($sql22));
+				while ($row22 = mysqli_fetch_array($result22)) {
+					echo "<tr>";
+						echo "<td></td>";
+						echo "<td></td>";
+						echo "<td style=\"text-align:center;\"><a href=\"index.php?op=1008&sop=532&id=".$row["id"]."&id_des_art=".$row22["id"]."\"><img src=\"mgestion/pics/icons-mini/page_white_delete.png\" alt=\"Eliminar\" border=\"0\"></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+						$sqlt = "select id,nombre from sgm_articles where id=".$row22["id_articulo"];
+						$resultt = mysqli_query($dbhandle,convertSQL($sqlt));
+						$rowt = mysqli_fetch_array($resultt);
+						echo "<td>".$rowt["nombre"]."</td>";
+					echo "</tr>";
+				}
+			}
+		echo "</table>";
+	}
+
+	if (($soption == 531) AND ($admin == true)) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1008&sop=530&ssop=3&id=".$_GET["id"],"op=1008&sop=530"),array($Si,$No));
+		echo "</center>";
+	}
+
+	if (($soption == 532) AND ($admin == true)) {
+		echo "<center>";
+		echo "<br><br>".$pregunta_eliminar;
+		echo boton(array("op=1008&sop=530&ssop=5&id=".$_GET["id"]."&id_des_art=".$_GET["id_des_art"],"op=1008&sop=530"),array($Si,$No));
 		echo "</center>";
 	}
 

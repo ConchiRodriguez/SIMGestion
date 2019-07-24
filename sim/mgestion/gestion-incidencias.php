@@ -884,7 +884,16 @@ if (($option == 1018) AND ($autorizado == true)) {
 				$rowd = mysqli_fetch_array($resultd);
 				$total = $rowd["total"];
 				
-				if ((($_POST["notas_registro"] != "") or ($_POST["notas_conclusion"] != ""))  and ($total > 0) and (strtotime($_POST["fecha_cierre"]) > 0)){
+				$sqld1 = "select notas_registro,id_servicio,id_cliente from sgm_incidencias where id=".$_GET["id"]."";
+				$resultd1 = mysqli_query($dbhandle,convertSQL($sqld1));
+				$rowd1 = mysqli_fetch_array($resultd1);
+				$sqld2 = "select id from sgm_contratos where id_cliente=".$rowd1["id_cliente"]." and visible=1 and activo=1";
+				$resultd2 = mysqli_query($dbhandle,convertSQL($sqld2));
+				$rowd2 = mysqli_fetch_array($resultd2);
+				$serv = 1;
+				if (($rowd2["id"] != '') and ($rowd1["id_servicio"] <= 0)) { $serv = 0; }
+
+				if ((($rowd1["notas_registro"] != "") or ($_POST["notas_conclusion"] != ""))  and ($total > 0) and (strtotime($_POST["fecha_cierre"]) > 0) and ($serv == 1)){
 					if ($rowc["temps_resposta"] != 0){
 						$temps_pendent=(calculSLA($_GET["id"],1));
 						if ($temps_pendent > 0) { $sla = 0;} else { $sla = 1;}
@@ -1398,12 +1407,13 @@ if (($option == 1018) AND ($autorizado == true)) {
 									} else {
 										echo "<option value=\"-1\">".$SinContrato."</option>";
 									}
+									if ($rowincid["id_servicio"] == ''){$rowincid["id_servicio"]=0;}
 									if ($_POST["id_cliente"] != ""){
-										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_POST["id_cliente"]."";
+										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and (activo=1 or id in (select id_contrato from sgm_contratos_servicio where id=".$rowincid["id_servicio"].")) and id_cliente=".$_POST["id_cliente"]."";
 									} elseif ($_GET["id_cli"] != ""){
-										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and activo=1 and id_cliente=".$_GET["id_cli"]."";
+										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and (activo=1 or id in (select id_contrato from sgm_contratos_servicio where id=".$rowincid["id_servicio"].")) and id_cliente=".$_GET["id_cli"]."";
 									} elseif ($rowincid["id_cliente"] != ""){
-										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and id_cliente=".$rowincid["id_cliente"]." order by fecha_ini desc";
+										$sqlc2 = "select id,id_cliente_final,descripcion from sgm_contratos where visible=1 and (activo=1 or id in (select id_contrato from sgm_contratos_servicio where id=".$rowincid["id_servicio"].")) and id_cliente=".$rowincid["id_cliente"]." order by fecha_ini desc";
 									}
 									$resultc2 = mysqli_query($dbhandle,convertSQL($sqlc2));
 									while ($rowc2 = mysqli_fetch_array($resultc2)){
@@ -1588,7 +1598,7 @@ if (($option == 1018) AND ($autorizado == true)) {
 								echo "<input type=\"hidden\" name=\"fecha_inicio\" value=\"".$fecha."\">";
 							}
 							echo "<tr style=\"background-color:".$color_td."\"><th style=\"text-align:right;vertical-align:top;\">".$Usuario." :</th>";
-							if ($rowc["id_usuario_registro"] == $userid){
+							if (($rowc["id_usuario_registro"] == $userid) or ($rowc["id_usuario_registro"] == 0)){
 								echo "<td><select name=\"id_usuario_registro\" style=\"width:150px\">";
 								echo "<option value=\"0\">-</option>";
 									$sqlu = "select id,usuario from sgm_users where validado=1 and activo=1 order by usuario";

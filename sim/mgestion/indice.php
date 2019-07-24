@@ -16,8 +16,8 @@
 
 #	if ($option == 1010) { include ("mgestion/gestion-compras.php");}
 	if ($option == 1011) { include ("mgestion/gestion-contratos.php");}
-#	if ($option == 1012) { include ("mgestion/gestion-mailing.php");}
-#	if ($option == 1013) { include ("mgestion/gestion-proyectos.php");}
+	if ($option == 1012) { include ("mgestion/gestion-mailing.php");}
+	if ($option == 1013) { include ("mgestion/gestion-sms.php");}
 #	if ($option == 1014) { include ("mgestion/gestion-control_produccion.php");}
 #	if ($option == 1015) { include ("mgestion/gestion-control_calidad.php");}
 #	if ($option == 1016) { include ("mgestion/gestion-control-produccion-3.0.php");}
